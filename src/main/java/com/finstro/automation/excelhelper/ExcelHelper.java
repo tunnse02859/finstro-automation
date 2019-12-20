@@ -1,4 +1,4 @@
-package com.nashtech.automation.excelhelper;
+package com.finstro.automation.excelhelper;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +10,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.nashtech.automation.logger.Log;
+
+import com.finstro.automation.logger.Log;
 
 public class ExcelHelper {
 

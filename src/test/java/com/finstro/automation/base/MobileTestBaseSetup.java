@@ -1,4 +1,4 @@
-package com.nashtech.automation.base;
+package com.finstro.automation.base;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -11,9 +11,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
-import com.nashtech.automation.appium.action.AppiumDriverMethod;
-import com.nashtech.automation.common.*;
-import com.nashtech.automation.extentreport.HtmlReporter;
+import com.finstro.automation.appium.action.AppiumDriverMethod;
+import com.finstro.automation.common.*;
+import com.finstro.automation.extentreport.HtmlReporter;
 
 public class MobileTestBaseSetup   {
 
@@ -44,7 +44,7 @@ public class MobileTestBaseSetup   {
 	public void beforeMethod(Method method) throws Exception{
 		HtmlReporter.createNode(this.getClass().getSimpleName(), method.getName(),
 				"");
-		driver = new AppiumDriverMethod("ios", false);
+		driver = new AppiumDriverMethod("android", false);
 	}
 	
 	@AfterMethod

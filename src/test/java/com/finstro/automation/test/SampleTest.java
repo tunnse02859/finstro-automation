@@ -1,11 +1,11 @@
-package com.nashtech.automation.test;
+package com.finstro.automation.test;
 
 import static org.testng.AssertJUnit.assertTrue;
 import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.nashtech.automation.base.MobileTestSetup;
+import com.finstro.automation.base.MobileTestSetup;
 
 public class SampleTest extends MobileTestSetup {
 	static {

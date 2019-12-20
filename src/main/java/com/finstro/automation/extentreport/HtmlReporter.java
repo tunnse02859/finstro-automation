@@ -1,4 +1,4 @@
-package com.nashtech.automation.extentreport;
+package com.finstro.automation.extentreport;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,8 +17,8 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.nashtech.automation.common.Common;
-import com.nashtech.automation.logger.Log;
+import com.finstro.automation.common.Common;
+import com.finstro.automation.logger.Log;
 
 public class HtmlReporter {
 
@@ -225,6 +225,7 @@ public class HtmlReporter {
 			getTest().pass(strDescription);
 		} catch (Exception ex) {
 			Log.info("Can't write to htm report, initialize it first");
+			ex.printStackTrace();
 		}
 
 	}
@@ -246,9 +247,9 @@ public class HtmlReporter {
 				strScreenshotPath = "file:///" + strScreenshotPath;
 				getTest().pass(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 			}
-		} catch (Exception e) {
+		} catch (Exception ex) {
 			Log.info("Can't write to htm report, initialize it first");
-			throw (e);
+			ex.printStackTrace();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.nashtech.automation.appium.action;
+package com.finstro.automation.appium.action;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -28,11 +28,11 @@ import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
-import com.nashtech.automation.ui.ImageCompare;
-import com.nashtech.automation.appium.driver.AppiumDriverFactory;
-import com.nashtech.automation.common.*;
-import com.nashtech.automation.logger.*;
-import com.nashtech.automation.report.HtmlReporter;
+import com.finstro.automation.ui.ImageCompare;
+import com.finstro.automation.appium.driver.AppiumDriverFactory;
+import com.finstro.automation.common.*;
+import com.finstro.automation.logger.*;
+import com.finstro.automation.extentreport.HtmlReporter;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;

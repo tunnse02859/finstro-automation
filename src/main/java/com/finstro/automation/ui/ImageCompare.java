@@ -1,4 +1,4 @@
-package com.nashtech.automation.ui;
+package com.finstro.automation.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.nashtech.automation.common.Common;
+import com.finstro.automation.common.Common;
 
 public class ImageCompare {
 

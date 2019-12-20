@@ -1,4 +1,4 @@
-package com.nashtech.automation.logger;
+package com.finstro.automation.logger;
 
 import java.io.File;
 
@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LoggerContext;
 
-import com.nashtech.automation.common.Common;
+import com.finstro.automation.common.Common;
 
 public class Log {
 

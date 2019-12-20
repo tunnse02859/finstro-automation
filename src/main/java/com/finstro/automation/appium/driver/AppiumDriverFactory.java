@@ -1,4 +1,4 @@
-package com.nashtech.automation.appium.driver;
+package com.finstro.automation.appium.driver;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.nashtech.automation.common;
+package com.finstro.automation.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 
-import com.nashtech.automation.logger.Log;
+import com.finstro.automation.logger.Log;
 
 public class Common {
 
@@ -21,12 +21,13 @@ public class Common {
 	public static Properties environment;
 	static {
 		try {
-			String constantsFile = "config\\constants.properties";
-			constants = readResourceProperties(constantsFile);
-			String configFile = constants.getProperty("configFilePath");
-			config = readResourceProperties(configFile);
+			String constantsFile = correctPath(
+					strWorkspacepath + "\\src\\test\\resources\\config\\constants.properties");
+			constants = readProperties(constantsFile);
+			String configFile = correctPath(strWorkspacepath + constants.getProperty("configFilePath"));
+			config = readProperties(configFile);
 			String environmentFile = constants.getProperty("environmentFilePath");
-			if (environmentFile != null && !environmentFile.equals("")) {
+			if(environmentFile != null && !environmentFile.equals("")) {
 				environmentFile = correctPath(strWorkspacepath + constants.getProperty("environmentFilePath"));
 				environment = readProperties(environmentFile);
 			}

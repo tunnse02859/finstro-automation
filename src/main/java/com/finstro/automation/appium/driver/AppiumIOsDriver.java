@@ -1,4 +1,4 @@
-package com.nashtech.automation.appium.driver;
+package com.finstro.automation.appium.driver;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.nashtech.automation.common.Common;
-import com.nashtech.automation.extentreport.HtmlReporter;
-import com.nashtech.automation.logger.Log;
+import com.finstro.automation.common.Common;
+import com.finstro.automation.extentreport.HtmlReporter;
+import com.finstro.automation.logger.Log;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.ios.IOSDriver;

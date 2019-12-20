@@ -1,4 +1,4 @@
-package com.nashtech.automation.base;
+package com.finstro.automation.base;
 
 import java.lang.reflect.Method;
 
@@ -9,8 +9,9 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import com.nashtech.automation.excelhelper.ExcelHelper;
-import com.nashtech.automation.logger.Log;
+
+import com.finstro.automation.excelhelper.ExcelHelper;
+import com.finstro.automation.logger.Log;
 
 public class MobileTestSetup extends MobileTestBaseSetup {
 
