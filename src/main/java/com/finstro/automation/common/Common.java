@@ -19,17 +19,18 @@ public class Common {
 	public static Properties constants;
 	public static Properties config;
 	public static Properties environment;
+	
+	
 	static {
 		try {
-			String constantsFile = correctPath(
-					strWorkspacepath + "\\src\\test\\resources\\config\\constants.properties");
-			constants = readProperties(constantsFile);
-			String configFile = correctPath(strWorkspacepath + constants.getProperty("configFilePath"));
-			config = readProperties(configFile);
+			String constantsFile = "config/constants.properties";
+			constants = readResourceProperties(constantsFile);
+			String configFile = constants.getProperty("configFilePath");
+			config = readResourceProperties(configFile);
 			String environmentFile = constants.getProperty("environmentFilePath");
 			if(environmentFile != null && !environmentFile.equals("")) {
-				environmentFile = correctPath(strWorkspacepath + constants.getProperty("environmentFilePath"));
-				environment = readProperties(environmentFile);
+				environmentFile = constants.getProperty("environmentFilePath");
+				environment = readResourceProperties(environmentFile);
 			}
 		} catch (Exception e) {
 			try {
@@ -38,7 +39,15 @@ public class Common {
 				e1.printStackTrace();
 			}
 		}
-
+	}
+	
+	public static void main(String[] args) throws Exception {
+		if(constants != null) {
+			System.out.println("not null");
+			System.out.println(constants.getProperty("configFilePath"));
+			System.out.println(config.getProperty("appium.platform"));
+			Log.info("Something");
+		}
 	}
 
 	/**
@@ -92,10 +101,9 @@ public class Common {
 	 */
 	protected static Properties readResourceProperties(String fileName) throws Exception {
 		Properties prop = new Properties();
-		try {
-			InputStream input = null;
-			input = Common.class.getClassLoader().getResourceAsStream(fileName);
-			prop.load(input);
+		try (InputStream inputStream = Common.class
+				.getClassLoader().getResourceAsStream(fileName)) {
+			prop.load(inputStream);
 			for (String key : prop.stringPropertyNames()) {
 				String configValue = System.getProperty(key);
 				if (configValue != null) {

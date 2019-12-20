@@ -1,6 +1,6 @@
 package com.finstro.automation.logger;
 
-import java.io.File;
+import java.net.URI;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,10 +13,10 @@ public class Log {
 
 	private static Logger getLogger() {
 		try {
-			String strConfigFilePath = Common.correctPath(Common.constants.getProperty("configLogFilePath"));
-			File file = new File(strConfigFilePath);
+			String strConfigFilePath = Common.constants.getProperty("configLogFilePath");
+			URI configURI = Log.class.getClassLoader().getResource(strConfigFilePath).toURI();
 			LoggerContext context = (LoggerContext) LogManager.getContext(false);
-			context.setConfigLocation(file.toURI());
+			context.setConfigLocation(configURI);
 			Logger log = LogManager.getLogger();
 			String logFileName = "log_" + Thread.currentThread().getName();
 			ThreadContext.put("ROUTINGKEY", logFileName);
