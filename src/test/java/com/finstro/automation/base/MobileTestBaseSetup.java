@@ -11,14 +11,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
-import com.finstro.automation.appium.action.AppiumDriverMethod;
+import com.finstro.automation.appium.action.AppiumBaseDriver;
+import com.finstro.automation.appium.driver.AppiumHandler;
 import com.finstro.automation.common.*;
 import com.finstro.automation.extentreport.HtmlReporter;
 
 public class MobileTestBaseSetup   {
 
 	// Web driver
-	public AppiumDriverMethod driver;
+	public AppiumBaseDriver driver;
 	//hashmap contains device infor like: platform, deviceName, uuid, browser...... etc
 	public HashMap<String, String> deviceInfo;
 	
@@ -44,7 +45,8 @@ public class MobileTestBaseSetup   {
 	public void beforeMethod(Method method) throws Exception{
 		HtmlReporter.createNode(this.getClass().getSimpleName(), method.getName(),
 				"");
-		driver = new AppiumDriverMethod("android", true);
+//		driver = new AppiumBaseDriver("android", true);
+		driver = new AppiumHandler().startDriver("android");
 	}
 	
 	@AfterMethod

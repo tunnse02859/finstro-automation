@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.finstro.automation.appium.action.AppiumBaseDriver;
 import com.finstro.automation.common.Common;
 import com.finstro.automation.extentreport.HtmlReporter;
 import com.finstro.automation.logger.Log;
@@ -15,9 +16,8 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
-public class AppiumIOsDriver {
+public class AppiumIOsDriver extends AppiumBaseDriver{
 
-	protected AppiumDriver<WebElement> driver;
 
 	/**
 	 * This method is used to open a appium driver, use deviceInfo to create driver
@@ -27,7 +27,7 @@ public class AppiumIOsDriver {
 	 * @return AppiumDriver driver
 	 * @throws Exception
 	 */
-	public AppiumDriver<WebElement> createDriver(HashMap<String, String> deviceInfo) throws Exception {
+	public void createDriver(HashMap<String, String> deviceInfo) throws Exception {
 		// Appium Server Url
 		String strAppiumServer = Common.config.getProperty("appium.server");
 
@@ -95,9 +95,7 @@ public class AppiumIOsDriver {
 			HtmlReporter.pass("Starting remote webdriver for: Platform: " + deviceInfo.get("platform") + " ,"
 					+ " version: " + deviceInfo.get("platformVersion") + " on: " + strAppiumServer);
 			HtmlReporter.pass(capabilities.toString());
-			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Common.constants.getProperty("IMPLICIT_WAIT_TIME")),
-					TimeUnit.SECONDS);
-			return driver;
+
 		} catch (Exception e) {
 			Log.error("Can't start the webdriver!!! : " + e);
 			HtmlReporter.fail("Can't start the webdriver!!! : ", e, "");
@@ -113,7 +111,7 @@ public class AppiumIOsDriver {
 	 * @return AppiumDriver driver
 	 * @throws Exception
 	 */
-	public AppiumDriver<WebElement> createDriver() throws Exception {
+	public void createDriver() throws Exception {
 		// Appium Server Url
 		String strAppiumServer =  Common.config.getProperty("appium.server");
 		String platform =  Common.config.getProperty("appium.platform");
@@ -180,9 +178,7 @@ public class AppiumIOsDriver {
 					+ " on: " + strAppiumServer);
 			HtmlReporter.pass("Starting remote webdriver for: Platform: " + platform + " ," + " version: "
 					+ platformVersion + " on: " + strAppiumServer);
-			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Common.constants.getProperty("IMPLICIT_WAIT_TIME")),
-					TimeUnit.SECONDS);
-			return driver;
+
 		} catch (Exception e) {
 			Log.error("Can't start the webdriver!!! : " + e);
 			HtmlReporter.fail("Can't start the webdriver!!! : ", e, "");
@@ -199,7 +195,7 @@ public class AppiumIOsDriver {
 	 * @return AppiumDriver driver
 	 * @throws Exception
 	 */
-	public AppiumDriver<WebElement> createAWSDriver() throws Exception {
+	public void createAWSDriver() throws Exception {
 
 
 		DesiredCapabilities capabilities = null;
@@ -209,9 +205,7 @@ public class AppiumIOsDriver {
 
 			Log.info("Starting Android driver on AWS");
 			HtmlReporter.pass("Starting Andoid driver on AWS");
-			driver.manage().timeouts().implicitlyWait(Integer.parseInt(Common.constants.getProperty("IMPLICIT_WAIT_TIME")),
-					TimeUnit.SECONDS);
-			return driver;
+
 		} catch (Exception e) {
 			Log.error("Can't start the android driver!!! : " + e);
 			HtmlReporter.fail("Can't start the android driver!!! : ", e, "");

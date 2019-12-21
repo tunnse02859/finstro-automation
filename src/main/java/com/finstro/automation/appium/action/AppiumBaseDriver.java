@@ -29,7 +29,7 @@ import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import com.finstro.automation.ui.ImageCompare;
-import com.finstro.automation.appium.driver.AppiumDriverFactory;
+import com.finstro.automation.appium.driver.AppiumHandler;
 import com.finstro.automation.common.*;
 import com.finstro.automation.logger.*;
 import com.finstro.automation.extentreport.HtmlReporter;
@@ -39,25 +39,16 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
-public class AppiumDriverMethod {
+public class AppiumBaseDriver {
 	
 	
-	private AppiumDriver<WebElement> driver;
+	protected AppiumDriver<WebElement> driver;
 	Dimension size;
-
-	public AppiumDriverMethod(HashMap<String, String> deviceInfo) throws Exception {
-		this.driver = AppiumDriverFactory.getInstance().createDriver(deviceInfo);
-	}
 	
-	public AppiumDriverMethod(String platform,boolean awsDriver) throws Exception {
-		if(!awsDriver){
-			this.driver = AppiumDriverFactory.getInstance().createDriver(platform);
-		}else {
-			this.driver = AppiumDriverFactory.getInstance().createAWSDriver(platform);
-		}
-		
-	}
 
+	public AppiumBaseDriver getDriver() {
+		return this;
+	}
 	/**
 	 * This method is used to close a webdriver
 	 * 
