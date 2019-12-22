@@ -1,12 +1,9 @@
-package com.finstro.automation.extentreport;
+package com.finstro.automation.report;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import com.aventstack.extentreports.AnalysisStrategy;
@@ -17,81 +14,17 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.finstro.automation.common.Common;
-import com.finstro.automation.logger.Log;
 
 public class HtmlReporter {
 
 	private static ExtentReports _report;
-	public static String date;
-	public static String strReportFolder;
-	public static String strBaseLineScreenshotFolder;
-	public static String strDailyReportFolder;
-	public static String strScreenshotFolder;
-	public static String strUITestScreenshotFolder;
-	public static String strDiffScreenshotFolder;
-	public static String strActualScreenshotFolder;
-
-	static {
-		try {
-			initWebReportPath();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private static void initWebReportPath() throws Exception {
-		// dd-MM-yyyy
-		date = new SimpleDateFormat(Common.constants.getProperty("TIME_STAMP_5")).format(new GregorianCalendar().getTime());
-		/*********** Setting path for Web Report *******************/
-		// Web Report Folder : ./reports/web/
-		strReportFolder = Common.correctPath(Common.strWorkspacepath + Common.constants.getProperty("webReportFolder"));
-		// Baseline Screenshot folder: ./reports/web/BaseLineScreenshot/
-		strBaseLineScreenshotFolder = Common.correctPath(strReportFolder + "\\BaseLineScreenshot\\");
-		// Daily Report Folder: ./reports/web/dd-MM-yyyy HHmmss
-		strDailyReportFolder = Common.correctPath(strReportFolder + "\\" + date);
-		// Daily Screenshot Folder: ./reports/web/dd-MM-yyyy HHmmss/Screenshot
-		strScreenshotFolder = Common.correctPath(strDailyReportFolder + "\\Screenshots\\");
-		// Daily UI Test Screenshot Folder: ./reports/web/dd-MM-yyyy HHmmss/UI
-		strUITestScreenshotFolder = Common.correctPath(strDailyReportFolder + "\\UI\\");
-		// Daily UI Test, Different Screenshot Folder: ./reports/web/dd-MM-yyyy
-		// HHmmss/Screenshot/Different
-		strDiffScreenshotFolder = Common.correctPath(strUITestScreenshotFolder + "\\Different\\");
-		// Daily UI Test, Different Screenshot Folder: ./reports/web/dd-MM-yyyy
-		// HHmmss/Screenshot/Actual
-		strActualScreenshotFolder = Common.correctPath(strUITestScreenshotFolder + "\\Actual\\");
-	}
-
-	/*********************************************************************/
-
-	public static void initWebReportFolder() throws Exception {
-		try {
-			// Create Reports folder for Web
-			Common.createDirectory(strReportFolder);
-			Common.createDirectory(strBaseLineScreenshotFolder);
-			Common.createDirectory(strDailyReportFolder);
-			Common.createDirectory(strScreenshotFolder);
-			Common.createDirectory(strUITestScreenshotFolder);
-			Common.createDirectory(strDiffScreenshotFolder);
-			Common.createDirectory(strActualScreenshotFolder);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private static HashMap<String, ExtentTest> extentTestMap = new HashMap<String, ExtentTest>();
 
-	public static ExtentReports getReporter(String filename) throws UnknownHostException {
+	public static ExtentReports setReporter(String filename) throws UnknownHostException {
+		
 		if (_report == null)
 			_report = createInstance(filename);
-
-		_report.setSystemInfo("Application", "Data Driven Framework");
-		_report.setSystemInfo("Os Name", System.getProperty("os.name"));
-		_report.setSystemInfo("Os Version", System.getProperty("os.version"));
-		_report.setSystemInfo("Os Architecture", System.getProperty("os.arch"));
-		_report.setSystemInfo("Host", InetAddress.getLocalHost().getHostName());
-		_report.setSystemInfo("Username", System.getProperty("user.name"));
 
 		// Tests view
 		_report.setAnalysisStrategy(AnalysisStrategy.CLASS);
@@ -251,6 +184,27 @@ public class HtmlReporter {
 			Log.info("Can't write to htm report, initialize it first");
 			ex.printStackTrace();
 		}
+	}
+	
+	/**
+	 * To write a failed step to report
+	 * 
+	 * @param strDescription    The Step's description
+	 * @throws Exception 
+	 * @throws IOException If the screenshot doesn't exist
+	 */
+	public static void fail(String strDescription) throws Exception {
+
+		try {
+			
+			getTest().fail(strDescription);
+			
+		} catch (Exception ex) {
+			
+			Log.info("Can't write to htm report, initialize it first");
+			
+		}
+
 	}
 
 	/**

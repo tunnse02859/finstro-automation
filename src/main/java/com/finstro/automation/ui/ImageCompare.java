@@ -8,21 +8,19 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.finstro.automation.common.Common;
+import com.finstro.automation.utility.FilePaths;
 
 public class ImageCompare {
 
 	public BufferedImage diffImages(String strImage1, String strImage2,
 			int threshold, int percent) throws IOException {
 		
-		
-		
 		BufferedImage bim1 = null;
 		BufferedImage bim2 = null;
 		BufferedImage result = null;
 
-		bim1 = ImageIO.read(new File(Common.correctPath(strImage1)));
-		bim2 = ImageIO.read(new File(Common.correctPath(strImage2)));
+		bim1 = ImageIO.read(new File(FilePaths.correctPath(strImage1)));
+		bim2 = ImageIO.read(new File(FilePaths.correctPath(strImage2)));
 
 		int minWidth = Math.min(bim1.getWidth(), bim2.getWidth());
 		int minHeight = Math.min(bim1.getHeight(), bim2.getHeight());

@@ -1,4 +1,4 @@
-package com.finstro.automation.logger;
+package com.finstro.automation.report;
 
 import java.net.URI;
 
@@ -7,14 +7,11 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LoggerContext;
 
-import com.finstro.automation.common.Common;
-
 public class Log {
 
 	private static Logger getLogger() {
 		try {
-			String strConfigFilePath = Common.constants.getProperty("configLogFilePath");
-			URI configURI = Log.class.getClassLoader().getResource(strConfigFilePath).toURI();
+			URI configURI = Log.class.getResource("/config/log4j2.xml").toURI();
 			LoggerContext context = (LoggerContext) LogManager.getContext(false);
 			context.setConfigLocation(configURI);
 			Logger log = LogManager.getLogger();
@@ -22,10 +19,10 @@ public class Log {
 			ThreadContext.put("ROUTINGKEY", logFileName);
 			return log;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
+	
 
 	/**
 	 * This method is used at the start of test case, help for developer can trace

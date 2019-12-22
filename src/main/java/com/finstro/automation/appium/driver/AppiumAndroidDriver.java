@@ -1,119 +1,96 @@
 package com.finstro.automation.appium.driver;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+import java.util.Properties;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.finstro.automation.appium.action.AppiumBaseDriver;
-import com.finstro.automation.common.Common;
-import com.finstro.automation.extentreport.HtmlReporter;
-import com.finstro.automation.logger.Log;
+import com.finstro.automation.report.HtmlReporter;
+import com.finstro.automation.report.Log;
+import com.finstro.automation.utility.FilePaths;
+import com.finstro.automation.utility.PropertiesLoader;
 
-import freemarker.template.utility.NormalizeNewlines;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class AppiumAndroidDriver extends AppiumBaseDriver {
 	
+	private static Properties android_configuration;
+	private static Properties browser_configuration;
+	private static Properties appium_configuration;
 
-	/**
-	 * This method is used to open a appium driver, use deviceInfo to create driver
-	 * 
-	 * @author tunn6
-	 * @param deviceInfo
-	 * @return AppiumDriver driver
-	 * @throws Exception
-	 */
-	public void createDriver(HashMap<String, String> deviceInfo) throws Exception {
-		// Appium Server Url
-		String strAppiumServer = Common.config.getProperty("appium.server");
+	public AppiumAndroidDriver() throws Exception {
 		
-		boolean booleanMobileNoReset = Boolean.getBoolean(Common.config.getProperty("appium.noReset"));
-		boolean booleanMobileFullReset = Boolean.getBoolean(Common.config.getProperty("appium.fullReset"));
+		android_configuration = PropertiesLoader.getPropertiesLoader().android_configuration;
+		appium_configuration = PropertiesLoader.getPropertiesLoader().appium_configuration;
+		browser_configuration = PropertiesLoader.getPropertiesLoader().browser_configuration;
 		
-		//base path to mobile app
-		String mobileAppBasePath = System.getProperty("user.dir") + "\\src\\main\\resources\\app";
-
-		// Android app configuration
-		String strMobileAndroidApp = mobileAppBasePath + Common.config.getProperty("appium.android.app");
-		String strMobileAppPackage = Common.config.getProperty("appium.android.appPackage");
-		String strMobileAppActivity = Common.config.getProperty("appium.android.appActivity");
-
-		// SauceLab configuration
-		String saucelabEnable = Common.config.getProperty("appium.saucelab.enable");
+	}
+	
+	
+	
+	private void setAppiumCapabilities(DesiredCapabilities capabilities) {
+	
+		String platform = appium_configuration.getProperty("appium.platform");
+		String platformVersion = appium_configuration.getProperty("appium.platformVersion");
+		String deviceName = appium_configuration.getProperty("appium.deviceName");
+		String deviceUDID =  appium_configuration.getProperty("appium.device.udid");
+		boolean booleanMobileNoReset = Boolean.getBoolean(appium_configuration.getProperty("appium.noReset"));
+		boolean booleanMobileFullReset = Boolean.getBoolean(appium_configuration.getProperty("appium.fullReset"));
+		String strAppiumVersion = appium_configuration.getProperty("appium.version");
 		
-		//appium version
-		String strAppiumVersion = Common.config.getProperty("appium.version");
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, platform);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
+		capabilities.setCapability(MobileCapabilityType.NO_RESET, booleanMobileNoReset);
+		capabilities.setCapability(MobileCapabilityType.FULL_RESET, booleanMobileFullReset);
+		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
+		
+		if (!(strAppiumVersion == null || strAppiumVersion.equals(""))) {
+			capabilities.setCapability(MobileCapabilityType.APPIUM_VERSION, strAppiumVersion);
+		}
 
-		DesiredCapabilities capabilities = null;
-		try {
-			capabilities = new DesiredCapabilities();
-			capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, deviceInfo.get("platform"));
-			capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, deviceInfo.get("platformVersion"));
-			capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceInfo.get("deviceName"));
-			capabilities.setCapability(MobileCapabilityType.NO_RESET, booleanMobileNoReset);
-			capabilities.setCapability(MobileCapabilityType.FULL_RESET, booleanMobileFullReset);
-			capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
-			// Use SauceLab remote server instead of local Appium server if configured
-			if (saucelabEnable.equals("true")) {
-				String strSauceAndroidApp = Common.config.getProperty("appium.saucelab.androidApp");
-				String strSauceRemoteUrl = Common.config.getProperty("appium.saucelab.remoteUrl");
-				String strSauceUserName = Common.config.getProperty("appium.saucelab.username");
-				String strSauceAccessKey = Common.config.getProperty("appium.saucelab.accessKey");
-				strAppiumServer = "https://" + strSauceUserName + ":" + strSauceAccessKey + "@" + strSauceRemoteUrl;
-				strMobileAndroidApp = strSauceAndroidApp;
-			}
+		if(!(deviceUDID == null || deviceUDID.equals(""))) {
+			capabilities.setCapability(MobileCapabilityType.UDID, deviceUDID);
+		}
+		
+	}
 
-			if (!(strAppiumVersion == null || strAppiumVersion.equals(""))) {
-				capabilities.setCapability(MobileCapabilityType.APPIUM_VERSION, strAppiumVersion);
-			}
-
-			// check if test on mobile browser
-			if (deviceInfo.get("browserName") != null) {
-				capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, deviceInfo.get("browserName"));
-			} else {
-				capabilities.setCapability(MobileCapabilityType.APP, strMobileAndroidApp);
-				if (!(strMobileAppPackage == null || strMobileAppPackage.equals(""))) {
-					capabilities.setCapability("appPackage", strMobileAppPackage);
-				}
-				if (!(strMobileAppActivity == null || strMobileAppActivity.equals(""))) {
-					capabilities.setCapability("appActivity", strMobileAppActivity);
-				}
-			}
+	private void setAndroidAppCapabilities(DesiredCapabilities capabilities) throws Exception {
+		
+		String strMobileAndroidApp = FilePaths.getResourcePath("/app/" + android_configuration.getProperty("appium.android.app"));
+		String strMobileAppPackage = android_configuration.getProperty("appium.android.appPackage");
+		String strMobileAppActivity = android_configuration.getProperty("appium.android.appActivity");
+		
+		capabilities.setCapability(MobileCapabilityType.APP, strMobileAndroidApp);
+		
+		if (!(strMobileAppPackage == null || strMobileAppPackage.equals(""))) {
 			
-			if(deviceInfo.containsKey("methodName")) {
-				capabilities.setCapability("name", deviceInfo.get("methodName"));
-			}
-			Log.info(capabilities.toString());
-			driver = new AndroidDriver<WebElement>(new URL(strAppiumServer), capabilities);
-
-			Log.info("Starting remote webdriver for: Platform: " + deviceInfo.get("platform") + " ," + " version: "
-					+ deviceInfo.get("platformVersion") + " on: " + strAppiumServer);
-			HtmlReporter.pass("Starting remote webdriver for: Platform: " + deviceInfo.get("platform") + " ,"
-					+ " version: " + deviceInfo.get("platformVersion") + " on: " + strAppiumServer);
-			HtmlReporter.pass(capabilities.toString());
-
-		} catch (Exception e) {
-			Log.error("Can't start the webdriver!!! : \n"
-					+ "Platform: " + deviceInfo.get("platform") + " ,  +  version: " + deviceInfo.get("platformVersion") + " on: " + strAppiumServer + "\n"
-					+ e);
-			HtmlReporter.fail("Can't start the webdriver!!! : \n"
-					+ "Platform: " + deviceInfo.get("platform") + " ,  +  version: " + deviceInfo.get("platformVersion") + " on: " + strAppiumServer
-					, e, "");
-			throw (e);
+			capabilities.setCapability("appPackage", strMobileAppPackage);
+			
+		}
+		
+		if (!(strMobileAppActivity == null || strMobileAppActivity.equals(""))) {
+			
+			capabilities.setCapability("appActivity", strMobileAppActivity);
+			
 		}
 	}
 	
-	private DesiredCapabilities setAppiumCapabilities() {
-	
-		DesiredCapabilities capabilities = new DesiredCapabilities();
+	private void setAndroidBrowserCapabilities(DesiredCapabilities capabilities) {
 		
+		String browserName = browser_configuration.getProperty("appium.browser.name");
+		String browserVersion = browser_configuration.getProperty("appium.browser.version");
 		
-		return capabilities;
+		capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, browserName);
+		
+		if (!(browserVersion == null || browserVersion.equals(""))) {
+			
+			capabilities.setCapability(MobileCapabilityType.BROWSER_VERSION, browserVersion);
+			
+		}
+		
 	}
 
 	/**
@@ -126,75 +103,39 @@ public class AppiumAndroidDriver extends AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	public void createDriver() throws Exception {
-		// Appium Server Url
-		String strAppiumServer = Common.config.getProperty("appium.server");
-		String platform = Common.config.getProperty("appium.platform");
-		String platformVersion = Common.config.getProperty("appium.platformVersion");
-		String deviceName = Common.config.getProperty("appium.deviceName");
-		boolean booleanMobileNoReset = Boolean.getBoolean(Common.config.getProperty("appium.noReset"));
-		boolean booleanMobileFullReset = Boolean.getBoolean(Common.config.getProperty("appium.fullReset"));
+
+		String strAppiumServer = appium_configuration.getProperty("appium.server");
 		
-		boolean mobileEnable = Boolean.getBoolean(Common.config.getProperty("appium.browser.enable"));
-
-		String mobileAppBasePath = System.getProperty("user.dir") + "\\src\\main\\resources\\app\\";
-
-		// Android app configuration
-		String strMobileAndroidApp = mobileAppBasePath + Common.config.getProperty("appium.android.app");
-		String strMobileAppPackage = Common.config.getProperty("appium.android.appPackage");
-		String strMobileAppActivity = Common.config.getProperty("appium.android.appActivity");
-
-		// SauceLab configuration
-		Boolean saucelabEnable = Boolean.getBoolean(Common.config.getProperty("appium.saucelab.enable"));
-
-		String strAppiumVersion = Common.config.getProperty("appium.version");
-
-		DesiredCapabilities capabilities = null;
 		try {
-			capabilities = new DesiredCapabilities();
-			capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, platform);
-			capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
-			capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
-			capabilities.setCapability(MobileCapabilityType.NO_RESET, booleanMobileNoReset);
-			capabilities.setCapability(MobileCapabilityType.FULL_RESET, booleanMobileFullReset);
-			capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
+			DesiredCapabilities capabilities = new DesiredCapabilities();
+			setAppiumCapabilities(capabilities);
+			
 			// Use SauceLab remote server instead of local Appium server if configured
-			if (saucelabEnable) {
-				String strSauceAndroidApp = Common.config.getProperty("appium.saucelab.androidApp");
-				String strSauceRemoteUrl = Common.config.getProperty("appium.saucelab.remoteUrl");
-				String strSauceUserName = Common.config.getProperty("appium.saucelab.username");
-				String strSauceAccessKey = Common.config.getProperty("appium.saucelab.accessKey");
+			if (Boolean.getBoolean(appium_configuration.getProperty("appium.saucelab.enable"))) {
+				String strSauceAndroidApp = appium_configuration.getProperty("appium.saucelab.androidApp");
+				String strSauceRemoteUrl = appium_configuration.getProperty("appium.saucelab.remoteUrl");
+				String strSauceUserName = appium_configuration.getProperty("appium.saucelab.username");
+				String strSauceAccessKey = appium_configuration.getProperty("appium.saucelab.accessKey");
 				strAppiumServer = "https://" + strSauceUserName + ":" + strSauceAccessKey + "@" + strSauceRemoteUrl;
-				strMobileAndroidApp = strSauceAndroidApp;
+				capabilities.setCapability(MobileCapabilityType.APP, strSauceAndroidApp);
 			}
 
-			if (!(strAppiumVersion == null || strAppiumVersion.equals(""))) {
-				capabilities.setCapability(MobileCapabilityType.APPIUM_VERSION, strAppiumVersion);
-			}
 
 			// check if test on mobile browser
-			if (mobileEnable) {
-				String browserName = Common.config.getProperty("appium.browser.name");
-				String browserVersion = Common.config.getProperty("appium.browser.version");
-				capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, browserName);
-				if (!(browserVersion == null || browserVersion.equals(""))) {
-					capabilities.setCapability(MobileCapabilityType.BROWSER_VERSION, browserVersion);
-				}
+			if (Boolean.getBoolean(appium_configuration.getProperty("appium.browser.enable"))) {
+				
+				setAndroidBrowserCapabilities(capabilities);
+				
 			} else {
-				capabilities.setCapability(MobileCapabilityType.APP, strMobileAndroidApp);
-				if (!(strMobileAppPackage == null || strMobileAppPackage.equals(""))) {
-					capabilities.setCapability("appPackage", strMobileAppPackage);
-				}
-				if (!(strMobileAppActivity == null || strMobileAppActivity.equals(""))) {
-					capabilities.setCapability("appActivity", strMobileAppActivity);
-				}
+				
+				setAndroidAppCapabilities(capabilities);
+				
 			}
 
 			driver = new AndroidDriver<WebElement>(new URL(strAppiumServer), capabilities);
 
-			Log.info("Starting remote webdriver for: Platform: " + platform + " ," + " version: "
-					+ platformVersion + " on: " + strAppiumServer);
-			HtmlReporter.pass("Starting remote webdriver for: Platform: " + platform + " ,"
-					+ " version: " + platformVersion + " on: " + strAppiumServer);
+			Log.info("Starting remote Android driver for: " + capabilities.toString());
+			HtmlReporter.pass("Starting remote Android driver for: " + capabilities.toString());
 
 		} catch (Exception e) {
 			Log.error("Can't start the webdriver!!! : " + e);
