@@ -11,8 +11,8 @@ public class AppiumHandler {
 				PropertiesLoader.getPropertiesLoader().appium_configuration.getProperty("appium.device_farm"));
 
 		if (isDeviceFarm) {
-			String awsPlatform = System.getProperty("$DEVICEFARM_DEVICE_PLATFORM_NAME") != null
-					? System.getProperty("$DEVICEFARM_DEVICE_PLATFORM_NAME") : platform;
+			String awsPlatform = System.getenv("DEVICEFARM_DEVICE_PLATFORM_NAME") != null
+					? System.getenv("DEVICEFARM_DEVICE_PLATFORM_NAME") : platform;
 					
 			if (awsPlatform.equalsIgnoreCase("android")) {
 
