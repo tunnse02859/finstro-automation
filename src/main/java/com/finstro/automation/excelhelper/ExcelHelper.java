@@ -11,17 +11,19 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.finstro.automation.logger.Log;
+import com.finstro.automation.report.Log;
 
 public class ExcelHelper {
 
 	public static Object[][] getTableArray(String FilePath, String SheetName) throws Exception {
 		String[][] tabArray = null;
+		XSSFWorkbook ExcelWBook = null;
+		XSSFSheet ExcelWSheet;
 		try {
 			FileInputStream ExcelFile = new FileInputStream(FilePath);
 			// Access the required test data sheet
-			XSSFWorkbook ExcelWBook = new XSSFWorkbook(ExcelFile);
-			XSSFSheet ExcelWSheet = ExcelWBook.getSheet(SheetName);
+			ExcelWBook = new XSSFWorkbook(ExcelFile);
+			ExcelWSheet = ExcelWBook.getSheet(SheetName);
 			int startRow = 1;
 			int startCol = 0;
 			int totalRows = ExcelWSheet.getLastRowNum();
@@ -41,6 +43,10 @@ public class ExcelHelper {
 			Log.error("Could not read the Excel file: [" + FilePath + "] - sheet: [" + SheetName + "]");
 			Log.error(e.toString());
 			e.printStackTrace();
+		}
+		finally {
+			if (ExcelWBook != null)
+				ExcelWBook.close();
 		}
 		return (tabArray);
 	}
@@ -91,10 +97,11 @@ public class ExcelHelper {
 	
 	public static Object[][] getTableToHashMap(String FilePath, String SheetName) throws Exception {
 		Object[][] tabArray = null;
+		XSSFWorkbook ExcelWBook = null;
 		try {
 			FileInputStream ExcelFile = new FileInputStream(FilePath);
 			// Access the required test data sheet
-			XSSFWorkbook ExcelWBook = new XSSFWorkbook(ExcelFile);
+			ExcelWBook = new XSSFWorkbook(ExcelFile);
 			XSSFSheet ExcelWSheet = ExcelWBook.getSheet(SheetName);
 			int startRow = 1;
 			int startCol = 0;
@@ -114,6 +121,10 @@ public class ExcelHelper {
 			Log.error("Could not read the Excel file: [" + FilePath + "] - sheet: [" + SheetName + "]");
 			Log.error(e.toString());
 			e.printStackTrace();
+		}
+		finally {
+			if (ExcelWBook != null)
+				ExcelWBook.close();
 		}
 		return (tabArray);
 	}

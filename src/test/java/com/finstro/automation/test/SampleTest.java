@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.finstro.automation.base.MobileTestSetup;
+import com.finstro.automation.setup.MobileTestSetup;
 
 public class SampleTest extends MobileTestSetup {
 	static {
