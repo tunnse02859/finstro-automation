@@ -40,16 +40,22 @@ import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
 public class AppiumDriverMethod {
-
+	
+	
 	private AppiumDriver<WebElement> driver;
 	Dimension size;
 
 	public AppiumDriverMethod(HashMap<String, String> deviceInfo) throws Exception {
 		this.driver = AppiumDriverFactory.getInstance().createDriver(deviceInfo);
 	}
-
-	public AppiumDriverMethod() throws Exception {
-		this.driver = AppiumDriverFactory.getInstance().createDriver();
+	
+	public AppiumDriverMethod(String platform,boolean awsDriver) throws Exception {
+		if(!awsDriver){
+			this.driver = AppiumDriverFactory.getInstance().createDriver(platform);
+		}else {
+			this.driver = AppiumDriverFactory.getInstance().createAWSDriver(platform);
+		}
+		
 	}
 
 	/**
@@ -915,14 +921,14 @@ public class AppiumDriverMethod {
 		String screenshotFileName = filename + ".jpg";
 		String baseLineImage = HtmlReporter.strBaseLineScreenshotFolder + screenshotFileName;
 		String actualImage = HtmlReporter.strActualScreenshotFolder + screenshotFileName;
-		// String diffImage = HtmlReporter.strDiffScreenshotFolder + screenshotFileName;
+		//String diffImage = HtmlReporter.strDiffScreenshotFolder + screenshotFileName;
 		try {
 			if (!Common.pathExist(baseLineImage)) {
 				takeScreenshotWithAshot(baseLineImage);
 			} else {
 				takeScreenshotWithAshot(actualImage);
 				ImageCompare imageComparitor = new ImageCompare();
-				BufferedImage diffBuff = imageComparitor.diffImages(baseLineImage, actualImage, 30, 10);
+				BufferedImage diffBuff = imageComparitor.diffImages(baseLineImage, actualImage, 30,10);
 				if (diffBuff == null) {
 					Log.info("The actual screenshot of page [" + filename + "] matches with the baseline");
 				} else {
@@ -948,14 +954,14 @@ public class AppiumDriverMethod {
 		String screenshotFileName = filename + ".jpg";
 		String baseLineImage = HtmlReporter.strBaseLineScreenshotFolder + screenshotFileName;
 		String actualImage = HtmlReporter.strActualScreenshotFolder + screenshotFileName;
-		// String diffImage = HtmlReporter.strDiffScreenshotFolder + screenshotFileName;
+		//String diffImage = HtmlReporter.strDiffScreenshotFolder + screenshotFileName;
 		try {
 			if (!Common.pathExist(baseLineImage)) {
 				takeScreenshotWithAshot(baseLineImage, locator);
 			} else {
 				takeScreenshotWithAshot(actualImage, locator);
 				ImageCompare imageComparitor = new ImageCompare();
-				BufferedImage diffBuff = imageComparitor.diffImages(baseLineImage, actualImage, 30, 10);
+				BufferedImage diffBuff = imageComparitor.diffImages(baseLineImage, actualImage, 30,10);
 				if (diffBuff == null) {
 					Log.info("The actual screenshot of element [" + filename + "] matches with the baseline");
 				} else {
