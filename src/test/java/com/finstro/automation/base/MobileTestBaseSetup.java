@@ -44,7 +44,7 @@ public class MobileTestBaseSetup   {
 	public void beforeMethod(Method method) throws Exception{
 		HtmlReporter.createNode(this.getClass().getSimpleName(), method.getName(),
 				"");
-		driver = new AppiumDriverMethod("android", true);
+		driver = new AppiumDriverMethod();
 	}
 	
 	@AfterMethod
