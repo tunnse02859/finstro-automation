@@ -30,8 +30,8 @@ public class MobileTestBaseSetup {
 
 		/*********** Init Html reporter *************************/
 		String reportFolder = FilePaths.getReportFolder();
-		String reportFilePath = reportFolder + File.pathSeparator + "Report_"
-				+ FilePaths.getCurrentDateTimeString("dd-MM-yyyy HHmmss" + ".html");
+		String reportFilePath = reportFolder + File.separator + "Report_"
+				+ FilePaths.getCurrentDateTimeString("dd-MM-yyyy HHmmss") + ".html";
 		String screenshotFolder = FilePaths.getScreenshotFolder();
 		HtmlReporter.setReporter(reportFilePath).setSystemInfo("Application", "Finstro Pay Automation Tests");
 		;

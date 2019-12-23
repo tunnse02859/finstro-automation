@@ -39,7 +39,7 @@ public class FilePaths {
 	 */
 	public static String getReportFolder() throws IOException {
 		
-		String reportFolder =  getRootProject() + File.pathSeparator + "Reports" + File.pathSeparator;
+		String reportFolder =  getRootProject() + File.separator + "Reports" + File.separator;
 		createDirectory(reportFolder);
 		
 		return reportFolder;
@@ -51,7 +51,7 @@ public class FilePaths {
 	 */
 	public static String getScreenshotFolder() throws IOException {
 		
-		String screenshotFolder = getRootProject() + File.pathSeparator + getReportFolder() + File.pathSeparator + "Screenshots" + File.pathSeparator;
+		String screenshotFolder = getReportFolder() + File.separator + "Screenshots" + File.separator;
 		createDirectory(screenshotFolder);
 		return screenshotFolder;
 				
@@ -68,6 +68,7 @@ public class FilePaths {
 		
 		return dateFormat.format(date);
 	}
+	
 	
 	/**
 	 * Correct the file path based on the OS system type
