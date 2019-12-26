@@ -53,6 +53,7 @@ public class HtmlReporter {
 
 		ExtentReports report = new ExtentReports();
 		report.attachReporter(htmlReporter);
+		report.setSystemInfo("Application", "Finstro Pay Automation Tests");
 
 		return report;
 	}

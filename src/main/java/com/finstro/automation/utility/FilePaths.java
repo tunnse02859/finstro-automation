@@ -15,11 +15,13 @@ import org.apache.commons.io.FileUtils;
 
 public class FilePaths {
 	
+	private static String REPORT_FOLDER;
+	private static String SCREENSHOT_FOLDER;
+	private static String REPORT_FILE_PATH;
+	
 	
 	public static String getRootProject() {
-		
 		return System.getProperty("user.dir");
-		
 	}
 	
 	/**
@@ -33,28 +35,40 @@ public class FilePaths {
 		return Paths.get(rsc.toURI()).toFile().getAbsolutePath();
 	}
 	
-	/**
-	 * @return
-	 * @throws IOException
-	 */
-	public static String getReportFolder() throws IOException {
-		
-		String reportFolder =  getRootProject() + File.separator + "Reports" + File.separator;
-		createDirectory(reportFolder);
-		
-		return reportFolder;
+	public static void initReportFolder() throws IOException {
+		String awsReportRoot = System.getenv("DEVICEFARM_LOG_DIR");
+		if(awsReportRoot != null) {
+			REPORT_FOLDER = awsReportRoot + File.separator + "Reports";
+			SCREENSHOT_FOLDER = REPORT_FOLDER + File.separator + "Screenshots";
+			REPORT_FILE_PATH = REPORT_FOLDER + File.separator + "Report_" + System.getenv("DEVICEFARM_DEVICE_NAME") + ".html";
+		}else {
+			REPORT_FOLDER = getRootProject() + File.separator + "Reports";
+			SCREENSHOT_FOLDER = REPORT_FOLDER + File.separator + "Screenshots";
+			REPORT_FILE_PATH = REPORT_FOLDER + File.separator + "Report_" + FilePaths.getCurrentDateTimeString("dd-MM-yyyy HHmmss") + ".html";
+		}
+		createDirectory(REPORT_FOLDER);
+		createDirectory(SCREENSHOT_FOLDER);
 	}
 	
 	/**
 	 * @return
-	 * @throws IOException
 	 */
-	public static String getScreenshotFolder() throws IOException {
-		
-		String screenshotFolder = getReportFolder() + File.separator + "Screenshots" + File.separator;
-		createDirectory(screenshotFolder);
-		return screenshotFolder;
-				
+	public static String getReportFolder() {
+		return REPORT_FOLDER;
+	}
+	
+	/**
+	 * @return
+	 */
+	public static String getScreenshotFolder() {
+		return SCREENSHOT_FOLDER;		
+	}
+	
+	/**
+	 * @return
+	 */
+	public static String getReportFilePath() {
+		return REPORT_FILE_PATH;		
 	}
 	
 	/**

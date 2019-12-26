@@ -1,6 +1,5 @@
 package com.finstro.automation.setup;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -29,12 +28,8 @@ public class MobileTestBaseSetup {
 	public void beforeSuite() throws Exception {
 
 		/*********** Init Html reporter *************************/
-		String reportFolder = FilePaths.getReportFolder();
-		String reportFilePath = reportFolder + File.separator + "Report_"
-				+ FilePaths.getCurrentDateTimeString("dd-MM-yyyy HHmmss") + ".html";
-		String screenshotFolder = FilePaths.getScreenshotFolder();
-		HtmlReporter.setReporter(reportFilePath).setSystemInfo("Application", "Finstro Pay Automation Tests");
-		;
+		FilePaths.initReportFolder();
+		HtmlReporter.setReporter(FilePaths.getReportFilePath());
 	}
 
 	@BeforeClass
