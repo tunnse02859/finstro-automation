@@ -32,7 +32,7 @@ public class Log {
 	 * @param sTestCaseName The name of test case
 	 * @throws Exception
 	 */
-	public static void startTestCase(String sTestCaseName) throws Exception {
+	public static void startTestCase(String sTestCaseName){
 		getLogger().info("****************************************************************************************");
 
 		getLogger().info("****************************************************************************************");
@@ -53,7 +53,7 @@ public class Log {
 	 * @param sTestCaseName The name of test case
 	 * @throws Exception
 	 */
-	public static void endTestCase(String sTestCaseName) throws Exception {
+	public static void endTestCase(String sTestCaseName){
 
 		getLogger()
 				.info("XXXXXXXXXXXXXXXXXXXXXXX             " + "-E---N---D-" + "             XXXXXXXXXXXXXXXXXXXXXX");
@@ -75,7 +75,7 @@ public class Log {
 	 * @param info The information meesage
 	 * @throws Exception
 	 */
-	public static void info(String info) throws Exception {
+	public static void info(String info) {
 
 		getLogger().info(info);
 
@@ -88,7 +88,7 @@ public class Log {
 	 * @param warn The warning message
 	 * @throws Exception
 	 */
-	public static void warn(String warn) throws Exception {
+	public static void warn(String warn) {
 
 		getLogger().warn(warn);
 
@@ -101,7 +101,7 @@ public class Log {
 	 * @param error The error message
 	 * @throws Exception
 	 */
-	public static void error(String error) throws Exception {
+	public static void error(String error) {
 
 		getLogger().error(error);
 
@@ -114,7 +114,7 @@ public class Log {
 	 * @param fatal The fatal message
 	 * @throws Exception
 	 */
-	public static void fatal(String fatal) throws Exception {
+	public static void fatal(String fatal){
 
 		getLogger().fatal(fatal);
 
@@ -127,7 +127,7 @@ public class Log {
 	 * @param debug The debug message
 	 * @throws Exception
 	 */
-	public static void debug(String debug) throws Exception {
+	public static void debug(String debug){
 
 		getLogger().debug(debug);
 
