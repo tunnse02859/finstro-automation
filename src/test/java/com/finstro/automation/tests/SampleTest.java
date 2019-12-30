@@ -1,10 +1,11 @@
-package com.finstro.automation.test;
+package com.finstro.automation.tests;
 
 import static org.testng.AssertJUnit.assertTrue;
 import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.finstro.automation.pages.LoginPage;
 import com.finstro.automation.setup.MobileTestSetup;
 
 public class SampleTest extends MobileTestSetup {
@@ -27,12 +28,8 @@ public class SampleTest extends MobileTestSetup {
 
 	@Test
 	public void MySampleTest() throws Exception {
-		System.setProperty("webdriver.http.factory", "apache");
-		By inputComment = By.id("comments");
-		driver.click("Comment textfield", inputComment);
-		driver.inputText("Comment textfield", inputComment, "Test in put");
-		assertTrue(true);
-		//driver.click("close key board", h1Text);
-		//Thread.sleep(10000);
+		LoginPage login = new LoginPage(driver);
+		
+		login.setFirstName("phog");
 	}
 }

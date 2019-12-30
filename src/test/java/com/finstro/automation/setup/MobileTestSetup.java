@@ -29,7 +29,6 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
 		super.beforeSuite();
-
 	}
 
 	@BeforeClass

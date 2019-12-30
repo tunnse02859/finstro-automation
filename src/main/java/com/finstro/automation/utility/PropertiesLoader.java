@@ -75,10 +75,8 @@ public class PropertiesLoader {
 	 * @throws IOException 
 	 * @throws Exception
 	 */
-	protected static Properties readResourceProperties(String filePath) throws Exception {
-		
+	public static Properties readResourceProperties(String filePath) throws Exception {
 		Properties prop = new Properties();
-		
 		try (InputStream inputStream = PropertiesLoader.class.getResourceAsStream(filePath)) {
 			prop.load(inputStream);
 			for (String key : prop.stringPropertyNames()) {
@@ -87,7 +85,6 @@ public class PropertiesLoader {
 					prop.setProperty(key, configValue);
 				}
 			}
-			
 		} catch (Exception e) {
 			throw e;
 		}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
@@ -18,7 +19,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
@@ -39,8 +39,14 @@ public class AppiumBaseDriver {
 
 	private final int DEFAULT_WAITTIME_SECONDS = 30;
 
-	public AppiumBaseDriver getDriver() {
-		return this;
+	public AppiumDriver<WebElement> getDriver() {
+		return driver;
+	}
+
+	public void setDefaultImplicitWaitTime() {
+
+		driver.manage().timeouts().implicitlyWait(DEFAULT_WAITTIME_SECONDS, TimeUnit.SECONDS);
+
 	}
 
 	/**
@@ -77,40 +83,10 @@ public class AppiumBaseDriver {
 	public void openUrl(String url) throws Exception {
 		try {
 			driver.get(url);
-			Log.info("Navigate to the url : " + url);
 			HtmlReporter.pass("\"Navigate to the url : \" + url");
 		} catch (Exception e) {
 			Log.error("Can't navigate to the url : " + url);
-			Log.error(e.getMessage());
 			HtmlReporter.fail("Can't navigate to the url : " + url);
-			throw (e);
-		}
-	}
-
-	/**
-	 * This method is used to send keys into a text box without cleaning before.
-	 * 
-	 * @author tunn6
-	 * @param elementName
-	 *            The name of text box
-	 * @param byWebElementObject
-	 *            The by object of text box element
-	 * @param keysToSend
-	 *            The keys are sent
-	 * @throws Exception
-	 *             The exception is throws if sending keys not success
-	 */
-	public void sendkeys(String elementName, By locator, String keysToSend) throws Exception {
-		try {
-			findElement(locator).sendKeys(keysToSend);
-			Log.info("Keys are sent to the element: " + elementName);
-			HtmlReporter.pass(
-					"Keys [" + keysToSend + "] are sent to the element: " + elementName + " - " + locator);
-		} catch (Exception e) {
-			Log.error("Keys aren't sent to the element: " + elementName);
-			Log.error(e.toString());
-			HtmlReporter.fail("Failed to sendKeys [" + keysToSend + "] to the element: " + elementName + " - "
-					+ locator);
 			throw (e);
 		}
 	}
@@ -118,27 +94,26 @@ public class AppiumBaseDriver {
 	/**
 	 * This method is used to send keys into a text box.
 	 * 
-	 * @author tunn6
-	 * @param elementName
-	 *            The name of text box
-	 * @param locator
-	 *            The by object of text box element
+	 * @param element
+	 *            The web element object of text box
 	 * @param text
 	 *            The keys are sent
 	 * @throws Exception
 	 *             The exception is throws if input text not success
 	 */
-	public void inputText(String elementName, By locator, String text) throws Exception {
+	public void inputText(WebElement element, String text) throws Exception {
 
-		waitForElementPresent(locator, DEFAULT_WAITTIME_SECONDS);
-		WebElement txtElement = findElement(locator);
-		txtElement.click();
-		txtElement.clear();
-		txtElement.sendKeys(text);
+		try {
+			waitForElementDisplayed(element, 30);
+			element.click();
+			element.clear();
+			element.sendKeys(text);
+			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
 
-		String mess = String.format("Input text [%s] to the element [%s]", text, elementName);
-		Log.info(mess);
-		HtmlReporter.pass(mess);
+		} catch (Exception e) {
+			HtmlReporter.fail(String.format("Can't input text [%s] to element [%s]", text, element.toString()));
+			throw e;
+		}
 
 	}
 
@@ -191,304 +166,153 @@ public class AppiumBaseDriver {
 		}
 	}
 
-	/**
-	 * Get the text of a web element
-	 * 
-	 * @param elementName
-	 *            The name of web element
-	 * @param byWebElementObject
-	 *            The by object of web element
-	 * @return The text of web element
-	 * @throws Exception
-	 *             The exception is thrown if can't get text successfully.
-	 */
-	public String getText(String elementName, By locator) throws Exception {
+	public String getText(WebElement element) throws Exception {
 		try {
-			String text = findElement(locator).getText();
-			Log.info("Got the text of element : " + elementName + " : " + text);
-			HtmlReporter.pass("Got the text of element : " + elementName + " : " + text);
+			
+			String text = element.getText();
+			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			return text;
+			
 		} catch (Exception e) {
-			Log.error("Can't get text of element: " + elementName);
-			HtmlReporter.fail("Can't get text of element: " + elementName);
+			HtmlReporter.fail(String.format("The element [%s] is empty", element.toString()));
+			return "";
+		}
+	}
+
+	public String getAttribute(WebElement element, String attribute) {
+		try {
+
+			String value = element.getAttribute(attribute);
+			HtmlReporter.pass(
+					String.format("Element [%s] has attribute [%s] is [%s]", element.toString(), attribute, value));
+			return value;
+
+		} catch (NoSuchElementException e) {
+
+			HtmlReporter.pass(String.format("Element [%s] has attribute [%s] is empty", element.toString(), attribute));
 			return "";
 
 		}
+
 	}
 
-	/**
-	 * Get the attribute value of a web element
-	 * 
-	 * @param elementName
-	 *            The name of element
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @param attribute
-	 *            The attribute need to get value
-	 * @return The attribute value as string
-	 * @throws Exception
-	 */
-	public String getAttribute(String elementName, By locator, String attribute) throws Exception {
+	public void click(WebElement element) throws Exception {
 		try {
-			String attributeValue = findElement(locator).getAttribute(attribute);
-			return attributeValue;
-		} catch (NoSuchElementException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 
-	/**
-	 * Click on a web element
-	 * 
-	 * @param elementName
-	 *            The name of element
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @throws Exception
-	 */
-	public void click(String elementName, By locator) throws Exception {
-		try {
-			findElement(locator).click();
-			Log.info("Click to the element: " + elementName);
-			HtmlReporter.pass("Click to the element: " + elementName + " - " + locator);
+			waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			element.click();
+			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
+
 		} catch (Exception e) {
-			Log.error("Can't click to the element: " + elementName);
-			HtmlReporter.fail("Cant click to the element: " + elementName + " - " + locator);
+
+			HtmlReporter.fail(String.format("Can't click on the element [%s]", element.toString()));
 			throw (e);
+
 		}
 	}
 
-	/**
-	 * Click on a web element using javascript
-	 * 
-	 * @param elementName
-	 *            The name of web element
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @throws Exception
-	 */
-	public void clickByJS(String elementName, By locator) throws Exception {
+	public void selectRadioButton(WebElement element) throws Exception {
 		try {
-			executeJavascript("arguments[0].click();", findElement(locator));
-			Log.info("Click by Java Script on the element: " + elementName + " - " + locator);
-			HtmlReporter.pass("Click by Java Script on the element: " + elementName + " - " + locator);
-		} catch (Exception e) {
-			Log.error("Can't click by Java Script on the element: " + elementName + " - " + locator);
-			HtmlReporter.fail("Can't click by Java Script on the element: " + elementName + " - " + locator);
-			throw (e);
-		}
-	}
 
-	/**
-	 * Select a radio button
-	 * 
-	 * @param elementName
-	 *            The name of element
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @throws Exception
-	 */
-	public void selectRadioButton(String elementName, By locator) throws Exception {
-		try {
-			WebElement rbElement = findElement(locator);
-			if (!rbElement.isSelected()) {
-				rbElement.click();
+			if (!element.isSelected()) {
+				element.click();
 			}
-			Log.info("Radio button element: " + elementName + " is selected.");
+			Log.info(String.format("The element [%s] is selected", element.toString()));
 
 		} catch (Exception e) {
 
-			Log.error("Radio button element: " + elementName + " isn't selected.");
-
+			Log.error(String.format("The element [%s] is not selected", element.toString()));
 			throw (e);
 		}
 
 	}
 
-	/**
-	 * Select a check box
-	 * 
-	 * @param elementName
-	 *            The name of element
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @throws Exception
-	 */
-	public void selectCheckBox(String elementName, By locator) throws Exception {
+	public void selectCheckBox(WebElement element) throws Exception {
 		try {
-			waitForElementPresent(locator, DEFAULT_WAITTIME_SECONDS);
-			WebElement chkElement = findElement(locator);
-			if (!chkElement.isSelected()) {
-				chkElement.click();
+			if (!element.isSelected()) {
+				element.click();
 			}
-			Log.info("Checkbox element: " + elementName + " is selected.");
+			Log.info(String.format("The element [%s] is selected", element.toString()));
 
 		} catch (Exception e) {
-			Log.error("Checkbox element: " + elementName + " isn't selected.");
+			Log.error(String.format("The element [%s] is not selected", element.toString()));
 			throw (e);
 		}
 
 	}
 
-	/**
-	 * De-select a check box
-	 * 
-	 * @param elementName
-	 *            The name of element
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @throws Exception
-	 */
-	public void deselectCheckBox(String elementName, By locator) throws Exception {
+	public void deselectCheckBox(WebElement element) throws Exception {
+
 		try {
-			waitForElementPresent(locator, DEFAULT_WAITTIME_SECONDS);
-			WebElement chkElement = findElement(locator);
-			if (chkElement.isSelected()) {
-				chkElement.click();
+			if (element.isSelected()) {
+				element.click();
 			}
-			Log.info("Checkbox element: " + elementName + " is deselected.");
+			Log.info(String.format("The element [%s] is de-selected", element.toString()));
+
 		} catch (Exception e) {
-			Log.error("Checkbox element: " + elementName + " isn't deselected.");
+
+			Log.error(String.format("The element [%s] is not de-selected", element.toString()));
 			throw (e);
+
 		}
 
 	}
 
-	/**
-	 * Select an option in the Drop Down list
-	 * 
-	 * @param elementName
-	 *            The element name
-	 * @param byWebElementObject
-	 *            The By locator object of element
-	 * @param chosenOption
-	 *            The option is chosen
-	 * @throws Exception
-	 */
-	public void selectDDL(String elementName, By locator, String chosenOption) throws Exception {
+	public void selectDDLByVisibleText(WebElement element, String text) throws Exception {
 		try {
-			Select ddl = new Select(findElement(locator));
-			ddl.selectByVisibleText(chosenOption);
-			Log.info("Select option: " + chosenOption + " from select box: " + elementName);
+
+			Select ddl = new Select(element);
+			ddl.selectByVisibleText(text);
+			Log.info(String.format("Select [%s] option from dropdown list [%s]", text, element.toString()));
+
 		} catch (Exception e) {
-			Log.error("Can't select option: " + chosenOption + " from select box: " + elementName);
+
+			Log.error(String.format("Can't select [%s] option from dropdown list [%s]", text, element.toString()));
+			throw e;
+
 		}
 	}
 
-	/**
-	 * Wait for a time until a web element located
-	 * 
-	 * @param by
-	 *            The by locator object of element
-	 * @param time
-	 *            Time to wait in seconds
-	 * @throws Exception
-	 */
-	public void waitForElementPresent(By locator, int time) {
+	public void waitForElementClickable(WebElement element, int time) {
 
 		WebDriverWait wait = new WebDriverWait(driver, time);
-		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+	}
+
+	public void waitForElementDisplayed(WebElement element, int time) {
+
+		WebDriverWait wait = new WebDriverWait(driver, time);
+		wait.until(ExpectedConditions.visibilityOf(element));
+	}
+
+	public void waitForTextValueElementPresent(WebElement element, int time, String text) {
+
+		WebDriverWait wait = new WebDriverWait(driver, time);
+		wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+	}
+
+	public void waitForTextElementPresent(WebElement element, int time) {
+
+		WebDriverWait wait = new WebDriverWait(driver, time);
+		wait.until((driver) -> element.getText() != "");
+	}
+
+	public boolean isElementEnabled(WebElement element) {
+
+		return element.isEnabled();
+	}
+
+	public boolean isElementDisplayed(WebElement element) throws Exception {
+
+		return element.isDisplayed();
 
 	}
 	
-	/**
-	 * Wait for a time until a web element displayed
-	 * 
-	 * @param by
-	 *            The by locator object of element
-	 * @param time
-	 *            Time to wait in seconds
-	 * @throws Exception
-	 */
-	public void waitForElementDisplayed(By locator, int time) {
+	public boolean isElementSelected(WebElement element) throws Exception {
 
-		WebDriverWait wait = new WebDriverWait(driver, time);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		return element.isSelected();
 
 	}
-
-	/**
-	 * Checking a web element is present or not
-	 * 
-	 * @param by
-	 *            The By locator object of element
-	 * @return True if the element is present, False if the element is not
-	 *         present
-	 */
-	public boolean isElementPresent(By locator) {
-		try {
-			waitForElementPresent(locator, DEFAULT_WAITTIME_SECONDS);
-			return true;
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
-	
-	public boolean isElementDisplayed(By locator) throws Exception {
-
-		waitForElementPresent(locator, DEFAULT_WAITTIME_SECONDS);
-		return driver.findElement(locator).isDisplayed();
-
-	}
-
-	/**
-	 * Get a web element object
-	 * 
-	 * @param by
-	 *            The By locator object of element
-	 * @return The WebElement object
-	 * @throws Exception
-	 */
-	public WebElement findElement(By locator) throws Exception {
-
-		return driver.findElement(locator);
-
-	}
-
-
-	/**
-	 * Upload file
-	 * 
-	 * @param elementName
-	 *            The element name
-	 * @param title
-	 *            Title of window select box
-	 * @param url
-	 *            Url to file upload
-	 * @return The WebElement object
-	 * @throws Exception
-	 */
-	/*
-	 * public void uploadfile(String elementName, By byWebElementObject, String
-	 * title, String url) throws Exception { try { click("Open upload location",
-	 * byWebElementObject); AutoItX autoit = new AutoItX();
-	 * autoit.winWait(title); autoit.controlFocus(title, "", "Edit1");
-	 * autoit.sleep(2000); autoit.ControlSetText(title, "", "Edit1", url);
-	 * autoit.controlClick(title, "", "Button1"); Log.info("File is uploaded");
-	 * } catch (Exception e) { Log.error(elementName + " uploaded fail ");
-	 * TestngLogger.writeResult(elementName + " uploaded fail ", false); throw
-	 * (e); } }
-	 */
-
-	/**
-	 * Open url in new tab
-	 * 
-	 * @param url
-	 *            Url to of new tab *
-	 * @throws Exception
-	 */
-	/*
-	 * public void openNewTab(String url) throws Exception { try { // Open tab 2
-	 * using CTRL + t keys. driver.findElement(By.cssSelector("body")).sendKeys(
-	 * Keys.CONTROL + "t"); // Open URL In 2nd tab. driver.get(url); // Switch
-	 * to current selected tab's content. driver.switchTo().defaultContent(); }
-	 * catch (Exception e) {
-	 * 
-	 * Log.error("Open tab failed "); TestngLogger.writeResult(
-	 * "Open tab failed ", false); throw (e); } }
-	 */
-
 
 	public boolean isAlertPresent() {
 
@@ -519,8 +343,6 @@ public class AppiumBaseDriver {
 		}
 
 	}
-
-
 
 	/**
 	 * Swipe the android mobile from right to left
@@ -631,7 +453,7 @@ public class AppiumBaseDriver {
 				File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 				String screenShotDirector = FilePaths.getScreenshotFolder();
 				FileUtils.copyFile(scrFile, new File(screenShotDirector + failureImageFileName));
-				
+
 				return screenShotDirector + failureImageFileName;
 			}
 		} catch (Exception e) {
@@ -710,13 +532,12 @@ public class AppiumBaseDriver {
 	 * @return The screenshot path
 	 * @throws Exception
 	 */
-	public String takeScreenshotWithAshot(String fileDir, By by) throws Exception {
+	public String takeScreenshotWithAshot(String fileDir, WebElement element) throws Exception {
 
 		fileDir = FilePaths.correctPath(fileDir);
 		try {
 
 			if (driver != null) {
-				WebElement element = findElement(by);
 				Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(100))
 						.takeScreenshot(driver, element);
 				ImageIO.write(screenshot.getImage(), "jpg", new File(fileDir));

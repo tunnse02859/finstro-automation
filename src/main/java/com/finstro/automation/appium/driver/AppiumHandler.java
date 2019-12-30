@@ -2,71 +2,58 @@ package com.finstro.automation.appium.driver;
 
 import com.finstro.automation.utility.PropertiesLoader;
 
+import io.appium.java_client.remote.MobilePlatform;
+
 public class AppiumHandler {
 
+		
 	public AppiumBaseDriver startDriver() throws Exception {
 
+		AppiumBaseDriver driver; 
+		
 		String platform = PropertiesLoader.getPropertiesLoader().appium_configuration.getProperty("appium.platform");
-		boolean isDeviceFarm = Boolean.getBoolean(
-				PropertiesLoader.getPropertiesLoader().appium_configuration.getProperty("appium.device_farm"));
-
-		if (isDeviceFarm) {
-			String awsPlatform = System.getenv("DEVICEFARM_DEVICE_PLATFORM_NAME") != null
-					? System.getenv("DEVICEFARM_DEVICE_PLATFORM_NAME") : platform;
-					
-			if (awsPlatform.equalsIgnoreCase("android")) {
-
+		String awsPlatform = System.getenv("DEVICEFARM_DEVICE_PLATFORM_NAME");
+		
+		if (awsPlatform != null) {
+			
+			if (awsPlatform.equalsIgnoreCase(MobilePlatform.ANDROID)) {
+				
 				AppiumAndroidDriver android = new AppiumAndroidDriver();
 				android.createAWSDriver();
-				return android.getDriver();
-
-			} else {
-
+				driver = android;
+				
+			} else if (awsPlatform.equalsIgnoreCase(MobilePlatform.IOS)) {
+				
 				AppiumIOsDriver ios = new AppiumIOsDriver();
 				ios.createAWSDriver();
-				return ios.getDriver();
-
+				driver = ios;
 			}
-
+			else {
+				throw new Exception(String.format("The platform [%s] is not supported", awsPlatform));
+			}
+			
 		} else {
-			if (platform.equalsIgnoreCase("android")) {
-
+			
+			if (platform.equalsIgnoreCase(MobilePlatform.ANDROID)) {
+				
 				AppiumAndroidDriver android = new AppiumAndroidDriver();
 				android.createDriver();
-				return android.getDriver();
-
-			} else if (platform.equalsIgnoreCase("ios")) {
-
+				driver = android;
+				
+			} else if (platform.equalsIgnoreCase(MobilePlatform.IOS)) {
+				
 				AppiumIOsDriver ios = new AppiumIOsDriver();
 				ios.createDriver();
-				return ios.getDriver();
-
+				driver = ios;
+				
 			}
-
 			else {
-				throw new Exception(String.format("The platform [%s] is not defined", platform));
+				throw new Exception(String.format("The platform [%s] is not supported", platform));
 			}
 		}
-
+		
+		driver.setDefaultImplicitWaitTime();
+		return driver;
 	}
 
-	public AppiumBaseDriver startAWSDriver(String platform) throws Exception {
-
-		if (platform.equalsIgnoreCase("android")) {
-
-			AppiumAndroidDriver android = new AppiumAndroidDriver();
-			android.createAWSDriver();
-			return android.getDriver();
-
-		} else if (platform.equalsIgnoreCase("ios")) {
-
-			AppiumIOsDriver ios = new AppiumIOsDriver();
-			ios.createAWSDriver();
-			return ios.getDriver();
-
-		} else {
-			throw new Exception();
-		}
-
-	}
 }

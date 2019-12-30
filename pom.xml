@@ -147,7 +147,7 @@
 								<finalName>zip-with-dependencies</finalName>
 								<appendAssemblyId>false</appendAssemblyId>
 								<descriptors>
-									<descriptor>src/main/assembly/zip.xml</descriptor>
+									<descriptor>src/test/resources/assembly/zip.xml</descriptor>
 								</descriptors>
 							</configuration>
 						</execution>

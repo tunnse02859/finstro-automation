@@ -22,7 +22,7 @@ public class HtmlReporter {
 	private static HashMap<String, ExtentTest> extentTestMap = new HashMap<String, ExtentTest>();
 
 	public static ExtentReports setReporter(String filename) throws UnknownHostException {
-		
+
 		if (_report == null)
 			_report = createInstance(filename);
 
@@ -34,7 +34,8 @@ public class HtmlReporter {
 	/**
 	 * To create an reporter instance
 	 * 
-	 * @param fileName The report's name
+	 * @param fileName
+	 *            The report's name
 	 * @return
 	 */
 	public static ExtentReports createInstance(String fileName) {
@@ -53,6 +54,7 @@ public class HtmlReporter {
 
 		ExtentReports report = new ExtentReports();
 		report.attachReporter(htmlReporter);
+		report.setSystemInfo("Application", "Finstro Pay Automation Tests");
 
 		return report;
 	}
@@ -69,8 +71,10 @@ public class HtmlReporter {
 	/**
 	 * To Create an ExtentTest session
 	 * 
-	 * @param strTestMethodName The method name
-	 * @param strTestMethodDesc The method description
+	 * @param strTestMethodName
+	 *            The method name
+	 * @param strTestMethodDesc
+	 *            The method description
 	 * @return ExtentTest session
 	 */
 	public static synchronized ExtentTest createTest(String strTestMethodName, String strTestMethodDesc) {
@@ -83,8 +87,10 @@ public class HtmlReporter {
 	/**
 	 * To Create an ExtentTest session
 	 * 
-	 * @param strTestMethodName The method name
-	 * @param strTestMethodDesc The method description
+	 * @param strTestMethodName
+	 *            The method name
+	 * @param strTestMethodDesc
+	 *            The method description
 	 * @return ExtentTest session
 	 */
 	public static synchronized ExtentTest createTest(String strTestClassName) {
@@ -97,9 +103,12 @@ public class HtmlReporter {
 	/**
 	 * To Create a node of ExtentTest session
 	 * 
-	 * @param strTestMethodName The method name
-	 * @param strTestMethodDesc The method description
-	 * @param strNodeName       The node name
+	 * @param strTestMethodName
+	 *            The method name
+	 * @param strTestMethodDesc
+	 *            The method description
+	 * @param strNodeName
+	 *            The node name
 	 * @return ExtentTest session
 	 */
 	public static synchronized ExtentTest createNode(String strClassName, String strTestMethodName,
@@ -149,224 +158,207 @@ public class HtmlReporter {
 	/**
 	 * To write a passed step to report
 	 * 
-	 * @param strDescription The Step's description
-	 * @throws Exception 
+	 * @param strDescription
+	 *            The Step's description
+	 * @throws Exception
 	 */
-	public static void pass(String strDescription) throws Exception {
+	public static void pass(String strDescription) {
 
-		try {
-			getTest().pass(strDescription);
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
-			ex.printStackTrace();
-		}
+		getTest().pass(strDescription);
+		Log.info(strDescription);
 
 	}
 
 	/**
 	 * To write a passed step to report with screenshot
 	 * 
-	 * @param strDescription    The Step's description
-	 * @param strScreenshotPath The screenshot's path
-	 * @throws Exception 
-	 * @throws IOException If the screenshot doesn't exist
+	 * @param strDescription
+	 *            The Step's description
+	 * @param strScreenshotPath
+	 *            The screenshot's path
+	 * @throws Exception
+	 * @throws IOException
+	 *             If the screenshot doesn't exist
 	 */
 	public static void pass(String strDescription, String strScreenshotPath) throws Exception {
 
-		try {
-			if (strScreenshotPath.equalsIgnoreCase("")) {
-				getTest().pass(strDescription);
-			} else {
-				strScreenshotPath = "file:///" + strScreenshotPath;
-				getTest().pass(strDescription).addScreenCaptureFromPath(strScreenshotPath);
-			}
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
-			ex.printStackTrace();
+		if (strScreenshotPath.equalsIgnoreCase("")) {
+			getTest().pass(strDescription);
+		} else {
+			strScreenshotPath = "file:///" + strScreenshotPath;
+			getTest().pass(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 		}
+
+		Log.info(strDescription);
+
 	}
-	
+
 	/**
 	 * To write a failed step to report
 	 * 
-	 * @param strDescription    The Step's description
-	 * @throws Exception 
-	 * @throws IOException If the screenshot doesn't exist
+	 * @param strDescription
+	 *            The Step's description
+	 * @throws Exception
+	 * @throws IOException
+	 *             If the screenshot doesn't exist
 	 */
-	public static void fail(String strDescription) throws Exception {
+	public static void fail(String strDescription)  {
 
-		try {
-			
-			getTest().fail(strDescription);
-			
-		} catch (Exception ex) {
-			
-			Log.info("Can't write to htm report, initialize it first");
-			
-		}
+		getTest().fail(strDescription);
+		Log.error(strDescription);
 
 	}
 
 	/**
 	 * To write a failed step to report with screenshot
 	 * 
-	 * @param strDescription    The Step's description
-	 * @param strScreenshotPath The screenshot's path
-	 * @throws Exception 
-	 * @throws IOException If the screenshot doesn't exist
+	 * @param strDescription
+	 *            The Step's description
+	 * @param strScreenshotPath
+	 *            The screenshot's path
+	 * @throws Exception
+	 * @throws IOException
+	 *             If the screenshot doesn't exist
 	 */
-	public static void fail(String strDescription, String strScreenshotPath) throws Exception {
+	public static void fail(String strDescription, String strScreenshotPath) throws IOException  {
 
-		try {
-			if (strScreenshotPath.equalsIgnoreCase("")) {
-				getTest().fail(strDescription);
-			} else {
-				strScreenshotPath = "file:///" + strScreenshotPath;
-				getTest().fail(strDescription).addScreenCaptureFromPath(strScreenshotPath);
-			}
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
+		if (strScreenshotPath.equalsIgnoreCase("")) {
+			getTest().fail(strDescription);
+		} else {
+			strScreenshotPath = "file:///" + strScreenshotPath;
+			getTest().fail(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 		}
+
+		Log.error(strDescription);
 
 	}
 
 	/**
 	 * To write a failed step to report with screenshot and throwable stacktrace
 	 * 
-	 * @param strDescription    The Step's description
-	 * @param e                 Throwable object
-	 * @param strScreenshotPath The screenshot's path
-	 * @throws Exception 
-	 * @throws IOException If the screenshot doesn't exist
+	 * @param strDescription
+	 *            The Step's description
+	 * @param e
+	 *            Throwable object
+	 * @param strScreenshotPath
+	 *            The screenshot's path
+	 * @throws Exception
+	 * @throws IOException
+	 *             If the screenshot doesn't exist
 	 */
-	public static void fail(String strDescription, Throwable e, String strScreenshotPath) throws Exception {
+	public static void fail(String strDescription, Throwable e, String strScreenshotPath) throws IOException  {
 
-		try {
-			if (strScreenshotPath.equalsIgnoreCase("")) {
-				getTest().fail(strDescription).fail(e);
-			} else {
-				strScreenshotPath = "file:///" + strScreenshotPath;
-				getTest().fail(strDescription).fail(e).addScreenCaptureFromPath(strScreenshotPath);
-			}
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
+		if (strScreenshotPath.equalsIgnoreCase("")) {
+			getTest().fail(strDescription).fail(e);
+		} else {
+			strScreenshotPath = "file:///" + strScreenshotPath;
+			getTest().fail(strDescription).fail(e).addScreenCaptureFromPath(strScreenshotPath);
 		}
+
+		Log.error(strDescription);
 
 	}
 
 	/**
 	 * To write a skipped step to report with screenshot
 	 * 
-	 * @param strDescription    The Step's description
-	 * @param strScreenshotPath The screenshot's path
-	 * @throws Exception 
-	 * @throws IOException If the screenshot doesn't exist
+	 * @param strDescription
+	 *            The Step's description
+	 * @param strScreenshotPath
+	 *            The screenshot's path
+	 * @throws Exception
+	 * @throws IOException
+	 *             If the screenshot doesn't exist
 	 */
-	public static void skip(String strDescription, String strScreenshotPath) throws Exception {
+	public static void skip(String strDescription, String strScreenshotPath) throws IOException  {
 
-		try {
-			if (strDescription.equalsIgnoreCase("")) {
-				getTest().skip(strDescription);
-			} else {
-				strScreenshotPath = "file:///" + strScreenshotPath;
-				getTest().skip(strDescription).addScreenCaptureFromPath(strScreenshotPath);
-			}
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
+		if (strDescription.equalsIgnoreCase("")) {
+			getTest().skip(strDescription);
+		} else {
+			strScreenshotPath = "file:///" + strScreenshotPath;
+			getTest().skip(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 		}
 
+		Log.info(strDescription);
 	}
 
 	/**
-	 * To write a skipped step to report with screenshot and throwable stacktrace
+	 * To write a skipped step to report with screenshot and throwable
+	 * stacktrace
 	 * 
-	 * @param strDescription    The Step's description
-	 * @param e                 Throwable object
-	 * @param strScreenshotPath The screenshot's path
-	 * @throws Exception 
+	 * @param strDescription
+	 *            The Step's description
+	 * @param e
+	 *            Throwable object
+	 * @param strScreenshotPath
+	 *            The screenshot's path
+	 * @throws IOException 
+	 * @throws Exception
 	 */
-	public static void skip(String strDescription, Throwable e, String strScreenshotPath) throws Exception {
+	public static void skip(String strDescription, Throwable e, String strScreenshotPath) throws IOException {
 
-		try {
 			if (strDescription.equalsIgnoreCase("")) {
 				getTest().skip(strDescription).skip(e);
 			} else {
 				strScreenshotPath = "file:///" + strScreenshotPath;
 				getTest().skip(strDescription).skip(e).addScreenCaptureFromPath(strScreenshotPath);
 			}
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
-		}
+		
+		Log.info(strDescription);
 
 	}
 
 	/**
 	 * To label a key step into the report
 	 * 
-	 * @param strDescription The step's description
-	 * @throws Exception 
+	 * @param strDescription
+	 *            The step's description
+	 * @throws Exception
 	 */
-	public static void label(String strDescription) throws Exception {
+	public static void label(String strDescription)  {
 
-		try {
 			getTest().info(MarkupHelper.createLabel(strDescription, ExtentColor.BLUE));
-		} catch (Exception ex) {
-			Log.info("Can't write to htm report, initialize it first");
-		}
 
 	}
-	
+
 	/**
 	 * To label a key step into the report
 	 * 
 	 * @param strDescription
 	 *            The step's description
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static void labelFailed(String strDescription) throws Exception {
+	public static void labelFailed(String strDescription)  {
 
-		try {
 			getTest().info(MarkupHelper.createLabel(strDescription, ExtentColor.RED));
-		} catch (Exception ex) {
-			Log.info("Can't write to html report, initialize it first");
-		}
 
 	}
-	
-	
+
 	/**
 	 * To label a key step into the report
 	 * 
 	 * @param strDescription
 	 *            The step's description
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static void labelSkiped(String strDescription) throws Exception {
+	public static void labelSkiped(String strDescription) {
 
-		try {
 			getTest().info(MarkupHelper.createLabel(strDescription, ExtentColor.AMBER));
-		} catch (Exception ex) {
-			Log.info("Can't write to html report, initialize it first");
-		}
+			
 	}
-	
+
 	/**
 	 * To label a key step into the report
 	 * 
 	 * @param strDescription
 	 *            The step's description
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static void labelWarning(String strDescription) throws Exception {
+	public static void labelWarning(String strDescription)  {
 
-		try {
 			getTest().info(MarkupHelper.createLabel(strDescription, ExtentColor.ORANGE));
-		} catch (Exception ex) {
-			Log.info("Can't write to html report, initialize it first");
-		}
 
 	}
-
 
 	public static String throwableToString(Throwable e) throws Exception {
 		try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw);) {
@@ -375,10 +367,11 @@ public class HtmlReporter {
 			return sw.toString();
 		}
 	}
-	
+
 	/**
 	 * To write a passed step to report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public static void pass(String[] data) throws Exception {
 		if (data.length == 2) {
@@ -390,7 +383,8 @@ public class HtmlReporter {
 
 	/**
 	 * To write a failed step to report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public static void fail(String[] data) throws Exception {
 		if (data.length == 3) {
@@ -399,10 +393,11 @@ public class HtmlReporter {
 			HtmlReporter.fail(data[1], data[3]);
 		}
 	}
-	
+
 	/**
 	 * To write a failed step to report
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	public static void description(String data) throws Exception {
 		try {
