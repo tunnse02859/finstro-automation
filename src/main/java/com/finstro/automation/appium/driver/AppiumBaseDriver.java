@@ -9,12 +9,13 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -25,6 +26,7 @@ import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import com.finstro.automation.utility.FilePaths;
+import com.finstro.automation.utility.PropertiesLoader;
 import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.report.Log;
 
@@ -68,6 +70,8 @@ public class AppiumBaseDriver {
 			throw (e);
 		}
 	}
+	
+	
 
 	/**
 	 * This method is used to navigate the browser to the url
@@ -77,8 +81,7 @@ public class AppiumBaseDriver {
 	 *            the url of website
 	 * @return None
 	 * @throws Exception
-	 *             The exception is thrown if the driver can't navigate to the
-	 *             url
+	 *             The exception is thrown if the driver can't navigate to the url
 	 */
 	public void openUrl(String url) throws Exception {
 		try {
@@ -105,16 +108,23 @@ public class AppiumBaseDriver {
 
 		try {
 			waitForElementDisplayed(element, 30);
-			element.click();
-			element.clear();
+			//element.click();
+			element.sendKeys("");
+			hideKeyboard();
 			element.sendKeys(text);
+			hideKeyboard();
 			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
-
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Can't input text [%s] to element [%s]", text, element.toString()));
 			throw e;
 		}
-
+	}
+	
+	public void hideKeyboard() {
+		try {
+			driver.hideKeyboard();
+		}catch(WebDriverException e) {
+		}
 	}
 
 	/**
@@ -141,8 +151,7 @@ public class AppiumBaseDriver {
 	}
 
 	/**
-	 * This method is used to execute a java script function for an object
-	 * argument.
+	 * This method is used to execute a java script function for an object argument.
 	 * 
 	 * @author tunn6
 	 * @param jsFunction
@@ -168,11 +177,9 @@ public class AppiumBaseDriver {
 
 	public String getText(WebElement element) throws Exception {
 		try {
-			
 			String text = element.getText();
 			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			return text;
-			
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("The element [%s] is empty", element.toString()));
 			return "";
@@ -198,14 +205,35 @@ public class AppiumBaseDriver {
 
 	public void click(WebElement element) throws Exception {
 		try {
-
 			waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
-
 		} catch (Exception e) {
-
 			HtmlReporter.fail(String.format("Can't click on the element [%s]", element.toString()));
+			throw (e);
+
+		}
+	}
+	
+	public void clickByPosition(WebElement element,String clickPosition) throws Exception {
+		try {
+			waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			int leftX = element.getLocation().getX();
+			int rightX = leftX + element.getSize().getWidth();
+			int middleX = (rightX + leftX) / 2;
+			int upperY = element.getLocation().getY();
+			int lowerY = upperY + element.getSize().getHeight();
+			int middleY = (upperY + lowerY) / 2;
+			if(clickPosition.equalsIgnoreCase("left")) {
+				new TouchAction<>(driver).tap(PointOption.point(leftX + 10, middleY)).perform();
+			}else if(clickPosition.equalsIgnoreCase("right")) {
+				new TouchAction<>(driver).tap(PointOption.point(rightX - 10, middleY)).perform();
+			}else{
+				new TouchAction<>(driver).tap(PointOption.point(middleX, middleY)).perform();
+			}
+			HtmlReporter.pass(String.format("click on the " + clickPosition + " of element [%s]", element.toString()));
+		} catch (Exception e) {
+			HtmlReporter.fail(String.format("Can't click on the " + clickPosition + " of element [%s]", element.toString()));
 			throw (e);
 
 		}
@@ -213,14 +241,11 @@ public class AppiumBaseDriver {
 
 	public void selectRadioButton(WebElement element) throws Exception {
 		try {
-
 			if (!element.isSelected()) {
 				element.click();
 			}
 			Log.info(String.format("The element [%s] is selected", element.toString()));
-
 		} catch (Exception e) {
-
 			Log.error(String.format("The element [%s] is not selected", element.toString()));
 			throw (e);
 		}
@@ -279,14 +304,18 @@ public class AppiumBaseDriver {
 		wait.until(ExpectedConditions.elementToBeClickable(element));
 	}
 
-	public void waitForElementDisplayed(WebElement element, int time) {
-
-		WebDriverWait wait = new WebDriverWait(driver, time);
-		wait.until(ExpectedConditions.visibilityOf(element));
+	public boolean waitForElementDisplayed(WebElement element, int time) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, time);
+			wait.until(ExpectedConditions.visibilityOf(element));
+		} catch (TimeoutException e) {
+			HtmlReporter.fail(String.format("Element [%s] is not displayed in expected time = %s", element,time));
+			return false;
+		}
+		return true;
 	}
 
 	public void waitForTextValueElementPresent(WebElement element, int time, String text) {
-
 		WebDriverWait wait = new WebDriverWait(driver, time);
 		wait.until(ExpectedConditions.textToBePresentInElement(element, text));
 	}
@@ -307,7 +336,7 @@ public class AppiumBaseDriver {
 		return element.isDisplayed();
 
 	}
-	
+
 	public boolean isElementSelected(WebElement element) throws Exception {
 
 		return element.isSelected();
@@ -423,20 +452,19 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	/*
-	 * public void verifyToastMessage(String compareText) throws Exception { try
-	 * { String imageClientCode = "ClientCodeEmptyImage";
+	 * public void verifyToastMessage(String compareText) throws Exception { try {
+	 * String imageClientCode = "ClientCodeEmptyImage";
 	 * this.takeScreenshot(imageClientCode); String TessMessage =
 	 * readToastMessage(imageClientCode);
-	 * Assert.assertTrue(TessMessage.contains(compareText)); Log.info(
-	 * "String \"" + compareText + "\" is available in screen");
+	 * Assert.assertTrue(TessMessage.contains(compareText)); Log.info( "String \"" +
+	 * compareText + "\" is available in screen");
 	 * 
 	 * } catch (Exception e) { Log.error("String \"" + compareText +
 	 * "\" is not available in screen"); throw (e); } }
 	 */
 
 	/**
-	 * This method is used to capture a screenshot then write to the TestNG
-	 * Logger
+	 * This method is used to capture a screenshot then write to the TestNG Logger
 	 * 
 	 * @author tunn6
 	 * 
@@ -549,6 +577,27 @@ public class AppiumBaseDriver {
 			throw e;
 		}
 		return fileDir;
+	}
+	
+	/**
+	 * This method is used to re-launch application
+	 * 
+	 * @author tunn6
+	 * @param None
+	 * @return None
+	 * @throws Exception
+	 */
+	public void relaunchApp() throws Exception {
+		String appBundleId = PropertiesLoader.getPropertiesLoader().android_configuration.getProperty("appium.android.appPackage");
+		try {
+			driver.terminateApp(appBundleId);
+			Thread.sleep(5000);
+			driver.activateApp(appBundleId);
+			HtmlReporter.pass("Relaunch app [" + appBundleId + "] sucessfully");
+		} catch (Exception e) {
+			HtmlReporter.fail("Relaunch app [" + appBundleId + "] failed",e,"");
+			throw (e);
+		}
 	}
 
 }

@@ -8,18 +8,31 @@ import org.apache.logging.log4j.ThreadContext;
 import org.apache.logging.log4j.core.LoggerContext;
 
 public class Log {
+	
+	private static Logger log;
 
 	private static Logger getLogger() {
+		try {
+			if(log == null) {
+				initLog();
+			}
+			return log;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static void initLog() throws Exception {
 		try {
 			URI configURI = Log.class.getResource("/config/log4j2.xml").toURI();
 			LoggerContext context = (LoggerContext) LogManager.getContext(false);
 			context.setConfigLocation(configURI);
-			Logger log = LogManager.getLogger();
+			log = LogManager.getLogger();
 			String logFileName = "log_" + Thread.currentThread().getName();
 			ThreadContext.put("ROUTINGKEY", logFileName);
-			return log;
 		} catch (Exception e) {
-			return null;
+			throw e;
 		}
 	}
 	
@@ -76,9 +89,7 @@ public class Log {
 	 * @throws Exception
 	 */
 	public static void info(String info) {
-
 		getLogger().info(info);
-
 	}
 
 	/**

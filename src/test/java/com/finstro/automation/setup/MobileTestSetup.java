@@ -1,5 +1,7 @@
 package com.finstro.automation.setup;
 
+import static org.testng.Assert.*;
+
 import java.lang.reflect.Method;
 
 import org.testng.ITestResult;
@@ -11,6 +13,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import com.finstro.automation.excelhelper.ExcelHelper;
+import com.finstro.automation.pages.HomePage;
+import com.finstro.automation.pages.LoginPage;
+import com.finstro.automation.pages.RegisterPage;
 import com.finstro.automation.report.Log;
 
 public class MobileTestSetup extends MobileTestBaseSetup {
@@ -18,11 +23,21 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 	public static String dataFilePath;
 	public static String sheetName;
 	
+	protected LoginPage loginPage;
+	protected RegisterPage registerPage;
+	protected HomePage homePage;
 	
 	public Object[][] getTestProvider(String filepPath, String sheetName) throws Exception {
 		// return the data from excel file
 		Object[][] data = ExcelHelper.getTableArray(filepPath,sheetName);
 		return data;
+	}
+	
+	protected void doLogin(String email, String accessCode) throws Exception {
+		registerPage.toLoginPage();
+		assertTrue(loginPage.isActive(),"Login screen didnt showed after tap on login");
+		loginPage.login(email, accessCode);
+		assertTrue(homePage.isActive(),"Home screen didnt showed after login");
 	}
 	
 

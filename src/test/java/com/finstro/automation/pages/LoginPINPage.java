@@ -7,14 +7,14 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class LoginPINPage {
 	
 	public AppiumBaseDriver driver;
 	
-	@AndroidFindBy(id="au.com.finstro.finstropay:id/login_email_edt")
-    private WebElement emailAddress;
+	@AndroidFindBy(id="au.com.finstro.finstropay:id/login_email")
+    private WebElement loggedEmail;
 	
-	@AndroidFindBy(id="au.com.finstro.finstropay:id/login_access_code_edt")
+	@AndroidFindBy(uiAutomator="new UiSelector().resourceId(\"au.com.finstro.finstropay:id/pinView\").childSelector(new UiSelector().className(\"android.widget.EditText\").instance(0))")
     private WebElement accessCode;
 	
 	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
@@ -27,29 +27,29 @@ public class LoginPage {
     private WebElement forgotAccessCodePageLink;
 	
 	
-    public LoginPage(AppiumBaseDriver driver){
+    public LoginPINPage(AppiumBaseDriver driver){
         this.driver=driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
     }
     
     public boolean isActive(){
-        return driver.waitForElementDisplayed(emailAddress, 10);
+        return driver.waitForElementDisplayed(loggedEmail, 10);
+    }
+    
+    public String getLoggedEmail() throws Exception {
+    	return driver.getText(loggedEmail);
     }
 
-    public HomePage login(String email,String code) throws Exception {
-        driver.inputText(emailAddress, email);
+    public void login(String code) throws Exception {
         driver.inputText(accessCode, code);
         driver.click(submit);
-        return new HomePage(driver);
     }
     
-    public  ForgotAccessCodePage toForgotAccessCodePage() throws Exception{
+    public  void toForgotAccessCodePage() throws Exception{
     	driver.clickByPosition(forgotAccessCodePageLink,"right");
-        return new ForgotAccessCodePage(driver);
     }
     
-    public RegisterPage toRegisterPage() throws Exception {
+    public void toRegisterPage() throws Exception {
     	driver.clickByPosition(registerPageLink,"right");
-    	return new RegisterPage(driver);
     }
 }

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.finstro.automation.report.HtmlReporter;
-import com.finstro.automation.report.Log;
 import com.finstro.automation.utility.FilePaths;
 import com.finstro.automation.utility.PropertiesLoader;
 
@@ -21,11 +20,9 @@ public class AppiumAndroidDriver extends AppiumBaseDriver {
 	private static Properties appium_configuration;
 
 	public AppiumAndroidDriver() throws Exception {
-		
 		android_configuration = PropertiesLoader.getPropertiesLoader().android_configuration;
 		appium_configuration = PropertiesLoader.getPropertiesLoader().appium_configuration;
 		browser_configuration = PropertiesLoader.getPropertiesLoader().browser_configuration;
-		
 	}
 	
 	
@@ -134,12 +131,10 @@ public class AppiumAndroidDriver extends AppiumBaseDriver {
 
 			driver = new AndroidDriver<WebElement>(new URL(strAppiumServer), capabilities);
 
-			Log.info("Starting remote Android driver for: " + capabilities.toString());
 			HtmlReporter.pass("Starting remote Android driver for: " + capabilities.toString());
 
 		} catch (Exception e) {
-			Log.error("Can't start the webdriver!!! : " + e);
-			HtmlReporter.fail("Can't start the webdriver!!! : ", e, "");
+			HtmlReporter.fail("Can't start the webdriver locally !!! : ", e, "");
 			throw (e);
 		}
 	}
@@ -160,13 +155,9 @@ public class AppiumAndroidDriver extends AppiumBaseDriver {
 		try {
 			capabilities = new DesiredCapabilities();  
 			driver = new AndroidDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
-			Log.info("Starting Android driver on AWS");
 			HtmlReporter.pass("Starting Andoid driver on AWS");
-
 		} catch (Exception e) {
-			Log.error("Can't start the android driver!!! : " + e);
-			HtmlReporter.fail("Can't start the android driver!!! : ", e, "");
+			HtmlReporter.fail("Can't start the android driver on device farm !!! : ", e, "");
 			throw (e);
 		}
 	}
