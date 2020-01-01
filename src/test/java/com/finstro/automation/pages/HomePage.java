@@ -23,6 +23,6 @@ public class HomePage {
     }
 	
     public boolean isActive(){
-        return (driver.waitForElementDisplayed(title, 10) && driver.waitForElementDisplayed(subTitle, 10));
+        return (driver.waitForElementDisplayed(title, 20) && driver.waitForElementDisplayed(subTitle, 20));
     }
 }

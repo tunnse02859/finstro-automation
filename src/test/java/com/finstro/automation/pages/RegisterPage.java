@@ -30,11 +30,6 @@ public class RegisterPage {
         return new LoginPage(driver);
     }
     public boolean isActive() throws Exception {
-        //driver.waitForElementPresent(agreement,10);
-        String agreementText = driver.getText(agreement);
-        if(agreementText.equals("Please tick and agree to our Privacy Policy and Terms and Condition so that we can contact you during this process of approval and registration.")){
-            return true;
-        }
-        return false;
+        return driver.waitForElementDisplayed(agreement,15);
     }
 }
