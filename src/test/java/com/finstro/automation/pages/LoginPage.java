@@ -6,12 +6,16 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 import static org.testng.Assert.assertTrue;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
 
 	public AppiumBaseDriver driver;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
+	private  WebElement errorMessage;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/login_email_edt")
 	private WebElement emailAddress;
@@ -48,12 +52,20 @@ public class LoginPage {
 		return new RegisterPage(driver);
 	}
 
-	public void doLogin(String email, String code) throws Exception {
-		new RegisterPage(driver).toLoginPage();
-		assertTrue(this.isActive(), "Login screen didnt showed after tap on login");
+	public void loginWithEmailCode(String email, String code) throws Exception {
 		driver.inputText(emailAddress, email);
 		driver.inputText(accessCode, code);
 		driver.click(submit);
+	}
+
+	public void doLogin(String email, String code) throws Exception {
+		new RegisterPage(driver).toLoginPage();
+		assertTrue(this.isActive(), "Login screen didnt showed after tap on login");
+		loginWithEmailCode(email,code);
 		assertTrue(isActive(), "Home screen didnt showed after login");
+	}
+
+	public String getErrorMessage(){
+		return errorMessage.getText();
 	}
 }
