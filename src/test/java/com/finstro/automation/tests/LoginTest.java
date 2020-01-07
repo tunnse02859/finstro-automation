@@ -17,6 +17,9 @@ import java.lang.reflect.Method;
 public class LoginTest extends MobileTestSetup {
 	private ForgotAccessCodePage forgotAccessCodePage;
 	private LoginPINPage loginPINPage;
+	private LoginPage loginPage;
+	private RegisterPage registerPage;
+	private HomePage homePage;
 
 	private static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
 	private static final String LOGIN_ACCESS_CODE = "033933";
@@ -32,12 +35,12 @@ public class LoginTest extends MobileTestSetup {
 	}
 
 	@Test
-	public void login01_VerifyUserLoginSuccessful() throws Exception {
-		doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+	public void FPC_1290_VerifyUserLoginSuccessful() throws Exception {
+		loginPage.doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
 	}
 
 	@Test
-	public void login07_VerifyUserGoToTheSignUpScreenSuccessfully() throws Exception {
+	public void FPC_1296_VerifyUserGoToTheSignUpScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
 		assertTrue(loginPage.isActive(),"Login screen didnt showed after tap on login");
 		loginPage.toRegisterPage();
@@ -45,7 +48,7 @@ public class LoginTest extends MobileTestSetup {
 	}
 
 	@Test
-	public void login08_VerifyUserGoToTheForgotAccessCodeScreenSuccessfully() throws Exception {
+	public void FPC_1297_VerifyUserGoToTheForgotAccessCodeScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
 		assertTrue(loginPage.isActive(),"Login screen didnt showed after tap on login");
 		loginPage.toForgotAccessCodePage();
@@ -53,7 +56,7 @@ public class LoginTest extends MobileTestSetup {
 	}
 
 	@Test
-	public void login09_VerifyUserGoToTheLoginScreenSuccessfully() throws Exception {
+	public void FPC_1298_VerifyUserGoToTheLoginScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
 		assertTrue(loginPage.isActive(),"Login page didnt showed after click on login");
 	}
@@ -68,7 +71,7 @@ public class LoginTest extends MobileTestSetup {
 
 	@Test
 	public void login14_VerifyThePINScreenIsOpenAfterLogoutAndReopenTheApp() throws Exception {
-		doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+		loginPage.doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
 		driver.relaunchApp();
 		assertTrue(loginPINPage.isActive(),"Login PIN Page didnt showed after login and re-launch app");
 		assertEquals(loginPINPage.getLoggedEmail(),LOGIN_EMAIL_ADDRESS,"incorrect email displayed after login and re-launch app");
