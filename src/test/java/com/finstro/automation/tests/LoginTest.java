@@ -40,6 +40,45 @@ public class LoginTest extends MobileTestSetup {
 	}
 
 	@Test
+	public void FPC_1292_VerifyUserLoginUnsuccessfulIfHeInputInvalidEmailAddress() throws Exception {
+		String invalidEmail = LOGIN_EMAIL_ADDRESS + "extra";
+		registerPage.toLoginPage();
+		loginPage.loginWithEmailCode(invalidEmail,LOGIN_ACCESS_CODE);
+		String actualMessage = loginPage.getErrorMessage();
+		String expectedMessage = "Incorrect username or password.";
+		assertEquals(expectedMessage,actualMessage);
+	}
+	@Test
+	public void FPC_1293_VerifyUserLoginUnsuccessfulIfHeDoesNotInputEmailAddress() throws Exception {
+		String invalidEmail = "";
+		registerPage.toLoginPage();
+		loginPage.loginWithEmailCode(invalidEmail,LOGIN_ACCESS_CODE);
+		String actualMessage = loginPage.getErrorMessage();
+		String expectedMessage = "Incorrect username or password.";
+		assertEquals(expectedMessage,actualMessage);
+	}
+
+	@Test
+	public void FPC_1294_VerifyUserLoginUnsuccessfulIfHeInputInvalidTheAccessCode() throws Exception {
+		registerPage.toLoginPage();
+		String invalidCode = "033999";
+		loginPage.loginWithEmailCode(LOGIN_EMAIL_ADDRESS,invalidCode);
+		String actualMessage = loginPage.getErrorMessage();
+		String expectedMessage = "Incorrect username or password.";
+		assertEquals(expectedMessage,actualMessage);
+	}
+
+	@Test
+	public void FPC_1295_VerifyUserLoginUnsuccessfulIfHeDoesNotInputAccessCode() throws Exception {
+		registerPage.toLoginPage();
+		String invalidCode = "";
+		loginPage.loginWithEmailCode(LOGIN_EMAIL_ADDRESS,invalidCode);
+		String actualMessage = loginPage.getErrorMessage();
+		String expectedMessage = "Incorrect username or password.";
+		assertEquals(expectedMessage,actualMessage);
+	}
+
+	@Test
 	public void FPC_1296_VerifyUserGoToTheSignUpScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
 		assertTrue(loginPage.isActive(),"Login screen didnt showed after tap on login");
@@ -61,19 +100,57 @@ public class LoginTest extends MobileTestSetup {
 		assertTrue(loginPage.isActive(),"Login page didnt showed after click on login");
 	}
 
-	// @Test
-	// public void login12_VerifyUserGoToTheSignUpScreenSuccessfully() throws
-	// Exception {
-	// registerPage.toLoginPage();
-	// //loginPage.toRegisterPage();
-	// assertTrue(registerPage.isActive());
-	// }
+	@Test
+	public void FPC_1299_VerifyUserLoginUnsuccessfulIfHeInputInvalidTheAccessCodePin() throws Exception {
+		registerPage.toLoginPage();
+		loginPage.loginWithEmailCode(LOGIN_EMAIL_ADDRESS,LOGIN_ACCESS_CODE);
+		Thread.sleep(3000);
+		driver.relaunchApp();
+		String invalidCode = "123456";
+		loginPINPage.login(invalidCode);
+		String actualMessage = loginPINPage.getErrorMessage();
+		String expectedMessage = "Incorrect username or password.";
+		assertEquals(expectedMessage,actualMessage);
+	}
 
 	@Test
-	public void login14_VerifyThePINScreenIsOpenAfterLogoutAndReopenTheApp() throws Exception {
-		loginPage.doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+	public void FPC_1300_VerifyUserLoginUnsuccessfulIfHeDoesNotInputAccessCodePin() throws Exception {
+		registerPage.toLoginPage();
+		loginPage.loginWithEmailCode(LOGIN_EMAIL_ADDRESS,LOGIN_ACCESS_CODE);
+		Thread.sleep(3000);
 		driver.relaunchApp();
-		assertTrue(loginPINPage.isActive(),"Login PIN Page didnt showed after login and re-launch app");
-		assertEquals(loginPINPage.getLoggedEmail(),LOGIN_EMAIL_ADDRESS,"incorrect email displayed after login and re-launch app");
+		loginPINPage.clickOnSubmit();
+		String actualMessage = loginPINPage.getErrorMessage();
+		String expectedMessage = "Incorrect username or password.";
+		assertEquals(expectedMessage,actualMessage);
 	}
+
+	@Test
+	public void FPC_1301_VerifyUserGoToTheSignUpScreenSuccessfullyPin() throws Exception {
+		registerPage.toLoginPage();
+		loginPage.loginWithEmailCode(LOGIN_EMAIL_ADDRESS,LOGIN_ACCESS_CODE);
+		Thread.sleep(3000);
+		driver.relaunchApp();
+		loginPINPage.toRegisterPage();
+		assertTrue(registerPage.isActive());
+	}
+
+	@Test
+	public void FPC_1302_VerifyTheCurrentUserIsLogoutWhenClickOnTheLinkNotYou() throws Exception {
+		registerPage.toLoginPage();
+		loginPage.loginWithEmailCode(LOGIN_EMAIL_ADDRESS,LOGIN_ACCESS_CODE);
+		Thread.sleep(3000);
+		driver.relaunchApp();
+		loginPINPage.clickOnLoggedEmail();
+		assertTrue(loginPage.isActive());
+	}
+
+
+//	@Test
+//	public void login14_VerifyThePINScreenIsOpenAfterLogoutAndReopenTheApp() throws Exception {
+//		loginPage.doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+//		driver.relaunchApp();
+//		assertTrue(loginPINPage.isActive(),"Login PIN Page didnt showed after login and re-launch app");
+//		assertEquals(loginPINPage.getLoggedEmail(),LOGIN_EMAIL_ADDRESS,"incorrect email displayed after login and re-launch app");
+//	}
 }
