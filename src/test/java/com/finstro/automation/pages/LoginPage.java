@@ -6,7 +6,6 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 import static org.testng.Assert.assertTrue;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -42,27 +41,25 @@ public class LoginPage {
 	}
 
 
-	public ForgotAccessCodePage toForgotAccessCodePage() throws Exception {
+	public void toForgotAccessCodePage() throws Exception {
 		driver.clickByPosition(forgotAccessCodePageLink, "right");
-		return new ForgotAccessCodePage(driver);
 	}
 
-	public RegisterPage toRegisterPage() throws Exception {
+	public void toRegisterPage() throws Exception {
 		driver.clickByPosition(registerPageLink, "right");
-		return new RegisterPage(driver);
 	}
 
-	public void loginWithEmailCode(String email, String code) throws Exception {
-		driver.inputText(emailAddress, email);
-		driver.inputText(accessCode, code);
+	public void login(String email, String code) throws Exception {
+		driver.inputTextWithClear(emailAddress, email);
+		driver.inputTextWithClear(accessCode, code);
 		driver.click(submit);
 	}
 
-	public void doLogin(String email, String code) throws Exception {
+	public void doSuccessLogin(String email, String code) throws Exception {
 		new RegisterPage(driver).toLoginPage();
 		assertTrue(this.isActive(), "Login screen didnt showed after tap on login");
-		loginWithEmailCode(email,code);
-		assertTrue(isActive(), "Home screen didnt showed after login");
+		login(email,code);
+		assertTrue(new HomePage(driver).isActive(), "Home screen didnt showed after login");
 	}
 
 	public String getErrorMessage(){

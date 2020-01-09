@@ -32,6 +32,9 @@ import com.finstro.automation.report.Log;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
@@ -70,8 +73,6 @@ public class AppiumBaseDriver {
 			throw (e);
 		}
 	}
-	
-	
 
 	/**
 	 * This method is used to navigate the browser to the url
@@ -104,11 +105,11 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 *             The exception is throws if input text not success
 	 */
-	public void inputText(WebElement element, String text) throws Exception {
+	public void inputTextWithClear(WebElement element, String text) throws Exception {
 
 		try {
 			waitForElementDisplayed(element, 30);
-			//element.click();
+			element.click();
 			element.sendKeys("");
 			hideKeyboard();
 			element.sendKeys(text);
@@ -119,11 +120,34 @@ public class AppiumBaseDriver {
 			throw e;
 		}
 	}
-	
+
+	/**
+	 * This method is used to send keys into a text box.
+	 * 
+	 * @param element
+	 *            The web element object of text box
+	 * @param text
+	 *            The keys are sent
+	 * @throws Exception
+	 *             The exception is throws if input text not success
+	 */
+	public void inputText(WebElement element, String text) throws Exception {
+		try {
+			waitForElementDisplayed(element, 30);
+			element.click();
+			element.sendKeys(text);
+			hideKeyboard();
+			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
+		} catch (Exception e) {
+			HtmlReporter.fail(String.format("Can't input text [%s] to element [%s]", text, element.toString()));
+			throw e;
+		}
+	}
+
 	public void hideKeyboard() {
 		try {
 			driver.hideKeyboard();
-		}catch(WebDriverException e) {
+		} catch (WebDriverException e) {
 		}
 	}
 
@@ -214,26 +238,27 @@ public class AppiumBaseDriver {
 
 		}
 	}
-	
-	public void clickByPosition(WebElement element,String clickPosition) throws Exception {
+
+	public void clickByPosition(WebElement element, String clickPosition) throws Exception {
 		try {
-			waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			//waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
 			int leftX = element.getLocation().getX();
 			int rightX = leftX + element.getSize().getWidth();
 			int middleX = (rightX + leftX) / 2;
 			int upperY = element.getLocation().getY();
 			int lowerY = upperY + element.getSize().getHeight();
 			int middleY = (upperY + lowerY) / 2;
-			if(clickPosition.equalsIgnoreCase("left")) {
+			if (clickPosition.equalsIgnoreCase("left")) {
 				new TouchAction<>(driver).tap(PointOption.point(leftX + 10, middleY)).perform();
-			}else if(clickPosition.equalsIgnoreCase("right")) {
+			} else if (clickPosition.equalsIgnoreCase("right")) {
 				new TouchAction<>(driver).tap(PointOption.point(rightX - 10, middleY)).perform();
-			}else{
+			} else {
 				new TouchAction<>(driver).tap(PointOption.point(middleX, middleY)).perform();
 			}
 			HtmlReporter.pass(String.format("click on the " + clickPosition + " of element [%s]", element.toString()));
 		} catch (Exception e) {
-			HtmlReporter.fail(String.format("Can't click on the " + clickPosition + " of element [%s]", element.toString()));
+			HtmlReporter.fail(
+					String.format("Can't click on the " + clickPosition + " of element [%s]", element.toString()));
 			throw (e);
 
 		}
@@ -309,7 +334,7 @@ public class AppiumBaseDriver {
 			WebDriverWait wait = new WebDriverWait(driver, time);
 			wait.until(ExpectedConditions.visibilityOf(element));
 		} catch (TimeoutException e) {
-			HtmlReporter.fail(String.format("Element [%s] is not displayed in expected time = %s", element,time));
+			HtmlReporter.fail(String.format("Element [%s] is not displayed in expected time = %s", element, time));
 			return false;
 		}
 		return true;
@@ -578,7 +603,7 @@ public class AppiumBaseDriver {
 		}
 		return fileDir;
 	}
-	
+
 	/**
 	 * This method is used to re-launch application
 	 * 
@@ -588,14 +613,16 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	public void relaunchApp() throws Exception {
-		String appBundleId = PropertiesLoader.getPropertiesLoader().android_configuration.getProperty("appium.android.appPackage");
+		String appBundleId = PropertiesLoader.getPropertiesLoader().android_configuration
+				.getProperty("appium.android.appPackage");
 		try {
 			driver.terminateApp(appBundleId);
 			Thread.sleep(5000);
 			driver.activateApp(appBundleId);
+			Thread.sleep(5000);
 			HtmlReporter.pass("Relaunch app [" + appBundleId + "] sucessfully");
 		} catch (Exception e) {
-			HtmlReporter.fail("Relaunch app [" + appBundleId + "] failed",e,"");
+			HtmlReporter.fail("Relaunch app [" + appBundleId + "] failed", e, "");
 			throw (e);
 		}
 	}

@@ -12,11 +12,9 @@ public class RegisterPage {
 	
 	private AppiumBaseDriver driver;
 	
-	//private static final String abc = "abdfb";
-	//private static final String loginPageLink_selector = String.format(UIAutomatorSelectorEnum.RESOURCE_ID,"au.com.finstro.finstropay:id/have_account_link");
-	//@AndroidFindBy(uiAutomator=loginPageLink_selector)
 	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/have_account_link\"))")
     private WebElement loginPageLink;
+	
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/tvAgreement")
     private WebElement agreement;
     

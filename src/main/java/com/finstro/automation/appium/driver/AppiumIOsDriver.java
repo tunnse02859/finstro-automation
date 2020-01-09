@@ -35,8 +35,8 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 		String platformVersion = appium_configuration.getProperty("appium.platformVersion");
 		String deviceName = appium_configuration.getProperty("appium.deviceName");
 		String deviceUDID =  appium_configuration.getProperty("appium.device.udid");
-		boolean booleanMobileNoReset = Boolean.getBoolean(appium_configuration.getProperty("appium.noReset"));
-		boolean booleanMobileFullReset = Boolean.getBoolean(appium_configuration.getProperty("appium.fullReset"));
+		String booleanMobileNoReset = appium_configuration.getProperty("appium.noReset");
+		String booleanMobileFullReset = appium_configuration.getProperty("appium.fullReset");
 		String strAppiumVersion = appium_configuration.getProperty("appium.version");
 		
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, platform);

@@ -1,8 +1,12 @@
 package com.finstro.automation.pages;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+
+import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -16,23 +20,10 @@ public class LoginPINPage {
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/login_email")
     private WebElement loggedEmail;
 	
-	@AndroidFindBy(xpath="/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[1]")
-    private WebElement accessCode1;
+	
+	@AndroidFindBy(uiAutomator="new UiSelector().className(\"android.widget.EditText\")")
+    private List<WebElement> accessCode;
 
-    @AndroidFindBy(xpath="/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[2]")
-    private WebElement accessCode2;
-
-    @AndroidFindBy(xpath="/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[3]")
-    private WebElement accessCode3;
-
-    @AndroidFindBy(xpath="/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[4]")
-
-    private WebElement accessCode4;
-    @AndroidFindBy(xpath="/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[5]")
-
-    private WebElement accessCode5;
-    @AndroidFindBy(xpath="/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.ScrollView/android.widget.RelativeLayout/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText[6]")
-    private WebElement accessCode6;
 
 	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
     private WebElement submit;
@@ -65,13 +56,12 @@ public class LoginPINPage {
     }
 
     public void login(String code) throws Exception {
-        accessCode1.sendKeys(String.valueOf(code.charAt(0)));
-        accessCode1.sendKeys(String.valueOf(code.charAt(1)));
-        accessCode3.sendKeys(String.valueOf(code.charAt(2)));
-        accessCode4.sendKeys(String.valueOf(code.charAt(3)));
-        accessCode5.sendKeys(String.valueOf(code.charAt(4)));
-        accessCode6.sendKeys(String.valueOf(code.charAt(5)));
-        driver.click(submit);
+    	if(code.length() != 6)
+    		throw new Exception("Cannot do login in PIN screen with code != 6 charactor. input value was ["+ code +"]");
+    	for(int i = 0; i < 6; i++) {
+    		driver.inputText(accessCode.get(i), "" + code.charAt(i));
+    	}
+    	driver.click(submit);
     }
 
     public  void clickOnSubmit(){
