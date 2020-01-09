@@ -59,9 +59,11 @@ public class LoginPINPage {
     	if(code.length() != 6)
     		throw new Exception("Cannot do login in PIN screen with code != 6 charactor. input value was ["+ code +"]");
     	for(int i = 0; i < 6; i++) {
+    		driver.click(accessCode.get(i));
     		driver.inputText(accessCode.get(i), "" + code.charAt(i));
     	}
-    	driver.click(submit);
+    	if(driver.getDriver() instanceof AndroidDriver<?>)
+    		driver.click(submit);
     }
 
     public  void clickOnSubmit(){

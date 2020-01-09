@@ -49,9 +49,7 @@ public class AppiumBaseDriver {
 	}
 
 	public void setDefaultImplicitWaitTime() {
-
 		driver.manage().timeouts().implicitlyWait(DEFAULT_WAITTIME_SECONDS, TimeUnit.SECONDS);
-
 	}
 
 	/**
@@ -109,7 +107,6 @@ public class AppiumBaseDriver {
 
 		try {
 			waitForElementDisplayed(element, 30);
-			element.click();
 			element.sendKeys("");
 			hideKeyboard();
 			element.sendKeys(text);
@@ -134,7 +131,6 @@ public class AppiumBaseDriver {
 	public void inputText(WebElement element, String text) throws Exception {
 		try {
 			waitForElementDisplayed(element, 30);
-			element.click();
 			element.sendKeys(text);
 			hideKeyboard();
 			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
