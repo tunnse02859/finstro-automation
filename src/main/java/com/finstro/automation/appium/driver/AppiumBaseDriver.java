@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -33,8 +34,7 @@ import com.finstro.automation.report.Log;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.nativekey.AndroidKey;
-import io.appium.java_client.android.nativekey.KeyEvent;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
@@ -50,6 +50,24 @@ public class AppiumBaseDriver {
 
 	public void setDefaultImplicitWaitTime() {
 		driver.manage().timeouts().implicitlyWait(DEFAULT_WAITTIME_SECONDS, TimeUnit.SECONDS);
+	}
+
+	public boolean isIOSDriver() {
+		return driver instanceof IOSDriver<?> ? true : false;
+	}
+
+	public boolean isAndroidDriver() {
+		return driver instanceof AndroidDriver<?> ? true : false;
+	}
+
+	public WebElement findElementIgnoreError(By by) {
+		WebElement element = null;
+		try {
+			element = driver.findElement(by);
+			return element;
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -142,7 +160,9 @@ public class AppiumBaseDriver {
 
 	public void hideKeyboard() {
 		try {
-			driver.hideKeyboard();
+			if (isAndroidDriver()) {
+				driver.hideKeyboard();
+			}
 		} catch (WebDriverException e) {
 		}
 	}
@@ -201,21 +221,18 @@ public class AppiumBaseDriver {
 			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			return text;
 		} catch (Exception e) {
-			HtmlReporter.fail(String.format("The element [%s] is empty", element.toString()));
-			return "";
+			HtmlReporter.fail(String.format("The element [%s] is empty", element.toString()), e, "");
+			throw e;
 		}
 	}
 
 	public String getAttribute(WebElement element, String attribute) {
 		try {
-
 			String value = element.getAttribute(attribute);
 			HtmlReporter.pass(
 					String.format("Element [%s] has attribute [%s] is [%s]", element.toString(), attribute, value));
 			return value;
-
 		} catch (NoSuchElementException e) {
-
 			HtmlReporter.pass(String.format("Element [%s] has attribute [%s] is empty", element.toString(), attribute));
 			return "";
 
@@ -237,7 +254,7 @@ public class AppiumBaseDriver {
 
 	public void clickByPosition(WebElement element, String clickPosition) throws Exception {
 		try {
-			//waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			// waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
 			int leftX = element.getLocation().getX();
 			int rightX = leftX + element.getSize().getWidth();
 			int middleX = (rightX + leftX) / 2;
@@ -348,24 +365,56 @@ public class AppiumBaseDriver {
 	}
 
 	public boolean isElementEnabled(WebElement element) {
-
-		return element.isEnabled();
+		boolean result = element.isEnabled();
+		if (result) {
+			HtmlReporter.info(String.format("Element: [%s] is enabled", element.toString()));
+		} else {
+			HtmlReporter.info(String.format("Element: [%s] is not enabled", element.toString()));
+		}
+		return result;
 	}
 
 	public boolean isElementDisplayed(WebElement element) throws Exception {
-
-		return element.isDisplayed();
+		boolean result;
+		try {
+			result = element.isDisplayed();
+			if (result) {
+				HtmlReporter.info(String.format("Element: [%s] is displayed", element.toString()));
+			} else {
+				HtmlReporter.info(String.format("Element: [%s] is not displayed", element.toString()));
+			}
+			return result;
+		} catch (NoSuchElementException e) {
+			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
+			return false;
+		}
 
 	}
 
 	public boolean isElementSelected(WebElement element) throws Exception {
+		boolean result = element.isSelected();
+		if (result) {
+			HtmlReporter.info(String.format("Element: [%s] is selected", element.toString()));
+		} else {
+			HtmlReporter.info(String.format("Element: [%s] is not selected", element.toString()));
+		}
+		return result;
+	}
 
-		return element.isSelected();
-
+	public WebElement isElementPresented(By element, int time) {
+		WebElement e = null;
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, time);
+			e = wait.until(ExpectedConditions.presenceOfElementLocated(element));
+			HtmlReporter.info(String.format("Element: [%s] is presented", element.toString()));
+			return e;
+		} catch (TimeoutException ex) {
+			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
+			return null;
+		}
 	}
 
 	public boolean isAlertPresent() {
-
 		try {
 
 			driver.switchTo().alert();
@@ -609,8 +658,14 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	public void relaunchApp() throws Exception {
-		String appBundleId = PropertiesLoader.getPropertiesLoader().android_configuration
-				.getProperty("appium.android.appPackage");
+		String appBundleId = "";
+		if (isAndroidDriver()) {
+			appBundleId = PropertiesLoader.getPropertiesLoader().android_configuration
+					.getProperty("appium.ios.app.bundleId");
+		} else if (isIOSDriver()) {
+			appBundleId = PropertiesLoader.getPropertiesLoader().ios_configuration
+					.getProperty("appium.ios.app.bundleId");
+		}
 		try {
 			driver.terminateApp(appBundleId);
 			Thread.sleep(5000);

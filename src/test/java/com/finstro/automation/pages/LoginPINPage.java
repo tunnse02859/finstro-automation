@@ -5,6 +5,7 @@ import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 import java.util.List;
 
@@ -15,13 +16,15 @@ public class LoginPINPage {
 	
 	public AppiumBaseDriver driver;
     @AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[contains(@name,'ERROR'])")
     private  WebElement errorMessage;
 
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/login_email")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[2]")
     private WebElement loggedEmail;
 	
-	
 	@AndroidFindBy(uiAutomator="new UiSelector().className(\"android.widget.EditText\")")
+	@iOSXCUITFindBy(className = "XCUIElementTypeTextField")
     private List<WebElement> accessCode;
 
 
@@ -29,10 +32,12 @@ public class LoginPINPage {
     private WebElement submit;
 	
 	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/sign_up_link\"))")
-    private WebElement registerPageLink;
+	@iOSXCUITFindBy(accessibility = "Not a member yet? Sign Up")
+	private WebElement registerPageLink;
 	
 	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/forgot_access_code\"))")
-    private WebElement forgotAccessCodePageLink;
+	@iOSXCUITFindBy(accessibility = "Forgotten your Access Code?")
+	private WebElement forgotAccessCodePageLink;
 
     public String getErrorMessage(){
         return errorMessage.getText();

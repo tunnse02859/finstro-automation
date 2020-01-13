@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import com.finstro.automation.excelhelper.ExcelHelper;
+import com.finstro.automation.pages.RegisterPage;
 import com.finstro.automation.report.Log;
 
 public class MobileTestSetup extends MobileTestBaseSetup {
@@ -36,7 +37,6 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 
 	@BeforeClass
 	public void beforeClass() throws Exception {
-
 		super.beforeClass();
 		Log.startTestCase(this.getClass().getName());
 	}
@@ -45,6 +45,9 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 	public void beforeMethod(Method method) throws Exception {
 		Log.info("+++++++++ Start testing: " + method.getName() + " ++++++++++++++");
 		super.beforeMethod(method);
+		if(driver.isIOSDriver()) {
+			new RegisterPage(driver).allowNotification();
+		}
 	}
 
 	@AfterMethod(alwaysRun = true)
