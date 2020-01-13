@@ -44,7 +44,7 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.NO_RESET, booleanMobileNoReset);
 		capabilities.setCapability(MobileCapabilityType.FULL_RESET, booleanMobileFullReset);
-		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
+		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
 		
 		if (!(strAppiumVersion == null || strAppiumVersion.equals(""))) {
 			capabilities.setCapability(MobileCapabilityType.APPIUM_VERSION, strAppiumVersion);
@@ -57,23 +57,27 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 
 	private void setIOSAppCapabilities(DesiredCapabilities capabilities) throws Exception {
 		
-		String strMobileAndroidApp = FilePaths.getResourcePath("/app/" + ios_configuration.getProperty("appium.android.app"));
-		String strMobileAppPackage = ios_configuration.getProperty("appium.android.appPackage");
-		String strMobileAppActivity = ios_configuration.getProperty("appium.android.appActivity");
+		String strMobileIOSApp = FilePaths.getResourcePath("/app/" + ios_configuration.getProperty("appium.ios.app"));
+		String agentPath = ios_configuration.getProperty("appium.ios.agentPath");
+		String bootstrapPath = ios_configuration.getProperty("appium.ios.bootstrapPath");
+		String xcodeOrgId = ios_configuration.getProperty("appium.ios.xcodeOrgId");
+		String xcodeSigningId = ios_configuration.getProperty("appium.ios.xcodeSigningId");
 		
-		capabilities.setCapability(MobileCapabilityType.APP, strMobileAndroidApp);
+		capabilities.setCapability(MobileCapabilityType.APP, strMobileIOSApp);
 		
-		if (!(strMobileAppPackage == null || strMobileAppPackage.equals(""))) {
-			
-			capabilities.setCapability("appPackage", strMobileAppPackage);
-			
+		if(!(agentPath == null || agentPath.equals(""))) {
+			capabilities.setCapability("agentPath", agentPath);
 		}
-		
-		if (!(strMobileAppActivity == null || strMobileAppActivity.equals(""))) {
-			
-			capabilities.setCapability("appActivity", strMobileAppActivity);
-			
+		if(!(bootstrapPath == null || bootstrapPath.equals(""))) {
+			capabilities.setCapability("bootstrapPath", bootstrapPath);
 		}
+		if(!(xcodeOrgId == null || xcodeOrgId.equals(""))) {
+			capabilities.setCapability("xcodeOrgId", xcodeOrgId);
+		}
+		if(!(xcodeSigningId == null || xcodeSigningId.equals(""))) {
+			capabilities.setCapability("xcodeSigningId", xcodeSigningId);
+		}
+	
 	}
 	
 	private void setIOSBrowserCapabilities(DesiredCapabilities capabilities) {
@@ -102,10 +106,10 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 	public void createDriver() throws Exception {
 		
 		String strAppiumServer = appium_configuration.getProperty("appium.server");
+		DesiredCapabilities capabilities = null;
 		
 		try {
-			
-			DesiredCapabilities capabilities = new DesiredCapabilities();
+			capabilities = new DesiredCapabilities();
 			setAppiumCapabilities(capabilities);
 			
 			// Use SauceLab remote server instead of local Appium server if configured
@@ -133,12 +137,11 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 			
 			driver = new IOSDriver<WebElement>(new URL(strAppiumServer), capabilities);
 
-			Log.info("Starting remote Android driver for: " + capabilities.toString());
-			HtmlReporter.pass("Starting remote Android driver for: " + capabilities.toString());
-
+			Log.info("Starting remote IOS driver for: " + capabilities.toString());
+			HtmlReporter.pass("Starting remote IOS for: " + capabilities.toString());
 		} catch (Exception e) {
-			Log.error("Can't start the webdriver!!! : " + e);
-			HtmlReporter.fail("Can't start the webdriver!!! : ", e, "");
+			Log.error("Can't start the webdriver!!! : " + e + "\nCapabilities: \n" + capabilities.toString());
+			HtmlReporter.fail("Can't start the webdriver!!! : \n Capabilities: \n" + capabilities.toString(), e, "");
 			throw (e);
 		}
 	}
@@ -160,12 +163,12 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 
 			driver = new IOSDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 
-			Log.info("Starting Android driver on AWS");
-			HtmlReporter.pass("Starting Andoid driver on AWS");
+			Log.info("Starting IOS driver on AWS");
+			HtmlReporter.pass("Starting IOS driver on AWS");
 
 		} catch (Exception e) {
-			Log.error("Can't start the android driver!!! : " + e);
-			HtmlReporter.fail("Can't start the android driver!!! : ", e, "");
+			Log.error("Can't start the IOS driver!!! : " + e);
+			HtmlReporter.fail("Can't start the IOS driver!!! : ", e, "");
 			throw (e);
 		}
 	}

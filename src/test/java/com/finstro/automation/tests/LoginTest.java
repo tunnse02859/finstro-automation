@@ -10,7 +10,7 @@ import com.finstro.automation.setup.MobileTestSetup;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
 
@@ -23,7 +23,7 @@ public class LoginTest extends MobileTestSetup {
 
 	private static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
 	private static final String LOGIN_ACCESS_CODE = "033933";
-
+	private static String LOGIN_FAILED_EXPECTED_MESSAGE;
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
 		registerPage = new RegisterPage(driver);
@@ -31,7 +31,12 @@ public class LoginTest extends MobileTestSetup {
 		forgotAccessCodePage = new ForgotAccessCodePage(driver);
 		homePage = new HomePage(driver);
 		loginPINPage = new LoginPINPage(driver);
-		assertTrue(registerPage.isActive(),"Register page didnt showed as default page in first installation");
+		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
+				"Register page showed as default page");
+		LOGIN_FAILED_EXPECTED_MESSAGE = "Incorrect username or password.";
+		if(driver.isIOSDriver()) {
+			LOGIN_FAILED_EXPECTED_MESSAGE = "ERROR, " + LOGIN_FAILED_EXPECTED_MESSAGE;
+		}
 	}
 
 	@Test
@@ -43,61 +48,64 @@ public class LoginTest extends MobileTestSetup {
 	public void FPC_1292_VerifyUserLoginUnsuccessfulIfHeInputInvalidEmailAddress() throws Exception {
 		String invalidEmail = LOGIN_EMAIL_ADDRESS + "extra";
 		registerPage.toLoginPage();
-		loginPage.login(invalidEmail,LOGIN_ACCESS_CODE);
+		loginPage.login(invalidEmail, LOGIN_ACCESS_CODE);
 		String actualMessage = loginPage.getErrorMessage();
-		String expectedMessage = "Incorrect username or password.";
-		assertEquals(expectedMessage,actualMessage,"Error message isnt correct");
+		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
 	}
+
 	@Test
 	public void FPC_1293_VerifyUserLoginUnsuccessfulIfHeDoesNotInputEmailAddress() throws Exception {
 		String invalidEmail = "";
 		registerPage.toLoginPage();
-		loginPage.login(invalidEmail,LOGIN_ACCESS_CODE);
+		loginPage.login(invalidEmail, LOGIN_ACCESS_CODE);
 		String actualMessage = loginPage.getErrorMessage();
-		String expectedMessage = "Incorrect username or password.";
-		assertEquals(expectedMessage,actualMessage,"Error message isnt correct");
+		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
 	}
 
 	@Test
 	public void FPC_1294_VerifyUserLoginUnsuccessfulIfHeInputInvalidTheAccessCode() throws Exception {
 		registerPage.toLoginPage();
 		String invalidCode = "033999";
-		loginPage.login(LOGIN_EMAIL_ADDRESS,invalidCode);
+		loginPage.login(LOGIN_EMAIL_ADDRESS, invalidCode);
 		String actualMessage = loginPage.getErrorMessage();
-		String expectedMessage = "Incorrect username or password.";
-		assertEquals(expectedMessage,actualMessage,"Error message isnt correct");
+		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
 	}
 
 	@Test
 	public void FPC_1295_VerifyUserLoginUnsuccessfulIfHeDoesNotInputAccessCode() throws Exception {
 		registerPage.toLoginPage();
 		String invalidCode = "";
-		loginPage.login(LOGIN_EMAIL_ADDRESS,invalidCode);
+		loginPage.login(LOGIN_EMAIL_ADDRESS, invalidCode);
 		String actualMessage = loginPage.getErrorMessage();
-		String expectedMessage = "Incorrect username or password.";
-		assertEquals(expectedMessage,actualMessage,"Error message isnt correct");
+		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
 	}
 
 	@Test
 	public void FPC_1296_VerifyUserGoToTheSignUpScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
-		assertTrue(loginPage.isActive(),"Login screen didnt showed after tap on login");
+		assertTrue(loginPage.isActive(), "Login screen didnt showed after tap on login",
+				"Login screen showed after click on Login from register creen");
 		loginPage.toRegisterPage();
-		assertTrue(registerPage.isActive(),"Register page didnt showed after tap on sign up");
+		assertTrue(registerPage.isActive(), "Register screen didnt showed after tap on sign up",
+				"Register screen showed after click on sign up from login screen");
 	}
 
 	@Test
 	public void FPC_1297_VerifyUserGoToTheForgotAccessCodeScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
-		assertTrue(loginPage.isActive(),"Login screen didnt showed after tap on login");
+		assertTrue(loginPage.isActive(), "Login screen didnt showed after tap on login",
+				"Login screen showed after click on Login from register creen");
 		loginPage.toForgotAccessCodePage();
-		assertTrue(forgotAccessCodePage.isActive(),"Forgot access code page didnt showed after tap on forget access code");
+		assertTrue(forgotAccessCodePage.isActive(),
+				"Forgot access code screen didnt showed after tap on forget access code",
+				"Forgot access code screen showed after click on forget access code");
 	}
 
 	@Test
 	public void FPC_1298_VerifyUserGoToTheLoginScreenSuccessfully() throws Exception {
 		registerPage.toLoginPage();
-		assertTrue(loginPage.isActive(),"Login page didnt showed after click on login");
+		assertTrue(loginPage.isActive(), "Login page didnt showed after click on login",
+				"Login page showed after click on login");
 	}
 
 	@Test
@@ -107,18 +115,19 @@ public class LoginTest extends MobileTestSetup {
 		String invalidCode = "123456";
 		loginPINPage.login(invalidCode);
 		String actualMessage = loginPINPage.getErrorMessage();
-		String expectedMessage = "Incorrect username or password.";
-		assertEquals(expectedMessage,actualMessage,"Error message isnt correct");
+		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
 	}
 
 	@Test
 	public void FPC_1300_VerifyUserLoginUnsuccessfulIfHeDoesNotInputAccessCodePin() throws Exception {
-		loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
-		driver.relaunchApp();
-		loginPINPage.clickOnSubmit();
-		String actualMessage = loginPINPage.getErrorMessage();
-		String expectedMessage = "Incorrect username or password.";
-		assertEquals(expectedMessage,actualMessage,"Error message isnt correct");
+		if (driver.isAndroidDriver()) {
+			loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+			driver.relaunchApp();
+			loginPINPage.clickOnSubmit();
+			String actualMessage = loginPINPage.getErrorMessage();
+			assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct",
+					"Error message displayed correctly");
+		}
 	}
 
 	@Test
@@ -126,7 +135,8 @@ public class LoginTest extends MobileTestSetup {
 		loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
 		driver.relaunchApp();
 		loginPINPage.toRegisterPage();
-		assertTrue(registerPage.isActive());
+		assertTrue(registerPage.isActive(), "Register Page didnt showed after click on Signup from PIN page",
+				"Register Page showed after click on Signup from PIN page");
 	}
 
 	@Test
@@ -134,15 +144,8 @@ public class LoginTest extends MobileTestSetup {
 		loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
 		driver.relaunchApp();
 		loginPINPage.clickOnLoggedEmail();
-		assertTrue(loginPage.isActive(),"login");
+		assertTrue(loginPage.isActive(), "login screen didnot showed after on logged email in PIN screen",
+				"login screen showed after on logged email in PIN screen");
 	}
 
-
-//	@Test
-//	public void login14_VerifyThePINScreenIsOpenAfterLogoutAndReopenTheApp() throws Exception {
-//		loginPage.doLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
-//		driver.relaunchApp();
-//		assertTrue(loginPINPage.isActive(),"Login PIN Page didnt showed after login and re-launch app");
-//		assertEquals(loginPINPage.getLoggedEmail(),LOGIN_EMAIL_ADDRESS,"incorrect email displayed after login and re-launch app");
-//	}
 }

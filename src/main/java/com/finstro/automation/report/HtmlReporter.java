@@ -163,10 +163,32 @@ public class HtmlReporter {
 	 * @throws Exception
 	 */
 	public static void pass(String strDescription) {
-
 		getTest().pass(strDescription);
 		Log.info(strDescription);
-
+	}
+	
+	/**
+	 * To write a passed step to report
+	 * 
+	 * @param strDescription
+	 *            The Step's description
+	 * @throws Exception
+	 */
+	public static void warning(String strDescription) {
+		getTest().warning(strDescription);
+		Log.warn(strDescription);
+	}
+	
+	/**
+	 * To write a passed step to report
+	 * 
+	 * @param strDescription
+	 *            The Step's description
+	 * @throws Exception
+	 */
+	public static void info(String strDescription) {
+		getTest().info(strDescription);
+		Log.info(strDescription);
 	}
 
 	/**

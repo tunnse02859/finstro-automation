@@ -7,14 +7,18 @@ import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class HomePage {
 	
 	private AppiumBaseDriver driver;
 	
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/verification_title")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='We are here to help']")
     private WebElement title;
+	
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/verification_subtitle")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='We are here to help']")
     private WebElement subTitle;
 	
 	public HomePage(AppiumBaseDriver driver){
