@@ -62,7 +62,7 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 	}
 
 	@AfterSuite(alwaysRun = true)
-	public void afterSuite() {
+	public void afterSuite() throws Exception {
 		super.afterSuite();
 	}
 }

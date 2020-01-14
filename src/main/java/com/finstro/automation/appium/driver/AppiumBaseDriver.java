@@ -1,6 +1,7 @@
 package com.finstro.automation.appium.driver;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.GregorianCalendar;
@@ -221,7 +222,7 @@ public class AppiumBaseDriver {
 			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			return text;
 		} catch (Exception e) {
-			HtmlReporter.fail(String.format("The element [%s] is empty", element.toString()), e, "");
+			HtmlReporter.fail(String.format("Cannot get text of the element [%s]", element.toString()), e, "");
 			throw e;
 		}
 	}
@@ -675,6 +676,28 @@ public class AppiumBaseDriver {
 		} catch (Exception e) {
 			HtmlReporter.fail("Relaunch app [" + appBundleId + "] failed", e, "");
 			throw (e);
+		}
+	}
+	
+	/**
+	 * This method is used to reset application state before new test case run
+	 * 
+	 * @author tunn6
+	 * @param None
+	 * @return None
+	 * @throws Exception 
+	 * @throws Exception
+	 */
+	public void resetApp() throws Exception {
+		try {
+			driver.closeApp();
+			Thread.sleep(5000);
+			driver.launchApp();
+			Thread.sleep(3000);
+			HtmlReporter.pass("Reset app successfully");
+		}catch(Exception e) {
+			HtmlReporter.fail("Cannot reset app!", e,"");
+			throw e;
 		}
 	}
 

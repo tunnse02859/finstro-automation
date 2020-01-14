@@ -26,10 +26,10 @@ public class MobileTestBaseSetup {
 
 	@BeforeSuite
 	public void beforeSuite() throws Exception {
-
 		/*********** Init Html reporter *************************/
 		FilePaths.initReportFolder();
 		HtmlReporter.setReporter(FilePaths.getReportFilePath());
+		driver = new AppiumHandler().startDriver();
 	}
 
 	@BeforeClass
@@ -40,22 +40,17 @@ public class MobileTestBaseSetup {
 	@BeforeMethod
 	public void beforeMethod(Method method) throws Exception {
 		HtmlReporter.createNode(this.getClass().getSimpleName(), method.getName(), "");
-		driver = new AppiumHandler().startDriver();
 	}
 
 	@AfterMethod
 	public void afterMethod(ITestResult result) throws Exception {
-		
 		String mess = "";
-		
 		try {
 			switch (result.getStatus()) {
-			
 				case ITestResult.SUCCESS:
 					mess = String.format("The test [%s] is PASSED", result.getName());
 					HtmlReporter.pass(mess);
-					break;
-					
+					break;	
 				case ITestResult.SKIP:
 					mess = String.format("The test [%s] is PASSED", result.getName());
 					HtmlReporter.pass(mess);
@@ -64,16 +59,14 @@ public class MobileTestBaseSetup {
 				case ITestResult.FAILURE:
 					mess = String.format("The test [%s] is FAILED", result.getName());
 					HtmlReporter.fail(mess, result.getThrowable(), driver.takeScreenshot());;
-					break;
-					
+					break;		
 				default:
 					break;
 			}
 		} catch (Exception e) {
 		}
-
 		finally {
-			driver.closeDriver();
+			driver.resetApp();
 		}
 		
 	}
@@ -83,7 +76,8 @@ public class MobileTestBaseSetup {
 	}
 
 	@AfterSuite(alwaysRun = true)
-	public void afterSuite() {
+	public void afterSuite() throws Exception {
 		HtmlReporter.flush();
+		driver.closeDriver();
 	}
 }

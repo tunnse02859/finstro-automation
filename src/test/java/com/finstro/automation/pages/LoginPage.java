@@ -19,6 +19,9 @@ public class LoginPage {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[contains(@name,'ERROR')]")
 	private WebElement errorMessage;
 
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
+	private WebElement errorType;
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/login_email_edt")
 	@iOSXCUITFindBy(accessibility = "email")
 	private WebElement emailAddress;
@@ -41,7 +44,7 @@ public class LoginPage {
 
 	@iOSXCUITFindBy(accessibility = "Maybe Later")
 	private WebElement touchID_DontSave;
-	
+
 	@iOSXCUITFindBy(accessibility = "Not Now")
 	private WebElement savePass_NotNow;
 
@@ -73,17 +76,23 @@ public class LoginPage {
 		assertTrue(this.isActive(), "Login screen didnt showed after tap on login",
 				"Login screen showed after tap on login");
 		login(email, code);
-		if(driver.isElementDisplayed(touchID_DontSave)) {
-			driver.click(touchID_DontSave);
-		}
-		if(driver.isElementDisplayed(savePass_NotNow)) {
+		if (driver.isElementDisplayed(savePass_NotNow)) {
 			driver.click(savePass_NotNow);
+		}
+		if (driver.isElementDisplayed(touchID_DontSave)) {
+			driver.click(touchID_DontSave);
 		}
 		assertTrue(new HomePage(driver).isActive(), "Home screen didnt showed after login",
 				"Home screen showed after login");
 	}
 
-	public String getErrorMessage() throws Exception {
-		return driver.getText(errorMessage);
+	public void verifyErrorMessage(String expectedMessage) throws Exception {
+		String actualMessage = "";
+		if (driver.isAndroidDriver()) {
+			actualMessage = driver.getText(errorType) + ", " + driver.getText(errorMessage);
+		} else {
+			actualMessage = driver.getText(errorMessage);
+		}
+		assertEquals(actualMessage, expectedMessage, "Error message isnt correct", "Error message displayed correctly");
 	}
 }

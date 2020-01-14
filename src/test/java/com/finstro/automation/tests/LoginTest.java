@@ -1,7 +1,6 @@
 package com.finstro.automation.tests;
 
 import com.finstro.automation.pages.ForgotAccessCodePage;
-import com.finstro.automation.pages.HomePage;
 import com.finstro.automation.pages.LoginPINPage;
 import com.finstro.automation.pages.LoginPage;
 import com.finstro.automation.pages.RegisterPage;
@@ -19,24 +18,19 @@ public class LoginTest extends MobileTestSetup {
 	private LoginPINPage loginPINPage;
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
-	private HomePage homePage;
 
-	private static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
-	private static final String LOGIN_ACCESS_CODE = "033933";
-	private static String LOGIN_FAILED_EXPECTED_MESSAGE;
+	private static final String LOGIN_EMAIL_ADDRESS = "huongltd2105@gmail.com";
+	private static final String LOGIN_ACCESS_CODE = "930947";
+	private static final String LOGIN_FAILED_EXPECTED_MESSAGE = "ERROR, Incorrect username or password.";
+	
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
 		forgotAccessCodePage = new ForgotAccessCodePage(driver);
-		homePage = new HomePage(driver);
 		loginPINPage = new LoginPINPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
-		LOGIN_FAILED_EXPECTED_MESSAGE = "Incorrect username or password.";
-		if(driver.isIOSDriver()) {
-			LOGIN_FAILED_EXPECTED_MESSAGE = "ERROR, " + LOGIN_FAILED_EXPECTED_MESSAGE;
-		}
 	}
 
 	@Test
@@ -47,10 +41,11 @@ public class LoginTest extends MobileTestSetup {
 	@Test
 	public void FPC_1292_VerifyUserLoginUnsuccessfulIfHeInputInvalidEmailAddress() throws Exception {
 		String invalidEmail = LOGIN_EMAIL_ADDRESS + "extra";
+		String expectedMessaged = "ERROR, User not found";
 		registerPage.toLoginPage();
+		
 		loginPage.login(invalidEmail, LOGIN_ACCESS_CODE);
-		String actualMessage = loginPage.getErrorMessage();
-		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
+		loginPage.verifyErrorMessage(expectedMessaged);
 	}
 
 	@Test
@@ -58,8 +53,7 @@ public class LoginTest extends MobileTestSetup {
 		String invalidEmail = "";
 		registerPage.toLoginPage();
 		loginPage.login(invalidEmail, LOGIN_ACCESS_CODE);
-		String actualMessage = loginPage.getErrorMessage();
-		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
+		loginPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
 	@Test
@@ -67,8 +61,7 @@ public class LoginTest extends MobileTestSetup {
 		registerPage.toLoginPage();
 		String invalidCode = "033999";
 		loginPage.login(LOGIN_EMAIL_ADDRESS, invalidCode);
-		String actualMessage = loginPage.getErrorMessage();
-		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
+		loginPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
 	@Test
@@ -76,8 +69,7 @@ public class LoginTest extends MobileTestSetup {
 		registerPage.toLoginPage();
 		String invalidCode = "";
 		loginPage.login(LOGIN_EMAIL_ADDRESS, invalidCode);
-		String actualMessage = loginPage.getErrorMessage();
-		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
+		loginPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
 	@Test
@@ -114,8 +106,7 @@ public class LoginTest extends MobileTestSetup {
 		driver.relaunchApp();
 		String invalidCode = "123456";
 		loginPINPage.login(invalidCode);
-		String actualMessage = loginPINPage.getErrorMessage();
-		assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct", "Error message displayed correctly");
+		loginPINPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
 	@Test
@@ -124,9 +115,7 @@ public class LoginTest extends MobileTestSetup {
 			loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
 			driver.relaunchApp();
 			loginPINPage.clickOnSubmit();
-			String actualMessage = loginPINPage.getErrorMessage();
-			assertEquals(LOGIN_FAILED_EXPECTED_MESSAGE, actualMessage, "Error message isnt correct",
-					"Error message displayed correctly");
+			loginPINPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 		}
 	}
 

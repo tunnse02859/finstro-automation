@@ -7,6 +7,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
+import static com.finstro.automation.utility.Assertion.assertEquals;
+
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -16,8 +18,12 @@ public class LoginPINPage {
 	
 	public AppiumBaseDriver driver;
     @AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-    @iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[contains(@name,'ERROR'])")
+    //@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[contains(@name,'ERROR')]")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeApplication[@name=\"Finstro\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther")
     private  WebElement errorMessage;
+    
+    @AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
+	private WebElement errorType;
 
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/login_email")
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[2]")
@@ -39,9 +45,16 @@ public class LoginPINPage {
 	@iOSXCUITFindBy(accessibility = "Forgotten your Access Code?")
 	private WebElement forgotAccessCodePageLink;
 
-    public String getErrorMessage(){
-        return errorMessage.getText();
-    }
+    
+    public void verifyErrorMessage(String expectedMessage) throws Exception {
+		String actualMessage = "";
+		if (driver.isAndroidDriver()) {
+			actualMessage = driver.getText(errorType) + ", " + driver.getText(errorMessage);
+		} else {
+			actualMessage = driver.getText(errorMessage);
+		}
+		assertEquals(actualMessage, expectedMessage, "Error message isnt correct", "Error message displayed correctly");
+	}
 
     public void clickOnLoggedEmail(){
         loggedEmail.click();
@@ -67,7 +80,7 @@ public class LoginPINPage {
     		driver.click(accessCode.get(i));
     		driver.inputText(accessCode.get(i), "" + code.charAt(i));
     	}
-    	if(driver.getDriver() instanceof AndroidDriver<?>)
+    	if(driver.isAndroidDriver())
     		driver.click(submit);
     }
 

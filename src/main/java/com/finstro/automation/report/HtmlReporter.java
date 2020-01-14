@@ -276,9 +276,7 @@ public class HtmlReporter {
 			strScreenshotPath = "file:///" + strScreenshotPath;
 			getTest().fail(strDescription).fail(e).addScreenCaptureFromPath(strScreenshotPath);
 		}
-
 		Log.error(strDescription);
-
 	}
 
 	/**

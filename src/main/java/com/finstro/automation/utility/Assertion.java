@@ -14,9 +14,9 @@ public class Assertion {
 		}
 	}
 	
-	public static void assertEquals(String expectedValue, String actualValue,String errorMess, String successMess) throws Exception {
+	public static void assertEquals(String actualValue, String expectedValue,String errorMess, String successMess) throws Exception {
 		try {
-			Assert.assertEquals(expectedValue,actualValue,errorMess);
+			Assert.assertEquals(actualValue,expectedValue,errorMess);
 			HtmlReporter.pass(successMess);
 		}catch(Exception e) {
 			HtmlReporter.fail(errorMess,e,"");

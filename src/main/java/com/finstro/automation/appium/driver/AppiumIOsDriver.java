@@ -6,7 +6,6 @@ import java.util.Properties;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.utility.FilePaths;
 import com.finstro.automation.utility.PropertiesLoader;
@@ -133,15 +132,10 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 				setIOSAppCapabilities(capabilities);
 				
 			}
-			
-			
 			driver = new IOSDriver<WebElement>(new URL(strAppiumServer), capabilities);
-
-			Log.info("Starting remote IOS driver for: " + capabilities.toString());
-			HtmlReporter.pass("Starting remote IOS for: " + capabilities.toString());
+			Log.info("Starting remote IOS for: " + capabilities.toString());
 		} catch (Exception e) {
-			Log.error("Can't start the webdriver!!! : " + e + "\nCapabilities: \n" + capabilities.toString());
-			HtmlReporter.fail("Can't start the webdriver!!! : \n Capabilities: \n" + capabilities.toString(), e, "");
+			Log.error("Can't start the webdriver!!! : \n Capabilities: \n" + capabilities.toString() + "\n" + e.getMessage());
 			throw (e);
 		}
 	}
@@ -160,15 +154,10 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 
 		DesiredCapabilities capabilities = null;
 		try {
-
 			driver = new IOSDriver<WebElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
 			Log.info("Starting IOS driver on AWS");
-			HtmlReporter.pass("Starting IOS driver on AWS");
-
 		} catch (Exception e) {
-			Log.error("Can't start the IOS driver!!! : " + e);
-			HtmlReporter.fail("Can't start the IOS driver!!! : ", e, "");
+			Log.error("Can't start the IOS driver!!! : \n" + e.getMessage());
 			throw (e);
 		}
 	}
