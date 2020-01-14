@@ -23,7 +23,7 @@ public class FindYourBusinessPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.waitForElementDisplayed(title, 10);
+		return driver.isElementDisplayed(title);
 	}
 	
 
