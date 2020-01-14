@@ -8,7 +8,7 @@ public class Assertion {
 		try {
 			Assert.assertTrue(expected,errorMess);
 			HtmlReporter.pass(successMess);
-		}catch(Exception e) {
+		}catch(AssertionError e) {
 			HtmlReporter.fail(errorMess,e,"");
 			throw e;
 		}
@@ -18,7 +18,7 @@ public class Assertion {
 		try {
 			Assert.assertEquals(actualValue,expectedValue,errorMess);
 			HtmlReporter.pass(successMess);
-		}catch(Exception e) {
+		}catch(AssertionError e) {
 			HtmlReporter.fail(errorMess,e,"");
 			throw e;
 		}

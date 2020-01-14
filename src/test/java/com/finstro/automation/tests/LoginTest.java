@@ -19,8 +19,8 @@ public class LoginTest extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 
-	private static final String LOGIN_EMAIL_ADDRESS = "huongltd2105@gmail.com";
-	private static final String LOGIN_ACCESS_CODE = "930947";
+	private static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
+	private static final String LOGIN_ACCESS_CODE = "033933";
 	private static final String LOGIN_FAILED_EXPECTED_MESSAGE = "ERROR, Incorrect username or password.";
 	
 	@BeforeMethod
