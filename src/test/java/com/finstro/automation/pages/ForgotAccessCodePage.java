@@ -16,7 +16,7 @@ public class ForgotAccessCodePage {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/forgot_access_title")
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Reset Access']")
+	@iOSXCUITFindBy(iOSNsPredicate = "name='Reset Access'")
 	private WebElement title;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")

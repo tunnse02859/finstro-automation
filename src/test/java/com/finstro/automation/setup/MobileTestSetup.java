@@ -46,7 +46,7 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 		Log.info("+++++++++ Start testing: " + method.getName() + " ++++++++++++++");
 		super.beforeMethod(method);
 		if(driver.isIOSDriver()) {
-			new RegisterPage(driver).allowNotification();
+			new RegisterPage(driver).dontAllowNotification();
 		}
 	}
 

@@ -2,7 +2,6 @@ package com.finstro.automation.pages;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -18,8 +17,7 @@ public class LoginPINPage {
 	
 	public AppiumBaseDriver driver;
     @AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-    //@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[contains(@name,'ERROR')]")
-    @iOSXCUITFindBy(xpath = "//XCUIElementTypeApplication[@name=\"Finstro\"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther")
+    @iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
     private  WebElement errorMessage;
     
     @AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")

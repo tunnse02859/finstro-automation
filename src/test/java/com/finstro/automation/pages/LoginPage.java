@@ -16,9 +16,8 @@ public class LoginPage {
 	public AppiumBaseDriver driver;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[contains(@name,'ERROR')]")
+	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
 	private WebElement errorMessage;
-
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
 	private WebElement errorType;
 
@@ -76,14 +75,16 @@ public class LoginPage {
 		assertTrue(this.isActive(), "Login screen didnt showed after tap on login",
 				"Login screen showed after tap on login");
 		login(email, code);
-		if (driver.isElementDisplayed(savePass_NotNow)) {
-			driver.click(savePass_NotNow);
+		if (driver.isIOSDriver()) {
+			if (driver.isElementDisplayed(savePass_NotNow)) {
+				driver.click(savePass_NotNow);
+			}
+			if (driver.isElementDisplayed(touchID_DontSave)) {
+				driver.click(touchID_DontSave);
+			}
 		}
-		if (driver.isElementDisplayed(touchID_DontSave)) {
-			driver.click(touchID_DontSave);
-		}
-		assertTrue(new HomePage(driver).isActive(), "Home screen didnt showed after login",
-				"Home screen showed after login");
+		assertTrue(new SelectBusinessCardPage(driver).isActive(), "Select Card screen didnt showed after login",
+				"Select Card screen showed after login");
 	}
 
 	public void verifyErrorMessage(String expectedMessage) throws Exception {
