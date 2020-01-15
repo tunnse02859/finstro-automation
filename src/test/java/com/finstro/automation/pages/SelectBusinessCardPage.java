@@ -55,9 +55,12 @@ public class SelectBusinessCardPage {
     private WebElement card500000;
     
     
+    
+    
     public boolean isActive() throws Exception{
         return (driver.isElementDisplayed(title) && driver.isElementDisplayed(subTitle));
     }
+    
     
 
 	public void clickOnCard(String money) throws Exception {

@@ -11,6 +11,7 @@ import com.finstro.automation.pages.ForgotAccessCodePage;
 import com.finstro.automation.pages.LoginPage;
 import com.finstro.automation.pages.RegisterPage;
 import com.finstro.automation.report.HtmlReporter;
+import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 
@@ -19,8 +20,6 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	
-	private String VALID_EMAIL = "huongltd2105@gmail.com";
-	private String VALID_MOBILE_NUMBER = "0123456789";
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
@@ -96,7 +95,7 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 		String invalidEmail = Common.randomAlphaNumeric(15) + "@" + Common.randomLowerAlpha(5) + ".com";
 		
 		// input valid Email and mismatch mobile number;
-		forgotAccessCodePage.inputEmailAdress(VALID_EMAIL);
+		forgotAccessCodePage.inputEmailAdress(Constant.LOGIN_EMAIL_ADDRESS);
 		forgotAccessCodePage.inputMobileNumber(invalidMobileNumber);
 		forgotAccessCodePage.submit();
 		forgotAccessCodePage.verifyPopupMessage(expectedMessage);

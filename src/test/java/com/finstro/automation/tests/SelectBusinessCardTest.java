@@ -1,6 +1,7 @@
 package com.finstro.automation.tests;
 
 import com.finstro.automation.pages.*;
+import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -14,15 +15,13 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 	private BusinessDetailPage businessDetailPage;
 	private LoginPage loginPage;
 	private SelectBusinessCardPage businessCardPage;
-	private static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
-	private static final String LOGIN_ACCESS_CODE = "033933";
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
 		loginPage = new LoginPage(driver);
 		businessCardPage = new SelectBusinessCardPage(driver);
 		businessDetailPage = new BusinessDetailPage(driver);
-		loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 	}
 
 	@Test

@@ -1,6 +1,6 @@
 package com.finstro.automation.tests;
 
-import static com.finstro.automation.utility.Assertion.assertTrue;
+import static com.finstro.automation.utility.Assertion.*;
 import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Method;
@@ -13,6 +13,7 @@ import com.finstro.automation.pages.FindYourBusinessPage;
 import com.finstro.automation.pages.LoginPage;
 import com.finstro.automation.pages.RegisterPage;
 import com.finstro.automation.pages.SelectBusinessCardPage;
+import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
 public class FindYourBusinessTest extends MobileTestSetup {
@@ -21,9 +22,7 @@ public class FindYourBusinessTest extends MobileTestSetup {
 	private BusinessDetailPage businessDetailPage;
 	private FindYourBusinessPage findYourBusinessScreenPage;
 	private SelectBusinessCardPage businessCardPage;
-
-	private static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
-	private static final String LOGIN_ACCESS_CODE = "033933";
+	
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
@@ -38,7 +37,7 @@ public class FindYourBusinessTest extends MobileTestSetup {
 	}
 	
 	public void toBusinessDetailPage() throws Exception {
-		loginPage.doSuccessLogin(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");
