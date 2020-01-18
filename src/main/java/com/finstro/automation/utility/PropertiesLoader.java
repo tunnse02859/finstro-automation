@@ -14,6 +14,7 @@ public class PropertiesLoader {
 	public Properties ios_configuration;
 	public Properties browser_configuration;
 	public Properties appium_configuration;
+	public Properties test_variables;
 	
 	
 	public PropertiesLoader() throws Exception{
@@ -22,20 +23,16 @@ public class PropertiesLoader {
 		ios_configuration = readResourceProperties("/platform/ios.properties");
 		browser_configuration = readResourceProperties("/platform/browser.properties");
 		appium_configuration = readResourceProperties("/platform/appium.properties");
-		
+		test_variables = new Properties();
 	}
 	
 	public static PropertiesLoader getPropertiesLoader() throws Exception {
-		
-		if(_instance == null) {
-			
-			return new PropertiesLoader();
-			
+		if(_instance == null) {	
+			_instance = new PropertiesLoader();
+			return _instance;
 		}
 		else {
-			
 			return _instance;
-			
 		}
 	}
 

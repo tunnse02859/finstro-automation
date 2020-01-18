@@ -1,10 +1,13 @@
 package com.finstro.automation.report;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+
+import org.apache.commons.io.IOUtils;
 
 import com.aventstack.extentreports.AnalysisStrategy;
 import com.aventstack.extentreports.ExtentReports;
@@ -21,7 +24,7 @@ public class HtmlReporter {
 
 	private static HashMap<String, ExtentTest> extentTestMap = new HashMap<String, ExtentTest>();
 
-	public static ExtentReports setReporter(String filename) throws UnknownHostException {
+	public static ExtentReports setReporter(String filename) throws IOException {
 
 		if (_report == null)
 			_report = createInstance(filename);
@@ -37,19 +40,26 @@ public class HtmlReporter {
 	 * @param fileName
 	 *            The report's name
 	 * @return
+	 * @throws IOException 
 	 */
-	public static ExtentReports createInstance(String fileName) {
+	public static ExtentReports createInstance(String fileName) throws IOException {
 
 		ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(fileName);
-		// String configFile = Common.correctPath(Common.strWorkspacepath +
-		// "/src/main/resource/config/extent-config.xml");
-		// htmlReporter.loadXMLConfig(configFile);
 		htmlReporter.config().setTestViewChartLocation(ChartLocation.BOTTOM);
-		htmlReporter.config().setChartVisibilityOnOpen(true);
+		htmlReporter.config().setChartVisibilityOnOpen(false);
 		htmlReporter.config().setTheme(Theme.STANDARD);
 		htmlReporter.config().setDocumentTitle(fileName);
 		htmlReporter.config().setEncoding("utf-8");
 		htmlReporter.config().setReportName(fileName);
+		//adding CSS and Javascript for API Request Step
+		InputStream jsFile = HtmlReporter.class.getClassLoader().getResourceAsStream("config/api-step-javascript-code.js");
+		InputStream cssFile = HtmlReporter.class.getClassLoader().getResourceAsStream("config/api-step-stylesheet.css");
+		String jsCode = IOUtils.toString(jsFile, StandardCharsets.UTF_8);
+		String cssCode = IOUtils.toString(cssFile, StandardCharsets.UTF_8);
+		htmlReporter.config().setJS(jsCode);
+		htmlReporter.config().setCSS(cssCode);
+		//end
+		
 		htmlReporter.setAppendExisting(false);
 
 		ExtentReports report = new ExtentReports();
@@ -380,13 +390,6 @@ public class HtmlReporter {
 
 	}
 
-	public static String throwableToString(Throwable e) throws Exception {
-		try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw);) {
-			e.printStackTrace(pw);
-
-			return sw.toString();
-		}
-	}
 
 	/**
 	 * To write a passed step to report

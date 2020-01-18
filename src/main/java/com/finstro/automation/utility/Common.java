@@ -1,5 +1,10 @@
 package com.finstro.automation.utility;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import com.finstro.automation.report.Log;
+
 public class Common {
 	private static final String LOWER_ALPHA = "abcdefghijklmnopqrstuvwxyz";
 	private static final String UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -31,5 +36,24 @@ public class Common {
 			builder.append(NUMERIC.charAt(character));
 		}
 		return builder.toString();
+	}
+	
+	public static String getTestVariable(String key) throws Exception {
+		String value = PropertiesLoader.getPropertiesLoader().test_variables.getProperty(key);
+		if(value == null) {
+			throw new Exception("Variable = ["+ key +"] doesnot exist. please check your code");
+		}
+		return value;
+	}
+	
+	public static String throwableToString(Throwable e){
+		try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw);) {
+			e.printStackTrace(pw);
+			return sw.toString();
+		}catch(Exception exception) {
+			Log.error("Cannot convert Throwable to String");
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

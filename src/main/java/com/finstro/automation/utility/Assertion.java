@@ -23,4 +23,14 @@ public class Assertion {
 			throw e;
 		}
 	}
+	
+	public static void assertNotNull(Object object,String errorMess, String successMess) throws Exception {
+		try {
+			Assert.assertNotNull(object,errorMess);
+			HtmlReporter.pass(successMess);
+		}catch(AssertionError e) {
+			HtmlReporter.fail(errorMess,e,"");
+			throw e;
+		}
+	}
 }

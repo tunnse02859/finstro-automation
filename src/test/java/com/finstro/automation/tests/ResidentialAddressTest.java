@@ -77,5 +77,6 @@ public class ResidentialAddressTest extends MobileTestSetup {
 		assertTrue(residentialAddressPage.isActive(), "Residential Address screen is not  displayed after select matched resulf",
 				"Residential Address screen is displayed after select matched resulf");
 		residentialAddressPage.verifyResidentialAddress(expectedResidentialAddress);
+		residentialAddressPage.clickNext();
 	}
 }
