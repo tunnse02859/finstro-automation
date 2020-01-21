@@ -167,6 +167,9 @@ public class RequestResponse {
 						}
 						if (i == keys.length - 1) {
 							String extractedValue = extractedNode.toString();
+							if(extractedValue == null || extractedValue.equals("null")) {
+								extractedValue = "";
+							}
 							PropertiesLoader.getPropertiesLoader().test_variables.setProperty(outputVariable,
 									extractedValue);
 							extractedVariable.add("[SUCCESS] [" + outputVariable + "] = [" + extractedValue + "]");

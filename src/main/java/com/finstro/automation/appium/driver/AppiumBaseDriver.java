@@ -111,6 +111,17 @@ public class AppiumBaseDriver {
 		}
 	}
 
+	public void clearText(WebElement element) {
+		try {
+			waitForElementDisplayed(element, 30);
+			element.clear();
+			HtmlReporter.pass(String.format("Clear text of element [%s]", element.toString()));
+		} catch (Exception e) {
+			HtmlReporter.fail(String.format("Can't clear text of element [%s]", element.toString()));
+			throw e;
+		}
+	}
+
 	/**
 	 * This method is used to send keys into a text box.
 	 * 
@@ -122,13 +133,13 @@ public class AppiumBaseDriver {
 	 *             The exception is throws if input text not success
 	 */
 	public void inputTextWithClear(WebElement element, String text) throws Exception {
-
 		try {
 			waitForElementDisplayed(element, 30);
-			element.sendKeys("");
-			hideKeyboard();
-			element.sendKeys(text);
-			hideKeyboard();
+			element.clear();
+			if(!text.equalsIgnoreCase("")) {
+				element.sendKeys(text);
+				hideKeyboard();
+			}
 			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Can't input text [%s] to element [%s]", text, element.toString()));
@@ -677,14 +688,14 @@ public class AppiumBaseDriver {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * This method is used to reset application state before new test case run
 	 * 
 	 * @author tunn6
 	 * @param None
 	 * @return None
-	 * @throws Exception 
+	 * @throws Exception
 	 * @throws Exception
 	 */
 	public void resetApp() throws Exception {
@@ -694,8 +705,8 @@ public class AppiumBaseDriver {
 			driver.launchApp();
 			Thread.sleep(3000);
 			HtmlReporter.pass("Reset app successfully");
-		}catch(Exception e) {
-			HtmlReporter.fail("Cannot reset app!", e,"");
+		} catch (Exception e) {
+			HtmlReporter.fail("Cannot reset app!", e, "");
 			throw e;
 		}
 	}

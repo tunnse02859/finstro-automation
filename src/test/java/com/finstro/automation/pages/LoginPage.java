@@ -94,6 +94,6 @@ public class LoginPage {
 		} else {
 			actualMessage = driver.getText(errorMessage);
 		}
-		assertEquals(actualMessage, expectedMessage, "Error message isnt correct", "Error message displayed correctly");
+		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly", "Error message is displayed correctly");
 	}
 }
