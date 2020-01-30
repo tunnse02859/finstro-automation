@@ -1,6 +1,6 @@
 package com.finstro.automation.tests;
 
-import static com.finstro.automation.utility.Assertion.*;
+import static com.finstro.automation.utility.Assertion.assertTrue;
 import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Method;
@@ -22,7 +22,6 @@ public class FindYourBusinessTest extends MobileTestSetup {
 	private BusinessDetailPage businessDetailPage;
 	private FindYourBusinessPage findYourBusinessScreenPage;
 	private SelectBusinessCardPage businessCardPage;
-	
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
@@ -32,10 +31,10 @@ public class FindYourBusinessTest extends MobileTestSetup {
 		businessDetailPage = new BusinessDetailPage(driver);
 		findYourBusinessScreenPage = new FindYourBusinessPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
-		
+
 		toBusinessDetailPage();
 	}
-	
+
 	public void toBusinessDetailPage() throws Exception {
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
@@ -46,6 +45,47 @@ public class FindYourBusinessTest extends MobileTestSetup {
 	@Test
 	public void FPC_1321_VerifyUserRedirectToTheFindYourBusinessScreenSuccessful() throws Exception {
 		businessDetailPage.redirectToTheFindYourBusinessScrees();
-		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed", "Find Your Business Page is showed");
+		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed",
+				"Find Your Business Page is showed");
+	}
+
+	@Test
+	public void FPC_1322_VerifyAddBusinessDetailSuccessfullWithCompanyType() throws Exception {
+		businessDetailPage.redirectToTheFindYourBusinessScrees();
+		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed",
+				"Find Your Business Page is showed");
+		findYourBusinessScreenPage.addBusinessDetailSuccessfully("Company");
+	}
+
+	@Test
+	public void FPC_1323_VerifyAddBusinessDetailSuccessfullWithSoleTraderType() throws Exception {
+		businessDetailPage.redirectToTheFindYourBusinessScrees();
+		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed",
+				"Find Your Business Page is showed");
+		findYourBusinessScreenPage.addBusinessDetailSuccessfully("SoleTrader");
+	}
+
+	@Test
+	public void FPC_1326_VerifyAddBusinessDetailSuccessfullWithPartnershipType() throws Exception {
+		businessDetailPage.redirectToTheFindYourBusinessScrees();
+		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed",
+				"Find Your Business Page is showed");
+		findYourBusinessScreenPage.addBusinessDetailSuccessfully("Partnership");
+	}
+
+	@Test
+	public void FPC_1328_VerifyUserAddBusinessDetailUnsuccessfullDueToNoResultFound() throws Exception {
+		businessDetailPage.redirectToTheFindYourBusinessScrees();
+		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed",
+				"Find Your Business Page is showed");
+		findYourBusinessScreenPage.addBusinessDetailSuccessfully("NotFound");
+	}
+
+	@Test
+	public void FPC_1329_VerifyUserUpdateTheBusinessTradingNamesSuccessful() throws Exception {
+		businessDetailPage.redirectToTheFindYourBusinessScrees();
+		assertTrue(findYourBusinessScreenPage.isActive(), "Find Your Business Page is not showed",
+				"Find Your Business Page is showed");
+		findYourBusinessScreenPage.addBusinessDetailSuccessfully("SoleTrader");
 	}
 }
