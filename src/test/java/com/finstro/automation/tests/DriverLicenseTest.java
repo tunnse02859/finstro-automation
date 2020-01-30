@@ -6,6 +6,7 @@ import static org.testng.Assert.assertTrue;
 import java.lang.reflect.Method;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
@@ -13,13 +14,14 @@ import com.finstro.automation.pages.BusinessDetailPage;
 import com.finstro.automation.pages.DriverLicensePage;
 import com.finstro.automation.pages.LoginPage;
 import com.finstro.automation.pages.PhotoIDPage;
+import com.finstro.automation.pages.PostalAddressPage;
 import com.finstro.automation.pages.RegisterPage;
 import com.finstro.automation.pages.ResidentialAddressPage;
 import com.finstro.automation.pages.SelectBusinessCardPage;
-import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
+import com.finstro.automation.utility.FilePaths;
 
 public class DriverLicenseTest extends MobileTestSetup {
 	private LoginPage loginPage;
@@ -29,6 +31,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 	private ResidentialAddressPage residentialAddressPage;
 	private PhotoIDPage photoIDPage;
 	private DriverLicensePage drivingLisencePage;
+	private PostalAddressPage postalAddressPage;
 	private FinstroAPI finstroAPI;
 	
 
@@ -41,11 +44,11 @@ public class DriverLicenseTest extends MobileTestSetup {
 		residentialAddressPage = new ResidentialAddressPage(driver);
 		photoIDPage = new PhotoIDPage(driver);
 		drivingLisencePage = new DriverLicensePage(driver);
+		postalAddressPage = new PostalAddressPage(driver);
 		finstroAPI = new FinstroAPI();
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
 		
 		toDriverLicensePage();
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 	}
 	
 	public void toDriverLicensePage() throws Exception {
@@ -62,6 +65,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1348_Verify_User_RedirectTo_DriverLicense_Screen_Successfully() throws Exception {
+		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		finstroAPI.getDrivingLicenceInfor();
 		drivingLisencePage.verifyDriverLicenseInfor(
 				Common.getTestVariable("gender").equalsIgnoreCase("M") ? "Male" : "Female",
@@ -76,154 +80,74 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1350_Verify_State_ACT_License_MustBe_NumericUpto10() throws Exception {
-		String invalidLicenseNumber = Common.randomNumeric(11);
-		
-		//check validation
+		String validLicenseNumber = Common.randomNumeric(10);
 		drivingLisencePage.inputState("ACT");
-		HtmlReporter.info("Input license Number with numeric length = 11");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1351_Verify_State_NT_License_MustBe_NumericUpto10() throws Exception {
-		String invalidLicenseNumber = Common.randomNumeric(11);
-		
-		//check validation
+		String validLicenseNumber = Common.randomNumeric(11);
 		drivingLisencePage.inputState("NT");
-		HtmlReporter.info("Input license Number with numeric length = 11");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1352_Verify_State_QLD_License_MustBe_Numeric8or9() throws Exception {
-		String invalidLicenseNumber7num = Common.randomNumeric(7);
-		String invalidLicenseNumber10num = Common.randomNumeric(10);
-		//check validation
+		String validLicenseNumber7num = Common.randomNumeric(7);
 		drivingLisencePage.inputState("QLD");
-		HtmlReporter.info("Input license Number with Alphanumeric length = 7");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber7num);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber7num);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
-		
-		HtmlReporter.info("Input license Number with Alphanumeric length = 10");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber10num);
-		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1353_Verify_State_NSW_License_MustBe_Alphanumeric6to8() throws Exception {
-		String invalidLicenseNumber5num = Common.randomAlphaNumeric(5);
-		String invalidLicenseNumber9num = Common.randomAlphaNumeric(9);
-		
-		//check validation
+		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
 		drivingLisencePage.inputState("NSW");
-		HtmlReporter.info("Input license Number with Alphanumeric length = 5");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber5num);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");
-		
-		HtmlReporter.info("Input license Number with Alphanumeric length = 9");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber9num);
-		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1354_Verify_State_SA_License_MustBe_Alphanumeric6() throws Exception {
-		String invalidLicenseNumber5num = Common.randomAlphaNumeric(5);
-		String invalidLicenseNumber7num = Common.randomAlphaNumeric(7);
-		
-		//check validation
+		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
 		drivingLisencePage.inputState("SA");
-		
-		HtmlReporter.info("Input license Number with Alphanumeric length = 5");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber5num);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");
-		
-		HtmlReporter.info("Input license Number with Alphanumeric length = 7");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber7num);
-		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1355_Verify_State_TAS_License_MustBe_Alphanumeric6to8() throws Exception {
-		String invalidLicenseNumber5num = Common.randomAlphaNumeric(5);
-		String invalidLicenseNumber9num = Common.randomAlphaNumeric(9);
-		
-		//check validation
+		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
 		drivingLisencePage.inputState("TAS");
-		HtmlReporter.info("Input license Number with Alphanumeric length = 5");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber5num);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");
-		
-		HtmlReporter.info("Input license Number with Alphanumeric length = 9");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber9num);
-		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1356_Verify_State_VIC_License_MustBe_NumericUpto10() throws Exception {
-		String invalidLicenseNumber = Common.randomNumeric(11);
-		
-		//check validation
+		String validLicenseNumber = Common.randomNumeric(11);
 		drivingLisencePage.inputState("VIC");
-		HtmlReporter.info("Input license Number with numeric length = 10");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1357_Verify_State_WA_License_MustBe_Numeric7() throws Exception {
-		String invalidLicenseNumber6num = Common.randomNumeric(6);
-		String invalidLicenseNumber8num = Common.randomNumeric(8);
-		
-		//check validation
+		String validLicenseNumber6num = Common.randomNumeric(6);
 		drivingLisencePage.inputState("WA");
-		HtmlReporter.info("Input license Number with numeric length = 6");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber6num);
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber6num);
 		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
-		
-		HtmlReporter.info("Input license Number with numeric length = 8");
-		drivingLisencePage.inputLicenseNumber(invalidLicenseNumber8num);
-		drivingLisencePage.clickNext();
-		
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
@@ -266,5 +190,29 @@ public class DriverLicenseTest extends MobileTestSetup {
 		drivingLisencePage.inputExpireDate("");
 		drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+	}
+	
+	@Test
+	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+		drivingLisencePage.inputDoB("01/13/2020");
+		drivingLisencePage.clickNext();
+		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+	}
+	
+	@DataProvider(name="invalid_drivingLicense")
+	public Object[][] getInvalidDrivingLicense() throws Exception{
+		Object[][] data = getTestProvider(FilePaths.getResourcePath("/dataprovider/invalid_driving_license/invalid_driving_license.xlsx"), "Sheet1");
+		return data;
+	}
+	
+	
+	@Test(dataProvider = "invalid_drivingLicense")
+	public void FPC_1370_DrivingLicense_Must_be_valid(String state, String invalidDrivingLicense) throws Exception {
+		drivingLisencePage.inputState(state);
+		drivingLisencePage.inputLicenseNumber(invalidDrivingLicense);
+		drivingLisencePage.clickNext();
+		
+		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
 	}
 }

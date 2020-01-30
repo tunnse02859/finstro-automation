@@ -66,7 +66,21 @@ public class FinstroAPI {
 				.extractJsonValue("state", "drivingLicence.state")
 				.extractJsonValue("validTo", "drivingLicence.validTo")
 			.flush();
-		
+	}
+	
+	public void getMedicareInfor() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("cardColor", "medicareCard.cardColor")
+				.extractJsonValue("cardNumber", "medicareCard.cardNumber")
+				.extractJsonValue("cardNumberRef", "medicareCard.cardNumberRef")
+				.extractJsonValue("dateOfBirth", "medicareCard.dateOfBirth")
+				.extractJsonValue("firstName", "medicareCard.firstName")
+				.extractJsonValue("gender", "medicareCard.gender")
+				.extractJsonValue("identificationId", "medicareCard.identificationId")
+				.extractJsonValue("middleInitial", "medicareCard.middleInitial")
+				.extractJsonValue("surname", "medicareCard.surname")
+				.extractJsonValue("validTo", "medicareCard.validTo")			
+			.flush();
 	}
 
 }

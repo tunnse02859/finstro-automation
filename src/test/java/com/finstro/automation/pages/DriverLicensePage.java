@@ -59,6 +59,9 @@ public class DriverLicensePage {
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
 	private WebElement next;
 	
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnMedicare\"))")
+	private WebElement medicare;
+	
 	
 
 	public DriverLicensePage(AppiumBaseDriver driver) {
@@ -72,6 +75,10 @@ public class DriverLicensePage {
 
 	public void clickNext() throws Exception {
 		driver.click(next);
+	}
+	
+	public void clickMedicare() throws Exception {
+		driver.click(medicare);
 	}
 	
 	public void selectGender(String genderName) throws Exception {
