@@ -41,6 +41,18 @@ public class FinstroAPI {
 		return request;
 	}
 
+	public void getBusinessDetailInfor() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("abn", "businessDetails.asicBusiness.abn")
+				.extractJsonValue("acn", "businessDetails.asicBusiness.acn")
+				.extractJsonValue("entityName", "businessDetails.asicBusiness.companyLegalName")
+				.extractJsonValue("businessName", "businessDetails.asicBusiness.companyName")
+				.extractJsonValue("type", "businessDetails.asicBusiness.type")
+				.extractJsonValue("businessNameId", "businessDetails.asicBusiness.businessNameId")
+				.extractJsonValue("parentCompany", "businessDetails.asicBusiness.parentCompany")
+			.flush();
+	}
+
 	public String getResidentialAddress() throws Exception {
 		recoveryData().then().verifyResponseCode(200).extractJsonValue("country", "residentialAddress.country")
 				.extractJsonValue("postCode", "residentialAddress.postCode")
@@ -56,21 +68,18 @@ public class FinstroAPI {
 	}
 
 	public void getDrivingLicenceInfor() throws Exception {
-		recoveryData().then().verifyResponseCode(200)
-				.extractJsonValue("firstName", "drivingLicence.firstName")
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("firstName", "drivingLicence.firstName")
 				.extractJsonValue("middleName", "drivingLicence.middleName")
 				.extractJsonValue("surname", "drivingLicence.surname")
 				.extractJsonValue("gender", "drivingLicence.gender")
 				.extractJsonValue("dateOfBirth", "drivingLicence.dateOfBirth")
 				.extractJsonValue("licenceNumber", "drivingLicence.licenceNumber")
-				.extractJsonValue("state", "drivingLicence.state")
-				.extractJsonValue("validTo", "drivingLicence.validTo")
-			.flush();
+				.extractJsonValue("state", "drivingLicence.state").extractJsonValue("validTo", "drivingLicence.validTo")
+				.flush();
 	}
-	
+
 	public void getMedicareInfor() throws Exception {
-		recoveryData().then().verifyResponseCode(200)
-				.extractJsonValue("cardColor", "medicareCard.cardColor")
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("cardColor", "medicareCard.cardColor")
 				.extractJsonValue("cardNumber", "medicareCard.cardNumber")
 				.extractJsonValue("cardNumberRef", "medicareCard.cardNumberRef")
 				.extractJsonValue("dateOfBirth", "medicareCard.dateOfBirth")
@@ -78,9 +87,8 @@ public class FinstroAPI {
 				.extractJsonValue("gender", "medicareCard.gender")
 				.extractJsonValue("identificationId", "medicareCard.identificationId")
 				.extractJsonValue("middleInitial", "medicareCard.middleInitial")
-				.extractJsonValue("surname", "medicareCard.surname")
-				.extractJsonValue("validTo", "medicareCard.validTo")			
-			.flush();
+				.extractJsonValue("surname", "medicareCard.surname").extractJsonValue("validTo", "medicareCard.validTo")
+				.flush();
 	}
 
 }

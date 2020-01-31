@@ -1,15 +1,13 @@
-package com.finstro.automation.pages;
+package com.finstro.automation.pages.setup_information;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
-
+import static com.finstro.automation.utility.Assertion.*;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import static com.finstro.automation.utility.Assertion.*;
 
-public class FindAddressPage {
+public class FindBusinessPage {
 
 	private AppiumBaseDriver driver;
 
@@ -20,18 +18,18 @@ public class FindAddressPage {
 	private WebElement title;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/search_edit_text")
-	private WebElement searchAddress;
+	private WebElement searchBusiness;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_name")
-	private WebElement firstMatchTitle;
+	private WebElement firstMatchBusiniessName;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_abn_acn")
-	private WebElement firstMatchInfo;
+	private WebElement firstMatchBusinessABNACN;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/search_no_result_title")
 	private WebElement noResulthMatch;
 
-	public FindAddressPage(AppiumBaseDriver driver) {
+	public FindBusinessPage(AppiumBaseDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
 	}
@@ -40,27 +38,24 @@ public class FindAddressPage {
 		return driver.isElementDisplayed(title);
 	}
 
-	public void inputSearchAddress(String addressInfor) throws Exception {
-		driver.inputTextWithClear(searchAddress, addressInfor);
+	public void inputSearchBusiness(String addressInfor) throws Exception {
+		driver.inputTextWithClear(searchBusiness, addressInfor);
 	}
 
 	public void verifyFirstMatch(String expectedFirstMatchTitle, String expectedFirstMatchInfor) throws Exception {
-		assertEquals(driver.getText(firstMatchTitle), expectedFirstMatchTitle,
-				"First result title is displayed correctly", "First result title is displayed incorrectly");
-		assertEquals(driver.getText(firstMatchTitle), expectedFirstMatchTitle,
-				"First result infor is displayed correctly", "First result infor is displayed incorrectly");
+		assertEquals(driver.getText(firstMatchBusiniessName), expectedFirstMatchTitle,
+				"First result title is displayed imcorrectly", "First result title is displayed correctly");
+		assertEquals(driver.getText(firstMatchBusinessABNACN), expectedFirstMatchInfor,
+				"First result infor is displayed incorrectly", "First result infor is displayed correctly");
 	}
 
 	public boolean isNoResultMatched() throws Exception {
-		try {
-			return driver.isElementDisplayed(noResulthMatch);
-		} catch (Exception e) {
-			return false;
-		}
+		return driver.isElementDisplayed(noResulthMatch);
 	}
-	
+
 	public void clickOnFirstMatched() throws Exception {
-		driver.click(firstMatchTitle);
+		driver.click(firstMatchBusiniessName);
+		Thread.sleep(3000);
 	}
 
 }

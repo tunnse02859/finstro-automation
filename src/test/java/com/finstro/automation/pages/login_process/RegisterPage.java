@@ -1,4 +1,4 @@
-package com.finstro.automation.pages;
+package com.finstro.automation.pages.login_process;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.report.HtmlReporter;

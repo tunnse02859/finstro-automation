@@ -1,6 +1,7 @@
-package com.finstro.automation.pages;
+package com.finstro.automation.pages.login_process;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;

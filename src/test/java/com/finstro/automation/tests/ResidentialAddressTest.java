@@ -8,13 +8,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.pages.BusinessDetailPage;
-import com.finstro.automation.pages.FindAddressPage;
-import com.finstro.automation.pages.LoginPage;
-import com.finstro.automation.pages.PhotoIDPage;
-import com.finstro.automation.pages.RegisterPage;
-import com.finstro.automation.pages.ResidentialAddressPage;
-import com.finstro.automation.pages.SelectBusinessCardPage;
+import com.finstro.automation.pages.login_process.LoginPage;
+import com.finstro.automation.pages.login_process.RegisterPage;
+import com.finstro.automation.pages.setup_information.BusinessDetailPage;
+import com.finstro.automation.pages.setup_information.FindAddressPage;
+import com.finstro.automation.pages.setup_information.PhotoIDPage;
+import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
+import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
@@ -42,7 +42,6 @@ public class ResidentialAddressTest extends MobileTestSetup {
 				"Register page showed as default page in first installation");
 
 		toResidentialAddresslPage();
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 	}
 
 	public void toResidentialAddresslPage() throws Exception {
@@ -53,7 +52,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 		businessDetailPage.clickNext();
 		assertTrue(residentialAddressPage.isActive(),
 				"Residential Address screen is not  displayed after click on next",
-				"Residential Address screen is displayed after click on next");
+				"Residential Address screen is displayed after click on next");	
 	}
 
 	@Test
@@ -93,6 +92,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 		residentialAddressPage.clickNext();
 		assertTrue(photoIDPage.isActive(), "PhotoID screen is not displayed after save residential address",
 				 "PhotoID screen is displayed after save residential address");
+		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		String savedResidentialAddress = finstroAPI.getResidentialAddress();
 		assertEquals(savedResidentialAddress, expectedResidentialAddress,
 				"Residential address from API after save doesnt match with expectation",

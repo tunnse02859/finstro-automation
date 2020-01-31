@@ -12,7 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import com.finstro.automation.excelhelper.ExcelHelper;
-import com.finstro.automation.pages.RegisterPage;
+import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.report.Log;
 
 public class MobileTestSetup extends MobileTestBaseSetup {
