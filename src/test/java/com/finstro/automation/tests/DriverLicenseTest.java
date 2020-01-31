@@ -1,7 +1,6 @@
 package com.finstro.automation.tests;
 
 import static com.finstro.automation.utility.Assertion.*;
-import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 
@@ -10,14 +9,14 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.pages.BusinessDetailPage;
-import com.finstro.automation.pages.DriverLicensePage;
-import com.finstro.automation.pages.LoginPage;
-import com.finstro.automation.pages.PhotoIDPage;
-import com.finstro.automation.pages.PostalAddressPage;
-import com.finstro.automation.pages.RegisterPage;
-import com.finstro.automation.pages.ResidentialAddressPage;
-import com.finstro.automation.pages.SelectBusinessCardPage;
+import com.finstro.automation.pages.login_process.LoginPage;
+import com.finstro.automation.pages.login_process.RegisterPage;
+import com.finstro.automation.pages.setup_information.BusinessDetailPage;
+import com.finstro.automation.pages.setup_information.DriverLicensePage;
+import com.finstro.automation.pages.setup_information.PhotoIDPage;
+import com.finstro.automation.pages.setup_information.PostalAddressPage;
+import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
+import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
@@ -46,7 +45,8 @@ public class DriverLicenseTest extends MobileTestSetup {
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
 		finstroAPI = new FinstroAPI();
-		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
+		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
+				"Register page showed as default page in first installation");
 		
 		toDriverLicensePage();
 	}

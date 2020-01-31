@@ -8,16 +8,16 @@ import java.lang.reflect.Method;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.finstro.automation.pages.BackStatementPage;
-import com.finstro.automation.pages.BusinessDetailPage;
-import com.finstro.automation.pages.CongratulationsPage;
-import com.finstro.automation.pages.DriverLicensePage;
-import com.finstro.automation.pages.LoginPage;
-import com.finstro.automation.pages.PhotoIDPage;
-import com.finstro.automation.pages.PostalAddressPage;
-import com.finstro.automation.pages.RegisterPage;
-import com.finstro.automation.pages.ResidentialAddressPage;
-import com.finstro.automation.pages.SelectBusinessCardPage;
+import com.finstro.automation.pages.login_process.LoginPage;
+import com.finstro.automation.pages.login_process.RegisterPage;
+import com.finstro.automation.pages.setup_information.BankStatementPage;
+import com.finstro.automation.pages.setup_information.BusinessDetailPage;
+import com.finstro.automation.pages.setup_information.CompleteAgreementPage;
+import com.finstro.automation.pages.setup_information.DriverLicensePage;
+import com.finstro.automation.pages.setup_information.PhotoIDPage;
+import com.finstro.automation.pages.setup_information.PostalAddressPage;
+import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
+import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
@@ -31,8 +31,8 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 	private PhotoIDPage photoIDPage;
 	private DriverLicensePage drivingLisencePage;
 	private PostalAddressPage postalAddressPage;
-	private BackStatementPage backStatementPage;
-	private CongratulationsPage congratulationsPage;
+	private BankStatementPage backStatementPage;
+	private CompleteAgreementPage congratulationsPage;
 	
 
 	@BeforeMethod
@@ -45,7 +45,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 		photoIDPage = new PhotoIDPage(driver);
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
-		backStatementPage = new BackStatementPage(driver);
+		backStatementPage = new BankStatementPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
 		
 		toPostalAddressOfCardPage();

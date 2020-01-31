@@ -8,12 +8,12 @@ import java.lang.reflect.Method;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.finstro.automation.pages.BusinessDetailPage;
-import com.finstro.automation.pages.LoginPage;
-import com.finstro.automation.pages.PhotoIDPage;
-import com.finstro.automation.pages.RegisterPage;
-import com.finstro.automation.pages.ResidentialAddressPage;
-import com.finstro.automation.pages.SelectBusinessCardPage;
+import com.finstro.automation.pages.login_process.LoginPage;
+import com.finstro.automation.pages.login_process.RegisterPage;
+import com.finstro.automation.pages.setup_information.BusinessDetailPage;
+import com.finstro.automation.pages.setup_information.PhotoIDPage;
+import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
+import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 

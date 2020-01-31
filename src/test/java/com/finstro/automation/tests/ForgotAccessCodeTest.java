@@ -7,9 +7,9 @@ import java.lang.reflect.Method;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.finstro.automation.pages.ForgotAccessCodePage;
-import com.finstro.automation.pages.LoginPage;
-import com.finstro.automation.pages.RegisterPage;
+import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
+import com.finstro.automation.pages.login_process.LoginPage;
+import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
