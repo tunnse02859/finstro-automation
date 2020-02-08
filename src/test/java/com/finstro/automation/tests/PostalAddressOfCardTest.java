@@ -10,8 +10,9 @@ import org.testng.annotations.Test;
 
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
+import com.finstro.automation.pages.setup_information.BankStatementPage;
 import com.finstro.automation.pages.setup_information.BusinessDetailPage;
-import com.finstro.automation.pages.setup_information.CongratulationsPage;
+import com.finstro.automation.pages.setup_information.CompleteAgreementPage;
 import com.finstro.automation.pages.setup_information.DriverLicensePage;
 import com.finstro.automation.pages.setup_information.PhotoIDPage;
 import com.finstro.automation.pages.setup_information.PostalAddressPage;
@@ -30,11 +31,8 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 	private PhotoIDPage photoIDPage;
 	private DriverLicensePage drivingLisencePage;
 	private PostalAddressPage postalAddressPage;
-	//private BackStatementPage backStatementPage;
-	private CongratulationsPage congratulationsPage;
-	
-	private String currentResidentialAddress;
-	private String currentBusinessAddress;
+	private BankStatementPage backStatementPage;
+	private CompleteAgreementPage congratulationsPage;
 	
 
 	@BeforeMethod
@@ -47,8 +45,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 		photoIDPage = new PhotoIDPage(driver);
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
-		congratulationsPage = new CongratulationsPage(driver);
-		//backStatementPage = new BackStatementPage(driver);
+		backStatementPage = new BankStatementPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
 		
 		toPostalAddressOfCardPage();
@@ -59,9 +56,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		Thread.sleep(10000);
-		currentBusinessAddress = businessDetailPage.getCurrentBussinessAddress();
 		businessDetailPage.clickNext();
-		currentResidentialAddress = residentialAddressPage.getCurrentResidentialAddress();
 		residentialAddressPage.clickNext();
 		Thread.sleep(10000);
 		photoIDPage.clickNext();
@@ -75,24 +70,12 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 	@Test
 	public void FPC_1388_VerifyUserNavigateToTheNextScreen() throws Exception {
 		postalAddressPage.clickNext();
+		Thread.sleep(10000);
 		assertTrue(congratulationsPage.isActive(),
 				"Congratulations Page screen is not  displayed after click on next",
 				"Congratulations Page screen is displayed after click on next");
-	}
+		
 	
-	@Test
-	public void FPC_1389_VerifyTheResidentialAddessIsTheCardDeliveryAddress() throws Exception {
-		postalAddressPage.verifyResidentialAddress(currentResidentialAddress);
-	}
-	
-	@Test
-	public void FPC_1390_VerifyTheBusinessAddessIsTheCardDeliveryAddress() throws Exception {
-		postalAddressPage.verifyBusinessAddress(currentBusinessAddress);
-	}
-	
-	@Test
-	public void FPC_1391_VerifyTheUIOfPostalAddressScreen() throws Exception {
-		postalAddressPage.verifyAllElementsAreDisplayed();
 	}
 
 }
