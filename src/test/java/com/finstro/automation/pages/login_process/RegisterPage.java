@@ -3,6 +3,8 @@ package com.finstro.automation.pages.login_process;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.report.HtmlReporter;
 
+import static com.finstro.automation.utility.Assertion.assertTrue;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -27,6 +29,9 @@ public class RegisterPage {
 
 	@iOSXCUITFindBy(accessibility = "Allow")
 	private WebElement notify_allow;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/term_checkbox")
+	private WebElement privacyPolicyCheckBox;
 
 	public RegisterPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -53,5 +58,13 @@ public class RegisterPage {
 			driver.click(notify_dontallow);
 			HtmlReporter.pass("Dont Allow Notification on IOS successfully");
 		}
+	}
+
+	public void tickPrivacyPolicyAndTermsCondition() throws Exception {
+		driver.selectCheckBox(privacyPolicyCheckBox);
+	}
+
+	public boolean verifyPrivacyPolicyAndTermsConditionsIsChecked() throws Exception {
+		return driver.isElementSelected(privacyPolicyCheckBox);
 	}
 }

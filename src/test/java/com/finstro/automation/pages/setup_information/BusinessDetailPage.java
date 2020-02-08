@@ -4,6 +4,7 @@ import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+import static com.finstro.automation.utility.Assertion.*;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -21,6 +22,15 @@ public class BusinessDetailPage {
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/text1")
 	private WebElement businessAddressContent;
+	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/abc_acn_value")
+	private WebElement abn;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/legal_name_value")
+	private WebElement entityName;
+
+	@AndroidFindBy(id = "android:id/text1")
+	private WebElement businessName;
 
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/submit_text\"))")
 	// @iOSXCUITFindBy(accessibility="$500,000+")
@@ -39,8 +49,14 @@ public class BusinessDetailPage {
 		driver.click(next);
 	}
 
-	public void redirectToTheFindYourBusinessScrees() throws Exception {
+	public void redirectToTheFindYourBusinessScreen() throws Exception {
 		driver.click(findYourBusinessButton);
+	}
+	
+	public void verifyBusinessData(String expectedABN, String expectedEntityName, String expectedBusinessName) throws Exception {
+		assertEquals(driver.getText(abn).replace(" ", ""), expectedABN, "ABN/ACN is displayed incorrectly", "ABN/ACN is displayed correctly");
+		assertEquals(driver.getText(entityName), expectedEntityName, "Entity name is displayed incorrectly", "Entity name is displayed correctly");
+		assertEquals(driver.getText(businessName), expectedBusinessName, "Business name is displayed incorrectly", "Business name is displayed correctly");
 	}
 	
 	public String getCurrentBussinessAddress() throws Exception {

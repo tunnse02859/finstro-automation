@@ -68,7 +68,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1321_Verify_Redirect_to_FindBusiness_Successfully() throws Exception {
-		businessDetailPage.clickFindBusiness();
+		businessDetailPage.redirectToTheFindYourBusinessScreen();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 	}
@@ -78,7 +78,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		HashMap<String,String> businessData = getBusinessDataByType("Company");
 		
 		//go to search business and search type = company, verify first matched is correct
-		businessDetailPage.clickFindBusiness();
+		businessDetailPage.redirectToTheFindYourBusinessScreen();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 		
@@ -95,7 +95,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		HashMap<String,String> businessData = getBusinessDataByType("SoleTrader");
 		
 		//go to search business and search type = company, verify first matched is correct
-		businessDetailPage.clickFindBusiness();
+		businessDetailPage.redirectToTheFindYourBusinessScreen();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 		
@@ -112,7 +112,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		HashMap<String,String> businessData = getBusinessDataByType("Trust");
 		
 		//go to search business and search type = company, verify first matched is correct
-		businessDetailPage.clickFindBusiness();
+		businessDetailPage.redirectToTheFindYourBusinessScreen();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 		
@@ -129,7 +129,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		HashMap<String,String> businessData = getBusinessDataByType("Partnership");
 		
 		//go to search business and search type = company, verify first matched is correct
-		businessDetailPage.clickFindBusiness();
+		businessDetailPage.redirectToTheFindYourBusinessScreen();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 		
@@ -145,7 +145,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 	public void FPC_1328_Verify_Find_Business_No_Result_Matched() throws Exception {
 		String invalidBusinessInfor = Common.randomAlphaNumeric(15);
 
-		businessDetailPage.clickFindBusiness();
+		businessDetailPage.redirectToTheFindYourBusinessScreen();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 		findBusinessPage.inputSearchBusiness(invalidBusinessInfor);
