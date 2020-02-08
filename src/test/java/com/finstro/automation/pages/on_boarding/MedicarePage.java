@@ -1,4 +1,4 @@
-package com.finstro.automation.pages.setup_information;
+package com.finstro.automation.pages.on_boarding;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
@@ -15,8 +15,8 @@ import org.openqa.selenium.support.PageFactory;
 public class MedicarePage {
 
 	private AppiumBaseDriver driver;
-
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
+	
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/toolbar_left_text\"))")
 	@iOSXCUITFindBy(id="")
 	private WebElement back;
 	
@@ -25,23 +25,23 @@ public class MedicarePage {
 	private WebElement errorMessage;
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
 	private WebElement errorType;
-
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/verification_title")
+	
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/verification_title\"))")
 	private WebElement title;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"au.com.finstro.finstropay:id/driver_licence_gender_spinner\").childSelector(new UiSelector().resourceId(\"android:id/text1\"))")
 	private WebElement gender;
 	
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/first_name_edt")
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/first_name_edt\"))")
 	private WebElement firstName;
 	
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/last_name_edt\"))")
 	private WebElement lastName;
 	
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/middle_name_edt")
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/middle_name_edt\"))")
 	private WebElement middleName;
 	
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/dob_edt")
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/dob_edt\"))")
 	private WebElement dob;
 	
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/medicare_number_edt\"))")
@@ -74,6 +74,10 @@ public class MedicarePage {
 		driver.click(next);
 	}
 	
+	public void clickBack() throws Exception {
+		driver.click(back);
+	}
+	
 	public void selectGender(String genderName) throws Exception {
 		if(driver.isAndroidDriver()) {
 			driver.click(gender);
@@ -98,7 +102,7 @@ public class MedicarePage {
 	
 	public void selectCardColor(String colorName) throws Exception {
 		if(driver.isAndroidDriver()) {
-			driver.click(gender);
+			driver.click(cardColor);
 			By cardColorSelectorBy = MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().className(\"android.widget.CheckedTextView\").text(\"" + colorName + "\"))");
 			WebElement cardColorSelector = driver.isElementPresented(cardColorSelectorBy, 5);
 			assertNotNull(cardColorSelector,"selector color = [" + colorName + "] is not displayed for select","selector color = [" + colorName + "] is displayed for select");

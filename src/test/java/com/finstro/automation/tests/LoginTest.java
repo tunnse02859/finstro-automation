@@ -40,7 +40,7 @@ public class LoginTest extends MobileTestSetup {
 	@Test
 	public void FPC_1292_VerifyUserLoginUnsuccessfulIfHeInputInvalidEmailAddress() throws Exception {
 		String invalidEmail = Constant.LOGIN_EMAIL_ADDRESS + "extra";
-		String expectedMessaged = "ERROR, User not found";
+		String expectedMessaged = "ERROR, Incorrect username or password.";
 		registerPage.toLoginPage();
 		
 		loginPage.login(invalidEmail, Constant.LOGIN_ACCESS_CODE);

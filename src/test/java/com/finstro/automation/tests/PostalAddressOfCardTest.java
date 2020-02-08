@@ -10,14 +10,14 @@ import org.testng.annotations.Test;
 
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.setup_information.BankStatementPage;
-import com.finstro.automation.pages.setup_information.BusinessDetailPage;
-import com.finstro.automation.pages.setup_information.CompleteAgreementPage;
-import com.finstro.automation.pages.setup_information.DriverLicensePage;
-import com.finstro.automation.pages.setup_information.PhotoIDPage;
-import com.finstro.automation.pages.setup_information.PostalAddressPage;
-import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
-import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
+import com.finstro.automation.pages.on_boarding.BankStatementPage;
+import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
+import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
+import com.finstro.automation.pages.on_boarding.DriverLicensePage;
+import com.finstro.automation.pages.on_boarding.PhotoIDPage;
+import com.finstro.automation.pages.on_boarding.PostalAddressPage;
+import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
+import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
@@ -32,7 +32,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 	private DriverLicensePage drivingLisencePage;
 	private PostalAddressPage postalAddressPage;
 	private BankStatementPage backStatementPage;
-	private CompleteAgreementPage congratulationsPage;
+	private CompleteAgreementPage completeAgreementPage;
 	
 
 	@BeforeMethod
@@ -46,6 +46,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
 		backStatementPage = new BankStatementPage(driver);
+		completeAgreementPage = new CompleteAgreementPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
 		
 		toPostalAddressOfCardPage();
@@ -71,7 +72,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 	public void FPC_1388_VerifyUserNavigateToTheNextScreen() throws Exception {
 		postalAddressPage.clickNext();
 		Thread.sleep(10000);
-		assertTrue(congratulationsPage.isActive(),
+		assertTrue(completeAgreementPage.isActive(),
 				"Congratulations Page screen is not  displayed after click on next",
 				"Congratulations Page screen is displayed after click on next");
 		

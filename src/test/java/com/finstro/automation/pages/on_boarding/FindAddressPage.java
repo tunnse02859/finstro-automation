@@ -1,4 +1,4 @@
-package com.finstro.automation.pages.setup_information;
+package com.finstro.automation.pages.on_boarding;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;

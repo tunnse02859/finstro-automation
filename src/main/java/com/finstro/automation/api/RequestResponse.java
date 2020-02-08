@@ -22,13 +22,14 @@ public class RequestResponse {
 
 	private List<String> assertionList;
 	private List<String> extractedVariable;
-	private JSONObject responseBodyJson;
+	private Object responseBodyJson;
 	private String responseBody;
 	private Exception exception;
 
 	public RequestResponse(HttpUriRequest request, HttpResponse response) {
 		this.request = request;
 		this.response = response;
+		extractResponseBody();
 		convertResponseBodyToJsonObject();
 		assertionList = new ArrayList<String>();
 		extractedVariable = new ArrayList<String>();
@@ -36,13 +37,18 @@ public class RequestResponse {
 
 	private void convertResponseBodyToJsonObject() {
 		try {
-			responseBodyJson = new JSONObject(getResponseBody());
+			if(responseBody.charAt(0) == '[' ) {
+				responseBodyJson = new JSONArray(responseBody);
+			}else {
+				responseBodyJson = new JSONObject(responseBody);
+			}
 		} catch (JSONException e) {
+			Log.warn("Cannot convert response body to json object/array - " + e.getMessage());
 			responseBodyJson = null;
 		}
 	}
 
-	private String getResponseBody() {
+	private String extractResponseBody() {
 		try {
 			HttpEntity responseEntity = response.getEntity();
 			responseBody = EntityUtils.toString(responseEntity);
@@ -69,30 +75,73 @@ public class RequestResponse {
 		}
 		return this;
 	}
-
-	public RequestResponse verifyJsonNodeEqual(String key, String expectedValue) throws Exception {
+	
+	public RequestResponse verifyJsonNodeEqual(String regex, String expectedValue) {
+		try {
 		if (responseBodyJson != null) {
-
-			if (responseBodyJson.has(key)) {
-				String actualValue = responseBodyJson.get(key).toString();
-				if (expectedValue == actualValue) {
-					assertionList
-							.add("[PASSED] value of [" + key + "] matched with expectation: [" + expectedValue + "]");
-					Log.info("[Assertion][PASSED] value of [" + key + "] matched with expectation: [" + expectedValue
-							+ "]");
-				} else {
-					assertionList.add("[FAILED] value of [" + key + "] is incorrect.  Expected [" + expectedValue
-							+ "] but got [" + actualValue + "]");
-					Log.error("[Assertion][FAILED] value of [" + key + "] is incorrect.  Expected [" + expectedValue
-							+ "] but got [" + actualValue + "]");
+			JSONObject currentNode = (JSONObject) responseBodyJson;
+			String[] keys = regex.split("\\.");
+			try {
+				for (int i = 0; i < keys.length; i++) {
+					String currentExtractKey = keys[i];
+					String key = "";
+					String indexInArray = StringUtils.substringBetween(currentExtractKey, "[", "]");
+					if (indexInArray != null) {
+						key = currentExtractKey.substring(0, currentExtractKey.indexOf("["));
+					} else {
+						key = currentExtractKey;
+					}
+					if (currentNode.has(key)) {
+						Object extractedNode = currentNode.get(key);
+						if ((indexInArray != null) && (extractedNode instanceof JSONArray)) {
+							extractedNode = ((JSONArray) extractedNode).get(Integer.parseInt(indexInArray));
+						} else if ((indexInArray != null) && !(extractedNode instanceof JSONArray)) {
+							assertionList.add("[FAILED] [" + key + "] in [" + regex + "] is not an json array");
+							Log.info("[Extract][FAILED] [" + key + "] in [" + regex + "] is not an json array");
+							return this;
+						}
+						if (i == keys.length - 1) {
+							String extractedValue = extractedNode.toString();
+							//if(extractedValue == null || extractedValue.equals("null")) {
+							//	extractedValue = "";
+							//}
+							if (expectedValue.equals(extractedValue)) {
+								assertionList
+										.add("[PASSED] value of [" + key + "] matched with expectation: [" + expectedValue + "]");
+								Log.info("[Assertion][PASSED] value of [" + key + "] matched with expectation: [" + expectedValue
+										+ "]");
+							} else {
+								assertionList.add("[FAILED] value of [" + key + "] is incorrect.  Expected [" + expectedValue
+										+ "] but got [" + extractedValue + "]");
+								Log.error("[Assertion][FAILED] value of [" + key + "] is incorrect.  Expected [" + expectedValue
+										+ "] but got [" + extractedValue + "]");
+							}
+						} else if (!(extractedNode instanceof JSONObject) && !(extractedNode instanceof JSONArray)) {
+							assertionList.add("[FAILED] key [" + key + "] in [" + regex + "]does not contain [" + keys[i + 1] + "]");
+							Log.error("[Assertion][FAILED] key [" + key + "] in [" + regex + "] does not contain [" + keys[i + 1] + "]");
+							return this;
+						} else {
+							currentNode = (JSONObject) extractedNode;
+						}
+					} else {
+						assertionList.add("[FAILED] key [" + key + "] in [" + regex + "] does not exist");
+						Log.error("[Assertion][FAILED] key [" + key + "] in [" + regex + "] does not exist");
+						return this;
+					}
 				}
-			} else {
-				assertionList.add("[FAILED] Response body doesnt contains key = [" + key + "]");
-				Log.error("[Assertion][FAILED] Response body doesnt contains key = [" + key + "]");
+			} catch (Exception e) {
+				assertionList.add("[FAILED] Cannot extract value with [" + regex + "]");
+				Log.error("[Assertion][FAILED] Cannot extract value with [" + regex + "]");
+				exception = e;
 			}
 		} else {
-			assertionList.add("[FAILED] Cannot verify json key = [" + key + "]. Response body is not a JSON");
-			Log.error("[Assertion][FAILED] Cannot verify json key = [" + key + "]. Response body is not a JSON");
+			extractedVariable.add("[FAILED] Response body is not JSON for extract [" + regex + "]");
+			Log.error("[Assertion][FAILED] Response body is not JSON for extract [" + regex + "]");
+		}}catch(Exception e) {
+			assertionList.add("[FAILED] Cannot extract value with [" + regex + "]");
+			Log.error("[Assertion][FAILED] Cannot extract value with [" + regex + "]");
+			exception = e;
+			return this;
 		}
 		return this;
 	}
@@ -121,8 +170,9 @@ public class RequestResponse {
 
 	public RequestResponse extractJsonValue(String key) throws Exception {
 		if (responseBodyJson != null) {
-			if (responseBodyJson.has(key)) {
-				String extractedValue = responseBodyJson.get(key).toString();
+			JSONObject bodyInJson = (JSONObject) responseBodyJson;
+			if (bodyInJson.has(key)) {
+				String extractedValue = bodyInJson.get(key).toString();
 				PropertiesLoader.getPropertiesLoader().test_variables.setProperty(key, extractedValue);
 				extractedVariable.add("[SUCCESS] [" + key + "] = [" + extractedValue + "]");
 				Log.info("[Extract][SUCCESS] [" + key + "] = [" + extractedValue + "]");
@@ -134,8 +184,8 @@ public class RequestResponse {
 		} else {
 			PropertiesLoader.getPropertiesLoader().test_variables.setProperty(key, "extract-failed");
 			extractedVariable.add(
-					"[FAILED] Reponse body is not JSON for extract [" + key + "]. set default to [extract-failed]");
-			Log.error("[Extract][FAILED] Reponse body is not JSON for extract [" + key
+					"[FAILED] Response body is not JSON for extract [" + key + "]. set default to [extract-failed]");
+			Log.error("[Extract][FAILED] Response body is not JSON for extract [" + key
 					+ "]. set default to [extract-failed]");
 
 		}
@@ -143,8 +193,9 @@ public class RequestResponse {
 	}
 
 	public RequestResponse extractJsonValue(String outputVariable, String regex) throws Exception {
+		try {
 		if (responseBodyJson != null) {
-			JSONObject currentNode = responseBodyJson;
+			JSONObject currentNode = (JSONObject) responseBodyJson;
 			String[] keys = regex.split("\\.");
 			try {
 				for (int i = 0; i < keys.length; i++) {
@@ -167,9 +218,9 @@ public class RequestResponse {
 						}
 						if (i == keys.length - 1) {
 							String extractedValue = extractedNode.toString();
-							if(extractedValue == null || extractedValue.equals("null")) {
-								extractedValue = "";
-							}
+							//if(extractedValue == null || extractedValue.equals("null")) {
+							//	extractedValue = "";
+							//}
 							PropertiesLoader.getPropertiesLoader().test_variables.setProperty(outputVariable,
 									extractedValue);
 							extractedVariable.add("[SUCCESS] [" + outputVariable + "] = [" + extractedValue + "]");
@@ -193,8 +244,13 @@ public class RequestResponse {
 				exception = e;
 			}
 		} else {
-			extractedVariable.add("[FAILED] Reponse body is not JSON for extract [" + regex + "]");
-			Log.error("[Extract][FAILED] Reponse body is not JSON for extract [" + regex + "]");
+			extractedVariable.add("[FAILED] Response body is not JSON for extract [" + regex + "]");
+			Log.error("[Extract][FAILED] Response body is not JSON for extract [" + regex + "]");
+		}}catch(Exception e) {
+			extractedVariable.add("[FAILED] Cannot extract value with [" + regex + "]");
+			Log.error("[Extract][FAILED] Cannot extract value with [" + regex + "]");
+			exception = e;
+			return this;
 		}
 		return this;
 	}

@@ -1,4 +1,4 @@
-package com.finstro.automation.pages.setup_information;
+package com.finstro.automation.pages.on_boarding;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -44,7 +44,7 @@ public class FindBusinessPage {
 
 	public void verifyFirstMatch(String expectedFirstMatchTitle, String expectedFirstMatchInfor) throws Exception {
 		assertEquals(driver.getText(firstMatchBusiniessName), expectedFirstMatchTitle,
-				"First result title is displayed imcorrectly", "First result title is displayed correctly");
+				"First result title is displayed incorrectly", "First result title is displayed correctly");
 		assertEquals(driver.getText(firstMatchBusinessABNACN), expectedFirstMatchInfor,
 				"First result infor is displayed incorrectly", "First result infor is displayed correctly");
 	}

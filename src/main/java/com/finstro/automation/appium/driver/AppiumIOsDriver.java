@@ -38,7 +38,7 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 		String booleanMobileFullReset = appium_configuration.getProperty("appium.fullReset");
 		String strAppiumVersion = appium_configuration.getProperty("appium.version");
 		
-		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, platform);
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, "iOS");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.NO_RESET, booleanMobileNoReset);

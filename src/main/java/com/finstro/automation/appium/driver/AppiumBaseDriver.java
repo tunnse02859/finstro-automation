@@ -672,7 +672,7 @@ public class AppiumBaseDriver {
 		String appBundleId = "";
 		if (isAndroidDriver()) {
 			appBundleId = PropertiesLoader.getPropertiesLoader().android_configuration
-					.getProperty("appium.ios.app.bundleId");
+					.getProperty("appium.android.appPackage");
 		} else if (isIOSDriver()) {
 			appBundleId = PropertiesLoader.getPropertiesLoader().ios_configuration
 					.getProperty("appium.ios.app.bundleId");

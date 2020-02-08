@@ -32,7 +32,7 @@ public class APICallExample extends MobileTestSetup {
 		finstroAPI = new FinstroAPI();
 		finstroAPI.login(LOGIN_EMAIL_ADDRESS, LOGIN_ACCESS_CODE).then().verifyResponseCode(200)
 				.extractJsonValue("accessToken").flush();
-		finstroAPI.setAccessToken(Common.getTestVariable("accessToken"));
+		finstroAPI.setAccessToken(Common.getTestVariable("accessToken",true));
 	}
 
 	@Test

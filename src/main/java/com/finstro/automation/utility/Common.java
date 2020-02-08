@@ -38,10 +38,15 @@ public class Common {
 		return builder.toString();
 	}
 	
-	public static String getTestVariable(String key) throws Exception {
+	public static String getTestVariable(String key,boolean convertNullToBlank) throws Exception {
 		String value = PropertiesLoader.getPropertiesLoader().test_variables.getProperty(key);
 		if(value == null) {
-			throw new Exception("Variable = ["+ key +"] doesnot exist. please check your code");
+			throw new Exception("Variable = ["+ key +"] does not exist. please check your code");
+		}
+		if(convertNullToBlank) {
+			if(value.equals("null")) {
+				value = "";
+			}
 		}
 		return value;
 	}

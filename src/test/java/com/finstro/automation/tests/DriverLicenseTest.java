@@ -11,12 +11,12 @@ import org.testng.annotations.Test;
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.setup_information.BusinessDetailPage;
-import com.finstro.automation.pages.setup_information.DriverLicensePage;
-import com.finstro.automation.pages.setup_information.PhotoIDPage;
-import com.finstro.automation.pages.setup_information.PostalAddressPage;
-import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
-import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
+import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
+import com.finstro.automation.pages.on_boarding.DriverLicensePage;
+import com.finstro.automation.pages.on_boarding.PhotoIDPage;
+import com.finstro.automation.pages.on_boarding.PostalAddressPage;
+import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
+import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
@@ -68,14 +68,14 @@ public class DriverLicenseTest extends MobileTestSetup {
 		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		finstroAPI.getDrivingLicenceInfor();
 		drivingLisencePage.verifyDriverLicenseInfor(
-				Common.getTestVariable("gender").equalsIgnoreCase("M") ? "Male" : "Female",
-				Common.getTestVariable("firstName"),
-				Common.getTestVariable("surname"),
-				Common.getTestVariable("middleName"),
-				Common.getTestVariable("state"),
-				Common.getTestVariable("dateOfBirth"),
-				Common.getTestVariable("licenceNumber"),
-				Common.getTestVariable("validTo"));
+				Common.getTestVariable("gender",true).equalsIgnoreCase("M") ? "Male" : "Female",
+				Common.getTestVariable("firstName",true),
+				Common.getTestVariable("surname",true),
+				Common.getTestVariable("middleName",true),
+				Common.getTestVariable("state",true),
+				Common.getTestVariable("dateOfBirth",true),
+				Common.getTestVariable("licenceNumber",true),
+				Common.getTestVariable("validTo",true));
 	}
 	
 	@Test

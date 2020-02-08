@@ -1,7 +1,6 @@
 package com.finstro.automation.tests;
 
 import static com.finstro.automation.utility.Assertion.*;
-import static org.testng.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 
@@ -10,10 +9,10 @@ import org.testng.annotations.Test;
 
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.setup_information.BusinessDetailPage;
-import com.finstro.automation.pages.setup_information.PhotoIDPage;
-import com.finstro.automation.pages.setup_information.ResidentialAddressPage;
-import com.finstro.automation.pages.setup_information.SelectBusinessCardPage;
+import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
+import com.finstro.automation.pages.on_boarding.PhotoIDPage;
+import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
+import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
@@ -34,7 +33,8 @@ public class PhotoIDTest extends MobileTestSetup {
 		businessDetailPage = new BusinessDetailPage(driver);
 		residentialAddressPage = new ResidentialAddressPage(driver);
 		photoIDPage = new PhotoIDPage(driver);
-		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
+		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
+				"Register page showed as default page");
 		
 		toPhotoIDPage();
 	}
