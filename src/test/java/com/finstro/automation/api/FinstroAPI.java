@@ -169,5 +169,21 @@ public class FinstroAPI {
 				.extractJsonValue("surname", "medicareCard.surname").extractJsonValue("validTo", "medicareCard.validTo")
 				.flush();
 	}
+	
+	public void getAvailableNumber() throws Exception {
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance");
+	}
+	
+	public void getBalanceNumber() throws Exception {
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("balance", "balance");
+	}
+	
+	public void getNextBillAmount() throws Exception {
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("nextBillAmount", "nextBillAmount");
+	}
+	
+	public void getLimit() throws Exception {
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails.limit");
+	}
 
 }

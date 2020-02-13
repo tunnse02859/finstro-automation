@@ -16,6 +16,19 @@ public class HomePage {
     @iOSXCUITFindBy(iOSNsPredicate="name = 'Home'")
     private WebElement title;
 
+    @AndroidFindBy(xpath="//android.widget.FrameLayout[@content-desc=\"Settings\"]/android.widget.ImageView")
+    private WebElement settingTab;
+    
+
+    @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[1]")
+    private WebElement yourNextBill;
+    
+    @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[2]")
+    private WebElement balance;
+    
+    @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[3]")
+    private WebElement yearlyView;
+    
     public HomePage(AppiumBaseDriver driver){
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
@@ -23,5 +36,21 @@ public class HomePage {
 
     public boolean isActive() throws Exception{
         return driver.isElementDisplayed(title);
+    }
+    
+    public void navigateToSettingTab() throws Exception{
+    	driver.click(settingTab);
+    }
+    
+    public void goToTheNextBillScreen() throws Exception{
+    	driver.click(yourNextBill);
+    }
+    
+    public void goToBalanceScreen() throws Exception{
+    	driver.click(balance);
+    }
+    
+    public void goToYearlyViewScreen() throws Exception{
+    	driver.click(yearlyView);
     }
 }

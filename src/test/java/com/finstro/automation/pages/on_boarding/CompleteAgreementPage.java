@@ -17,6 +17,12 @@ public class CompleteAgreementPage {
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/money_chart")
 	private WebElement moneyChart;
 	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/agreement_checkbox")
+	private WebElement agreemnetCheckbox;
+	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/submit_text")
+	private WebElement confirmButton;
+	
 	public CompleteAgreementPage(AppiumBaseDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
@@ -24,5 +30,10 @@ public class CompleteAgreementPage {
 
 	public boolean isActive() throws Exception {
 		return driver.isElementDisplayed(moneyChart);
+	}
+	
+	public void clickConfirm() throws Exception {
+		driver.selectCheckBox(agreemnetCheckbox);
+		driver.click(confirmButton);
 	}
 }
