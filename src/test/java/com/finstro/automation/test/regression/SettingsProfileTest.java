@@ -59,8 +59,10 @@ public class SettingsProfileTest extends MobileTestSetup {
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
 		completeAgreementPage = new CompleteAgreementPage(driver);
+		navigator = new MainNavigator(driver);
 		homePage = new HomePage(driver);
 		settingPage = new SettingsPage(driver);
+		settingProfilePage = new SettingProfilePage(driver);
 		// check if register page is default page
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
@@ -85,8 +87,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 		
 		assertTrue(settingProfilePage.isActive(), "Setting page didnt showed as default page in first installation",
 				"Setting page showed as default page");
-		
-	
+
 	}
 	
 	@Test

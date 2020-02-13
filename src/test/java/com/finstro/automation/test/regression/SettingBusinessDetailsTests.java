@@ -141,7 +141,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 	}
 
-	@Test(dataProvider = "SettingBusinessDetail_01", enabled = false)
+	@Test(dataProvider = "SettingBusinessDetail_01")
 	public void SettingBusinessDetail_01(String category, String email, String mobile, String website, String facebook,
 			String twitter, String instagram, String skype, String linkedin, String other) throws Exception {
 		// Save the business details to set back when test done
