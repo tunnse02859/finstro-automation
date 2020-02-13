@@ -9,12 +9,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.pages.HomeBalancePage;
-import com.finstro.automation.pages.HomeFebBillPage;
-import com.finstro.automation.pages.HomePage;
-import com.finstro.automation.pages.HomeYearlyViewPage;
-import com.finstro.automation.pages.SettingPage;
-import com.finstro.automation.pages.SettingProfilePage;
+import com.finstro.automation.pages.home.HomeBalancePage;
+import com.finstro.automation.pages.home.HomeFebBillPage;
+import com.finstro.automation.pages.home.HomePage;
+import com.finstro.automation.pages.home.HomeYearlyViewPage;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
@@ -24,6 +22,7 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
+import com.finstro.automation.pages.settings.SettingProfilePage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
@@ -85,7 +84,7 @@ public class HomeTransactionBillTest extends MobileTestSetup {
 		photoIDPage.clickNext();
 		drivingLisencePage.clickNext();
 		postalAddressPage.clickNext();
-		completeAgreementPage.clickConfirm();
+		completeAgreementPage.confirmAgreement();
 		
 		assertTrue(homePage.isActive(), "Home page didnt showed as default page in first installation",
 				"Home page showed as default page");

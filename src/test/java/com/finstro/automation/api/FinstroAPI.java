@@ -52,6 +52,8 @@ public class FinstroAPI {
 				.extractJsonValue("type", "businessDetails.asicBusiness.type")
 				.extractJsonValue("businessNameId", "businessDetails.asicBusiness.businessNameId")
 				.extractJsonValue("parentCompany", "businessDetails.asicBusiness.parentCompany")
+				.extractJsonValue("gstDate", "businessDetails.gstDate")
+				.extractJsonValue("timeTrading", "businessDetails.timeTrading")
 
 				// business trading address
 				.extractJsonValue("country", "businessDetails.businessTradingAddress.country")

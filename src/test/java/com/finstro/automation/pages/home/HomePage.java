@@ -1,4 +1,4 @@
-package com.finstro.automation.pages;
+package com.finstro.automation.pages.home;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -15,11 +15,7 @@ public class HomePage {
     @AndroidFindBy(id="au.com.finstro.finstropay:id/business_detail_title")
     @iOSXCUITFindBy(iOSNsPredicate="name = 'Home'")
     private WebElement title;
-
-    @AndroidFindBy(xpath="//android.widget.FrameLayout[@content-desc=\"Settings\"]/android.widget.ImageView")
-    private WebElement settingTab;
     
-
     @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[1]")
     private WebElement yourNextBill;
     
@@ -38,9 +34,6 @@ public class HomePage {
         return driver.isElementDisplayed(title);
     }
     
-    public void navigateToSettingTab() throws Exception{
-    	driver.click(settingTab);
-    }
     
     public void goToTheNextBillScreen() throws Exception{
     	driver.click(yourNextBill);
