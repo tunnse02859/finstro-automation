@@ -17,9 +17,9 @@ public class DriverLicensePage {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
-	@iOSXCUITFindBy(id="")
+	@iOSXCUITFindBy(accessibility = "back")
 	private WebElement back;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
 	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
 	private WebElement errorMessage;
@@ -27,42 +27,51 @@ public class DriverLicensePage {
 	private WebElement errorType;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/verification_title")
+	@iOSXCUITFindBy(iOSNsPredicate = "value = 'Driving Licence'")
 	private WebElement title;
-	
+
 	@AndroidFindBy(id = "android:id/text1")
+	@iOSXCUITFindBy(accessibility = "gender")
 	private WebElement gender;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/first_name_edt")
+	@iOSXCUITFindBy(accessibility = "firstname")
 	private WebElement firstName;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
+	@iOSXCUITFindBy(accessibility = "lastname")
 	private WebElement lastName;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/middle_name_edt")
+	@iOSXCUITFindBy(accessibility = "middlename")
 	private WebElement middleName;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/state_edt")
+	@iOSXCUITFindBy(accessibility = "state")
 	private WebElement state;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/dob_edt")
+	@iOSXCUITFindBy(accessibility = "dob")
 	private WebElement dob;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/driving_number_edt")
+	@iOSXCUITFindBy(accessibility = "driving license number")
 	private WebElement driverLicenseNumber;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/textinput_error")
 	private WebElement driverLicenseError;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/expiry_edt")
+	@iOSXCUITFindBy(accessibility = "expiry date")
 	private WebElement expireDate;
 
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
+	@iOSXCUITFindBy(accessibility = "next")
 	private WebElement next;
-	
+
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnMedicare\"))")
+	@iOSXCUITFindBy(accessibility = "medicare")
 	private WebElement medicare;
-	
-	
 
 	public DriverLicensePage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -76,72 +85,98 @@ public class DriverLicensePage {
 	public void clickNext() throws Exception {
 		driver.click(next);
 	}
-	
+
 	public void clickMedicare() throws Exception {
 		driver.click(medicare);
 	}
-	
+
 	public void selectGender(String genderName) throws Exception {
-		if(driver.isAndroidDriver()) {
+		if (driver.isAndroidDriver()) {
 			driver.click(gender);
-			By genderSelectorBy = MobileBy.AndroidUIAutomator("new UiSelector().className(\"android.widget.CheckedTextView\").text(\"" + genderName + "\")");
+			By genderSelectorBy = MobileBy.AndroidUIAutomator(
+					"new UiSelector().className(\"android.widget.CheckedTextView\").text(\"" + genderName + "\")");
 			WebElement genderSelector = driver.isElementPresented(genderSelectorBy, 5);
-			assertNotNull(genderSelector,"selector gender = [" + genderName + "] is not displayed for select","selector gender = [" + genderName + "] is displayed for select");
+			assertNotNull(genderSelector, "selector gender = [" + genderName + "] is not displayed for select",
+					"selector gender = [" + genderName + "] is displayed for select");
 			driver.click(genderSelector);
+		} else {
+			driver.selectPickerWheel(gender, genderName);
 		}
 	}
-	
+
 	public void inputFirstName(String firstNameString) throws Exception {
 		driver.inputTextWithClear(firstName, firstNameString);
 	}
-	
+
 	public void inputLastName(String lastNameString) throws Exception {
 		driver.inputTextWithClear(lastName, lastNameString);
 	}
-	
+
 	public void inputMiddleName(String middleNameString) throws Exception {
 		driver.inputTextWithClear(middleName, middleNameString);
 	}
-	
+
 	public void inputState(String stateName) throws Exception {
 		driver.inputTextWithClear(state, stateName);
 	}
-	
+
 	public void inputDoB(String dobString) throws Exception {
-		//data must be dd/MM/YYYY
+		// data must be dd/MM/YYYY
 		driver.inputTextWithClear(dob, dobString);
 	}
-	
+
 	public void inputLicenseNumber(String licenseNumberString) throws Exception {
 		driver.inputTextWithClear(driverLicenseNumber, licenseNumberString);
 	}
-	
+
 	public void inputExpireDate(String expireDateString) throws Exception {
 		driver.inputTextWithClear(expireDate, expireDateString);
 	}
-	
-	public void inputDriverLicenseInfor(String genderName, String firstNameString, String lastNameString, String middleNameString, String stateName, String dobString, String licenseNumberString, String expireDateString) throws Exception {
+
+	public void inputDriverLicenseInfor(String genderName, String firstNameString, String lastNameString,
+			String middleNameString, String stateName, String dobString, String licenseNumberString,
+			String expireDateString) throws Exception {
 		selectGender(genderName);
 		inputFirstName(firstNameString);
 		inputLastName(lastNameString);
 		inputMiddleName(middleNameString);
 		inputState(stateName);
-		inputDoB(dobString);
+		// inputDoB(dobString);
 		inputLicenseNumber(licenseNumberString);
-		inputExpireDate(expireDateString);
+		// inputExpireDate(expireDateString);
 	}
-	
-	public void verifyDriverLicenseInfor(String genderName, String firstNameString, String lastNameString, String middleNameString, String stateName, String dobString, String licenseNumberString, String expireDateString) throws Exception {
-		assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly", "Gender is displayed correctly");
-		assertEquals(driver.getText(firstName), firstNameString, "First Name is displayed incorrectly", "First Name is displayed correctly");
-		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly", "Last Name is displayed correctly");
-		assertEquals(driver.getText(middleName), middleNameString, "Middle Name is displayed incorrectly", "Middle Name is displayed correctly");
-		assertEquals(driver.getText(state), stateName, "State is displayed incorrectly", "State is displayed correctly");
-		assertEquals(driver.getText(dob), dobString, "Date of birth is displayed incorrectly", "Date of birth is displayed correctly");
-		assertEquals(driver.getText(driverLicenseNumber), licenseNumberString, "License number is displayed incorrectly", "License number is displayed correctly");
-		assertEquals(driver.getText(expireDate), expireDateString, "expire date is displayed incorrectly", "expire date is displayed correctly");
+
+	public void verifyDriverLicenseInfor(String genderName, String firstNameString, String lastNameString,
+			String middleNameString, String stateName, String dobString, String licenseNumberString,
+			String expireDateString) throws Exception {
+		if (driver.isAndroidDriver()) {
+			assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly",
+					"Gender is displayed correctly");
+			assertEquals(driver.getText(state), stateName, "State is displayed incorrectly",
+					"State is displayed correctly");
+		} else if (driver.isIOSDriver()) {
+			assertEquals(driver.getTextSelected(gender), genderName, "Gender is displayed incorrectly",
+					"Gender is displayed correctly");
+			assertEquals(driver.getTextSelected(state), stateName, "State is displayed incorrectly",
+					"State is displayed correctly");
+		}
+
+		assertEquals(driver.getText(firstName), firstNameString, "First Name is displayed incorrectly",
+				"First Name is displayed correctly");
+		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly",
+				"Last Name is displayed correctly");
+		assertEquals(driver.getText(middleName), middleNameString, "Middle Name is displayed incorrectly",
+				"Middle Name is displayed correctly");
+		// assertEquals(driver.getText(dob), dobString, "Date of birth is displayed
+		// incorrectly",
+		// "Date of birth is displayed correctly");
+		assertEquals(driver.getText(driverLicenseNumber), licenseNumberString,
+				"License number is displayed incorrectly", "License number is displayed correctly");
+		// assertEquals(driver.getText(expireDate), expireDateString, "expire date is
+		// displayed incorrectly",
+		// "expire date is displayed correctly");
 	}
-	
+
 	public void verifyErrorMessage(String expectedMessage) throws Exception {
 		String actualMessage = "";
 		if (driver.isAndroidDriver()) {
@@ -149,9 +184,14 @@ public class DriverLicensePage {
 		} else {
 			actualMessage = driver.getText(errorMessage);
 		}
-		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly", "Error message is displayed correctly");
+		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly",
+				"Error message is displayed correctly");
 	}
+
 	public void verifyDrivingLicenseError(String expectedMessage) throws Exception {
-		assertEquals(driver.getText(driverLicenseError), expectedMessage, "License Number error message is displayed incorrectly", "License Number error message is displayed correctly");
+		if (driver.isAndroidDriver())
+			assertEquals(driver.getText(driverLicenseError), expectedMessage,
+					"License Number error message is displayed incorrectly",
+					"License Number error message is displayed correctly");
 	}
 }

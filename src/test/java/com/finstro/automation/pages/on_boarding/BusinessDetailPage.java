@@ -3,6 +3,7 @@ package com.finstro.automation.pages.on_boarding;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -86,8 +87,13 @@ public class BusinessDetailPage {
 	
 	public void verifyBusinessData(String expectedABN, String expectedEntityName, String expectedBusinessName) throws Exception {
 		assertEquals(driver.getText(abn).replace(" ", ""), expectedABN, "ABN/ACN is displayed incorrectly", "ABN/ACN is displayed correctly");
-		assertEquals(driver.getText(entityName), expectedEntityName, "Entity name is displayed incorrectly", "Entity name is displayed correctly");
-		assertEquals(driver.getText(businessName), expectedBusinessName, "Business name is displayed incorrectly", "Business name is displayed correctly");
+		assertEquals(driver.getText(entityName).trim(), expectedEntityName, "Entity name is displayed incorrectly", "Entity name is displayed correctly");
+		if(driver.isAndroidDriver())
+			assertEquals(driver.getText(businessName).trim(), expectedBusinessName, "Business name is displayed incorrectly", "Business name is displayed correctly");
+		else{
+			assertEquals(driver.getTextSelected(businessName).trim(), expectedBusinessName, "Business name is displayed incorrectly", "Business name is displayed correctly");
+		}
+		
 	}
 
 	public void clickFindBusiness() throws Exception {

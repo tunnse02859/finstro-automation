@@ -22,7 +22,7 @@ public class SelectBusinessCardPage {
     private WebElement title;
 	
 	@AndroidFindBy(id="au.com.finstro.finstropay:id/verification_subtitle")
-	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Need a business card?'")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'needacard'")
     private WebElement subTitle;
 
     

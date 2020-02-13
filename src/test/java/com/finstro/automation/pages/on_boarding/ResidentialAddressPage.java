@@ -16,23 +16,23 @@ public class ResidentialAddressPage {
 	private AppiumBaseDriver driver;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
-	@iOSXCUITFindBy(accessibility = "abnacn")
+	@iOSXCUITFindBy(accessibility = "Back")
 	private WebElement back;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_detail_title")
-	@iOSXCUITFindBy(accessibility = "abnacn")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Residential Address'")
 	private WebElement title;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/btnFindAddress_text")
-	@iOSXCUITFindBy(accessibility = "abnacn")
+	@iOSXCUITFindBy(accessibility = "residentialAdressSearch")
 	private WebElement searchAddress;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/text1")
-	@iOSXCUITFindBy(accessibility = "abnacn")
+	@iOSXCUITFindBy(accessibility = "address")
 	private WebElement residentialAddress;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/submit_text")
-	@iOSXCUITFindBy(accessibility = "abnacn")
+	@iOSXCUITFindBy(accessibility = "next")
 	private WebElement next;
 	
 	
@@ -43,7 +43,7 @@ public class ResidentialAddressPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return (driver.isElementDisplayed(title) && driver.getText(title).equalsIgnoreCase("Residential Address"));
+		return (driver.isElementDisplayed(title));
 	}
 	
 	public void clickSearchAddress() throws Exception {
@@ -51,7 +51,7 @@ public class ResidentialAddressPage {
 	}
 	
 	public void verifyResidentialAddress(String expectedAddress) throws Exception {
-		assertEquals(driver.getText(residentialAddress).replace(",", ""), expectedAddress, "Residential Address field's value doesnt match with expectation", "Residential Address field's value matched with expectation");
+		assertEquals(driver.getText(residentialAddress).replace(",", "").trim(), expectedAddress, "Residential Address field's value doesnt match with expectation", "Residential Address field's value matched with expectation");
 	}
 	
 	public void clickNext() throws Exception {

@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.on_boarding.BankStatementPage;
+import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
 import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
 import com.finstro.automation.pages.on_boarding.DriverLicensePage;
@@ -31,7 +31,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 	private PhotoIDPage photoIDPage;
 	private DriverLicensePage drivingLisencePage;
 	private PostalAddressPage postalAddressPage;
-	private BankStatementPage backStatementPage;
+	private SelectBankStatementPage backStatementPage;
 	private CompleteAgreementPage completeAgreementPage;
 	
 
@@ -45,7 +45,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 		photoIDPage = new PhotoIDPage(driver);
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
-		backStatementPage = new BankStatementPage(driver);
+		backStatementPage = new SelectBankStatementPage(driver);
 		completeAgreementPage = new CompleteAgreementPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
 		

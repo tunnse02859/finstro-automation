@@ -13,13 +13,16 @@ public class PhotoIDPage {
     private AppiumBaseDriver driver;
     
     @AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
+    @iOSXCUITFindBy(accessibility = "Back")
 	private WebElement back;
 
     @AndroidFindBy(id="au.com.finstro.finstropay:id/photo_upload_title")
+    @iOSXCUITFindBy(iOSNsPredicate = "name = 'Photo ID'")
     private WebElement title;
     
     @AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
-	private WebElement next;
+    @iOSXCUITFindBy(accessibility = "next")
+    private WebElement next;
 
     public PhotoIDPage(AppiumBaseDriver driver){
         this.driver = driver;

@@ -4,6 +4,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -18,6 +20,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -32,6 +35,8 @@ import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.report.Log;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -237,6 +242,22 @@ public class AppiumBaseDriver {
 		}
 	}
 
+	public String getTextSelected(WebElement element) throws Exception {
+		try {
+			element.click();
+			Thread.sleep(1000);
+			WebElement wheels = (WebElement) driver
+					.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+			String text = wheels.getText();
+			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
+			clickByPosition(wheels, "top right");
+			return text;
+		} catch (Exception e) {
+			HtmlReporter.fail(String.format("Cannot get text of the element [%s]", element.toString()), e, "");
+			throw e;
+		}
+	}
+
 	public String getAttribute(WebElement element, String attribute) {
 		try {
 			String value = element.getAttribute(attribute);
@@ -276,6 +297,8 @@ public class AppiumBaseDriver {
 				new TouchAction<>(driver).tap(PointOption.point(leftX + 10, middleY)).perform();
 			} else if (clickPosition.equalsIgnoreCase("right")) {
 				new TouchAction<>(driver).tap(PointOption.point(rightX - 10, middleY)).perform();
+			} else if (clickPosition.equalsIgnoreCase("top right")) {
+				new TouchAction<>(driver).tap(PointOption.point(rightX - 10, upperY - 10)).perform();
 			} else {
 				new TouchAction<>(driver).tap(PointOption.point(middleX, middleY)).perform();
 			}
@@ -286,6 +309,64 @@ public class AppiumBaseDriver {
 			throw (e);
 
 		}
+	}
+
+	public void selectPickerWheel(WebElement element, String value) throws Exception {
+		try {
+			element.click();
+			Thread.sleep(1000);
+			MobileElement wheels = (MobileElement) driver
+					.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+			// Read the selected value
+			String strPickerWheelSelectedValue = wheels.getText();
+			if (strPickerWheelSelectedValue.equals(value)) {
+				Log.info(String.format("The element [%s] is selected with value = [%s]", element.toString(), value));
+				clickByPosition(wheels, "top right");
+				return;
+			} else {
+				// get picker wheel location:
+				int leftX = wheels.getLocation().getX();
+				int rightX = leftX + wheels.getSize().getWidth();
+				int middleX = (rightX + leftX) / 2;
+				int upperY = wheels.getLocation().getY();
+				int lowerY = upperY + wheels.getSize().getHeight();
+				int middleY = (upperY + lowerY) / 2;
+				
+				// swipe down 3 time in picker wheel to get 1st item on list
+				for (int i = 0; i < 3; i++) {
+					new TouchAction<>(driver).press(PointOption.point(middleX, upperY + 50))
+							.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500)))
+							.moveTo(PointOption.point(middleX, lowerY)).release().perform();
+					Thread.sleep(1000);
+				}
+				
+				//set js script 
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				Map<String, Object> params = new HashMap<>();
+				params.put("order", "next");
+				params.put("offset", 0.15);
+				params.put("element", ((RemoteWebElement) wheels));
+				
+				js.executeScript("mobile: selectPickerWheelValue", params);
+				
+				//go to next item in the list of picker wheel
+				for(int i = 0; i < 10; i++) {
+					//check value
+					strPickerWheelSelectedValue = wheels.getText();
+					if (strPickerWheelSelectedValue.equals(value)) {
+						Log.info(String.format("The element [%s] is selected with value = [%s]", element.toString(), value));
+						clickByPosition(wheels, "top right");
+						return;
+					}
+					js.executeScript("mobile: selectPickerWheelValue", params);
+				}
+				throw new Exception(String.format("The element [%s] cannot selected with value = [%s]", element.toString(),value));
+			}
+		} catch (Exception e) {
+			Log.error(String.format("The element [%s] cannot selected with value = [%s]", element.toString(),value));
+			throw (e);
+		}
+
 	}
 
 	public void selectRadioButton(WebElement element) throws Exception {
