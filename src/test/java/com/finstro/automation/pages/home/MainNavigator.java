@@ -17,15 +17,20 @@ public class MainNavigator {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/navigation_home")
+	@iOSXCUITFindBy(accessibility = "Home")
 	private WebElement nvgHome;
 	
+	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/navigation_cards")
+	@iOSXCUITFindBy(accessibility = "Cards")
 	private WebElement nvgCards;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/navigation_offers")
+	@iOSXCUITFindBy(accessibility = "nvgOffers")
 	private WebElement nvgOffers;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/navigation_settings")
+	@iOSXCUITFindBy(accessibility = "Settings")
 	private WebElement nvgSettings;
 
 	public MainNavigator(AppiumBaseDriver driver) {
@@ -36,7 +41,7 @@ public class MainNavigator {
 	public boolean isActive() {
 		return driver.isElementDisplayed(nvgHome) &&
 				driver.isElementDisplayed(nvgCards) &&
-				driver.isElementDisplayed(nvgOffers) &&
+				//driver.isElementDisplayed(nvgOffers) &&
 				driver.isElementDisplayed(nvgSettings);
 	}
 

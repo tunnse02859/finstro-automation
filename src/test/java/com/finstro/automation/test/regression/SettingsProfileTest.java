@@ -20,7 +20,9 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingProfilePage;
+import com.finstro.automation.pages.settings.SettingProfile_DrivingLicensePage;
+import com.finstro.automation.pages.settings.SettingProfile_MedicarePage;
+import com.finstro.automation.pages.settings.SettingProfile_ProfileDetailPage;
 import com.finstro.automation.pages.settings.SettingsPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
@@ -40,7 +42,9 @@ public class SettingsProfileTest extends MobileTestSetup {
 	private HomePage homePage;
 	private MainNavigator navigator;
 	private SettingsPage settingPage;
-	private SettingProfilePage settingProfilePage;
+	private SettingProfile_ProfileDetailPage settingProfileDetailPage;
+	private SettingProfile_DrivingLicensePage settingProfileDrivingLicensePage;
+	private SettingProfile_MedicarePage settingProfileMedicarePage;
 	
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
@@ -62,7 +66,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 		navigator = new MainNavigator(driver);
 		homePage = new HomePage(driver);
 		settingPage = new SettingsPage(driver);
-		settingProfilePage = new SettingProfilePage(driver);
+		settingProfileDetailPage = new SettingProfile_ProfileDetailPage(driver);
 		// check if register page is default page
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
@@ -70,7 +74,6 @@ public class SettingsProfileTest extends MobileTestSetup {
 		// Do login
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		
-		toSettingProfilePage();
 	}
 	
 	private void toSettingProfilePage() throws Exception {
@@ -78,6 +81,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 		Thread.sleep(10000);
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
+		Thread.sleep(10000);
 		photoIDPage.clickNext();
 		drivingLisencePage.clickNext();
 		postalAddressPage.clickNext();
@@ -85,29 +89,62 @@ public class SettingsProfileTest extends MobileTestSetup {
 		navigator.gotoSettingsPage();
 		settingPage.goToProfileDetailsPage();
 		
-		assertTrue(settingProfilePage.isActive(), "Setting page didnt showed as default page in first installation",
-				"Setting page showed as default page");
+		assertTrue(settingProfileDetailPage.isActive(), "Setting Profile Page is not displayed",
+				"Setting Profile Page is displayed");
 
 	}
 	
 	@Test
 	public void SettingProfile_01_VerifyUserCanEditTheProfileInfomation() throws Exception {
-		settingProfilePage.editAFieldOnProfileDetailPage("VavretchekTest","lastName");
-		settingProfilePage.verifAFieldOnProfileDetailPageSuccesfully("VavretchekTest","lastName");
+		//go to setting profile page
+		toSettingProfilePage();
+		
+		// call recover api and get profile data here
+		// verify data from API with ui
+		
+		
+		
+		// change data and click save
+		settingProfileDetailPage.editAFieldOnProfileDetailPage("VavretchekTest","lastName");
+		settingProfileDetailPage.clickSaveSetting();
+		
+		// call API again and verify data from API is match with inputed, not UI
+		//settingProfileDetailPage.verifAFieldOnProfileDetailPageSuccesfully("VavretchekTest","lastName");
 	}
 	
 	@Test
 	public void SettingProfile_02_VerifyUserCanEditTheDrivingLicenceInformation() throws Exception {
-		settingProfilePage.swipeLeftPage();
-		settingProfilePage.editAFieldDrivingLicenceInfor("test", "middleName");
-		settingProfilePage.verifyEditDrivingLicenceInforSuccesfully("test", "middleName");
+		//go to setting profile driving license page
+		toSettingProfilePage();
+		settingProfileDrivingLicensePage = settingProfileDetailPage.toSettingDrivingLicensePage();
+		
+		// call recover api and get profile data here
+		// verify data from API with ui
+		
+		// change data and click save
+		settingProfileDrivingLicensePage.editAFieldDrivingLicenceInfor("test", "middleName");
+		settingProfileDrivingLicensePage.clickSaveSetting();
+		
+		// call API again and verify data from API is match with inputed, not UI
+		//settingProfileDrivingLicensePage.verifyEditDrivingLicenceInforSuccesfully("test", "middleName");
 	}
 	
 	@Test
 	public void SettingProfile_03_VerifyUserCanEditTheMedicareInformation () throws Exception {
-		settingProfilePage.swipeLeftPage();
-		settingProfilePage.editAFieldMedicareInfor("test", "middleName");
-		settingProfilePage.verifyEditMedicareInforSuccesfully("test", "middleName");
+		//go to setting profile medicare page
+		toSettingProfilePage();
+		settingProfileDrivingLicensePage = settingProfileDetailPage.toSettingDrivingLicensePage();
+		settingProfileMedicarePage = settingProfileDrivingLicensePage.toSettingMedicarePage();
+		
+		// call recover api and get profile data here
+		// verify data from API with ui
+		
+		
+		// change data and click save
+		settingProfileMedicarePage.editAFieldMedicareInfor("test", "middleName");
+		settingProfileMedicarePage.clickSaveSetting();
+		
+		// call API again and verify data from API is match with inputed, not UI
+		//settingProfileMedicarePage.verifyEditMedicareInforSuccesfully("test", "middleName");
 	}
-
 }

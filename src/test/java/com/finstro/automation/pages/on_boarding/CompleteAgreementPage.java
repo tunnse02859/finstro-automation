@@ -7,20 +7,24 @@ import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CompleteAgreementPage {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/forgot_access_title")
+	@iOSXCUITFindBy(accessibility = "Complete Agreement")
 	private WebElement title;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/money_chart")
 	private WebElement moneyChart;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/agreement_checkbox")
+	@iOSXCUITFindBy(accessibility = "agree")
 	private WebElement chkAgreement;
 	
 	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/submit_text\"))")
+	@iOSXCUITFindBy(accessibility = "confirm")
 	private WebElement btnSubmit;
 	
 	public CompleteAgreementPage(AppiumBaseDriver driver) {
@@ -33,7 +37,7 @@ public class CompleteAgreementPage {
 	}
 	
 	public void confirmAgreement() throws Exception {
-		this.driver.selectCheckBox(chkAgreement);
-		this.driver.click(btnSubmit);
+		driver.selectCheckBox(chkAgreement);
+		driver.click(btnSubmit);
 	}
 }

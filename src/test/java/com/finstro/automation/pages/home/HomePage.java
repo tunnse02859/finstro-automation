@@ -13,16 +13,19 @@ public class HomePage {
     private AppiumBaseDriver driver;
 
     @AndroidFindBy(id="au.com.finstro.finstropay:id/business_detail_title")
-    @iOSXCUITFindBy(iOSNsPredicate="name = 'Home'")
+    @iOSXCUITFindBy(iOSNsPredicate="name = 'HOME'")
     private WebElement title;
     
     @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[1]")
+    @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][1]/XCUIElementTypeStaticText[2]")
     private WebElement yourNextBill;
     
     @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[2]")
+    @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][2]/XCUIElementTypeStaticText[2]")
     private WebElement balance;
     
     @AndroidFindBy(xpath="//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[3]")
+    @iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][3]/XCUIElementTypeStaticText[2]")
     private WebElement yearlyView;
     
     public HomePage(AppiumBaseDriver driver){
@@ -36,14 +39,15 @@ public class HomePage {
     
     
     public void goToTheNextBillScreen() throws Exception{
-    	driver.click(yourNextBill);
+    	driver.clickByPosition(yourNextBill,"middle");
     }
     
     public void goToBalanceScreen() throws Exception{
+    	driver.clickByPosition(balance,"middle");
     	driver.click(balance);
     }
     
     public void goToYearlyViewScreen() throws Exception{
-    	driver.click(yearlyView);
+    	driver.clickByPosition(yearlyView,"middle");
     }
 }

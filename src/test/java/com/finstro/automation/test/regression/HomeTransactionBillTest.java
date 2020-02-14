@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.pages.home.HomeBalancePage;
-import com.finstro.automation.pages.home.HomeFebBillPage;
+import com.finstro.automation.pages.home.HomeNextBillPage;
 import com.finstro.automation.pages.home.HomePage;
 import com.finstro.automation.pages.home.HomeYearlyViewPage;
 import com.finstro.automation.pages.login_process.LoginPage;
@@ -22,7 +22,7 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingProfilePage;
+import com.finstro.automation.pages.settings.SettingProfile_ProfileDetailPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
@@ -38,7 +38,7 @@ public class HomeTransactionBillTest extends MobileTestSetup {
 	private PostalAddressPage postalAddressPage;
 	private CompleteAgreementPage completeAgreementPage;
 	private HomePage homePage;
-	private HomeFebBillPage homeFebBillPage;
+	private HomeNextBillPage homeNextBillPage;
 	private HomeBalancePage homeBalancePage;
 	private HomeYearlyViewPage homeYearlyViewPage;
 	
@@ -60,7 +60,7 @@ public class HomeTransactionBillTest extends MobileTestSetup {
 		postalAddressPage = new PostalAddressPage(driver);
 		completeAgreementPage = new CompleteAgreementPage(driver);
 		homePage = new HomePage(driver);
-		homeFebBillPage = new HomeFebBillPage(driver);
+		homeNextBillPage = new HomeNextBillPage(driver);
 		homeBalancePage = new HomeBalancePage(driver);
 		homeYearlyViewPage = new HomeYearlyViewPage(driver);
 		// check if register page is default page
@@ -95,22 +95,22 @@ public class HomeTransactionBillTest extends MobileTestSetup {
 	@Test
 	public void Home_06_GoToTheNextBillScreen() throws Exception {
 		homePage.goToTheNextBillScreen();
-		assertTrue(homeFebBillPage.isActive(), "Home page didnt showed as default page in first installation",
-				"Home page showed as default page");
+		assertTrue(homeNextBillPage.isActive(), "Next bill page is not displayed",
+				"Next bill page is displayed");
 	}
 	
 	@Test
 	public void Home_07_GoToBalanceScreen() throws Exception {
 		homePage.goToBalanceScreen();
-		assertTrue(homeBalancePage.isActive(), "Home page didnt showed as default page in first installation",
-				"Home page showed as default page");
+		assertTrue(homeBalancePage.isActive(), "Balance page is not displayed",
+				"Balance page showed as default page");
 	}
 	
 	@Test
 	public void Home_08_GoToYearlyViewScreen() throws Exception {
 		homePage.goToYearlyViewScreen();
-		assertTrue(homeYearlyViewPage.isActive(), "Home page didnt showed as default page in first installation",
-				"Home page showed as default page");
+		assertTrue(homeYearlyViewPage.isActive(), "Yearly View page is not displayed",
+				"Yearly View page is displayed");
 	}
 	
 }
