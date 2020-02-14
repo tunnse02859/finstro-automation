@@ -102,4 +102,67 @@ public class SettingProfile_DrivingLicensePage {
 		return new SettingProfile_MedicarePage(driver);
 	}
 
+	public String getGender() throws Exception {
+		return driver.getText(gender);
+	}
+
+	public void setGender(String genderValue) throws Exception {
+		driver.selectItemFromSpinner(gender, genderValue);
+	}
+
+	public String getFirstName() throws Exception {
+		return driver.getText(firstName);
+	}
+
+	public void setFirstName(String firstNameValue) throws Exception {
+		driver.inputTextWithClear(firstName, firstNameValue);
+	}
+
+	public String getLastName() throws Exception {
+		return driver.getText(lastName);
+	}
+
+	public void setLastName(String lastNameValue) throws Exception {
+		driver.inputTextWithClear(lastName, lastNameValue);
+	}
+
+	public String getMiddleName() throws Exception {
+		return driver.getText(middleName);
+	}
+
+	public void setMiddleName(String middleNameValue) throws Exception {
+		driver.inputTextWithClear(middleName, middleNameValue);;
+	}
+
+	public String getState() throws Exception {
+		return driver.getText(state);
+	}
+
+	public void setState(String stateValue) throws Exception {
+		driver.selectItemFromSpinner(state, stateValue);
+	}
+
+	public String getDob() throws Exception {
+		return driver.getText(dob);
+	}
+
+	public String getDriverLicenseNumber() throws Exception {
+		return driver.getText(driverLicenseNumber);
+	}
+
+	public void setDriverLicenseNumber(String driverLicenseNumberValue) throws Exception {
+		driver.inputTextWithClear(driverLicenseNumber, driverLicenseNumberValue);
+	}
+
+	public String getExpireDate() throws Exception {
+		return driver.getText(expireDate);
+	}
+
+	public void setExpireDate(String expireDateValue) throws Exception {
+		driver.inputTextWithClear(expireDate, expireDateValue);
+	}
+
+
+	
+
 }

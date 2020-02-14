@@ -12,7 +12,7 @@ public class HomePage {
 
     private AppiumBaseDriver driver;
 
-    @AndroidFindBy(id="au.com.finstro.finstropay:id/business_detail_title")
+    @AndroidFindBy(id="au.com.finstro.finstropay:id/setting_title")
     @iOSXCUITFindBy(iOSNsPredicate="name = 'HOME'")
     private WebElement title;
     

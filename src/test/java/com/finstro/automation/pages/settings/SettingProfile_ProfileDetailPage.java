@@ -16,21 +16,21 @@ public class SettingProfile_ProfileDetailPage {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(xpath = "//android.widget.TextView[@text=\"PROFILE DETAILS\"]")
-	@iOSXCUITFindBy(iOSNsPredicate="name = 'PROFILE DETAILS'")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'PROFILE DETAILS'")
 	private WebElement title;
-	
-	//@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
+
+	// @AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
 	@iOSXCUITFindBy(accessibility = "email address")
 	private WebElement email;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
 	@iOSXCUITFindBy(accessibility = "first name")
 	private WebElement firstName;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
 	@iOSXCUITFindBy(accessibility = "last name")
 	private WebElement lastName;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
 	@iOSXCUITFindBy(accessibility = "mobile number")
 	private WebElement mobileNumber;
@@ -42,6 +42,20 @@ public class SettingProfile_ProfileDetailPage {
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_icon")
 	private WebElement backButton;
 
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/email_edt")
+	private WebElement emailElement;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/mobile_edt")
+	private WebElement phone;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/dob_edt")
+	private WebElement dob;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/text1")
+	private WebElement residential;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/middle_name_edt")
+	private WebElement middleName;
 
 	public SettingProfile_ProfileDetailPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -61,7 +75,7 @@ public class SettingProfile_ProfileDetailPage {
 			break;
 		}
 	}
-	
+
 	public void clickSaveSetting() throws Exception {
 		driver.click(saveButton);
 	}
@@ -85,6 +99,58 @@ public class SettingProfile_ProfileDetailPage {
 		return new SettingProfile_DrivingLicensePage(driver);
 	}
 
+	public String getEmail() throws Exception {
+		return driver.getText(emailElement);
+	}
 
+	public String getPhoneNumber() throws Exception {
+		return driver.getText(phone);
+	}
+
+	public String getFirstName() throws Exception {
+		return driver.getText(firstName);
+	}
+
+	public String getLastName() throws Exception {
+		return driver.getText(lastName);
+	}
+
+	public String getDOB() throws Exception {
+		return driver.getText(dob);
+	}
+
+	public String getResidential() throws Exception {
+		return driver.getText(residential);
+	}
+
+	public void setEmail(String email) throws Exception {
+		driver.inputTextWithClear(emailElement, email);
+	}
+
+	public void setPhoneNumber(String phoneValue) throws Exception {
+		driver.inputTextWithClear(phone, phoneValue);
+	}
+
+	public void setFirstName(String firstname) throws Exception {
+		driver.inputTextWithClear(firstName, firstname);
+	}
+
+	public void setLastName(String lastname) throws Exception {
+		driver.inputTextWithClear(lastName, lastname);
+	}
+
+	public void setResidential(String residentialValue) throws Exception {
+		driver.selectItemFromSpinner(residential, residentialValue);
+	}
+
+	public void saveChanges() throws Exception {
+		driver.click(saveButton);
+	}
+
+	public SettingProfile_MedicarePage gotoSettingProfileMedicarePage() throws Exception {
+		driver.swipe(DIRECTION.LEFT);
+		driver.swipe(DIRECTION.LEFT);
+		return new SettingProfile_MedicarePage(driver);
+	}
 
 }

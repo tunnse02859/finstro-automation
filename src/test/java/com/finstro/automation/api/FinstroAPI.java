@@ -173,19 +173,19 @@ public class FinstroAPI {
 	}
 	
 	public void getAvailableNumber() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance").flush();
 	}
 	
 	public void getBalanceNumber() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("balance", "balance");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("balance", "balance").flush();
 	}
 	
 	public void getNextBillAmount() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("nextBillAmount", "nextBillAmount");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("nextBillAmount", "nextBillAmount").flush();
 	}
 	
 	public void getLimit() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails.limit");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails.limit").flush();
 	}
 
 }
