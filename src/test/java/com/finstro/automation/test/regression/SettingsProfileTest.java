@@ -9,9 +9,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.pages.HomePage;
-import com.finstro.automation.pages.SettingPage;
-import com.finstro.automation.pages.SettingProfilePage;
+import com.finstro.automation.pages.home.HomePage;
+import com.finstro.automation.pages.home.MainNavigator;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
@@ -21,6 +20,8 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
+import com.finstro.automation.pages.settings.SettingProfilePage;
+import com.finstro.automation.pages.settings.SettingsPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
@@ -37,7 +38,8 @@ public class SettingsProfileTest extends MobileTestSetup {
 	private PostalAddressPage postalAddressPage;
 	private CompleteAgreementPage completeAgreementPage;
 	private HomePage homePage;
-	private SettingPage settingPage;
+	private MainNavigator navigator;
+	private SettingsPage settingPage;
 	private SettingProfilePage settingProfilePage;
 	
 	@BeforeClass
@@ -57,8 +59,10 @@ public class SettingsProfileTest extends MobileTestSetup {
 		drivingLisencePage = new DriverLicensePage(driver);
 		postalAddressPage = new PostalAddressPage(driver);
 		completeAgreementPage = new CompleteAgreementPage(driver);
+		navigator = new MainNavigator(driver);
 		homePage = new HomePage(driver);
-		settingPage = new SettingPage(driver);
+		settingPage = new SettingsPage(driver);
+		settingProfilePage = new SettingProfilePage(driver);
 		// check if register page is default page
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
@@ -77,14 +81,13 @@ public class SettingsProfileTest extends MobileTestSetup {
 		photoIDPage.clickNext();
 		drivingLisencePage.clickNext();
 		postalAddressPage.clickNext();
-		completeAgreementPage.clickConfirm();
-		homePage.navigateToSettingTab();
-		settingPage.navigateToProfileDetailsPage();
+		completeAgreementPage.confirmAgreement();
+		navigator.gotoSettingsPage();
+		settingPage.goToProfileDetailsPage();
 		
 		assertTrue(settingProfilePage.isActive(), "Setting page didnt showed as default page in first installation",
 				"Setting page showed as default page");
-		
-	
+
 	}
 	
 	@Test

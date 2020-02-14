@@ -1,10 +1,11 @@
-package com.finstro.automation.pages;
+package com.finstro.automation.pages.settings;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import static com.finstro.automation.utility.Assertion.*;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.appium.driver.AppiumBaseDriver.DIRECTION;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -40,7 +41,7 @@ public class SettingProfilePage {
 	public void editAFieldOnProfileDetailPage(String expectedText, String elementName) throws Exception {
 		switch (elementName) {
 		case "lastName":
-			driver.inputText(lastName, expectedText);
+			driver.inputTextWithClear(lastName, expectedText);
 			break;
 		default:
 			break;
@@ -65,13 +66,13 @@ public class SettingProfilePage {
 	}
 
 	public void swipeLeftPage() throws Exception {
-		driver.swipeLeft();
+		driver.swipe(DIRECTION.LEFT);
 	}
 
 	public void editAFieldDrivingLicenceInfor(String expectedText, String elementName) throws Exception {
 		switch (elementName) {
 		case "middleName":
-			driver.inputText(middleName, expectedText);
+			driver.inputTextWithClear(middleName, expectedText);
 			break;
 		default:
 			break;
@@ -97,7 +98,7 @@ public class SettingProfilePage {
 	public void editAFieldMedicareInfor(String expectedText, String elementName) throws Exception {
 		switch (elementName) {
 		case "middleName":
-			driver.inputText(middleName, expectedText);
+			driver.inputTextWithClear(middleName, expectedText);
 			break;
 		default:
 			break;

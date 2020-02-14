@@ -45,6 +45,10 @@ import io.appium.java_client.touch.offset.PointOption;
 
 public class AppiumBaseDriver {
 
+	public enum DIRECTION {
+		DOWN, UP, LEFT, RIGHT;
+	}
+	
 	protected AppiumDriver<WebElement> driver;
 
 	private final int DEFAULT_WAITTIME_SECONDS = 30;
@@ -65,6 +69,25 @@ public class AppiumBaseDriver {
 		return driver instanceof AndroidDriver<?> ? true : false;
 	}
 
+	public WebElement findElement(WebElement element) {
+		
+		if (isElementDisplayed(element)) {
+			return element;
+		}
+		int attemps = 0;
+		swipe(DIRECTION.UP);
+		do {
+			if (isElementDisplayed(element)) {
+				return element;
+			}
+			swipe(DIRECTION.DOWN);
+
+			attemps++;
+		} while (attemps < 2);
+
+		throw new NoSuchElementException("Element not found");
+	}
+	
 	public WebElement findElementIgnoreError(By by) {
 		WebElement element = null;
 		try {
@@ -139,7 +162,7 @@ public class AppiumBaseDriver {
 	 */
 	public void inputTextWithClear(WebElement element, String text) throws Exception {
 		try {
-			waitForElementDisplayed(element, 30);
+			element = findElement(element);
 			element.clear();
 			if(!text.equalsIgnoreCase("")) {
 				element.sendKeys(text);
@@ -164,7 +187,7 @@ public class AppiumBaseDriver {
 	 */
 	public void inputText(WebElement element, String text) throws Exception {
 		try {
-			waitForElementDisplayed(element, 30);
+			element = findElement(element);
 			element.sendKeys(text);
 			hideKeyboard();
 			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
@@ -233,7 +256,7 @@ public class AppiumBaseDriver {
 
 	public String getText(WebElement element) throws Exception {
 		try {
-			String text = element.getText();
+			String text = findElement(element).getText();
 			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			return text;
 		} catch (Exception e) {
@@ -260,7 +283,7 @@ public class AppiumBaseDriver {
 
 	public String getAttribute(WebElement element, String attribute) {
 		try {
-			String value = element.getAttribute(attribute);
+			String value = findElement(element).getAttribute(attribute);
 			HtmlReporter.pass(
 					String.format("Element [%s] has attribute [%s] is [%s]", element.toString(), attribute, value));
 			return value;
@@ -274,6 +297,7 @@ public class AppiumBaseDriver {
 
 	public void click(WebElement element) throws Exception {
 		try {
+			element = findElement(element);
 			waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
@@ -371,6 +395,7 @@ public class AppiumBaseDriver {
 
 	public void selectRadioButton(WebElement element) throws Exception {
 		try {
+			element = findElement(element);
 			if (!element.isSelected()) {
 				element.click();
 			}
@@ -384,6 +409,7 @@ public class AppiumBaseDriver {
 
 	public void selectCheckBox(WebElement element) throws Exception {
 		try {
+			element = findElement(element);
 			if (!element.isSelected()) {
 				element.click();
 			}
@@ -399,6 +425,7 @@ public class AppiumBaseDriver {
 	public void deselectCheckBox(WebElement element) throws Exception {
 
 		try {
+			element = findElement(element);
 			if (element.isSelected()) {
 				element.click();
 			}
@@ -415,7 +442,7 @@ public class AppiumBaseDriver {
 
 	public void selectDDLByVisibleText(WebElement element, String text) throws Exception {
 		try {
-
+			element = findElement(element);
 			Select ddl = new Select(element);
 			ddl.selectByVisibleText(text);
 			Log.info(String.format("Select [%s] option from dropdown list [%s]", text, element.toString()));
@@ -426,6 +453,26 @@ public class AppiumBaseDriver {
 			throw e;
 
 		}
+	}
+	
+	public void selectItemFromSpinner(WebElement spinner, String text) throws Exception {
+
+		spinner = findElement(spinner);
+		if (isAndroidDriver()) {
+			click(spinner);
+			driver.findElement(MobileBy.AndroidUIAutomator(
+					"new UiScrollable(new UiSelector()).scrollIntoView(" + "new UiSelector().text(\"" + text + "\"));"))
+					.click();
+		} else {
+			// scroll to object
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			HashMap<String, String> scrollObject = new HashMap<>();
+			scrollObject.put("predicateString", "value == '" + text + "'");
+			js.executeScript("mobile: scroll", scrollObject);
+			// tap object
+			((IOSDriver) driver).findElementByIosNsPredicate("value = '" + text + "'").click();
+		}
+
 	}
 
 	public void waitForElementClickable(WebElement element, int time) {
@@ -466,7 +513,7 @@ public class AppiumBaseDriver {
 		return result;
 	}
 
-	public boolean isElementDisplayed(WebElement element) throws Exception {
+	public boolean isElementDisplayed(WebElement element) {
 		boolean result;
 		try {
 			result = element.isDisplayed();
@@ -535,36 +582,26 @@ public class AppiumBaseDriver {
 
 	}
 
-	/**
-	 * Swipe the android mobile from right to left
-	 * 
-	 * @throws Exception
-	 */
-	public void swipeLeft() throws Exception {
+	public void swipe(DIRECTION direction) {
 
-		try {
-
-			Thread.sleep(5000);
-			// Get the size of screen.
-			Dimension size = driver.manage().window().getSize();
-			// Find startx point which is at right side of screen.
-			int startx = (int) (size.width * 0.96);
-			// Find endx point which is at left side of screen.
-			int endx = (int) (size.width * 0.50);
-			// Find vertical point where you wants to swipe. It is in middle of
-			// screen height.
-			int starty = size.height / 2;
-			// Swipe from Right to Left.
-			new TouchAction<>(driver).press(PointOption.point(startx, starty))
-					.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))).moveTo(PointOption.point(endx, starty))
-					.release().perform();
-			Log.info("Swipe left successfully");
-		} catch (Exception e) {
-			Log.error("Can't swipe left!!! : " + e);
-			throw (e);
+		switch (direction) {
+		case RIGHT:
+			swipe(0.2, 0.5, 0.8, 0.5);
+			break;
+		case LEFT:
+			swipe(0.8, 0.5, 0.2, 0.5);
+			break;
+		case UP:
+			swipe(0.5, 0.2, 0.5, 0.8);
+			break;
+		case DOWN:
+			swipe(0.5, 0.8, 0.5, 0.2);
+			break;
+		default:
+			break;
 		}
 	}
-
+	
 	/**
 	 * Swipe the android mobile by location in screen
 	 * 
@@ -582,27 +619,32 @@ public class AppiumBaseDriver {
 	 * 
 	 * @throws Exception
 	 */
-	public void swipe(double fromx, double fromy, double tox, double toy) throws Exception {
-		try {
-			Thread.sleep(5000);
-			// Get the size of screen.
-			Dimension size = driver.manage().window().getSize();
-			int startx = (int) (size.width * fromx);
-			int endx = (int) (size.height * fromy);
-			int starty = (int) (size.width * tox);
-			int endy = (int) (size.height * toy);
-			new TouchAction<>(driver).press(PointOption.point(startx, starty))
-					.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))).moveTo(PointOption.point(endx, endy))
-					.release().perform();
-			// driver.swipe(startx, endx, starty, endy, 1000);
-			Log.info("Swipe successfully");
-
-		} catch (Exception e) {
-			Log.error("Can't swipe! : " + e);
-			throw (e);
-		}
+	public void swipe(double fromx, double fromy, double tox, double toy) {
+		wait(1);
+		// Get the size of screen.
+		Dimension size = driver.manage().window().getSize();
+		int startx = (int) (size.width * fromx);
+		int endx = (int) (size.width * tox);
+		int starty = (int) (size.height * fromy);
+		int endy = (int) (size.height * toy);
+		new TouchAction<>(driver).press(PointOption.point(startx, starty))
+				.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))).moveTo(PointOption.point(endx, endy))
+				.release().perform();
 	}
 
+	/**
+	 * Wait for seconds
+	 * 
+	 * @param seconds
+	 */
+	public void wait(int seconds) {
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException ex) {
+
+		}
+	}
+	
 	/**
 	 * Verify that a text that available in screen
 	 * 
