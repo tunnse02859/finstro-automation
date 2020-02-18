@@ -1,4 +1,4 @@
-package com.finstro.automation.pages.settings;
+package com.finstro.automation.pages.settings.profile;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;

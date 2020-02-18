@@ -51,7 +51,7 @@ public class AppiumBaseDriver {
 	
 	protected AppiumDriver<WebElement> driver;
 
-	private final int DEFAULT_WAITTIME_SECONDS = 30;
+	private final int DEFAULT_WAITTIME_SECONDS = 10;
 
 	public AppiumDriver<WebElement> getDriver() {
 		return driver;
@@ -67,6 +67,25 @@ public class AppiumBaseDriver {
 
 	public boolean isAndroidDriver() {
 		return driver instanceof AndroidDriver<?> ? true : false;
+	}
+	
+	public WebElement swipeUntilViewed(WebElement element, double x1, double y1, double x2, double y2) {
+		
+		if (isElementDisplayed(element)) {
+			return element;
+		}
+		int attemps = 0;
+		swipe(x1, y1, x2, y2);
+		do {
+			if (isElementDisplayed(element)) {
+				return element;
+			}
+			swipe(x2, y2, x1, y1);
+
+			attemps++;
+		} while (attemps < 2);
+
+		throw new NoSuchElementException("Element not found");
 	}
 
 	public WebElement findElement(WebElement element) {
