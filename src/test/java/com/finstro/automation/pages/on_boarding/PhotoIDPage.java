@@ -23,6 +23,15 @@ public class PhotoIDPage {
     @AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
     @iOSXCUITFindBy(accessibility = "next")
     private WebElement next;
+    
+    @AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/front_progress")
+    private WebElement frontLoadingProgress;
+    
+    @AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/back_progress")
+    private WebElement backLoadingProgress;
+    
+    @AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/selfie_progress")
+    private WebElement selfieLoadingProgress;
 
     public PhotoIDPage(AppiumBaseDriver driver){
         this.driver = driver;
@@ -34,6 +43,9 @@ public class PhotoIDPage {
     }
     
 	public void clickNext() throws Exception {
+		//driver.waitUntilElementDisappear(backLoadingProgress, 20);
+		//driver.waitUntilElementDisappear(frontLoadingProgress, 20);
+		//driver.waitUntilElementDisappear(selfieLoadingProgress, 20);
 		driver.click(next);
 	}
 }

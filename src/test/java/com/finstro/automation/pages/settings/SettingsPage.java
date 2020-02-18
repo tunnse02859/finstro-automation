@@ -1,6 +1,9 @@
 package com.finstro.automation.pages.settings;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
+import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
+
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -21,6 +24,23 @@ public class SettingsPage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Profile Details\")")
 	private WebElement nvgProfileDetails;
 	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Approval/Bank Upload\")")
+	private WebElement nvgApproveBankUpload;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Bank Account Details\")")
+	private WebElement nvgBankAccountDetails;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Credit/Debt Card Details\")")
+	private WebElement nvgCardDetails;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Global Payment Date\")")
+	private WebElement nvgGlobalPaymentDate;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Contact Finstro\")")
+	private WebElement nvgContactFinstro;
+	
+	
+	
 	public SettingsPage(AppiumBaseDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
@@ -33,6 +53,11 @@ public class SettingsPage {
 	public SettingsBusinessDetailsFirstPage gotoSettingsBusinessDetailsPage() throws Exception {
 		driver.click(nvgBusinessDetails);
 		return new SettingsBusinessDetailsFirstPage(driver);
+	}
+	
+	public SettingsApprovalBankUploadPage gotoApprovalBankUploadPage() throws Exception {
+		driver.click(nvgApproveBankUpload);
+		return new SettingsApprovalBankUploadPage(driver);
 	}
 	
     public void goToProfileDetailsPage() throws Exception{
