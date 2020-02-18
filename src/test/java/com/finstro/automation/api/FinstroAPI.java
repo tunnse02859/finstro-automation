@@ -185,7 +185,7 @@ public class FinstroAPI {
 	}
 	
 	public void getLimit() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails.limit").flush();
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails[0].limit").flush();
 	}
 
 }
