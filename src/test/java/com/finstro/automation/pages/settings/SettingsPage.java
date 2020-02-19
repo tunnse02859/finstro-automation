@@ -3,6 +3,7 @@ package com.finstro.automation.pages.settings;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
+import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -58,6 +59,11 @@ public class SettingsPage {
 	public SettingsApprovalBankUploadPage gotoApprovalBankUploadPage() throws Exception {
 		driver.click(nvgApproveBankUpload);
 		return new SettingsApprovalBankUploadPage(driver);
+	}
+	
+	public DebtCreditCardsPage gotoDebtCreditCardsPage() throws Exception {
+		driver.click(nvgCardDetails);
+		return new DebtCreditCardsPage(driver);
 	}
 	
     public void goToProfileDetailsPage() throws Exception{

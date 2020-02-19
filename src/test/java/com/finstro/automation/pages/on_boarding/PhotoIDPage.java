@@ -43,9 +43,7 @@ public class PhotoIDPage {
     }
     
 	public void clickNext() throws Exception {
-		//driver.waitUntilElementDisappear(backLoadingProgress, 20);
-		//driver.waitUntilElementDisappear(frontLoadingProgress, 20);
-		//driver.waitUntilElementDisappear(selfieLoadingProgress, 20);
+		driver.wait(10);
 		driver.click(next);
 	}
 }

@@ -3,6 +3,7 @@ package com.finstro.automation.pages.settings.approval;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.appium.driver.AppiumBaseDriver.DIRECTION;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
@@ -96,7 +97,7 @@ public class SettingsApprovalIDCheck_ProfileDetailsPage {
 	}
 	
 	public void setDOB(String dob) throws Exception {
-		driver.inputTextWithClear(txtDOB, dob);
+		//driver.inputTextWithClear(txtDOB, dob);
 	}
 	
 	public String getDOB() throws Exception {

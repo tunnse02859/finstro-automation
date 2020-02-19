@@ -197,5 +197,9 @@ public class APIRequest {
 	public HttpResponse getResponse() {
 		return response;
 	}
+	
+	public int getStatusCode() {
+		return response.getStatusLine().getStatusCode();
+	}
 
 }

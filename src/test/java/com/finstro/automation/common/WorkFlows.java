@@ -14,6 +14,7 @@ import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.pages.settings.SettingsPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
+import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 
 public class WorkFlows {
 	
@@ -84,12 +85,24 @@ public class WorkFlows {
 
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
-		// goto Settings Business Details page
+		// goto ApprovalBankUpload page
 		SettingsApprovalBankUploadPage settingsApprovalBankUploadPage = settingsPage.gotoApprovalBankUploadPage();
 		assertTrue(settingsApprovalBankUploadPage.isActive(), "You're not on the Approval/Bank Upload Page",
 				"You're on the Approval/Bank Upload Page");
 
 		return settingsApprovalBankUploadPage;
+	}
+	
+	public static DebtCreditCardsPage goToDebtCreditCardsPage(AppiumBaseDriver driver) throws Exception {
+
+		SettingsPage settingsPage = goToTheSettingsPage(driver);
+
+		// goto DebtCreditCards page
+		DebtCreditCardsPage debtCreditCardsPage = settingsPage.gotoDebtCreditCardsPage();
+		assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
+				"You're on the Debt/ Credit Cards Page");
+
+		return debtCreditCardsPage;
 	}
 
 }

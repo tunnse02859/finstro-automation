@@ -17,19 +17,19 @@ public class SettingsApprovalBankUploadPage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Approval\")")
 	private WebElement approveTitle;
 	
-	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"ID Check\")")
+	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"ID Check\"))")
 	private WebElement nvgIDCheck;
 	
-	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Bank Accounts Connected\")")
+	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"Bank Accounts Connected\"))")
 	private WebElement nvgBankAccountsConnected;
 	
-	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Direct Debt Authority\")")
+	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"Direct Debt Authority\"))")
 	private WebElement nvgDirectDebtAuthority;
 	
-	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Credit Assessment\")")
+	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"Credit Assessment\"))")
 	private WebElement nvgCreditAssessment;
 	
-	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Facility Agreement\")")
+	@AndroidFindBy(uiAutomator="new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"Facility Agreement\"))")
 	private WebElement nvgFacilityAgreement;
 	
 	
@@ -43,7 +43,6 @@ public class SettingsApprovalBankUploadPage {
 	}
 	
 	public SettingsApprovalIDCheck_ProfileDetailsPage gotoIDCheckPage() throws Exception {
-		driver.swipeUntilViewed(nvgIDCheck, 0.5, 0.6, 0.5, 0.8);
 		driver.click(nvgIDCheck);
 		return new SettingsApprovalIDCheck_ProfileDetailsPage(driver);
 	}
