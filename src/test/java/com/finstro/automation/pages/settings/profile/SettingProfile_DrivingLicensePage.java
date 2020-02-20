@@ -54,7 +54,6 @@ public class SettingProfile_DrivingLicensePage {
 	@iOSXCUITFindBy(accessibility = "driver license number")
 	private WebElement driverLicenseNumber;
 
-	
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/expiry_edt\"))")
 	@iOSXCUITFindBy(accessibility = "expiry date")
 	private WebElement expireDate;

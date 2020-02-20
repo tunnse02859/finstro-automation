@@ -8,7 +8,7 @@ import com.finstro.automation.utility.PropertiesLoader;
 
 public class FinstroAPI {
 
-	private String accessToken;
+	public String accessToken;
 	private String loginPath = "/api/Authentication/SignIn";
 	private String recoveryDataPath = "/api/CreditApplication/AppRecovery";
 

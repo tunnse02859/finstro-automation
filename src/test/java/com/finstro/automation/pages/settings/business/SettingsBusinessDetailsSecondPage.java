@@ -1,4 +1,4 @@
-package com.finstro.automation.pages.settings;
+package com.finstro.automation.pages.settings.business;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.appium.driver.AppiumBaseDriver.DIRECTION;

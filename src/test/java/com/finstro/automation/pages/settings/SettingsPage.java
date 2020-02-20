@@ -2,6 +2,9 @@ package com.finstro.automation.pages.settings;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
+import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
+import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
+import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -23,6 +26,23 @@ public class SettingsPage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Profile Details\")")
 	private WebElement nvgProfileDetails;
 	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Approval/Bank Upload\")")
+	private WebElement nvgApproveBankUpload;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Bank Account Details\")")
+	private WebElement nvgBankAccountDetails;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Credit/Debt Card Details\")")
+	private WebElement nvgCardDetails;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Global Payment Date\")")
+	private WebElement nvgGlobalPaymentDate;
+	
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Contact Finstro\")")
+	private WebElement nvgContactFinstro;
+	
+	
+	
 	public SettingsPage(AppiumBaseDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
@@ -36,7 +56,17 @@ public class SettingsPage {
 		driver.click(nvgBusinessDetails);
 		return new SettingsBusinessDetailsFirstPage(driver);
 	}
+  
+  public SettingsApprovalBankUploadPage gotoApprovalBankUploadPage() throws Exception {
+		driver.click(nvgApproveBankUpload);
+		return new SettingsApprovalBankUploadPage(driver);
+	}
 	
+	public DebtCreditCardsPage gotoDebtCreditCardsPage() throws Exception {
+		driver.click(nvgCardDetails);
+		return new DebtCreditCardsPage(driver);
+	}
+  
     public SettingProfile_ProfileDetailPage goToProfileDetailsPage() throws Exception{
     	driver.click(nvgProfileDetails);
     	return new SettingProfile_ProfileDetailPage(driver);

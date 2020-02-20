@@ -27,7 +27,7 @@ public class SettingProfile_MedicarePage {
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_icon")
 	private WebElement backButton;
-
+  
 	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"au.com.finstro.finstropay:id/driver_licence_gender_spinner\").childSelector(new UiSelector().resourceId(\"android:id/text1\"))")
 	@iOSXCUITFindBy(accessibility = "gender")
 	private WebElement gender;
@@ -72,7 +72,7 @@ public class SettingProfile_MedicarePage {
 	public boolean isActive() throws Exception {
 		return driver.isElementDisplayed(title);
 	}
-
+  
 	public void clickSaveSetting() throws Exception {
 		driver.click(saveButton);
 		Thread.sleep(10000);

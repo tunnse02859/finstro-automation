@@ -80,6 +80,7 @@ public class SettingProfile_ProfileDetailPage {
 
 	public SettingProfile_DrivingLicensePage toSettingDrivingLicensePage() throws Exception {
 		driver.swipe(DIRECTION.LEFT);
+
 		Thread.sleep(1000);
 		return new SettingProfile_DrivingLicensePage(driver);
 	}
@@ -139,3 +140,4 @@ public class SettingProfile_ProfileDetailPage {
 	}
 
 }
+

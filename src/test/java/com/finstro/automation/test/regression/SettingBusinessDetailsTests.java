@@ -2,6 +2,7 @@ package com.finstro.automation.test.regression;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.common.CommonFunction;
+import com.finstro.automation.common.WorkFlows;
 import com.finstro.automation.excelhelper.ExcelHelper;
 import com.finstro.automation.pages.home.MainNavigator;
 import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
@@ -18,9 +19,9 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingsBusinessDetailsFirstPage;
-import com.finstro.automation.pages.settings.SettingsBusinessDetailsSecondPage;
 import com.finstro.automation.pages.settings.SettingsPage;
+import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
+import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsSecondPage;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
@@ -76,63 +77,11 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		// Login
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		// Go to the Setting Business Details page
-		goToTheSettingBusinessDetailsPage();
+		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
 
 	}
 
-	private void goToTheSettingBusinessDetailsPage() throws Exception {
-
-		// goto Business Details page
-		SelectBusinessCardPage selectBusinessCardPage = new SelectBusinessCardPage(driver);
-		selectBusinessCardPage.clickOnCard("500");
-		BusinessDetailPage businessDetailPage = new BusinessDetailPage(driver);
-		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
-				"Business Details is displayed after click on card 500");
-
-		// goto Residential Address page
-		businessDetailPage.clickNext();
-		ResidentialAddressPage residentialAddressPage = new ResidentialAddressPage(driver);
-		assertTrue(residentialAddressPage.isActive(), "You're not on the Business Details page",
-				"You're on the Business Details page");
-
-		// goto Photo ID page
-		residentialAddressPage.clickNext();
-		PhotoIDPage photoIDPage = new PhotoIDPage(driver);
-		assertTrue(photoIDPage.isActive(), "You're not on the Photo ID page", "You're on the Photo ID page");
-
-		// goto Driving License page
-		photoIDPage.clickNext();
-		DriverLicensePage drivingLisencePage = new DriverLicensePage(driver);
-		assertTrue(drivingLisencePage.isActive(), "You're not on the Driving Licence page",
-				"You're on the Driving Licence page");
-
-		// goto Postal Address page
-		drivingLisencePage.clickNext();
-		PostalAddressPage postalAddressPage = new PostalAddressPage(driver);
-		assertTrue(postalAddressPage.isActive(), "You're not on the Postal Address page",
-				"You're on the Postal Address page");
-
-		// Agreement
-		postalAddressPage.clickNext();
-		CompleteAgreementPage completeAgreementPage = new CompleteAgreementPage(driver);
-		assertTrue(completeAgreementPage.isActive(), "You're not on the Agreement page",
-				"You're on the Agreement page");
-
-		// Confirm and goto main page
-		completeAgreementPage.confirmAgreement();
-		MainNavigator navigator = new MainNavigator(driver);
-		assertTrue(navigator.isActive(), "You're not on the Navigator", "You're on the Navigator");
-
-		// goto Settings page
-		SettingsPage settingsPage = navigator.gotoSettingsPage();
-		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
-
-		// goto Settings Business Details page
-		settingBusinessDetailsFirstPage = settingsPage.gotoSettingsBusinessDetailsPage();
-		assertTrue(settingBusinessDetailsFirstPage.isActive(), "You're not on the Settings Business Details Page",
-				"You're on the Settings Business Details Page");
-
-	}
+	
 
 	@DataProvider(name = "SettingBusinessDetail_01")
 	public Object[][] SettingBusinessDetail_01() {
