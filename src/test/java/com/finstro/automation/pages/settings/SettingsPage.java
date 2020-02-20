@@ -1,6 +1,8 @@
 package com.finstro.automation.pages.settings;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
+
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -35,7 +37,8 @@ public class SettingsPage {
 		return new SettingsBusinessDetailsFirstPage(driver);
 	}
 	
-    public void goToProfileDetailsPage() throws Exception{
+    public SettingProfile_ProfileDetailPage goToProfileDetailsPage() throws Exception{
     	driver.click(nvgProfileDetails);
+    	return new SettingProfile_ProfileDetailPage(driver);
     }
 }

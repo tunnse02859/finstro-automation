@@ -172,6 +172,16 @@ public class FinstroAPI {
 				.flush();
 	}
 	
+	public void getProfileDetailInfor() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("contacts.emailAddress", "contacts[0].emailAddress")
+				.extractJsonValue("contacts.familyName", "contacts[0].familyName")
+				.extractJsonValue("contacts.firstGivenName", "contacts[0].firstGivenName")
+				.extractJsonValue("contacts.mobilePhoneNumber", "contacts[0].mobilePhoneNumber")
+				.extractJsonValue("contacts.dob", "contacts[0].dob")
+				.flush();
+	}
+	
 	public void getAvailableNumber() throws Exception {
 		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance").flush();
 	}

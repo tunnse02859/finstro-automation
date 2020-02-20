@@ -55,8 +55,9 @@ public class BusinessDetailPage {
 		return driver.isElementDisplayed(title);
 	}
 
-	public void clickNext() throws Exception {
+	public ResidentialAddressPage clickNext() throws Exception {
 		driver.click(next);
+		return new ResidentialAddressPage(driver);
 	}
 	
 	public String getCurrentABN() throws Exception {

@@ -33,7 +33,8 @@ public class PhotoIDPage {
         return driver.isElementDisplayed(title);
     }
     
-	public void clickNext() throws Exception {
+	public DriverLicensePage clickNext() throws Exception {
 		driver.click(next);
+		return new DriverLicensePage(driver);
 	}
 }
