@@ -172,20 +172,30 @@ public class FinstroAPI {
 				.flush();
 	}
 	
+	public void getProfileDetailInfor() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("contacts.emailAddress", "contacts[0].emailAddress")
+				.extractJsonValue("contacts.familyName", "contacts[0].familyName")
+				.extractJsonValue("contacts.firstGivenName", "contacts[0].firstGivenName")
+				.extractJsonValue("contacts.mobilePhoneNumber", "contacts[0].mobilePhoneNumber")
+				.extractJsonValue("contacts.dob", "contacts[0].dob")
+				.flush();
+	}
+	
 	public void getAvailableNumber() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance").flush();
 	}
 	
 	public void getBalanceNumber() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("balance", "balance");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("balance", "balance").flush();
 	}
 	
 	public void getNextBillAmount() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("nextBillAmount", "nextBillAmount");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("nextBillAmount", "nextBillAmount").flush();
 	}
 	
 	public void getLimit() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails.limit");
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails[0].limit").flush();
 	}
 
 }

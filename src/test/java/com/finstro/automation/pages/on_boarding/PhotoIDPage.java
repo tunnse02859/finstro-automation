@@ -42,8 +42,9 @@ public class PhotoIDPage {
         return driver.isElementDisplayed(title);
     }
     
-	public void clickNext() throws Exception {
-		driver.wait(10);
+	public DriverLicensePage clickNext() throws Exception {
+    driver.wait(10);
 		driver.click(next);
+		return new DriverLicensePage(driver);
 	}
 }

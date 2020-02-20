@@ -478,7 +478,6 @@ public class AppiumBaseDriver {
 			// tap object
 			((IOSDriver) driver).findElementByIosNsPredicate("value = '" + text + "'").click();
 		}
-
 	}
 
 	public void waitForElementClickable(WebElement element, int time) {
@@ -598,16 +597,20 @@ public class AppiumBaseDriver {
 
 		switch (direction) {
 		case RIGHT:
-			swipe(0.2, 0.5, 0.8, 0.5);
+			swipe(0.1, 0.5, 0.9, 0.5);
+			Log.info("Swipe RIGHT sucessfully");
 			break;
 		case LEFT:
-			swipe(0.8, 0.5, 0.2, 0.5);
+			swipe(0.9, 0.5, 0.1, 0.5);
+			Log.info("Swipe LEFT sucessfully");
 			break;
 		case UP:
-			swipe(0.5, 0.2, 0.5, 0.8);
+			swipe(0.5, 0.9, 0.5, 0.1);
+			Log.info("Swipe UP sucessfully");
 			break;
 		case DOWN:
-			swipe(0.5, 0.8, 0.5, 0.2);
+			swipe(0.5, 0.1, 0.5, 0.9);
+			Log.info("Swipe DOWN sucessfully");
 			break;
 		default:
 			break;

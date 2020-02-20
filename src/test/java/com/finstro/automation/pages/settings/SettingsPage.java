@@ -1,6 +1,7 @@
 package com.finstro.automation.pages.settings;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
@@ -55,8 +56,8 @@ public class SettingsPage {
 		driver.click(nvgBusinessDetails);
 		return new SettingsBusinessDetailsFirstPage(driver);
 	}
-	
-	public SettingsApprovalBankUploadPage gotoApprovalBankUploadPage() throws Exception {
+  
+  public SettingsApprovalBankUploadPage gotoApprovalBankUploadPage() throws Exception {
 		driver.click(nvgApproveBankUpload);
 		return new SettingsApprovalBankUploadPage(driver);
 	}
@@ -65,8 +66,9 @@ public class SettingsPage {
 		driver.click(nvgCardDetails);
 		return new DebtCreditCardsPage(driver);
 	}
-	
-    public void goToProfileDetailsPage() throws Exception{
+  
+    public SettingProfile_ProfileDetailPage goToProfileDetailsPage() throws Exception{
     	driver.click(nvgProfileDetails);
+    	return new SettingProfile_ProfileDetailPage(driver);
     }
 }

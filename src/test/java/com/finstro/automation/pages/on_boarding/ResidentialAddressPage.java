@@ -54,8 +54,9 @@ public class ResidentialAddressPage {
 		assertEquals(driver.getText(residentialAddress).replace(",", "").trim(), expectedAddress, "Residential Address field's value doesnt match with expectation", "Residential Address field's value matched with expectation");
 	}
 	
-	public void clickNext() throws Exception {
+	public PhotoIDPage clickNext() throws Exception {
 		driver.click(next);
+		return new PhotoIDPage(driver);
 	}
 	
 
