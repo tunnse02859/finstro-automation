@@ -15,8 +15,8 @@ public class SettingProfile_DrivingLicensePage {
 
 	private AppiumBaseDriver driver;
 
-	@AndroidFindBy(xpath = "//android.widget.TextView[@text=\"DRIVING LICENSE\"]")
-	@iOSXCUITFindBy(iOSNsPredicate = "name = 'DRIVING LICENSE'")
+	@AndroidFindBy(xpath = "//android.widget.TextView[@text=\"DRIVING LICENCE\"]")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'DRIVING LICENCE'")
 	private WebElement title;
 
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/submit_text\"))")

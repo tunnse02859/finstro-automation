@@ -15,10 +15,11 @@ import com.finstro.automation.pages.settings.SettingsPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
+import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
 
 public class WorkFlows {
-	
-	public static SettingsPage goToTheSettingsPage(AppiumBaseDriver driver) throws Exception {
+
+	public static MainNavigator goToTheMainPage(AppiumBaseDriver driver) throws Exception {
 
 		// goto Business Details page
 		SelectBusinessCardPage selectBusinessCardPage = new SelectBusinessCardPage(driver);
@@ -61,20 +62,42 @@ public class WorkFlows {
 		MainNavigator navigator = new MainNavigator(driver);
 		assertTrue(navigator.isActive(), "You're not on the Navigator", "You're on the Navigator");
 
-		// goto Settings page
-		SettingsPage settingsPage = navigator.gotoSettingsPage();
-		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
-
-		return settingsPage;
+		return navigator;
 
 	}
-	
-	public static SettingsBusinessDetailsFirstPage goToTheSettingBusinessDetailsPage(AppiumBaseDriver driver) throws Exception {
+
+	public static SettingsPage goToTheSettingsPage(AppiumBaseDriver driver) throws Exception {
+		MainNavigator navigator;
+		if (driver.isAndroidDriver()) {
+			navigator = goToTheMainPage(driver);
+		} else {
+			navigator = new MainNavigator(driver);
+		}
+		SettingsPage settingsPage = navigator.gotoSettingsPage();
+		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
+		return settingsPage;
+	}
+
+	public static SettingProfile_ProfileDetailPage goToTheSettingProfilePage(AppiumBaseDriver driver) throws Exception {
 
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
 		// goto Settings Business Details page
-		SettingsBusinessDetailsFirstPage settingBusinessDetailsFirstPage = settingsPage.gotoSettingsBusinessDetailsPage();
+		SettingProfile_ProfileDetailPage settingProfileDetail = settingsPage.goToProfileDetailsPage();
+		assertTrue(settingProfileDetail.isActive(), "You're not on the Settings Profile Details Page",
+				"You're on the Settings Profile Details Page");
+
+		return settingProfileDetail;
+	}
+
+	public static SettingsBusinessDetailsFirstPage goToTheSettingBusinessDetailsPage(AppiumBaseDriver driver)
+			throws Exception {
+
+		SettingsPage settingsPage = goToTheSettingsPage(driver);
+
+		// goto Settings Business Details page
+		SettingsBusinessDetailsFirstPage settingBusinessDetailsFirstPage = settingsPage
+				.gotoSettingsBusinessDetailsPage();
 		assertTrue(settingBusinessDetailsFirstPage.isActive(), "You're not on the Settings Business Details Page",
 				"You're on the Settings Business Details Page");
 

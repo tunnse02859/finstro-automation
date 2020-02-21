@@ -605,11 +605,23 @@ public class AppiumBaseDriver {
 			Log.info("Swipe LEFT sucessfully");
 			break;
 		case UP:
-			swipe(0.5, 0.9, 0.5, 0.1);
+			if(isIOSDriver()) {
+				if(((IOSDriver) driver).isKeyboardShown()) {
+					swipe(0.5, 0.5, 0.5, 0.1);
+				}
+			}else {
+				swipe(0.5, 0.9, 0.5, 0.1);
+			}
 			Log.info("Swipe UP sucessfully");
 			break;
 		case DOWN:
-			swipe(0.5, 0.1, 0.5, 0.9);
+			if(isIOSDriver()) {
+				if(((IOSDriver) driver).isKeyboardShown()) {
+					swipe(0.5, 0.1, 0.5, 0.5);
+				}
+			}else {
+				swipe(0.5, 0.1, 0.5, 0.9);
+			}
 			Log.info("Swipe DOWN sucessfully");
 			break;
 		default:

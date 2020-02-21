@@ -62,7 +62,23 @@ public class FinstroAPI {
 				.extractJsonValue("streetName", "businessDetails.businessTradingAddress.streetName")
 				.extractJsonValue("streetNumber", "businessDetails.businessTradingAddress.streetNumber")
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
-				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb").flush();
+				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb")
+				
+				//other
+				.extractJsonValue("email", "businessDetails.email")
+				.extractJsonValue("phoneNumber", "businessDetails.phoneNumber")
+				.extractJsonValue("website", "businessDetails.website")
+				.extractJsonValue("facebook", "businessDetails.facebook")
+				.extractJsonValue("twitter", "businessDetails.twitter")
+				.extractJsonValue("instagram", "businessDetails.instagram")
+				.extractJsonValue("skype", "businessDetails.skype")
+				.extractJsonValue("linkedin", "businessDetails.linkedin")
+				.extractJsonValue("other", "businessDetails.other")
+				.extractJsonValue("incorporationDate", "businessDetails.incorporationDate")
+				.extractJsonValue("phoneNumber", "businessDetails.phoneNumber")
+				.extractJsonValue("gstDate", "businessDetails.gstDate")
+				.extractJsonValue("timeTrading", "businessDetails.timeTrading")
+			.flush();
 
 		String businessTradingAddress = String.format("%s %s %s %s %s %s", Common.getTestVariable("streetNumber", true),
 				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),

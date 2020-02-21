@@ -16,46 +16,57 @@ public class SettingsBusinessDetailsSecondPage {
 
 	// Main title
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/settings_title")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'BUSINESS DETAILS'")
 	private WebElement textTitle;
 
 	// Type of business
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_type_edt")
+	@iOSXCUITFindBy(accessibility = "type of business")
 	private WebElement txtBusinessType;
 
 	// Trading business name
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_name_edt")
+	@iOSXCUITFindBy(accessibility = "trading business name")
 	private WebElement txtBusinessName;
 
 	// Trading legal name
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/trading_name_edt")
+	@iOSXCUITFindBy(accessibility = "trading legal name")
 	private WebElement txtTradingName;
 
 	// ABN
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/abn_edt")
+	@iOSXCUITFindBy(accessibility = "abn")
 	private WebElement txtABN;
 
 	// ACN
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/acn_edt")
+	@iOSXCUITFindBy(accessibility = "acn")
 	private WebElement txtACN;
 	
 	// Business Address
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_address_edt")
+	@iOSXCUITFindBy(accessibility = "business address")
 	private WebElement txtBusinessAddress;
 	
 	// Other name
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/other_names_edt")
+	@iOSXCUITFindBy(accessibility = "other names")
 	private WebElement txtOtherName;
 	
 	// Incorporation
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_incorporation_edt")
+	@iOSXCUITFindBy(accessibility = "incoporation")
 	private WebElement txtIncorporation;
 	
 	// GST Date
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/gst_date_edt")
+	@iOSXCUITFindBy(accessibility = "gst date")
 	private WebElement txtGSTDate;
 	
 	// Time trading
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/time_trading_edt")
+	@iOSXCUITFindBy(accessibility = "time trading")
 	private WebElement txtTimeTrading;
 	
 	public SettingsBusinessDetailsSecondPage(AppiumBaseDriver driver) {
@@ -64,52 +75,53 @@ public class SettingsBusinessDetailsSecondPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.isElementDisplayed(txtBusinessType) && textTitle.getText().equalsIgnoreCase("BUSINESS DETAILS");
+		return driver.isElementDisplayed(textTitle);
 	}
 
 
 	public String getTypeOfBusiness() throws Exception {
-		return driver.getText(txtBusinessType);
+		return driver.getAttribute(txtBusinessType,"value");
 	}
 
 
 	public String getTradingBusinessName() throws Exception {
-		return driver.getText(txtBusinessName);
+		return driver.getAttribute(txtBusinessName,"value");
 	}
 
 	public String getTradingLegalName() throws Exception {
-		return driver.getText(txtTradingName);
+		return driver.getAttribute(txtTradingName,"value");
 	}
 
 
 	public String getABN() throws Exception {
-		return driver.getText(txtABN);
+		return driver.getAttribute(txtABN,"value");
 	}
 
 
 	public String getACN() throws Exception {
-		return driver.getText(txtACN);
+		driver.getText(txtACN);
+		return driver.getAttribute(txtACN,"value");
 	}
 
 
 	public String getBusinessAddress() throws Exception {
-		return driver.getText(txtBusinessAddress);
+		return driver.getAttribute(txtBusinessAddress,"value");
 	}
 
 	public String getOtherName() throws Exception {
-		return driver.getText(txtOtherName);
+		return driver.getAttribute(txtOtherName,"value");
 	}
 
 	public String getIncorporation() throws Exception {
-		return driver.getText(txtIncorporation);
+		return driver.getAttribute(txtIncorporation,"value");
 	}
 
 	public String getGSTDate() throws Exception {
-		return driver.getText(txtGSTDate);
+		return driver.getAttribute(txtGSTDate,"value");
 	}
 
 	public String getTimeTrading() throws Exception {
-		return driver.getText(txtTimeTrading);
+		return driver.getAttribute(txtTimeTrading,"value");
 	}
 
 	public SettingsBusinessDetailsFirstPage gotoSettingsBusinessDetailsFirstPage() throws Exception {

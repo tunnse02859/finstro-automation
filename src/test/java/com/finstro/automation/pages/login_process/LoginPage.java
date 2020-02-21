@@ -71,7 +71,7 @@ public class LoginPage {
 		driver.click(submit);
 	}
 
-	public SelectBusinessCardPage doSuccessLogin(String email, String code) throws Exception {
+	public void doSuccessLogin(String email, String code) throws Exception {
 		new RegisterPage(driver).toLoginPage();
 		assertTrue(this.isActive(), "Login screen didnt showed after tap on login",
 				"Login screen showed after tap on login");
@@ -84,9 +84,7 @@ public class LoginPage {
 				driver.click(touchID_DontSave);
 			}
 		}
-		assertTrue(new SelectBusinessCardPage(driver).isActive(), "Select Card screen didnt showed after login",
-				"Select Card screen showed after login");
-		return new SelectBusinessCardPage(driver);
+		//return new SelectBusinessCardPage(driver);
 	}
 
 	public void verifyErrorMessage(String expectedMessage) throws Exception {

@@ -10,40 +10,40 @@ import org.openqa.selenium.support.PageFactory;
 
 public class PhotoIDPage {
 
-    private AppiumBaseDriver driver;
-    
-    @AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
-    @iOSXCUITFindBy(accessibility = "Back")
+	private AppiumBaseDriver driver;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
+	@iOSXCUITFindBy(accessibility = "Back")
 	private WebElement back;
 
-    @AndroidFindBy(id="au.com.finstro.finstropay:id/photo_upload_title")
-    @iOSXCUITFindBy(iOSNsPredicate = "name = 'Photo ID'")
-    private WebElement title;
-    
-    @AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
-    @iOSXCUITFindBy(accessibility = "next")
-    private WebElement next;
-    
-    @AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/front_progress")
-    private WebElement frontLoadingProgress;
-    
-    @AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/back_progress")
-    private WebElement backLoadingProgress;
-    
-    @AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/selfie_progress")
-    private WebElement selfieLoadingProgress;
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/photo_upload_title")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Photo ID'")
+	private WebElement title;
 
-    public PhotoIDPage(AppiumBaseDriver driver){
-        this.driver = driver;
-        PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
-    }
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/btnSubmit\"))")
+	@iOSXCUITFindBy(accessibility = "next")
+	private WebElement next;
 
-    public boolean isActive() throws Exception{
-        return driver.isElementDisplayed(title);
-    }
-    
+	@AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/front_progress")
+	private WebElement frontLoadingProgress;
+
+	@AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/back_progress")
+	private WebElement backLoadingProgress;
+
+	@AndroidFindBy(uiAutomator = "au.com.finstro.finstropay:id/selfie_progress")
+	private WebElement selfieLoadingProgress;
+
+	public PhotoIDPage(AppiumBaseDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
+	}
+
+	public boolean isActive() throws Exception {
+		return driver.isElementDisplayed(title);
+	}
+
 	public DriverLicensePage clickNext() throws Exception {
-    driver.wait(10);
+		driver.wait(20);
 		driver.click(next);
 		return new DriverLicensePage(driver);
 	}

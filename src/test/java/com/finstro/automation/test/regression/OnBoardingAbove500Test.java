@@ -320,7 +320,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		}
 
 		// accept term, click next and verify
-		postalAddressPage.acceptTerm();
 		postalAddressPage.clickNext();
 		assertTrue(selectBankStatementPage.isActive(), "Bank Statement page is not displayed",
 				"Bank Statement page is displayed");
@@ -348,7 +347,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		Thread.sleep(10000);
 		photoIDPage.clickNext();
 		drivingLisencePage.clickNext();
-		postalAddressPage.acceptTerm();
 		postalAddressPage.clickNext();
 		assertTrue(selectBankStatementPage.isActive(), "Bank Statement page is not displayed",
 				"Bank Statement page is displayed");

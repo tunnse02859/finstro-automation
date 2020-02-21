@@ -98,6 +98,7 @@ public class PostalAddressPage {
     }
     
 	public void clickNext() throws Exception {
+		acceptTerm();
 		driver.click(next);
 	}
 	
