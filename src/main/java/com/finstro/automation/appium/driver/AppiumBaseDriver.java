@@ -18,10 +18,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -48,7 +50,7 @@ public class AppiumBaseDriver {
 	public enum DIRECTION {
 		DOWN, UP, LEFT, RIGHT;
 	}
-	
+
 	protected AppiumDriver<WebElement> driver;
 
 	private final int DEFAULT_WAITTIME_SECONDS = 30;
@@ -70,7 +72,7 @@ public class AppiumBaseDriver {
 	}
 
 	public WebElement findElement(WebElement element) {
-		
+
 		if (isElementDisplayed(element)) {
 			return element;
 		}
@@ -87,7 +89,7 @@ public class AppiumBaseDriver {
 
 		throw new NoSuchElementException("Element not found");
 	}
-	
+
 	public WebElement findElementIgnoreError(By by) {
 		WebElement element = null;
 		try {
@@ -126,7 +128,8 @@ public class AppiumBaseDriver {
 	 *            the url of website
 	 * @return None
 	 * @throws Exception
-	 *             The exception is thrown if the driver can't navigate to the url
+	 *             The exception is thrown if the driver can't navigate to the
+	 *             url
 	 */
 	public void openUrl(String url) throws Exception {
 		try {
@@ -164,7 +167,7 @@ public class AppiumBaseDriver {
 		try {
 			element = findElement(element);
 			element.clear();
-			if(!text.equalsIgnoreCase("")) {
+			if (!text.equalsIgnoreCase("")) {
 				element.sendKeys(text);
 				hideKeyboard();
 			}
@@ -230,7 +233,8 @@ public class AppiumBaseDriver {
 	}
 
 	/**
-	 * This method is used to execute a java script function for an object argument.
+	 * This method is used to execute a java script function for an object
+	 * argument.
 	 * 
 	 * @author tunn6
 	 * @param jsFunction
@@ -355,7 +359,7 @@ public class AppiumBaseDriver {
 				int upperY = wheels.getLocation().getY();
 				int lowerY = upperY + wheels.getSize().getHeight();
 				int middleY = (upperY + lowerY) / 2;
-				
+
 				// swipe down 3 time in picker wheel to get 1st item on list
 				for (int i = 0; i < 3; i++) {
 					new TouchAction<>(driver).press(PointOption.point(middleX, upperY + 50))
@@ -363,31 +367,33 @@ public class AppiumBaseDriver {
 							.moveTo(PointOption.point(middleX, lowerY)).release().perform();
 					Thread.sleep(1000);
 				}
-				
-				//set js script 
+
+				// set js script
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				Map<String, Object> params = new HashMap<>();
 				params.put("order", "next");
 				params.put("offset", 0.15);
 				params.put("element", ((RemoteWebElement) wheels));
-				
+
 				js.executeScript("mobile: selectPickerWheelValue", params);
-				
-				//go to next item in the list of picker wheel
-				for(int i = 0; i < 10; i++) {
-					//check value
+
+				// go to next item in the list of picker wheel
+				for (int i = 0; i < 10; i++) {
+					// check value
 					strPickerWheelSelectedValue = wheels.getText();
 					if (strPickerWheelSelectedValue.equals(value)) {
-						Log.info(String.format("The element [%s] is selected with value = [%s]", element.toString(), value));
+						Log.info(String.format("The element [%s] is selected with value = [%s]", element.toString(),
+								value));
 						clickByPosition(wheels, "top right");
 						return;
 					}
 					js.executeScript("mobile: selectPickerWheelValue", params);
 				}
-				throw new Exception(String.format("The element [%s] cannot selected with value = [%s]", element.toString(),value));
+				throw new Exception(
+						String.format("The element [%s] cannot selected with value = [%s]", element.toString(), value));
 			}
 		} catch (Exception e) {
-			Log.error(String.format("The element [%s] cannot selected with value = [%s]", element.toString(),value));
+			Log.error(String.format("The element [%s] cannot selected with value = [%s]", element.toString(), value));
 			throw (e);
 		}
 
@@ -454,7 +460,7 @@ public class AppiumBaseDriver {
 
 		}
 	}
-	
+
 	public void selectItemFromSpinner(WebElement spinner, String text) throws Exception {
 
 		spinner = findElement(spinner);
@@ -472,7 +478,6 @@ public class AppiumBaseDriver {
 			// tap object
 			((IOSDriver) driver).findElementByIosNsPredicate("value = '" + text + "'").click();
 		}
-
 	}
 
 	public void waitForElementClickable(WebElement element, int time) {
@@ -490,6 +495,11 @@ public class AppiumBaseDriver {
 			return false;
 		}
 		return true;
+	}
+
+	public void waitUntilElementDisappear(WebElement element, int time) {
+		FluentWait<WebDriver> wait = new WebDriverWait(driver, time).ignoring(NoSuchElementException.class);
+		wait.until(ExpectedConditions.invisibilityOfAllElements(element));
 	}
 
 	public void waitForTextValueElementPresent(WebElement element, int time, String text) {
@@ -516,6 +526,7 @@ public class AppiumBaseDriver {
 	public boolean isElementDisplayed(WebElement element) {
 		boolean result;
 		try {
+			// element = findElement(element);
 			result = element.isDisplayed();
 			if (result) {
 				HtmlReporter.info(String.format("Element: [%s] is displayed", element.toString()));
@@ -524,6 +535,9 @@ public class AppiumBaseDriver {
 			}
 			return result;
 		} catch (NoSuchElementException e) {
+			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
+			return false;
+		} catch(NullPointerException e) {
 			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
 			return false;
 		}
@@ -587,21 +601,37 @@ public class AppiumBaseDriver {
 		switch (direction) {
 		case RIGHT:
 			swipe(0.2, 0.5, 0.8, 0.5);
+			Log.info("Swipe RIGHT sucessfully");
 			break;
 		case LEFT:
 			swipe(0.8, 0.5, 0.2, 0.5);
+			Log.info("Swipe LEFT sucessfully");
 			break;
 		case UP:
-			swipe(0.5, 0.2, 0.5, 0.8);
+			if(isIOSDriver()) {
+				if(((IOSDriver) driver).isKeyboardShown()) {
+					swipe(0.5, 0.5, 0.5, 0.1);
+				}
+			}else {
+				swipe(0.5, 0.8, 0.5, 0.2);
+			}
+			Log.info("Swipe UP sucessfully");
 			break;
 		case DOWN:
-			swipe(0.5, 0.8, 0.5, 0.2);
+			if(isIOSDriver()) {
+				if(((IOSDriver) driver).isKeyboardShown()) {
+					swipe(0.5, 0.1, 0.5, 0.5);
+				}
+			}else {
+				swipe(0.5, 0.2, 0.5, 0.8);
+			}
+			Log.info("Swipe DOWN sucessfully");
 			break;
 		default:
 			break;
 		}
 	}
-	
+
 	/**
 	 * Swipe the android mobile by location in screen
 	 * 
@@ -644,7 +674,7 @@ public class AppiumBaseDriver {
 
 		}
 	}
-	
+
 	/**
 	 * Verify that a text that available in screen
 	 * 
@@ -656,19 +686,20 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	/*
-	 * public void verifyToastMessage(String compareText) throws Exception { try {
-	 * String imageClientCode = "ClientCodeEmptyImage";
+	 * public void verifyToastMessage(String compareText) throws Exception { try
+	 * { String imageClientCode = "ClientCodeEmptyImage";
 	 * this.takeScreenshot(imageClientCode); String TessMessage =
 	 * readToastMessage(imageClientCode);
-	 * Assert.assertTrue(TessMessage.contains(compareText)); Log.info( "String \"" +
-	 * compareText + "\" is available in screen");
+	 * Assert.assertTrue(TessMessage.contains(compareText)); Log.info(
+	 * "String \"" + compareText + "\" is available in screen");
 	 * 
 	 * } catch (Exception e) { Log.error("String \"" + compareText +
 	 * "\" is not available in screen"); throw (e); } }
 	 */
 
 	/**
-	 * This method is used to capture a screenshot then write to the TestNG Logger
+	 * This method is used to capture a screenshot then write to the TestNG
+	 * Logger
 	 * 
 	 * @author tunn6
 	 * 

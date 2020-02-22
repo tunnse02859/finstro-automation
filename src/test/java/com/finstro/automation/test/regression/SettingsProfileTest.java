@@ -1,72 +1,32 @@
 package com.finstro.automation.test.regression;
 
-import static com.finstro.automation.utility.Assertion.assertEquals;
-import static com.finstro.automation.utility.Assertion.assertTrue;
+import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
 import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.pages.home.HomePage;
-import com.finstro.automation.pages.home.MainNavigator;
+import com.finstro.automation.common.WorkFlows;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
-import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
-import com.finstro.automation.pages.on_boarding.DriverLicensePage;
-import com.finstro.automation.pages.on_boarding.PhotoIDPage;
-import com.finstro.automation.pages.on_boarding.PostalAddressPage;
-import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
-import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingProfile_DrivingLicensePage;
-import com.finstro.automation.pages.settings.SettingProfile_ProfileDetailPage;
-import com.finstro.automation.pages.settings.SettingsPage;
+import com.finstro.automation.pages.settings.profile.SettingProfile_DrivingLicensePage;
+import com.finstro.automation.pages.settings.profile.SettingProfile_MedicarePage;
+import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
-import com.finstro.automation.test.regression.SettingBusinessDetailsTests.BUSINESS_DETAIL;
 import com.finstro.automation.utility.Common;
 
 public class SettingsProfileTest extends MobileTestSetup {
 
 	private FinstroAPI finstroAPI;
-	private SettingsPage settingPage;
+	private LoginPage loginPage;
+	private RegisterPage registerPage;
 	private SettingProfile_ProfileDetailPage settingProfilePage;
 	private SettingProfile_DrivingLicensePage settingProfileDrivingLicencePage;
+	private SettingProfile_MedicarePage settingProfileMedicarePage;
 
-	class PROFILE_DETAIL {
-
-		public static final String EMAIL_ADRRESS = "EMAIL_ADRRESS";
-		public static final String MOBILE_NUMBER = "MOBILE_NUMBER";
-		public static final String FIRST_NAME = "FIRST_NAME";
-		public static final String LAST_NAME = "LAST_NAME";
-		public static final String D_O_B = "D_O_B";
-		public static final String RESIDENTIAL_ADDRESS = "RESIDENTIAL_ADDRESS";
-
-	}
-
-	class DRIVING_LICENSE {
-
-		public static final String GENDER = "GENDER";
-		public static final String MIDDLE_NAME = "MIDDLE_NAME ";
-		public static final String FIRST_NAME = "FIRST_NAME";
-		public static final String LAST_NAME = "LAST_NAME";
-		public static final String STATE = "STATE";
-		public static final String EXPRISE_DATE = "EXPRISE_DATE";
-		public static final String DRIVING_LICENCE_NUMBER = "DRIVING_LICENCE_NUMBER";
-
-	}
-
-	@DataProvider(name = "SettingProfileDetail_Or")
-	public Object[][] SettingProfileDetail_Or() {
-		return new Object[][] { { "erick@finstro.au", "+61435690919", "Erick", "Vavretchek", "01/01/2021",
-				"60 Margaret, St , SYDNEY, NSW, 2000, AUS," } };
-
-	}
 
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
@@ -76,269 +36,129 @@ public class SettingsProfileTest extends MobileTestSetup {
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
-		RegisterPage registerPage = new RegisterPage(driver);
-		LoginPage loginPage = new LoginPage(driver);
-		settingProfileDrivingLicencePage = new SettingProfile_DrivingLicensePage(driver);
+		registerPage = new RegisterPage(driver);
+		loginPage = new LoginPage(driver);
+		
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
+
 		// Login
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
-		// Go to the Setting Business Details page
-
-		// Go to setting profile Page
-		toSettingProfilePage();
-	}
-
-	private void toSettingProfilePage() throws Exception {
-		// goto Business Details page
-		SelectBusinessCardPage selectBusinessCardPage = new SelectBusinessCardPage(driver);
-		selectBusinessCardPage.clickOnCard("500");
-		BusinessDetailPage businessDetailPage = new BusinessDetailPage(driver);
-		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
-				"Business Details is displayed after click on card 500");
-
-		// goto Residential Address page
-		businessDetailPage.clickNext();
-		ResidentialAddressPage residentialAddressPage = new ResidentialAddressPage(driver);
-		assertTrue(residentialAddressPage.isActive(), "You're not on the Business Details page",
-				"You're on the Business Details page");
-
-		// goto Photo ID page
-		residentialAddressPage.clickNext();
-		PhotoIDPage photoIDPage = new PhotoIDPage(driver);
-		assertTrue(photoIDPage.isActive(), "You're not on the Photo ID page", "You're on the Photo ID page");
-
-		// goto Driving License page
-		photoIDPage.clickNext();
-		DriverLicensePage drivingLisencePage = new DriverLicensePage(driver);
-		assertTrue(drivingLisencePage.isActive(), "You're not on the Driving Licence page",
-				"You're on the Driving Licence page");
-
-		// goto Postal Address page
-		drivingLisencePage.clickNext();
-		PostalAddressPage postalAddressPage = new PostalAddressPage(driver);
-		assertTrue(postalAddressPage.isActive(), "You're not on the Postal Address page",
-				"You're on the Postal Address page");
-
-		// Agreement
-		postalAddressPage.clickNext();
-		CompleteAgreementPage completeAgreementPage = new CompleteAgreementPage(driver);
-		assertTrue(completeAgreementPage.isActive(), "You're not on the Agreement page",
-				"You're on the Agreement page");
-
-		// Confirm and goto main page
-		completeAgreementPage.confirmAgreement();
-		MainNavigator navigator = new MainNavigator(driver);
-		assertTrue(navigator.isActive(), "You're not on the Navigator", "You're on the Navigator");
-
-		// goto Settings page
-		SettingsPage settingsPage = navigator.gotoSettingsPage();
-		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
-
-		// goto Settings Profile page
-		settingPage.goToProfileDetailsPage();
-
-		assertTrue(settingProfilePage.isActive(), "Setting page didnt showed as default page in first installation",
-				"Setting page showed as default page");
 
 	}
 
 	@Test
-	public void SettingProfile_01_VerifyUserCanEditTheProfileInfomation(String email, String mobile, String firstName,
-			String lastName, String dob, String residentialAddress) throws Exception {
-		// Save the business details to set back when test done
-		HashMap<String, String> profileDetails = new HashMap<>();
-		profileDetails.put(PROFILE_DETAIL.EMAIL_ADRRESS, settingProfilePage.getEmail());
-		profileDetails.put(PROFILE_DETAIL.MOBILE_NUMBER, settingProfilePage.getPhoneNumber());
-		profileDetails.put(PROFILE_DETAIL.FIRST_NAME, settingProfilePage.getFirstName());
-		profileDetails.put(PROFILE_DETAIL.LAST_NAME, settingProfilePage.getLastName());
-		profileDetails.put(PROFILE_DETAIL.D_O_B, settingProfilePage.getDOB());
-		profileDetails.put(PROFILE_DETAIL.RESIDENTIAL_ADDRESS, settingProfilePage.getResidential());
+
+	public void SettingProfile_01_VerifyUserCanEditTheProfileInfomation() throws Exception {
+		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
 		
-		//finstroAPI.getProfileDetailInfor();
-
-		compareDisplayedProfileDetailDataWithAPIResponse();
-
-		try {
-
-			// Check Email
-			settingProfilePage.setEmail(email);
-			assertEquals(settingProfilePage.getEmail(), email, "Email field is not set sucessfully",
-					"Email field is set to " + email);
-
-			// Check Phone number
-			settingProfilePage.setPhoneNumber(mobile);
-			assertEquals(settingProfilePage.getPhoneNumber(), mobile, "mobile field is not set sucessfully",
-					"mobile field is set to " + mobile);
-
-			// Check FirstName
-			settingProfilePage.setFirstName(firstName);
-			assertEquals(settingProfilePage.getFirstName(), firstName, "firstName field is not set sucessfully",
-					"firstName field is set to " + firstName);
-
-			// Check LastName
-			settingProfilePage.setLastName(lastName);
-			assertEquals(settingProfilePage.getLastName(), lastName, "lastName field is not set sucessfully",
-					"lastName field is set to " + lastName);
-
-			// Check Residential
-			settingProfilePage.setResidential(residentialAddress);
-			assertEquals(settingProfilePage.getResidential(), residentialAddress,
-					"residentialAddress field is not set sucessfully",
-					"residentialAddress field is set to " + residentialAddress);
-
-			// Save Changes
-			settingProfilePage.saveChanges();
-			
-			compareDisplayedProfileDetailDataWithAPIResponse();
-
-		} catch (Exception ex) {
-			throw ex;
-		} finally {
-			// Set back to original data
-			settingProfilePage.setEmail(profileDetails.get(PROFILE_DETAIL.EMAIL_ADRRESS));
-			settingProfilePage.setPhoneNumber(profileDetails.get(PROFILE_DETAIL.MOBILE_NUMBER));
-			settingProfilePage.setFirstName(profileDetails.get(PROFILE_DETAIL.FIRST_NAME));
-			settingProfilePage.setLastName(profileDetails.get(PROFILE_DETAIL.LAST_NAME));
-			settingProfilePage.setResidential(profileDetails.get(PROFILE_DETAIL.RESIDENTIAL_ADDRESS));
-
-		}
+		//verify data on screen with API
+		finstroAPI.getProfileDetailInfor();
+		settingProfilePage.verifyProfileInfor(
+				Common.getTestVariable("contacts.firstGivenName", true),
+				Common.getTestVariable("contacts.familyName", true),
+				Common.getTestVariable("contacts.emailAddress", true),
+				Common.getTestVariable("contacts.mobilePhoneNumber", true));
+		
+		//Input data
+		settingProfilePage.inputProfileInfor("Phong", "Trinh");
 
 	}
 	
-	private void compareDisplayedProfileDetailDataWithAPIResponse() throws Exception {
-//		String strEmail = settingProfilePage.getEmail();
-//		String strPhoneNumber = settingProfilePage.getPhoneNumber();
-//		String strFirstName = settingProfilePage.getFirstName();
-//		String strLastName = settingProfilePage.getLastName();
-//		String strResidential = settingProfilePage.getResidential();
-//
-//
-//		String resEmail = Common.getTestVariable("gender", true);
-//		assertEquals(strEmail, resEmail, "Email is different", "Email matches");
-//
-//		String resPhoneNumber = Common.getTestVariable("firstname", true);
-//		assertEquals(strPhoneNumber, resPhoneNumber, "PhoneNumber is different", "PhoneNumber matches");
-//
-//		String resFirstName = Common.getTestVariable("surname", true);
-//		assertEquals(strFirstName, resFirstName, "FirstName is different", "FirstName matches");
-//
-//		String resLastName = Common.getTestVariable("middleName", true);
-//		assertEquals(strLastName, resLastName, "LastName is different", "LastName matches");
-//
-//		String resResidential = Common.getTestVariable("state", true);
-//		assertEquals(strResidential, resResidential, "Residential is different", "Residential matches");
-
-	}
-
 	@Test
-	public void SettingProfile_02_VerifyUserCanEditTheDrivingLicenceInformation(String genderValue,
-			String firstNameValue, String lastNameValue, String middleNameValue, String stateValue,
-			String drivingLicenceNumberValue) throws Exception {
-		// Go to the second setting business page
+	public void SettingProfile_02_VerifyUserCanEditTheDrivingLicenceInformation() throws Exception {
+		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
+
+
+		// Go to the second setting driving license page
 		settingProfileDrivingLicencePage = settingProfilePage.toSettingDrivingLicensePage();
+		assertTrue(settingProfileDrivingLicencePage.isActive(),
+				"Seting Profile - Driving License screen is not displayed",
+				"Seting Profile - Driving License screen is displayed");
 
-		// Save the business details to set back when test done
-		HashMap<String, String> drivingLicense = new HashMap<>();
-		drivingLicense.put(DRIVING_LICENSE.GENDER, settingProfileDrivingLicencePage.getGender());
-		drivingLicense.put(DRIVING_LICENSE.FIRST_NAME, settingProfileDrivingLicencePage.getFirstName());
-		drivingLicense.put(DRIVING_LICENSE.LAST_NAME, settingProfileDrivingLicencePage.getLastName());
-		drivingLicense.put(DRIVING_LICENSE.MIDDLE_NAME, settingProfileDrivingLicencePage.getMiddleName());
-		drivingLicense.put(DRIVING_LICENSE.EXPRISE_DATE, settingProfileDrivingLicencePage.getExpireDate());
-		drivingLicense.put(DRIVING_LICENSE.STATE, settingProfileDrivingLicencePage.getState());
-		drivingLicense.put(DRIVING_LICENSE.DRIVING_LICENCE_NUMBER,
-				settingProfileDrivingLicencePage.getDriverLicenseNumber());
-
+		// verify data displayed on screen with API
 		finstroAPI.getDrivingLicenceInfor();
 
-		compareDisplayedDrivingLicenceDataWithAPIResponse();
+		settingProfileDrivingLicencePage.verifyDriverLicenseInfor(
+				Common.getTestVariable("gender", true).equalsIgnoreCase("M") ? "Male" : "Female",
+				Common.getTestVariable("firstName", true), Common.getTestVariable("surname", true),
+				Common.getTestVariable("middleName", true), Common.getTestVariable("state", true),
+				Common.getTestVariable("dateOfBirth", true), Common.getTestVariable("licenceNumber", true),
+				Common.getTestVariable("validTo", true));
 
-		try {
+		// input data
+		String genderName = "Male";
+		String firstNameString = "Phong";
+		String lastNameString = "Trinh";
+		String middleNameString = "Van";
+		String stateName = "ACT";
+		String dobString = "01/01/2021";
+		String licenseNumberString = "0123456789";
+		String expireDateString = "23/08/2020";
+		settingProfileDrivingLicencePage.inputDriverLicenseInfor(genderName, firstNameString, lastNameString,
+				middleNameString, stateName, dobString, licenseNumberString, expireDateString);
 
-			// Check Gender
-			settingProfileDrivingLicencePage.setGender(genderValue);
-			assertEquals(settingProfileDrivingLicencePage.getGender(), genderValue,
-					"gender field is not set sucessfully", "gender field is set to " + genderValue);
+		// click next and verify data saved
+		settingProfileDrivingLicencePage.clickSaveSetting();
+		Thread.sleep(10000);
 
-			// Check firstName
-			settingProfileDrivingLicencePage.setFirstName(firstNameValue);
-			assertEquals(settingProfileDrivingLicencePage.getFirstName(), firstNameValue,
-					"firstName field is not set sucessfully", "firstName field is set to " + firstNameValue);
+		finstroAPI.recoveryData().then().verifyResponseCode(200)
+				.verifyJsonNodeEqual("drivingLicence.firstName", "Phong")
+				.verifyJsonNodeEqual("drivingLicence.surname", "Trinh")
+				.verifyJsonNodeEqual("drivingLicence.middleName", "Van").flush();
+		// .verifyJsonNodeEqual("drivingLicence.gender", "M")
+		// .verifyJsonNodeEqual("drivingLicence.dateOfBirth", "2021/01/01")
+		// .verifyJsonNodeEqual("drivingLicence.licenceNumber", "0123456789")
+		// .verifyJsonNodeEqual("drivingLicence.state", "ACE").flush();
+		// .verifyJsonNodeEqual("drivingLicence.validTo", "08/2020").flush();
 
-			// Check lastName
-			settingProfileDrivingLicencePage.setLastName(lastNameValue);
-			assertEquals(settingProfileDrivingLicencePage.getLastName(), lastNameValue,
-					"lastName field is not set sucessfully", "lastName field is set to " + lastNameValue);
-
-			// Check middleName
-			settingProfileDrivingLicencePage.setMiddleName(middleNameValue);
-			assertEquals(settingProfileDrivingLicencePage.getMiddleName(), middleNameValue,
-					"middleName field is not set sucessfully", "middleName field is set to " + middleNameValue);
-
-			// Check state
-			settingProfileDrivingLicencePage.setState(stateValue);
-			assertEquals(settingProfileDrivingLicencePage.getState(), stateValue, "state field is not set sucessfully",
-					"state field is set to " + stateValue);
-
-			// Check drivingLicenceNumber
-			settingProfileDrivingLicencePage.setDriverLicenseNumber(drivingLicenceNumberValue);
-			assertEquals(settingProfileDrivingLicencePage.getDriverLicenseNumber(), drivingLicenceNumberValue,
-					"drivingLicenceNumber field is not set sucessfully",
-					"drivingLicenceNumber field is set to " + drivingLicenceNumberValue);
-
-			// Save Changes
-			settingProfileDrivingLicencePage.clickSaveSetting();
-
-			compareDisplayedDrivingLicenceDataWithAPIResponse();
-
-		} catch (Exception ex) {
-			throw ex;
-		} finally {
-			// Set back to original data
-
-			settingProfileDrivingLicencePage.setGender(drivingLicense.get(DRIVING_LICENSE.GENDER));
-			settingProfileDrivingLicencePage.setMiddleName(drivingLicense.get(DRIVING_LICENSE.MIDDLE_NAME));
-			settingProfileDrivingLicencePage.setFirstName(drivingLicense.get(DRIVING_LICENSE.FIRST_NAME));
-			settingProfileDrivingLicencePage.setLastName(drivingLicense.get(DRIVING_LICENSE.LAST_NAME));
-			settingProfileDrivingLicencePage
-					.setDriverLicenseNumber(drivingLicense.get(DRIVING_LICENSE.DRIVING_LICENCE_NUMBER));
-			settingProfileDrivingLicencePage.setState(drivingLicense.get(DRIVING_LICENSE.STATE));
-
-			// settingProfilePage.getPopupActionType();
-		}
-
-	}
-
-	private void compareDisplayedDrivingLicenceDataWithAPIResponse() throws Exception {
-		String strGender = settingProfileDrivingLicencePage.getGender();
-		String strFirstName = settingProfileDrivingLicencePage.getFirstName();
-		String strLastName = settingProfileDrivingLicencePage.getLastName();
-		String strMiddileName = settingProfileDrivingLicencePage.getMiddleName();
-		String strState = settingProfileDrivingLicencePage.getState();
-		String strDrivingNumber = settingProfileDrivingLicencePage.getDriverLicenseNumber();
-
-		String resGender = Common.getTestVariable("gender", true);
-		assertEquals(strGender, resGender, "Gender is different", "gender matches");
-
-		String resFirstName = Common.getTestVariable("firstname", true);
-		assertEquals(strFirstName, resFirstName, "FirstName is different", "FirstName matches");
-
-		String resLastName = Common.getTestVariable("surname", true);
-		assertEquals(strLastName, resLastName, "LastName is different", "LastName matches");
-
-		String resMiddileName = Common.getTestVariable("middleName", true);
-		assertEquals(strMiddileName, resMiddileName, "middleName is different", "middleName matches");
-
-		String resState = Common.getTestVariable("state", true);
-		assertEquals(strState, resState, "State is different", "State matches");
-
-		String resLicenceNumber = Common.getTestVariable("licenceNumber", true);
-		assertEquals(strDrivingNumber, resLicenceNumber, "licenceNumber is different", "licenceNumber matches");
 	}
 
 	@Test
 	public void SettingProfile_03_VerifyUserCanEditTheMedicareInformation() throws Exception {
-
+		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
+		// Go to the setting medicare page
+		settingProfileDrivingLicencePage = settingProfilePage.toSettingDrivingLicensePage();
+		settingProfileMedicarePage = settingProfileDrivingLicencePage.toSettingMedicarePage();
+		assertTrue(settingProfileMedicarePage.isActive(), "Seting Profile - Medicare screen is not displayed",
+				"Seting Profile - Medicare screen is displayed");
+		
+		//call API and verify data
+		finstroAPI.getMedicareInfor();
+		settingProfileMedicarePage.verifyMedicareInfor(Common.getTestVariable("firstName", true),
+				Common.getTestVariable("middleInitial", true), Common.getTestVariable("surname", true),
+				Common.getTestVariable("gender", true).equalsIgnoreCase("M") ? "Male" : "Female",
+				Common.getTestVariable("dateOfBirth", true), Common.getTestVariable("cardColor", true),
+				Common.getTestVariable("cardNumber", true), Common.getTestVariable("cardNumberRef", true),
+				Common.getTestVariable("validTo", true));
+		
+		
+		//input data
+		String firstNameString = "Phong";
+		String middleNameString = "Van";
+		String lastNameString = "Trinh";
+		String genderName = "Male";
+		String dobString = "27/02/1983";
+		String cardColor = "Green";
+		String medicareNumberString = "2684483925";
+		String referenceNumberString = "1";
+		String expireDateString = "03/2020";
+		settingProfileMedicarePage.inputMedicareInfor(firstNameString, middleNameString, lastNameString, genderName,
+				dobString, cardColor, medicareNumberString, referenceNumberString, expireDateString);
+		
+		// click save and verify
+		settingProfileMedicarePage.clickSaveSetting();
+		finstroAPI.recoveryData().then().verifyResponseCode(200)
+			.verifyJsonNodeEqual("medicareCard.identificationId", "null")
+			.verifyJsonNodeEqual("medicareCard.cardNumber", "2684483925")
+			.verifyJsonNodeEqual("medicareCard.cardNumberRef", "1")
+			.verifyJsonNodeEqual("medicareCard.firstName", "Phong")
+			.verifyJsonNodeEqual("medicareCard.middleInitial", "Van")
+			.verifyJsonNodeEqual("medicareCard.surname", "Trinh")
+			//.verifyJsonNodeEqual("medicareCard.dateOfBirth", "1983-02-27")
+			//.verifyJsonNodeEqual("medicareCard.gender", "M")
+			//.verifyJsonNodeEqual("medicareCard.validTo", "2020-03-01")
+				.flush();
 	}
 
 }

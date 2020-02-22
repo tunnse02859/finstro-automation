@@ -2,6 +2,7 @@ package com.finstro.automation.test.regression;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.common.CommonFunction;
+import com.finstro.automation.common.WorkFlows;
 import com.finstro.automation.excelhelper.ExcelHelper;
 import com.finstro.automation.pages.home.MainNavigator;
 import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
@@ -18,9 +19,9 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingsBusinessDetailsFirstPage;
-import com.finstro.automation.pages.settings.SettingsBusinessDetailsSecondPage;
 import com.finstro.automation.pages.settings.SettingsPage;
+import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
+import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsSecondPage;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
@@ -75,62 +76,6 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 				"Register page showed as default page");
 		// Login
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
-		// Go to the Setting Business Details page
-		goToTheSettingBusinessDetailsPage();
-
-	}
-
-	private void goToTheSettingBusinessDetailsPage() throws Exception {
-
-		// goto Business Details page
-		SelectBusinessCardPage selectBusinessCardPage = new SelectBusinessCardPage(driver);
-		selectBusinessCardPage.clickOnCard("500");
-		BusinessDetailPage businessDetailPage = new BusinessDetailPage(driver);
-		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
-				"Business Details is displayed after click on card 500");
-
-		// goto Residential Address page
-		businessDetailPage.clickNext();
-		ResidentialAddressPage residentialAddressPage = new ResidentialAddressPage(driver);
-		assertTrue(residentialAddressPage.isActive(), "You're not on the Business Details page",
-				"You're on the Business Details page");
-
-		// goto Photo ID page
-		residentialAddressPage.clickNext();
-		PhotoIDPage photoIDPage = new PhotoIDPage(driver);
-		assertTrue(photoIDPage.isActive(), "You're not on the Photo ID page", "You're on the Photo ID page");
-
-		// goto Driving License page
-		photoIDPage.clickNext();
-		DriverLicensePage drivingLisencePage = new DriverLicensePage(driver);
-		assertTrue(drivingLisencePage.isActive(), "You're not on the Driving Licence page",
-				"You're on the Driving Licence page");
-
-		// goto Postal Address page
-		drivingLisencePage.clickNext();
-		PostalAddressPage postalAddressPage = new PostalAddressPage(driver);
-		assertTrue(postalAddressPage.isActive(), "You're not on the Postal Address page",
-				"You're on the Postal Address page");
-
-		// Agreement
-		postalAddressPage.clickNext();
-		CompleteAgreementPage completeAgreementPage = new CompleteAgreementPage(driver);
-		assertTrue(completeAgreementPage.isActive(), "You're not on the Agreement page",
-				"You're on the Agreement page");
-
-		// Confirm and goto main page
-		completeAgreementPage.confirmAgreement();
-		MainNavigator navigator = new MainNavigator(driver);
-		assertTrue(navigator.isActive(), "You're not on the Navigator", "You're on the Navigator");
-
-		// goto Settings page
-		SettingsPage settingsPage = navigator.gotoSettingsPage();
-		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
-
-		// goto Settings Business Details page
-		settingBusinessDetailsFirstPage = settingsPage.gotoSettingsBusinessDetailsPage();
-		assertTrue(settingBusinessDetailsFirstPage.isActive(), "You're not on the Settings Business Details Page",
-				"You're on the Settings Business Details Page");
 
 	}
 
@@ -144,107 +89,84 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 	@Test(dataProvider = "SettingBusinessDetail_01")
 	public void SettingBusinessDetail_01(String category, String email, String mobile, String website, String facebook,
 			String twitter, String instagram, String skype, String linkedin, String other) throws Exception {
+		// Go to the Setting Business Details page
+		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
+
 		// Save the business details to set back when test done
-		HashMap<String, String> businessDetails = new HashMap<>();
-		businessDetails.put(BUSINESS_DETAIL.CATEGORY_OF_BUSINESS,
-				settingBusinessDetailsFirstPage.getCategoryOfBusiness());
-		businessDetails.put(BUSINESS_DETAIL.EMAIL, settingBusinessDetailsFirstPage.getEmail());
-		businessDetails.put(BUSINESS_DETAIL.MOBILE_NUMBER, settingBusinessDetailsFirstPage.getMobileNumber());
-		businessDetails.put(BUSINESS_DETAIL.WEBSITE, settingBusinessDetailsFirstPage.getWebsiteAddress());
-		businessDetails.put(BUSINESS_DETAIL.FACEBOOK_PAGE, settingBusinessDetailsFirstPage.getFacebook());
-		businessDetails.put(BUSINESS_DETAIL.TWITTER_URL, settingBusinessDetailsFirstPage.getTwitter());
-		businessDetails.put(BUSINESS_DETAIL.INSTAGRAM_URL, settingBusinessDetailsFirstPage.getInstagram());
-		businessDetails.put(BUSINESS_DETAIL.SKYPE_ADDRESS, settingBusinessDetailsFirstPage.getSkype());
-		businessDetails.put(BUSINESS_DETAIL.LINKEDIN, settingBusinessDetailsFirstPage.getLinkedin());
-		businessDetails.put(BUSINESS_DETAIL.OTHER, settingBusinessDetailsFirstPage.getOther());
+//		HashMap<String, String> businessDetails = new HashMap<>();
+//		businessDetails.put(BUSINESS_DETAIL.CATEGORY_OF_BUSINESS,
+//				settingBusinessDetailsFirstPage.getCategoryOfBusiness());
+//		businessDetails.put(BUSINESS_DETAIL.EMAIL, settingBusinessDetailsFirstPage.getEmail());
+//		businessDetails.put(BUSINESS_DETAIL.MOBILE_NUMBER, settingBusinessDetailsFirstPage.getMobileNumber());
+//		businessDetails.put(BUSINESS_DETAIL.WEBSITE, settingBusinessDetailsFirstPage.getWebsiteAddress());
+//		businessDetails.put(BUSINESS_DETAIL.FACEBOOK_PAGE, settingBusinessDetailsFirstPage.getFacebook());
+//		businessDetails.put(BUSINESS_DETAIL.TWITTER_URL, settingBusinessDetailsFirstPage.getTwitter());
+//		businessDetails.put(BUSINESS_DETAIL.INSTAGRAM_URL, settingBusinessDetailsFirstPage.getInstagram());
+//		businessDetails.put(BUSINESS_DETAIL.SKYPE_ADDRESS, settingBusinessDetailsFirstPage.getSkype());
+//		businessDetails.put(BUSINESS_DETAIL.LINKEDIN, settingBusinessDetailsFirstPage.getLinkedin());
+//		businessDetails.put(BUSINESS_DETAIL.OTHER, settingBusinessDetailsFirstPage.getOther());
 
-		try {
-			// Check Category of Business
-			settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
-			assertEquals(settingBusinessDetailsFirstPage.getCategoryOfBusiness(), category,
-					"Category field is not set sucessfully", "Category field is set to " + category);
+		// call API and verify displayed data
+		finstroAPI.getBusinessDetailInfor();
+		settingBusinessDetailsFirstPage.verifyDisplayedData(Common.getTestVariable("email", true),
+				Common.getTestVariable("phoneNumber", true), Common.getTestVariable("website", true),
+				Common.getTestVariable("facebook", true), Common.getTestVariable("twitter", true),
+				Common.getTestVariable("instagram", true), Common.getTestVariable("skype", true),
+				Common.getTestVariable("linkedin", true), Common.getTestVariable("other", true));
+		// Check Category of Business
+		//settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
+		// Check Email
+		settingBusinessDetailsFirstPage.setEmail(email);
+		// Check Phone number
+		settingBusinessDetailsFirstPage.setMobileNumber(mobile);
+		// Check Website address
+		settingBusinessDetailsFirstPage.setWebsiteAddress(website);
+		// Check Facebook page
+		settingBusinessDetailsFirstPage.setFacebook(facebook);
+		// Check Twitter
+		settingBusinessDetailsFirstPage.setTwitter(twitter);
+		// Check Instagram
+		settingBusinessDetailsFirstPage.setInstagram(instagram);
+		// Check Skype address
+		settingBusinessDetailsFirstPage.setSkype(skype);
+		// Check Linkedin
+		settingBusinessDetailsFirstPage.setLinkedin(linkedin);
+		// Check Other
+		settingBusinessDetailsFirstPage.setOther(other);
 
-			// Check Email
-			settingBusinessDetailsFirstPage.setEmail(email);
-			assertEquals(settingBusinessDetailsFirstPage.getEmail(), email, "Email field is not set sucessfully",
-					"Email field is set to " + email);
-
-			// Check Phone number
-			settingBusinessDetailsFirstPage.setMobileNumber(mobile);
-			assertEquals(settingBusinessDetailsFirstPage.getMobileNumber(), mobile,
-					"mobile field is not set sucessfully", "mobile field is set to " + mobile);
-
-			// Check Website address
-			settingBusinessDetailsFirstPage.setWebsiteAddress(website);
-			assertEquals(settingBusinessDetailsFirstPage.getWebsiteAddress(), website,
-					"website field is not set sucessfully", "website field is set to " + website);
-
-			// Check Facebook page
-			settingBusinessDetailsFirstPage.setFacebook(facebook);
-			assertEquals(settingBusinessDetailsFirstPage.getFacebook(), facebook,
-					"facebook field is not set sucessfully", "facebook field is set to " + facebook);
-
-			// Check Twitter
-			settingBusinessDetailsFirstPage.setTwitter(twitter);
-			assertEquals(settingBusinessDetailsFirstPage.getTwitter(), twitter, "twitter field is not set sucessfully",
-					"twitter field is set to " + twitter);
-
-			// Check Instagram
-			settingBusinessDetailsFirstPage.setInstagram(instagram);
-			assertEquals(settingBusinessDetailsFirstPage.getInstagram(), instagram,
-					"instagram field is not set sucessfully", "instagram field is set to " + instagram);
-
-			// Check Skype address
-			settingBusinessDetailsFirstPage.setSkype(skype);
-			assertEquals(settingBusinessDetailsFirstPage.getSkype(), skype, "skype field is not set sucessfully",
-					"skype field is set to " + skype);
-
-			// Check Linkedin
-			settingBusinessDetailsFirstPage.setLinkedin(linkedin);
-			assertEquals(settingBusinessDetailsFirstPage.getLinkedin(), linkedin,
-					"linkedin field is not set sucessfully", "linkedin field is set to " + linkedin);
-
-			// Check Other
-			settingBusinessDetailsFirstPage.setOther(other);
-			assertEquals(settingBusinessDetailsFirstPage.getOther(), other, "other field is not set sucessfully",
-					"other field is set to " + other);
-
-			// Save Changes
-			settingBusinessDetailsFirstPage.saveChanges();
+		// Save Changes
+		settingBusinessDetailsFirstPage.saveChanges();
+		if (driver.isAndroidDriver()) {
 			String popupMessage = settingBusinessDetailsFirstPage.getPopupMessage();
 			String popupAction = settingBusinessDetailsFirstPage.getPopupActionType();
 			assertEquals(popupMessage, "Successfully save new business detail.", "Save failed " + popupMessage,
 					"Save business details success");
 			assertEquals(popupAction, "SUCCESS", "Save failed " + popupAction, "Save business details success");
-			
-		} catch (Exception ex) {
-			throw ex;
-		} finally {
-			// Set back to original data
-			settingBusinessDetailsFirstPage.setCategoryOfBusiness(businessDetails.get(BUSINESS_DETAIL.CATEGORY_OF_BUSINESS));
-			settingBusinessDetailsFirstPage.setEmail(businessDetails.get(BUSINESS_DETAIL.EMAIL));
-			settingBusinessDetailsFirstPage.setMobileNumber(businessDetails.get(BUSINESS_DETAIL.MOBILE_NUMBER));
-			settingBusinessDetailsFirstPage.setWebsiteAddress(businessDetails.get(BUSINESS_DETAIL.WEBSITE));
-			settingBusinessDetailsFirstPage.setFacebook(businessDetails.get(BUSINESS_DETAIL.FACEBOOK_PAGE));
-			settingBusinessDetailsFirstPage.setTwitter(businessDetails.get(BUSINESS_DETAIL.TWITTER_URL));
-			settingBusinessDetailsFirstPage.setInstagram(businessDetails.get(BUSINESS_DETAIL.INSTAGRAM_URL));
-			settingBusinessDetailsFirstPage.setSkype(businessDetails.get(BUSINESS_DETAIL.SKYPE_ADDRESS));
-			settingBusinessDetailsFirstPage.setLinkedin(businessDetails.get(BUSINESS_DETAIL.LINKEDIN));
-			settingBusinessDetailsFirstPage.setOther(businessDetails.get(BUSINESS_DETAIL.OTHER));
-			settingBusinessDetailsFirstPage.saveChanges();
-			
-			settingBusinessDetailsFirstPage.getPopupActionType();
 		}
+		Thread.sleep(10000);
+		finstroAPI.recoveryData().then().verifyResponseCode(200).verifyJsonNodeEqual("businessDetails.email", email)
+				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
+				.verifyJsonNodeEqual("businessDetails.website", website)
+				.verifyJsonNodeEqual("businessDetails.facebook", facebook)
+				.verifyJsonNodeEqual("businessDetails.twitter", twitter)
+				.verifyJsonNodeEqual("businessDetails.instagram", instagram)
+				.verifyJsonNodeEqual("businessDetails.skype", skype)
+				.verifyJsonNodeEqual("businessDetails.linkedin", linkedin)
+				.verifyJsonNodeEqual("businessDetails.other", other).flush();
 
 	}
-	
+
 	@Test
 	public void SettingBusinessDetail_02() throws Exception {
+		// Go to the Setting Business Details page
+		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
+
 		// Go to the second setting business page
-		SettingsBusinessDetailsSecondPage settingBusinessDetailsSecondPage = settingBusinessDetailsFirstPage.gotoSettingsBusinessDetailsSecondPage();
+		SettingsBusinessDetailsSecondPage settingBusinessDetailsSecondPage = settingBusinessDetailsFirstPage
+				.gotoSettingsBusinessDetailsSecondPage();
 		assertTrue(settingBusinessDetailsSecondPage.isActive(), "You're not on the Setting Business Detail second page",
 				"You're on the Setting Business Detail second page");
-		
+
 		// Check the information displayed on the page that matches with api response
 		String strBusinessType = settingBusinessDetailsSecondPage.getTypeOfBusiness();
 		String strBusinessName = settingBusinessDetailsSecondPage.getTradingBusinessName();
@@ -252,44 +174,26 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		String strABN = settingBusinessDetailsSecondPage.getABN();
 		String strACN = settingBusinessDetailsSecondPage.getACN();
 		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
-		String strOtherName = settingBusinessDetailsSecondPage.getOtherName();
-		String strIncorporation = settingBusinessDetailsSecondPage.getIncorporation();
-		String strGSTDate = settingBusinessDetailsSecondPage.getGSTDate();
-		String strTimeTrading = settingBusinessDetailsSecondPage.getTimeTrading();
-		
-		finstroAPI.getBusinessDetailInfor();
+
+		String expectedBusinessTradingAddress = finstroAPI.getBusinessDetailInfor();
 		String resBusinessType = Common.getTestVariable("type", true);
 		assertEquals(strBusinessType, resBusinessType, "BusinessType is different", "BusinessType matches");
-		
+
 		String resBusinessName = Common.getTestVariable("businessName", true);
 		assertEquals(strBusinessName, resBusinessName, "BusinessName is different", "BusinessName matches");
-		
+
 		String resTradingName = Common.getTestVariable("entityName", true);
 		assertEquals(strTradingName, resTradingName, "TradingName is different", "TradingName matches");
-		
-		String resABN = Common.getTestVariable("abn", true);
-		assertEquals(strABN.replace(" ",""), resABN.replace(" ",""), "ABN is different", "ABN matches");
-		
-		String resACN = Common.getTestVariable("acn", true);
-		assertEquals(strACN.replace(" ",""), resACN.replace(" ",""), "ACN is different", "ACN matches");
-		
-		String resGstDate = Common.getTestVariable("gstDate", true);
-		assertEquals(strGSTDate, resGstDate, "GST Date is different", "GST Date matches");
-		
-		String resTimeTrading = Common.getTestVariable("timeTrading", true);
-		assertEquals(strTimeTrading, resTimeTrading, "timeTrading is different", "timeTrading matches");
-		
-		String resCountry = Common.getTestVariable("country", true);
-		String resPostcode = Common.getTestVariable("postCode", true);
-		String resState = Common.getTestVariable("state", true);
-		String resSuburb = Common.getTestVariable("suburb", true);
-		String resStreetType = Common.getTestVariable("streetType", true);
-		String resStreetName = Common.getTestVariable("streetName", true);
-		String resStreetNumber = Common.getTestVariable("streetNumber", true);
-		String resFullAddress = String.format("%s %s,%s,%s,%s,%s,%s,", resStreetNumber, resStreetName, resStreetType, resSuburb, resState, resPostcode, resCountry);
-		assertEquals(strBusinessAddr.replace(" ",""), resFullAddress.replace(" ",""), "Address is different", "Address matches");
-		
-	}
 
+		String resABN = Common.getTestVariable("abn", true);
+		assertEquals(strABN.replace(" ", ""), resABN.replace(" ", ""), "ABN is different", "ABN matches");
+
+		String resACN = Common.getTestVariable("acn", true);
+		assertEquals(strACN.replace(" ", ""), resACN.replace(" ", ""), "ACN is different", "ACN matches");
+
+		assertEquals(strBusinessAddr.replace(",", "").trim(), expectedBusinessTradingAddress.trim(),
+				"Address is different", "Address matches");
+
+	}
 
 }

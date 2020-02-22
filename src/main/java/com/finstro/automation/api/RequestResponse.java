@@ -47,6 +47,14 @@ public class RequestResponse {
 			responseBodyJson = null;
 		}
 	}
+	
+	public Object getResponseBodyJson() {
+		return responseBodyJson;
+	}
+	
+	public int getStatusCode() {
+		return this.response.getStatusLine().getStatusCode();
+	}
 
 	private String extractResponseBody() {
 		try {
@@ -61,6 +69,7 @@ public class RequestResponse {
 	public HttpResponse getResponse() {
 		return response;
 	}
+	
 
 	public RequestResponse verifyResponseCode(int expectedCode) throws Exception {
 		int actualCode = this.response.getStatusLine().getStatusCode();

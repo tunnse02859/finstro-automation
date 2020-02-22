@@ -82,8 +82,9 @@ public class DriverLicensePage {
 		return driver.isElementDisplayed(title);
 	}
 
-	public void clickNext() throws Exception {
+	public PostalAddressPage clickNext() throws Exception {
 		driver.click(next);
+		return new PostalAddressPage(driver);
 	}
 
 	public void clickMedicare() throws Exception {

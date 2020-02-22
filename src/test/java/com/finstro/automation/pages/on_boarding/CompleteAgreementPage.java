@@ -33,11 +33,11 @@ public class CompleteAgreementPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.isElementDisplayed(moneyChart);
+		return driver.isElementDisplayed(title);
 	}
 	
 	public void confirmAgreement() throws Exception {
-		driver.selectCheckBox(chkAgreement);
+		driver.clickByPosition(chkAgreement, "middle");
 		driver.click(btnSubmit);
 	}
 }

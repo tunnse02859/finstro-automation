@@ -1,14 +1,16 @@
 package com.finstro.automation.api;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.utility.Common;
 import com.finstro.automation.utility.PropertiesLoader;
 
 public class FinstroAPI {
 
-	private String accessToken;
+	public String accessToken;
 	private String loginPath = "/api/Authentication/SignIn";
 	private String recoveryDataPath = "/api/CreditApplication/AppRecovery";
 	private String currentUserDetail = "/api/Authentication/CurrentUserDetails";
@@ -74,7 +76,23 @@ public class FinstroAPI {
 				.extractJsonValue("streetName", "businessDetails.businessTradingAddress.streetName")
 				.extractJsonValue("streetNumber", "businessDetails.businessTradingAddress.streetNumber")
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
-				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb").flush();
+				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb")
+				
+				//other
+				.extractJsonValue("email", "businessDetails.email")
+				.extractJsonValue("phoneNumber", "businessDetails.phoneNumber")
+				.extractJsonValue("website", "businessDetails.website")
+				.extractJsonValue("facebook", "businessDetails.facebook")
+				.extractJsonValue("twitter", "businessDetails.twitter")
+				.extractJsonValue("instagram", "businessDetails.instagram")
+				.extractJsonValue("skype", "businessDetails.skype")
+				.extractJsonValue("linkedin", "businessDetails.linkedin")
+				.extractJsonValue("other", "businessDetails.other")
+				.extractJsonValue("incorporationDate", "businessDetails.incorporationDate")
+				.extractJsonValue("phoneNumber", "businessDetails.phoneNumber")
+				.extractJsonValue("gstDate", "businessDetails.gstDate")
+				.extractJsonValue("timeTrading", "businessDetails.timeTrading")
+			.flush();
 
 		String businessTradingAddress = String.format("%s %s %s %s %s %s", Common.getTestVariable("streetNumber", true),
 				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
@@ -196,6 +214,16 @@ public class FinstroAPI {
 				.flush();
 	}
 
+	public void getProfileDetailInfor() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("contacts.emailAddress", "contacts[0].emailAddress")
+				.extractJsonValue("contacts.familyName", "contacts[0].familyName")
+				.extractJsonValue("contacts.firstGivenName", "contacts[0].firstGivenName")
+				.extractJsonValue("contacts.mobilePhoneNumber", "contacts[0].mobilePhoneNumber")
+				.extractJsonValue("contacts.dob", "contacts[0].dob")
+				.flush();
+	}
+	
 	public void getAvailableNumber() throws Exception {
 		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance").flush();
 	}
@@ -211,13 +239,27 @@ public class FinstroAPI {
 	public void getLimit() throws Exception {
 		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails[0].limit").flush();
 	}
-
-	public void getProfileDetailInfor() throws Exception {
-		currentUserDetail().then().verifyResponseCode(200).extractJsonValue("firstGivenName", "firstGivenName")
-				.extractJsonValue("familyName", "familyName")
-				.extractJsonValue("emailAddress", "emailAddress")
-				.extractJsonValue("mobilePhoneNumber", "mobilePhoneNumber")
-				.flush();
+	
+	public void getApprovalStatus() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+			.extractJsonValue("idCheckStatus", "idCheckPassed")
+			.extractJsonValue("bankStatementStatus", "bankStatementDone")
+			.extractJsonValue("directDebitAuthorityStatus", "directDebitAuthority.done")
+			.extractJsonValue("creditAssessmentStatus", "creditAssessmentStatus")
+			.flush();
+	}
+	
+	public JSONArray getBankAccountsInfo() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("bankAccounts","bankData.bankAccounts").flush();
+		JSONArray bankAccounts = null;
+		try {
+			 bankAccounts = new JSONArray(Common.getTestVariable("bankAccounts", false));
+		}catch (Exception e) {
+			Log.info("Bank accounts are not submitted");
+			return null;
+		}
+		return bankAccounts;
 	}
 
 }

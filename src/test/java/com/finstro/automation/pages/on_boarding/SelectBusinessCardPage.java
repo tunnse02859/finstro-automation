@@ -63,7 +63,7 @@ public class SelectBusinessCardPage {
     
     
 
-	public void clickOnCard(String money) throws Exception {
+	public BusinessDetailPage clickOnCard(String money) throws Exception {
 		switch (money) {
 		case "500":
 			driver.clickByPosition(card500, "middle");
@@ -87,5 +87,6 @@ public class SelectBusinessCardPage {
 			driver.clickByPosition(card500000, "middle");
 			break;
 		}
+		return new BusinessDetailPage(driver);
 	}
 }

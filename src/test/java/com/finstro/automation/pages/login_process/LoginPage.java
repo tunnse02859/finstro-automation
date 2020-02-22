@@ -84,8 +84,7 @@ public class LoginPage {
 				driver.click(touchID_DontSave);
 			}
 		}
-		assertTrue(new SelectBusinessCardPage(driver).isActive(), "Select Card screen didnt showed after login",
-				"Select Card screen showed after login");
+		//return new SelectBusinessCardPage(driver);
 	}
 
 	public void verifyErrorMessage(String expectedMessage) throws Exception {

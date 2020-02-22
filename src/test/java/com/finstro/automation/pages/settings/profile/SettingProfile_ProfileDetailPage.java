@@ -1,4 +1,4 @@
-package com.finstro.automation.pages.settings;
+package com.finstro.automation.pages.settings.profile;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -19,11 +19,7 @@ public class SettingProfile_ProfileDetailPage {
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'PROFILE DETAILS'")
 	private WebElement title;
 
-	// @AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
-	@iOSXCUITFindBy(accessibility = "email address")
-	private WebElement email;
-
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/first_name_edt")
 	@iOSXCUITFindBy(accessibility = "first name")
 	private WebElement firstName;
 
@@ -31,7 +27,7 @@ public class SettingProfile_ProfileDetailPage {
 	@iOSXCUITFindBy(accessibility = "last name")
 	private WebElement lastName;
 
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/last_name_edt")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/mobile_edt")
 	@iOSXCUITFindBy(accessibility = "mobile number")
 	private WebElement mobileNumber;
 
@@ -43,19 +39,14 @@ public class SettingProfile_ProfileDetailPage {
 	private WebElement backButton;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/email_edt")
-	private WebElement emailElement;
-
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/mobile_edt")
-	private WebElement phone;
+	@iOSXCUITFindBy(accessibility = "email address")
+	private WebElement emailAddress;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/dob_edt")
 	private WebElement dob;
 
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/text1")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_trading_address_spinner")
 	private WebElement residential;
-
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/middle_name_edt")
-	private WebElement middleName;
 
 	public SettingProfile_ProfileDetailPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -66,45 +57,40 @@ public class SettingProfile_ProfileDetailPage {
 		return driver.isElementDisplayed(title);
 	}
 
-	public void editAFieldOnProfileDetailPage(String expectedText, String elementName) throws Exception {
-		switch (elementName) {
-		case "lastName":
-			driver.inputTextWithClear(lastName, expectedText);
-			break;
-		default:
-			break;
-		}
-	}
-
 	public void clickSaveSetting() throws Exception {
 		driver.click(saveButton);
 	}
 
-	public void verifAFieldOnProfileDetailPageSuccesfully(String expectedText, String elementName) throws Exception {
-		String actualValue = null;
-		switch (elementName) {
-		case "lastName":
-			actualValue = driver.getText(lastName);
-			break;
-		default:
-			break;
-		}
-
-		assertEquals(actualValue, expectedText, "lastName is not edited successfully",
-				"lastName is edited successfully");
+	public void verifyProfileInfor(String firstNameString, String lastNameString, String emailAddressString,
+			String mobileNumberString) throws Exception {
+		assertEquals(driver.getText(firstName), firstNameString, "First Name is displayed incorrectly",
+				"First Name is displayed correctly");
+		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly",
+				"Last Name is displayed correctly");
+		assertEquals(driver.getText(emailAddress), emailAddressString, "Email address is displayed incorrectly",
+				"Email address is displayed correctly");
+		assertEquals(driver.getText(mobileNumber), mobileNumberString,
+				"Mobile number is displayed incorrectly", "Mobile number is displayed correctly");
+	}
+	
+	public void inputProfileInfor(String firstNameString, String lastNameString) throws Exception {
+		setFirstName(firstNameString);
+		setLastName(lastNameString);
 	}
 
 	public SettingProfile_DrivingLicensePage toSettingDrivingLicensePage() throws Exception {
 		driver.swipe(DIRECTION.LEFT);
+
+		Thread.sleep(1000);
 		return new SettingProfile_DrivingLicensePage(driver);
 	}
 
 	public String getEmail() throws Exception {
-		return driver.getText(emailElement);
+		return driver.getText(emailAddress);
 	}
 
 	public String getPhoneNumber() throws Exception {
-		return driver.getText(phone);
+		return driver.getText(mobileNumber);
 	}
 
 	public String getFirstName() throws Exception {
@@ -124,11 +110,11 @@ public class SettingProfile_ProfileDetailPage {
 	}
 
 	public void setEmail(String email) throws Exception {
-		driver.inputTextWithClear(emailElement, email);
+		driver.inputTextWithClear(emailAddress, email);
 	}
 
 	public void setPhoneNumber(String phoneValue) throws Exception {
-		driver.inputTextWithClear(phone, phoneValue);
+		driver.inputTextWithClear(mobileNumber, phoneValue);
 	}
 
 	public void setFirstName(String firstname) throws Exception {
@@ -154,3 +140,4 @@ public class SettingProfile_ProfileDetailPage {
 	}
 
 }
+

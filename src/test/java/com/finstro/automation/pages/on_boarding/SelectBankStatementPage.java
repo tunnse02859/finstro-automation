@@ -18,11 +18,11 @@ public class SelectBankStatementPage {
 	private WebElement back;
 	
 	@AndroidFindBy(id = "searchBox")
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTextField[2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name=\"BankStatements - Send Your Bank Statements Now\"`]/*/XCUIElementTypeTextField")
 	private WebElement searchBox;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/bankstatement_title")
-	@iOSXCUITFindBy(iOSNsPredicate = "value = 'Banking Statement'")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Banking Statement'")
 	private WebElement title;
 	
 	
@@ -44,7 +44,8 @@ public class SelectBankStatementPage {
 		driver.inputTextWithClear(searchBox, text);
 	}
 	
-	public void selectBankDemo() throws Exception {
+	public BankStatementDetailPage selectBankDemo() throws Exception {
 		driver.click(bankDemo);
+		return new BankStatementDetailPage(driver);
 	}
 }
