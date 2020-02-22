@@ -36,6 +36,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 	private FinstroAPI finstroAPI;
 	private SettingsPage settingPage;
 	private SettingProfile_ProfileDetailPage settingProfilePage;
+	private SettingProfile_DrivingLicensePage settingProfileDrivingLicencePage;
 
 	class PROFILE_DETAIL {
 
@@ -77,6 +78,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 	public void setupPage(Method method) throws Exception {
 		RegisterPage registerPage = new RegisterPage(driver);
 		LoginPage loginPage = new LoginPage(driver);
+		settingProfileDrivingLicencePage = new SettingProfile_DrivingLicensePage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		// Login
@@ -152,6 +154,10 @@ public class SettingsProfileTest extends MobileTestSetup {
 		profileDetails.put(PROFILE_DETAIL.LAST_NAME, settingProfilePage.getLastName());
 		profileDetails.put(PROFILE_DETAIL.D_O_B, settingProfilePage.getDOB());
 		profileDetails.put(PROFILE_DETAIL.RESIDENTIAL_ADDRESS, settingProfilePage.getResidential());
+		
+		//finstroAPI.getProfileDetailInfor();
+
+		compareDisplayedProfileDetailDataWithAPIResponse();
 
 		try {
 
@@ -183,6 +189,8 @@ public class SettingsProfileTest extends MobileTestSetup {
 
 			// Save Changes
 			settingProfilePage.saveChanges();
+			
+			compareDisplayedProfileDetailDataWithAPIResponse();
 
 		} catch (Exception ex) {
 			throw ex;
@@ -197,14 +205,38 @@ public class SettingsProfileTest extends MobileTestSetup {
 		}
 
 	}
+	
+	private void compareDisplayedProfileDetailDataWithAPIResponse() throws Exception {
+//		String strEmail = settingProfilePage.getEmail();
+//		String strPhoneNumber = settingProfilePage.getPhoneNumber();
+//		String strFirstName = settingProfilePage.getFirstName();
+//		String strLastName = settingProfilePage.getLastName();
+//		String strResidential = settingProfilePage.getResidential();
+//
+//
+//		String resEmail = Common.getTestVariable("gender", true);
+//		assertEquals(strEmail, resEmail, "Email is different", "Email matches");
+//
+//		String resPhoneNumber = Common.getTestVariable("firstname", true);
+//		assertEquals(strPhoneNumber, resPhoneNumber, "PhoneNumber is different", "PhoneNumber matches");
+//
+//		String resFirstName = Common.getTestVariable("surname", true);
+//		assertEquals(strFirstName, resFirstName, "FirstName is different", "FirstName matches");
+//
+//		String resLastName = Common.getTestVariable("middleName", true);
+//		assertEquals(strLastName, resLastName, "LastName is different", "LastName matches");
+//
+//		String resResidential = Common.getTestVariable("state", true);
+//		assertEquals(strResidential, resResidential, "Residential is different", "Residential matches");
+
+	}
 
 	@Test
 	public void SettingProfile_02_VerifyUserCanEditTheDrivingLicenceInformation(String genderValue,
 			String firstNameValue, String lastNameValue, String middleNameValue, String stateValue,
 			String drivingLicenceNumberValue) throws Exception {
 		// Go to the second setting business page
-		SettingProfile_DrivingLicensePage settingProfileDrivingLicencePage = settingProfilePage
-				.toSettingDrivingLicensePage();
+		settingProfileDrivingLicencePage = settingProfilePage.toSettingDrivingLicensePage();
 
 		// Save the business details to set back when test done
 		HashMap<String, String> drivingLicense = new HashMap<>();
@@ -219,30 +251,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 
 		finstroAPI.getDrivingLicenceInfor();
 
-		String strGender = settingProfileDrivingLicencePage.getGender();
-		String strFirstName = settingProfileDrivingLicencePage.getFirstName();
-		String strLastName = settingProfileDrivingLicencePage.getLastName();
-		String strMiddileName = settingProfileDrivingLicencePage.getMiddleName();
-		String strState = settingProfileDrivingLicencePage.getState();
-		String strDrivingNumber = settingProfileDrivingLicencePage.getDriverLicenseNumber();
-
-		String resGender = Common.getTestVariable("gender", true);
-		assertEquals(strGender, resGender, "Gender is different", "gender matches");
-
-		String resFirstName = Common.getTestVariable("firstname", true);
-		assertEquals(strFirstName, resFirstName, "FirstName is different", "FirstName matches");
-
-		String resLastName = Common.getTestVariable("surname", true);
-		assertEquals(strLastName, resLastName, "LastName is different", "LastName matches");
-
-		String resMiddileName = Common.getTestVariable("middleName", true);
-		assertEquals(strMiddileName, resMiddileName, "middleName is different", "middleName matches");
-
-		String resState = Common.getTestVariable("state", true);
-		assertEquals(strState, resState, "State is different", "State matches");
-
-		String resLicenceNumber = Common.getTestVariable("licenceNumber", true);
-		assertEquals(strDrivingNumber, resLicenceNumber, "licenceNumber is different", "licenceNumber matches");
+		compareDisplayedDrivingLicenceDataWithAPIResponse();
 
 		try {
 
@@ -280,6 +289,8 @@ public class SettingsProfileTest extends MobileTestSetup {
 			// Save Changes
 			settingProfileDrivingLicencePage.clickSaveSetting();
 
+			compareDisplayedDrivingLicenceDataWithAPIResponse();
+
 		} catch (Exception ex) {
 			throw ex;
 		} finally {
@@ -296,6 +307,33 @@ public class SettingsProfileTest extends MobileTestSetup {
 			// settingProfilePage.getPopupActionType();
 		}
 
+	}
+
+	private void compareDisplayedDrivingLicenceDataWithAPIResponse() throws Exception {
+		String strGender = settingProfileDrivingLicencePage.getGender();
+		String strFirstName = settingProfileDrivingLicencePage.getFirstName();
+		String strLastName = settingProfileDrivingLicencePage.getLastName();
+		String strMiddileName = settingProfileDrivingLicencePage.getMiddleName();
+		String strState = settingProfileDrivingLicencePage.getState();
+		String strDrivingNumber = settingProfileDrivingLicencePage.getDriverLicenseNumber();
+
+		String resGender = Common.getTestVariable("gender", true);
+		assertEquals(strGender, resGender, "Gender is different", "gender matches");
+
+		String resFirstName = Common.getTestVariable("firstname", true);
+		assertEquals(strFirstName, resFirstName, "FirstName is different", "FirstName matches");
+
+		String resLastName = Common.getTestVariable("surname", true);
+		assertEquals(strLastName, resLastName, "LastName is different", "LastName matches");
+
+		String resMiddileName = Common.getTestVariable("middleName", true);
+		assertEquals(strMiddileName, resMiddileName, "middleName is different", "middleName matches");
+
+		String resState = Common.getTestVariable("state", true);
+		assertEquals(strState, resState, "State is different", "State matches");
+
+		String resLicenceNumber = Common.getTestVariable("licenceNumber", true);
+		assertEquals(strDrivingNumber, resLicenceNumber, "licenceNumber is different", "licenceNumber matches");
 	}
 
 	@Test
