@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +91,10 @@ public class AppiumBaseDriver {
 		throw new NoSuchElementException("Element not found");
 	}
 
+	public List<WebElement> findElements(By locator) {
+		return driver.findElements(locator);
+	}
+	
 	public WebElement findElementIgnoreError(By by) {
 		WebElement element = null;
 		try {
@@ -597,11 +602,11 @@ public class AppiumBaseDriver {
 
 		switch (direction) {
 		case RIGHT:
-			swipe(0.1, 0.5, 0.9, 0.5);
+			swipe(0.2, 0.5, 0.8, 0.5);
 			Log.info("Swipe RIGHT sucessfully");
 			break;
 		case LEFT:
-			swipe(0.9, 0.5, 0.1, 0.5);
+			swipe(0.8, 0.5, 0.2, 0.5);
 			Log.info("Swipe LEFT sucessfully");
 			break;
 		case UP:
@@ -610,7 +615,7 @@ public class AppiumBaseDriver {
 					swipe(0.5, 0.5, 0.5, 0.1);
 				}
 			}else {
-				swipe(0.5, 0.9, 0.5, 0.1);
+				swipe(0.5, 0.8, 0.5, 0.2);
 			}
 			Log.info("Swipe UP sucessfully");
 			break;
@@ -620,7 +625,7 @@ public class AppiumBaseDriver {
 					swipe(0.5, 0.1, 0.5, 0.5);
 				}
 			}else {
-				swipe(0.5, 0.1, 0.5, 0.9);
+				swipe(0.5, 0.2, 0.5, 0.8);
 			}
 			Log.info("Swipe DOWN sucessfully");
 			break;
