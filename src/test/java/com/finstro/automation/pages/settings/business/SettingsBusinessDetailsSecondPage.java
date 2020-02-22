@@ -80,48 +80,46 @@ public class SettingsBusinessDetailsSecondPage {
 
 
 	public String getTypeOfBusiness() throws Exception {
-		return driver.getAttribute(txtBusinessType,"value");
+		return driver.getText(txtBusinessType);
 	}
 
 
 	public String getTradingBusinessName() throws Exception {
-		return driver.getAttribute(txtBusinessName,"value");
+		return driver.getText(txtBusinessName);
 	}
 
 	public String getTradingLegalName() throws Exception {
-		return driver.getAttribute(txtTradingName,"value");
+		return driver.getText(txtTradingName);
 	}
 
 
 	public String getABN() throws Exception {
-		return driver.getAttribute(txtABN,"value");
+		return driver.getText(txtABN);
 	}
 
 
 	public String getACN() throws Exception {
-		driver.getText(txtACN);
-		return driver.getAttribute(txtACN,"value");
+		return driver.getText(txtACN);
 	}
 
-
 	public String getBusinessAddress() throws Exception {
-		return driver.getAttribute(txtBusinessAddress,"value");
+		return driver.getText(txtBusinessAddress);
 	}
 
 	public String getOtherName() throws Exception {
-		return driver.getAttribute(txtOtherName,"value");
+		return driver.getText(txtOtherName);
 	}
 
 	public String getIncorporation() throws Exception {
-		return driver.getAttribute(txtIncorporation,"value");
+		return driver.getText(txtIncorporation);
 	}
 
 	public String getGSTDate() throws Exception {
-		return driver.getAttribute(txtGSTDate,"value");
+		return driver.getText(txtGSTDate);
 	}
 
 	public String getTimeTrading() throws Exception {
-		return driver.getAttribute(txtTimeTrading,"value");
+		return driver.getText(txtTimeTrading);
 	}
 
 	public SettingsBusinessDetailsFirstPage gotoSettingsBusinessDetailsFirstPage() throws Exception {

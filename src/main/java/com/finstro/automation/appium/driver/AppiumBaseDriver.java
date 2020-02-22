@@ -537,6 +537,9 @@ public class AppiumBaseDriver {
 		} catch (NoSuchElementException e) {
 			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
 			return false;
+		} catch(NullPointerException e) {
+			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
+			return false;
 		}
 
 	}
@@ -610,7 +613,7 @@ public class AppiumBaseDriver {
 					swipe(0.5, 0.5, 0.5, 0.1);
 				}
 			}else {
-				swipe(0.5, 0.9, 0.5, 0.1);
+				swipe(0.5, 0.7, 0.5, 0.1);
 			}
 			Log.info("Swipe UP sucessfully");
 			break;
@@ -620,7 +623,7 @@ public class AppiumBaseDriver {
 					swipe(0.5, 0.1, 0.5, 0.5);
 				}
 			}else {
-				swipe(0.5, 0.1, 0.5, 0.9);
+				swipe(0.5, 0.2, 0.5, 0.9);
 			}
 			Log.info("Swipe DOWN sucessfully");
 			break;

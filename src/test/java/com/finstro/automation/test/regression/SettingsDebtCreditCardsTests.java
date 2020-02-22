@@ -103,8 +103,6 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			// Remove card after testing
 			creditCardAPI.removeCardByName(name);
 		}
-		
-		
 	}
 
 }

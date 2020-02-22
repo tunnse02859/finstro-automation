@@ -174,10 +174,6 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		String strABN = settingBusinessDetailsSecondPage.getABN();
 		String strACN = settingBusinessDetailsSecondPage.getACN();
 		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
-		String strOtherName = settingBusinessDetailsSecondPage.getOtherName();
-		String strIncorporation = settingBusinessDetailsSecondPage.getIncorporation();
-		String strGSTDate = settingBusinessDetailsSecondPage.getGSTDate();
-		String strTimeTrading = settingBusinessDetailsSecondPage.getTimeTrading();
 
 		String expectedBusinessTradingAddress = finstroAPI.getBusinessDetailInfor();
 		String resBusinessType = Common.getTestVariable("type", true);
@@ -194,12 +190,6 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 		String resACN = Common.getTestVariable("acn", true);
 		assertEquals(strACN.replace(" ", ""), resACN.replace(" ", ""), "ACN is different", "ACN matches");
-
-		String resGstDate = Common.getTestVariable("gstDate", true);
-		assertEquals(strGSTDate, resGstDate, "GST Date is different", "GST Date matches");
-
-		String resTimeTrading = Common.getTestVariable("timeTrading", true);
-		assertEquals(strTimeTrading, resTimeTrading, "timeTrading is different", "timeTrading matches");
 
 		assertEquals(strBusinessAddr.replace(",", "").trim(), expectedBusinessTradingAddress.trim(),
 				"Address is different", "Address matches");

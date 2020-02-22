@@ -1,7 +1,9 @@
 package com.finstro.automation.api;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.utility.Common;
 import com.finstro.automation.utility.PropertiesLoader;
@@ -212,6 +214,28 @@ public class FinstroAPI {
 	
 	public void getLimit() throws Exception {
 		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails[0].limit").flush();
+	}
+	
+	public void getApprovalStatus() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+			.extractJsonValue("idCheckStatus", "idCheckPassed")
+			.extractJsonValue("bankStatementStatus", "bankStatementDone")
+			.extractJsonValue("directDebitAuthorityStatus", "directDebitAuthority.done")
+			.extractJsonValue("creditAssessmentStatus", "creditAssessmentStatus")
+			.flush();
+	}
+	
+	public JSONArray getBankAccountsInfo() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("bankAccounts","bankData.bankAccounts").flush();
+		JSONArray bankAccounts = null;
+		try {
+			 bankAccounts = new JSONArray(Common.getTestVariable("bankAccounts", false));
+		}catch (Exception e) {
+			Log.info("Bank accounts are not submitted");
+			return null;
+		}
+		return bankAccounts;
 	}
 
 }

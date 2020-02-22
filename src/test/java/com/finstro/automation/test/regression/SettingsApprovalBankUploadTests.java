@@ -1,54 +1,33 @@
 package com.finstro.automation.test.regression;
 
 import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.common.CommonFunction;
 import com.finstro.automation.common.WorkFlows;
-import com.finstro.automation.excelhelper.ExcelHelper;
-import com.finstro.automation.pages.home.MainNavigator;
-import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
-import com.finstro.automation.pages.login_process.LoginPINPage;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
-import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
-import com.finstro.automation.pages.on_boarding.DriverLicensePage;
-import com.finstro.automation.pages.on_boarding.FindAddressPage;
-import com.finstro.automation.pages.on_boarding.FindBusinessPage;
-import com.finstro.automation.pages.on_boarding.MedicarePage;
-import com.finstro.automation.pages.on_boarding.PhotoIDPage;
-import com.finstro.automation.pages.on_boarding.PostalAddressPage;
-import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
-import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingsPage;
+import com.finstro.automation.pages.on_boarding.BankStatementDetailPage;
+import com.finstro.automation.pages.on_boarding.BankStatementRetrieveAccountlPage;
+import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
-import com.finstro.automation.pages.settings.approval.SettingsApprovalIDCheck_ProfileDetailsPage;
-import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
-import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsSecondPage;
-import com.finstro.automation.report.Log;
+import com.finstro.automation.pages.settings.approval.SettingsApproval_BankAccountConnectedPage;
+
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
-import com.finstro.automation.utility.FilePaths;
-import com.finstro.automation.utility.PropertiesLoader;
-import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 
 	private FinstroAPI finstroAPI;
 	private SettingsApprovalBankUploadPage settingsApprovalBankUploadPage;
-	private SettingsApprovalIDCheck_ProfileDetailsPage settingsApprovalIDCheck_ProfileDetailsPage;
 
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
@@ -64,9 +43,6 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 				"Register page showed as default page");
 		// Login
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
-		// Go to the Approval/Bank Upload page
-		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
-
 	}
 
 	@DataProvider(name = "SettingApprove_IdCheck_02")
@@ -74,39 +50,69 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		return new Object[][] { { "auto@finstro.au", "0123456789", "phong", "trinh", "04/03/1989", "vietnam" } };
 
 	}
-
-	@Test(dataProvider = "SettingApprove_IdCheck_02")
-	public void SettingApprove_IdCheck_02(String email, String mobile, String firstname, String lastname,
-			String dob, String residentialAddress) throws Exception {
-
-		// Go to ID check page
-		settingsApprovalIDCheck_ProfileDetailsPage = settingsApprovalBankUploadPage.gotoIDCheckPage();
+	
+	@Test()
+	public void SettingApprove_IDCheck01_DirectDebitAuthority01() throws Exception {
+		//go to bank account connected screen
+		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
 		
-		// Check Email
-		settingsApprovalIDCheck_ProfileDetailsPage.setEmailAddress(email);
-		assertEquals(settingsApprovalIDCheck_ProfileDetailsPage.getEmailAddress(), email,
-				"Email field is not set sucessfully", "Email field is set to " + email);
-
-		// Check Mobile Number
-		settingsApprovalIDCheck_ProfileDetailsPage.setMobileNumber(mobile);
-		assertEquals(settingsApprovalIDCheck_ProfileDetailsPage.getMobileNumber(), mobile, "Mobile field is not set sucessfully",
-				"Mobile field is set to " + mobile);
-
-		// Check First name
-		settingsApprovalIDCheck_ProfileDetailsPage.setFirstName(firstname);
-		assertEquals(settingsApprovalIDCheck_ProfileDetailsPage.getFirstName(), firstname, "firstname field is not set sucessfully",
-				"firstname field is set to " + firstname);
-
-		// Check last name
-		settingsApprovalIDCheck_ProfileDetailsPage.setLastName(lastname);
-		assertEquals(settingsApprovalIDCheck_ProfileDetailsPage.getLastName(), lastname,
-				"lastname field is not set sucessfully", "lastname field is set to " + lastname);
-
-		// Check dob
-		settingsApprovalIDCheck_ProfileDetailsPage.setDOB(dob);;
-		assertEquals(settingsApprovalIDCheck_ProfileDetailsPage.getDOB(), dob, "DOB field is not set sucessfully",
-				"DOB field is set to " + dob);
-
+		//get API and verify status displayed on screen
+		finstroAPI.getApprovalStatus();
+		settingsApprovalBankUploadPage.verifyIDCheckStatusIsPass(Common.getTestVariable("idCheckStatus", true));
+		settingsApprovalBankUploadPage.verifyBankAccountStatusIsPass(Common.getTestVariable("bankStatementStatus", true));
+		settingsApprovalBankUploadPage.verifyDirectDebitStatusIsPass(Common.getTestVariable("directDebitAuthorityStatus", true));
+		settingsApprovalBankUploadPage.verifyCreditAssessmentStatusIsPass(Common.getTestVariable("creditAssessmentStatus", true));
+	}
+	
+	@Test()
+	public void SettingApprove_BankAccountConnected_01() throws Exception {
+		//go to bank account connected screen
+		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
+		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage.gotoBankAccountPage();
+		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
+				"Bank Account Connected screen is displayed");
+		
+		//get bank account infor
+		JSONArray bankAccounts = finstroAPI.getBankAccountsInfo();
+		settingBankAccountConnectedPage.verifyBankAccountDisplayed(bankAccounts);
+	}
+		
+	
+	@Test()
+	public void SettingApprove_BankAccountConnected_02() throws Exception {
+		//go to bank account connected screen
+		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
+		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage.gotoBankAccountPage();
+		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
+				"Bank Account Connected screen is displayed");
+		
+		//Go to bank statement
+		SelectBankStatementPage selectBankStatementPage = settingBankAccountConnectedPage.clickSubmitBankAccount();
+		assertTrue(selectBankStatementPage.isActive(), "Bank Statement screen is not displayed",
+				"Bank Statement screen is displayed");
+		
+		//search for bank demo and select it 
+		selectBankStatementPage.inputSearch("demo");
+		BankStatementDetailPage bankStatementDetailPage = selectBankStatementPage.selectBankDemo();
+		assertTrue(bankStatementDetailPage.isActive(), "Bank Statement login screen is not displayed",
+				"Bank Statement login screen is displayed");
+		
+		//login bank statement and submit
+		bankStatementDetailPage.inputUsername("12345678");
+		bankStatementDetailPage.inputPassword("TestMyMoney");
+		bankStatementDetailPage.acceptTern();
+		BankStatementRetrieveAccountlPage retrievePage =  bankStatementDetailPage.clickSubmit();
+		assertTrue(retrievePage.isActive(), "Retrieve screen is not displayed",
+				"Retrieve screen is displayed");
+		
+		//submit retrieve, verify all done screen displayed and popup displayed
+		retrievePage.clickSubmit();
+		assertTrue(retrievePage.isDone(), "Retrieve All Done screen is not displayed",
+				"Retrieve All Done screen is displayed");
+		Thread.sleep(5000);
+		retrievePage.verifyPopupBankStatementConnected();
+		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
+				"Bank Account Connected screen is displayed");
 	}
 
 }
