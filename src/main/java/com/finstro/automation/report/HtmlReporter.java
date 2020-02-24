@@ -1,5 +1,6 @@
 package com.finstro.automation.report;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -17,10 +18,12 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.finstro.automation.utility.FilePaths;
 
 public class HtmlReporter {
 
 	private static ExtentReports _report;
+	private static Boolean IS_RELATIVE_SCREENSHOT = true;
 
 	private static HashMap<String, ExtentTest> extentTestMap = new HashMap<String, ExtentTest>();
 
@@ -217,7 +220,7 @@ public class HtmlReporter {
 		if (strScreenshotPath.equalsIgnoreCase("")) {
 			getTest().pass(strDescription);
 		} else {
-			strScreenshotPath = "file:///" + strScreenshotPath;
+			strScreenshotPath = getScreenshotPath(strScreenshotPath);
 			getTest().pass(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 		}
 
@@ -257,7 +260,7 @@ public class HtmlReporter {
 		if (strScreenshotPath.equalsIgnoreCase("")) {
 			getTest().fail(strDescription);
 		} else {
-			strScreenshotPath = "file:///" + strScreenshotPath;
+			strScreenshotPath = getScreenshotPath(strScreenshotPath);
 			getTest().fail(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 		}
 
@@ -283,7 +286,7 @@ public class HtmlReporter {
 		if (strScreenshotPath.equalsIgnoreCase("")) {
 			getTest().fail(strDescription).fail(e);
 		} else {
-			strScreenshotPath = "file:///" + strScreenshotPath;
+			strScreenshotPath = getScreenshotPath(strScreenshotPath);
 			getTest().fail(strDescription).fail(e).addScreenCaptureFromPath(strScreenshotPath);
 		}
 		Log.error(strDescription);
@@ -305,7 +308,7 @@ public class HtmlReporter {
 		if (strDescription.equalsIgnoreCase("")) {
 			getTest().skip(strDescription);
 		} else {
-			strScreenshotPath = "file:///" + strScreenshotPath;
+			strScreenshotPath = getScreenshotPath(strScreenshotPath);
 			getTest().skip(strDescription).addScreenCaptureFromPath(strScreenshotPath);
 		}
 
@@ -330,7 +333,7 @@ public class HtmlReporter {
 			if (strDescription.equalsIgnoreCase("")) {
 				getTest().skip(strDescription).skip(e);
 			} else {
-				strScreenshotPath = "file:///" + strScreenshotPath;
+				strScreenshotPath = getScreenshotPath(strScreenshotPath);
 				getTest().skip(strDescription).skip(e).addScreenCaptureFromPath(strScreenshotPath);
 			}
 		
@@ -427,6 +430,15 @@ public class HtmlReporter {
 			getTest().info(MarkupHelper.createCodeBlock(data));
 		} catch (Exception ex) {
 			Log.info("Can't write to htm report, initialize it first");
+		}
+	}
+	
+	private static String getScreenshotPath(String strAbsolutePath) {
+		if(IS_RELATIVE_SCREENSHOT) {
+			return new File(FilePaths.getReportFolder()).toPath().relativize(new File(strAbsolutePath).toPath()).toString();
+		}
+		else {
+			return "file:///" + strAbsolutePath;
 		}
 	}
 

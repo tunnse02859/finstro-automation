@@ -7,6 +7,7 @@ import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -35,6 +36,7 @@ public class LoginTest extends MobileTestSetup {
 	@Test
 	public void FPC_1290_VerifyUserLoginSuccessful() throws Exception {
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		Assert.assertTrue(false);
 	}
 
 	@Test

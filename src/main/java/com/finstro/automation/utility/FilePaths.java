@@ -12,6 +12,8 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
+import com.finstro.automation.report.Log;
+
 
 public class FilePaths {
 	
@@ -36,14 +38,16 @@ public class FilePaths {
 	}
 	
 	public static void initReportFolder() throws IOException {
+		String strScreenshotFolderName = "Screenshots";
+		String strReportFolderName = "Reports";
 		String awsReportRoot = System.getenv("DEVICEFARM_LOG_DIR");
 		if(awsReportRoot != null) {
-			REPORT_FOLDER = awsReportRoot + File.separator + "Reports";
-			SCREENSHOT_FOLDER = REPORT_FOLDER + File.separator + "Screenshots";
+			REPORT_FOLDER = awsReportRoot + File.separator + strReportFolderName;
+			SCREENSHOT_FOLDER = REPORT_FOLDER + File.separator + strScreenshotFolderName + File.separator;
 			REPORT_FILE_PATH = REPORT_FOLDER + File.separator + "Report_" + System.getenv("DEVICEFARM_DEVICE_NAME") + ".html";
 		}else {
-			REPORT_FOLDER = getRootProject() + File.separator + "Reports";
-			SCREENSHOT_FOLDER = REPORT_FOLDER + File.separator + "Screenshots";
+			REPORT_FOLDER = getRootProject() + File.separator + strReportFolderName;
+			SCREENSHOT_FOLDER = REPORT_FOLDER + File.separator + strScreenshotFolderName + File.separator;
 			REPORT_FILE_PATH = REPORT_FOLDER + File.separator + "Report_" + FilePaths.getCurrentDateTimeString("dd-MM-yyyy HHmmss") + ".html";
 		}
 		createDirectory(REPORT_FOLDER);
