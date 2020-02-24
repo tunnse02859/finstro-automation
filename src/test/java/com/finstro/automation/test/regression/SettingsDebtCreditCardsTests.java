@@ -1,53 +1,26 @@
 package com.finstro.automation.test.regression;
 
 import com.finstro.automation.api.CreditCardAPI;
-import com.finstro.automation.api.FinstroAPI;
-import com.finstro.automation.common.CommonFunction;
 import com.finstro.automation.common.WorkFlows;
-import com.finstro.automation.excelhelper.ExcelHelper;
-import com.finstro.automation.pages.home.MainNavigator;
-import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
-import com.finstro.automation.pages.login_process.LoginPINPage;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
-import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
-import com.finstro.automation.pages.on_boarding.DriverLicensePage;
-import com.finstro.automation.pages.on_boarding.FindAddressPage;
-import com.finstro.automation.pages.on_boarding.FindBusinessPage;
-import com.finstro.automation.pages.on_boarding.MedicarePage;
-import com.finstro.automation.pages.on_boarding.PhotoIDPage;
-import com.finstro.automation.pages.on_boarding.PostalAddressPage;
-import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
-import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
-import com.finstro.automation.pages.settings.SettingsPage;
-import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
-import com.finstro.automation.pages.settings.approval.SettingsApprovalIDCheck_ProfileDetailsPage;
-import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
-import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsSecondPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCards_AddNewCardPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCards_DetailCardPage;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
-import com.finstro.automation.utility.Common;
-import com.finstro.automation.utility.FilePaths;
-import com.finstro.automation.utility.PropertiesLoader;
-import com.google.gson.JsonObject;
+
 
 import org.json.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.HashMap;
 
 public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
@@ -71,7 +44,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		// Login
 		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
 		// Go to the debtCreditCardsPage page
-		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		
 
 	}
 
@@ -82,7 +55,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 	@Test(dataProvider = "SettingCardDetail_01")
 	public void SettingCardDetail_01_AddNewCard(String name, String cardNumber, String expiry) throws Exception {
-
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		boolean checkToDelete = false;
 		try {
 			name = name + System.currentTimeMillis();
 			// Is on Add new card page
@@ -95,6 +69,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			debtCreditCardsPage = addCardPage.saveChanges();
+			checkToDelete = true;
 
 			// Verify new card on UI
 			debtCreditCardsPage.isActive();
@@ -105,9 +80,10 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 					"Checking new card by API: ADDED");
 		} finally {
 			// Remove card after testing
-			creditCardAPI.removeCardByName(name);
+			if(checkToDelete)
+				Log.info("---- delete added card ----");
+				creditCardAPI.removeCardByName(name);
 		}
-
 	}
 
 	@DataProvider(name = "SettingCardDetail_02")
@@ -118,7 +94,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 	@Test(dataProvider = "SettingCardDetail_02")
 	public void SettingCardDetail_02_SetDefaultCard(String name, String cardNumber, String expiry) throws Exception {
-
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		boolean checkToDelete = false;
 		/********* Save the original default card *********************/
 		JSONObject originalDefaultCard = creditCardAPI.getDefaultCreditCardInfo();
 
@@ -135,7 +112,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			debtCreditCardsPage = addCardPage.saveChanges();
-
+			checkToDelete = true;
+			
 			// Verify new card on UI
 			debtCreditCardsPage.isActive();
 			assertTrue(debtCreditCardsPage.isCardExisting(name), "Add new card failed", "New card is added");
@@ -154,18 +132,22 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			debtCreditCardsPage = detailCardPage.setDefaultCard();
 
 			// Verify default card on UI
-			debtCreditCardsPage.isActive();
+			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
+					"You're on the Debt/ Credit Cards Page");
 			assertTrue(debtCreditCardsPage.isDefaultCard(name), "Set default card failed", "Set default card ok");
 
 			// Verify default card by API
 			assertTrue(creditCardAPI.isDefaultCard(name), "Checking default card by API: FAILED",
 					"Checking default card by API: PASSED");
 		} finally {
-			// Set the default card to original one
-			creditCardAPI.saveCard(originalDefaultCard);
-			Log.info(originalDefaultCard.toString());
-			// Remove card after testing
-			creditCardAPI.removeCardByName(name);
+			if(checkToDelete) {
+				Log.info("---- delete added card ----");
+				// Set the default card to original one
+				creditCardAPI.saveCard(originalDefaultCard);
+				Log.info(originalDefaultCard.toString());
+				// Remove card after testing
+				creditCardAPI.removeCardByName(name);
+			}
 		}
 	}
 
@@ -177,9 +159,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 	@Test(dataProvider = "SettingCardDetail_03")
 	public void SettingCardDetail_03_DeleteCard(String name, String cardNumber, String expiry) throws Exception {
-
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		try {
-
 			/********* Add a new card as a precondition *********************/
 			name = name + System.currentTimeMillis();
 			addCardPage = debtCreditCardsPage.addNewCard();
@@ -210,7 +191,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			debtCreditCardsPage = detailCardPage.deleteCard();
 
 			// Verify deleted card on UI
-			debtCreditCardsPage.isActive();
+			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
+					"You're on the Debt/ Credit Cards Page");
 			assertTrue(!debtCreditCardsPage.isCardExisting(name), "Card isn't deleted", "Card is deleted");
 
 			// Verify default card by API

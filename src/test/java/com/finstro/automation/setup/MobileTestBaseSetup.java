@@ -19,7 +19,7 @@ import com.finstro.automation.utility.FilePaths;
 public class MobileTestBaseSetup {
 
 	// Web driver
-	public AppiumBaseDriver driver;
+	public static AppiumBaseDriver driver;
 	// hashmap contains device infor like: platform, deviceName, uuid,
 	// browser...... etc
 	public HashMap<String, String> deviceInfo;

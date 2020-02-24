@@ -62,6 +62,10 @@ public class AppiumBaseDriver {
 	public void setDefaultImplicitWaitTime() {
 		driver.manage().timeouts().implicitlyWait(DEFAULT_WAITTIME_SECONDS, TimeUnit.SECONDS);
 	}
+	
+	public void setImplicitWaitTime(int time) {
+		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+	}
 
 	public boolean isIOSDriver() {
 		return driver instanceof IOSDriver<?> ? true : false;

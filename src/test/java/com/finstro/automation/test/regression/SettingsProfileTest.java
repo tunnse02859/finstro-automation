@@ -1,12 +1,12 @@
 package com.finstro.automation.test.regression;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
 import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
 
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.common.WorkFlows;
 import com.finstro.automation.pages.login_process.LoginPage;
@@ -48,16 +48,15 @@ public class SettingsProfileTest extends MobileTestSetup {
 	@Test
 	public void SettingProfile_01_VerifyUserCanEditTheProfileInfomation() throws Exception {
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
-		
-		//verify data on screen with API
+
+		// verify data on screen with API
 		finstroAPI.getProfileDetailInfor();
-		settingProfilePage.verifyProfileInfor(
-				Common.getTestVariable("contacts.firstGivenName", true),
+		settingProfilePage.verifyProfileInfor(Common.getTestVariable("contacts.firstGivenName", true),
 				Common.getTestVariable("contacts.familyName", true),
 				Common.getTestVariable("contacts.emailAddress", true),
 				Common.getTestVariable("contacts.mobilePhoneNumber", true));
-		
-		//Input data
+
+		// Input data
 		settingProfilePage.inputProfileInfor("Phong", "Trinh");
 	}
 
@@ -99,11 +98,11 @@ public class SettingsProfileTest extends MobileTestSetup {
 		finstroAPI.recoveryData().then().verifyResponseCode(200)
 				.verifyJsonNodeEqual("drivingLicence.firstName", "Phong")
 				.verifyJsonNodeEqual("drivingLicence.surname", "Trinh")
-				.verifyJsonNodeEqual("drivingLicence.middleName", "Van").flush();
-		// .verifyJsonNodeEqual("drivingLicence.gender", "M")
+				.verifyJsonNodeEqual("drivingLicence.middleName", "Van")
+				.verifyJsonNodeEqual("drivingLicence.gender", "M")
+				.verifyJsonNodeEqual("drivingLicence.licenceNumber", "0123456789")
+				.verifyJsonNodeEqual("drivingLicence.state", "ACT").flush();
 		// .verifyJsonNodeEqual("drivingLicence.dateOfBirth", "2021/01/01")
-		// .verifyJsonNodeEqual("drivingLicence.licenceNumber", "0123456789")
-		// .verifyJsonNodeEqual("drivingLicence.state", "ACE").flush();
 		// .verifyJsonNodeEqual("drivingLicence.validTo", "08/2020").flush();
 	}
 
@@ -115,8 +114,8 @@ public class SettingsProfileTest extends MobileTestSetup {
 		settingProfileMedicarePage = settingProfileDrivingLicencePage.toSettingMedicarePage();
 		assertTrue(settingProfileMedicarePage.isActive(), "Seting Profile - Medicare screen is not displayed",
 				"Seting Profile - Medicare screen is displayed");
-		
-		//call API and verify data
+
+		// call API and verify data
 		finstroAPI.getMedicareInfor();
 		settingProfileMedicarePage.verifyMedicareInfor(Common.getTestVariable("firstName", true),
 				Common.getTestVariable("middleInitial", true), Common.getTestVariable("surname", true),
@@ -124,9 +123,8 @@ public class SettingsProfileTest extends MobileTestSetup {
 				Common.getTestVariable("dateOfBirth", true), Common.getTestVariable("cardColor", true),
 				Common.getTestVariable("cardNumber", true), Common.getTestVariable("cardNumberRef", true),
 				Common.getTestVariable("validTo", true));
-		
-		
-		//input data
+
+		// input data
 		String firstNameString = "Phong";
 		String middleNameString = "Van";
 		String lastNameString = "Trinh";
@@ -138,19 +136,19 @@ public class SettingsProfileTest extends MobileTestSetup {
 		String expireDateString = "03/2020";
 		settingProfileMedicarePage.inputMedicareInfor(firstNameString, middleNameString, lastNameString, genderName,
 				dobString, cardColor, medicareNumberString, referenceNumberString, expireDateString);
-		
+
 		// click save and verify
 		settingProfileMedicarePage.clickSaveSetting();
 		finstroAPI.recoveryData().then().verifyResponseCode(200)
-			.verifyJsonNodeEqual("medicareCard.identificationId", "null")
-			.verifyJsonNodeEqual("medicareCard.cardNumber", "2684483925")
-			.verifyJsonNodeEqual("medicareCard.cardNumberRef", "1")
-			.verifyJsonNodeEqual("medicareCard.firstName", "Phong")
-			.verifyJsonNodeEqual("medicareCard.middleInitial", "Van")
-			.verifyJsonNodeEqual("medicareCard.surname", "Trinh")
-			//.verifyJsonNodeEqual("medicareCard.dateOfBirth", "1983-02-27")
-			//.verifyJsonNodeEqual("medicareCard.gender", "M")
-			//.verifyJsonNodeEqual("medicareCard.validTo", "2020-03-01")
+				.verifyJsonNodeEqual("medicareCard.identificationId", "null")
+				.verifyJsonNodeEqual("medicareCard.cardNumber", "2684483925")
+				.verifyJsonNodeEqual("medicareCard.cardNumberRef", "1")
+				.verifyJsonNodeEqual("medicareCard.firstName", "Phong")
+				.verifyJsonNodeEqual("medicareCard.middleInitial", "Van")
+				.verifyJsonNodeEqual("medicareCard.surname", "Trinh")
+				// .verifyJsonNodeEqual("medicareCard.dateOfBirth", "1983-02-27")
+				 .verifyJsonNodeEqual("medicareCard.gender", "M")
+				// .verifyJsonNodeEqual("medicareCard.validTo", "2020-03-01")
 				.flush();
 	}
 

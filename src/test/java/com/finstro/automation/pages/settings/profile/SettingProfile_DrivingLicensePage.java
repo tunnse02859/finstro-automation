@@ -80,44 +80,29 @@ public class SettingProfile_DrivingLicensePage {
 	public void inputDriverLicenseInfor(String genderName, String firstNameString, String lastNameString,
 			String middleNameString, String stateName, String dobString, String licenseNumberString,
 			String expireDateString) throws Exception {
-		// setGender(genderName);
+		setGender(genderName);
 		setFirstName(firstNameString);
 		setLastName(lastNameString);
 		setMiddleName(middleNameString);
-		// setState(stateName);
+		setState(stateName);
+		setDriverLicenseNumber(licenseNumberString);
 		// setDoB(dobString);
-		//setDriverLicenseNumber(licenseNumberString);
 		// setExpireDate(expireDateString);
 	}
 
 	public void verifyDriverLicenseInfor(String genderName, String firstNameString, String lastNameString,
 			String middleNameString, String stateName, String dobString, String licenseNumberString,
 			String expireDateString) throws Exception {
-		if (driver.isAndroidDriver()) {
-			assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly",
-					"Gender is displayed correctly");
-			assertEquals(driver.getText(state), stateName, "State is displayed incorrectly",
-					"State is displayed correctly");
-//			assertEquals(driver.getText(expireDate), expireDateString, "expire date is displayed incorrectly",
-//					"expire date is displayed correctly");
-//			assertEquals(driver.getText(dob), dobString, "Date of birth is displayed incorrectly",
-//					"Date of birth is displayed correctly");
-		} else if (driver.isIOSDriver()) {
-			// currently cannot get text of gender, state, dob, expire date
-
-			// assertEquals(driver.getTextSelected(gender), genderName, "Gender is displayed
-			// incorrectly",
-			// "Gender is displayed correctly");
-			// assertEquals(driver.getTextSelected(state), stateName, "State is displayed
-			// incorrectly",
-			// "State is displayed correctly");
-			// assertEquals(driver.getText(expireDate), expireDateString, "expire date is
-			// displayed incorrectly",
-			// "expire date is displayed correctly");
-			// assertEquals(driver.getText(dob), dobString, "Date of birth is displayed
-			// incorrectly",
-			// "Date of birth is displayed correctly");
-		}
+		assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly",
+				"Gender is displayed correctly");
+		assertEquals(driver.getText(state), stateName, "State is displayed incorrectly",
+				"State is displayed correctly");
+		// assertEquals(driver.getText(expireDate), expireDateString, "expire date is
+		// displayed incorrectly",
+		// "expire date is displayed correctly");
+		// assertEquals(driver.getText(dob), dobString, "Date of birth is displayed
+		// incorrectly",
+		// "Date of birth is displayed correctly");
 		assertEquals(driver.getText(firstName), firstNameString, "First Name is displayed incorrectly",
 				"First Name is displayed correctly");
 		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly",
@@ -135,7 +120,7 @@ public class SettingProfile_DrivingLicensePage {
 	public void setGender(String genderValue) throws Exception {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(gender, genderValue);
-		}else {
+		} else {
 			driver.selectPickerWheel(gender, genderValue);
 		}
 	}
@@ -172,6 +157,13 @@ public class SettingProfile_DrivingLicensePage {
 	public void setState(String stateValue) throws Exception {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(state, stateValue);
+		}else {
+			if(stateValue.equalsIgnoreCase("ACT")) {
+				stateValue = "Australian Capital Territory";
+			}else if(stateValue.equalsIgnoreCase("ACT")) {
+				stateValue = "South Australia";
+			}
+			driver.selectPickerWheel(state, stateValue);
 		}
 	}
 

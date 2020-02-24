@@ -77,12 +77,14 @@ public class LoginPage {
 				"Login screen showed after tap on login");
 		login(email, code);
 		if (driver.isIOSDriver()) {
+			driver.setImplicitWaitTime(10);
 			if (driver.isElementDisplayed(savePass_NotNow)) {
 				driver.click(savePass_NotNow);
 			}
 			if (driver.isElementDisplayed(touchID_DontSave)) {
 				driver.click(touchID_DontSave);
 			}
+			driver.setDefaultImplicitWaitTime();
 		}
 		//return new SelectBusinessCardPage(driver);
 	}

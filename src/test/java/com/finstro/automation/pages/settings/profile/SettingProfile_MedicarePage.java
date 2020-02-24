@@ -1,14 +1,10 @@
 package com.finstro.automation.pages.settings.profile;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import static com.finstro.automation.utility.Assertion.*;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
-import com.finstro.automation.appium.driver.AppiumBaseDriver.DIRECTION;
-
-import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -27,7 +23,7 @@ public class SettingProfile_MedicarePage {
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_icon")
 	private WebElement backButton;
-  
+
 	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"au.com.finstro.finstropay:id/driver_licence_gender_spinner\").childSelector(new UiSelector().resourceId(\"android:id/text1\"))")
 	@iOSXCUITFindBy(accessibility = "gender")
 	private WebElement gender;
@@ -72,7 +68,7 @@ public class SettingProfile_MedicarePage {
 	public boolean isActive() throws Exception {
 		return driver.isElementDisplayed(title);
 	}
-  
+
 	public void clickSaveSetting() throws Exception {
 		driver.click(saveButton);
 		Thread.sleep(10000);
@@ -132,7 +128,7 @@ public class SettingProfile_MedicarePage {
 		selectCardColor(cardColor);
 		inputMedicareNumber(medicareNumberString);
 		inputReferenceNumber(referenceNumberString);
-		//selectGender(genderName);
+		selectGender(genderName);
 		// inputDoB(dobString);
 		// inputExpireDate(expireDateString);
 	}
@@ -146,13 +142,12 @@ public class SettingProfile_MedicarePage {
 				"Middle Name is displayed correctly");
 		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly",
 				"Last Name is displayed correctly");
-		// assertEquals(driver.getText(dob), dobString, "Date of birth is displayed
-		// incorrectly", "Date of birth is displayed correctly");
-		assertEquals(driver.getText(medicareNumber).trim().replace(" ", ""), medicareNumberString, "Medicare number is displayed incorrectly",
-				"Medicare number is displayed correctly");
+
+		assertEquals(driver.getText(medicareNumber).trim().replace(" ", ""), medicareNumberString,
+				"Medicare number is displayed incorrectly", "Medicare number is displayed correctly");
 		assertEquals(driver.getText(referenceNumber), referenceNumberString,
 				"Reference number is displayed incorrectly", "Reference number is displayed correctly");
-		
+
 		if (cardColorString.equalsIgnoreCase("G")) {
 			cardColorString = "Green";
 		} else if (cardColorString.equalsIgnoreCase("B")) {
@@ -160,22 +155,16 @@ public class SettingProfile_MedicarePage {
 		} else if (cardColorString.equalsIgnoreCase("Y")) {
 			cardColorString = "Yellow";
 		}
-		if (driver.isAndroidDriver()) {
-//			assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly",
-//					"Gender is displayed correctly");
-			assertEquals(driver.getText(cardColor), cardColorString, "Card color is displayed incorrectly",
-					"Card color is displayed correctly");
-//			assertEquals(driver.getText(expireDate), expireDateString, "expire date is displayed incorrectly",
-//					"expire date is displayed correctly");
-		} else if (driver.isIOSDriver()) {
-//			assertEquals(driver.getTextSelected(gender), genderName, "Gender is displayed incorrectly",
-//					"Gender is displayed correctly");
-//			assertEquals(driver.getTextSelected(cardColor), cardColorString, "Card color is displayed incorrectly",
-//					"Card color is displayed correctly");
-//			assertEquals(driver.getText(expireDate), expireDateString, "expire date is displayed incorrectly",
-//					"expire date is displayed correctly");
-		}
-		
+		assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly",
+				"Gender is displayed correctly");
+		assertEquals(driver.getText(cardColor), cardColorString, "Card color is displayed incorrectly",
+				"Card color is displayed correctly");
+		// assertEquals(driver.getText(expireDate), expireDateString, "expire date is
+		// displayed incorrectly",
+		// "expire date is displayed correctly");
+		// assertEquals(driver.getText(dob), dobString, "Date of birth is displayed
+		// incorrectly", "Date of birth is displayed correctly");
+
 	}
 
 }
