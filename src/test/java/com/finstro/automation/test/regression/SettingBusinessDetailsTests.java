@@ -43,7 +43,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 	@DataProvider(name = "SettingBusinessDetail_01")
 	public Object[][] SettingBusinessDetail_01() {
-		return new Object[][] { { "Other Services", "erick@finstro.au", "+61433673183", "http://finctro.com",
+		return new Object[][] { { "Mining", "erick@finstro.au", "+61433673183", "http://finctro.com",
 				"http://facebook.com/myfacebook", "http://twitter.com/mytwitter", "http://instagram.com/myinsta",
 				"phong.trinh", "http://linkedin.com/abc", "just auto test" } };
 
