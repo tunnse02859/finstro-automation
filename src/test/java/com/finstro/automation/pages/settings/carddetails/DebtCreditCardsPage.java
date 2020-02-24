@@ -57,23 +57,10 @@ public class DebtCreditCardsPage {
 		return driver.isElementDisplayed(textTitle);
 	}
 
-	public void scrollUntillViewCard(String strNameOnCard) {
-		if (driver.isAndroidDriver()) {
-			String locator = String.format(
-					"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/name_edt\").text(\"%s\"))",
-					strNameOnCard);
-			By cardName = MobileBy.AndroidUIAutomator(locator);
-			driver.getDriver().findElement(cardName);
-		}
-		// Need to implement for IOS
-		else {
-
-		}
-	}
 
 	public WebElement findCard(String strNameOnCard) throws Exception {
 
-		scrollUntillViewCard(strNameOnCard);
+		driver.scrollUntillViewText(strNameOnCard);
 		WebElement element = cardList.stream()
 				.filter(e -> e.findElement(getCardNameElement()).getText().contains(strNameOnCard)).findAny()
 				.orElse(null);

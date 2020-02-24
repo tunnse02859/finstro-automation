@@ -74,6 +74,23 @@ public class AppiumBaseDriver {
 	public boolean isAndroidDriver() {
 		return driver instanceof AndroidDriver<?> ? true : false;
 	}
+	
+	public void scrollUntillViewText(String text) {
+		if (isAndroidDriver()) {
+			String locator = String.format(
+					"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\"%s\"))",
+					text);
+			By by = MobileBy.AndroidUIAutomator(locator);
+			driver.findElement(by);
+		}
+		// For IOS
+		else {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+	        HashMap<String, String> scrollObject = new HashMap<>();
+	        scrollObject.put("predicateString", "value == '" + text + "'");
+	        js.executeScript("mobile: scroll", scrollObject);
+		}
+	}
 
 	public WebElement findElement(WebElement element) {
 
