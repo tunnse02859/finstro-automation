@@ -34,11 +34,6 @@ public class FinstroCardTest extends MobileTestSetup {
 	public void setupAccessTosken() throws Exception {
 		finstroAPI = new FinstroAPI();
 		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
-		finstroAPI.getBalanceNumber();
-		finstroAPI.getAvailableNumber();
-		finstroAPI.getNextBillAmount();
-		finstroAPI.getLimit();
-
 	}
 
 	@BeforeMethod

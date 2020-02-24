@@ -101,29 +101,30 @@ public class SettingsBusinessDetailsFirstPage {
 	public void verifyDisplayedData(String emailString, String mobileString, String websiteString,
 			String facebookString, String twitterString, String instagramString, String skypeString,
 			String linkedString, String otherString) throws Exception {
-		
-		assertEquals(getEmail(), emailString, "Email is displayed incorrectly",
-				"Email is displayed correctly");
+
+		// assertEquals(getEmail(), emailString, "Email is displayed incorrectly",
+		// "Email is displayed correctly");
 		assertEquals(getMobileNumber(), mobileString, "Mobile number is displayed incorrectly",
 				"Mobile number is displayed correctly");
 		assertEquals(getWebsiteAddress(), websiteString, "Website Address is displayed incorrectly",
 				"Website Address is displayed correctly");
 		assertEquals(getFacebook(), facebookString, "Facebook is displayed incorrectly",
 				"Facebook is displayed correctly");
-		assertEquals(getTwitter(), twitterString, "Twitter is displayed incorrectly",
-				"Twitter is displayed correctly");
+		assertEquals(getTwitter(), twitterString, "Twitter is displayed incorrectly", "Twitter is displayed correctly");
 		assertEquals(getInstagram(), instagramString, "Instagram is displayed incorrectly",
 				"Instagram is displayed correctly");
-		assertEquals(getSkype(), skypeString, "Skype is displayed incorrectly",
-				"Skype is displayed correctly");
+		assertEquals(getSkype(), skypeString, "Skype is displayed incorrectly", "Skype is displayed correctly");
 		assertEquals(getLinkedin(), linkedString, "LinkedIn is displayed incorrectly",
 				"LinkedIn is displayed correctly");
-		assertEquals(getOther(), otherString, "Other is displayed incorrectly",
-				"Other is displayed correctly");
+		assertEquals(getOther(), otherString, "Other is displayed incorrectly", "Other is displayed correctly");
 	}
 
 	public void setCategoryOfBusiness(String category) throws Exception {
-		driver.selectItemFromSpinner(ddlCategory, category);
+		if (driver.isAndroidDriver()) {
+			driver.selectItemFromSpinner(ddlCategory, category);
+		}else {
+			driver.selectPickerWheel(ddlCategory, category);
+		}
 	}
 
 	public String getCategoryOfBusiness() throws Exception {

@@ -13,7 +13,7 @@ public class HomeNextBillPage {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/settings_title")
-	@iOSXCUITFindBy(iOSNsPredicate="name = 'YOUR NEXT BILL'")
+	@iOSXCUITFindBy(iOSNsPredicate="name ENDSWITH 'BILL'")
 	private WebElement title;
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTable/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[2]")

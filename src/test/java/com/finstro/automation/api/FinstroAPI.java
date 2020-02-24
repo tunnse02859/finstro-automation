@@ -224,22 +224,15 @@ public class FinstroAPI {
 				.flush();
 	}
 	
-	public void getAvailableNumber() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance").flush();
+	public void getHomePageValues() throws Exception {
+		recoveryData().then().verifyResponseCode(200)
+			.extractJsonValue("availableBalance", "availableBalance")
+			.extractJsonValue("balance", "balance")
+			.extractJsonValue("nextBillAmount", "nextBillAmount")
+			.extractJsonValue("limit", "creditCardDetails[0].limit")
+		.flush();
 	}
 
-	public void getBalanceNumber() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("balance", "balance").flush();
-	}
-
-	public void getNextBillAmount() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("nextBillAmount", "nextBillAmount").flush();
-	}
-
-	public void getLimit() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("limit", "creditCardDetails[0].limit").flush();
-	}
-	
 	public void getApprovalStatus() throws Exception {
 		recoveryData().then().verifyResponseCode(200)
 			.extractJsonValue("idCheckStatus", "idCheckPassed")

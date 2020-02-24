@@ -7,11 +7,13 @@ import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class HomeYearlyViewPage {
 	private AppiumBaseDriver driver;
 
     @AndroidFindBy(id="au.com.finstro.finstropay:id/settings_title")
+    @iOSXCUITFindBy(iOSNsPredicate = "name = 'Statements'")
     private WebElement title;
 
     public HomeYearlyViewPage(AppiumBaseDriver driver){

@@ -21,11 +21,11 @@ public class HomePage {
 	private WebElement cardTab;
 
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[1]")
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][1]/XCUIElementTypeStaticText[2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][2]/XCUIElementTypeStaticText[2]")
 	private WebElement yourNextBill;
 
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[2]")
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][2]/XCUIElementTypeStaticText[2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[`name=\"fund\"`][1]/XCUIElementTypeStaticText[2]")
 	private WebElement balance;
 
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[3]")
@@ -39,9 +39,11 @@ public class HomePage {
 	private WebElement limitAmount;
 
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[1]//android.widget.LinearLayout//android.widget.TextView[2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[2]/XCUIElementTypeStaticText[2]")
 	private WebElement nextBillAmount;
 
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"au.com.finstro.finstropay:id/home_menu_lv\"]//android.widget.RelativeLayout[2]//android.widget.LinearLayout//android.widget.TextView[2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[2]")
 	private WebElement balanceAmount;
 
 	public HomePage(AppiumBaseDriver driver) {
@@ -60,7 +62,6 @@ public class HomePage {
 
 	public void goToBalanceScreen() throws Exception {
 		driver.clickByPosition(balance, "middle");
-		driver.click(balance);
 	}
 
 	public void goToYearlyViewScreen() throws Exception {

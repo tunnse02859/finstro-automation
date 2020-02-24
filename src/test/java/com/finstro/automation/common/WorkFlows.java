@@ -3,6 +3,7 @@ package com.finstro.automation.common;
 import static com.finstro.automation.utility.Assertion.assertTrue;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.home.HomePage;
 import com.finstro.automation.pages.home.MainNavigator;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
 import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
@@ -63,7 +64,13 @@ public class WorkFlows {
 		assertTrue(navigator.isActive(), "You're not on the Navigator", "You're on the Navigator");
 
 		return navigator;
+	}
 
+	public static HomePage goToHomePage(AppiumBaseDriver driver) throws Exception {
+		if (driver.isAndroidDriver()) {
+			 goToTheMainPage(driver);
+		}
+		return new HomePage(driver);
 	}
 
 	public static SettingsPage goToTheSettingsPage(AppiumBaseDriver driver) throws Exception {
@@ -103,7 +110,7 @@ public class WorkFlows {
 
 		return settingBusinessDetailsFirstPage;
 	}
-	
+
 	public static SettingsApprovalBankUploadPage goToApprovalBankUploadPage(AppiumBaseDriver driver) throws Exception {
 
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
@@ -115,7 +122,7 @@ public class WorkFlows {
 
 		return settingsApprovalBankUploadPage;
 	}
-	
+
 	public static DebtCreditCardsPage goToDebtCreditCardsPage(AppiumBaseDriver driver) throws Exception {
 
 		SettingsPage settingsPage = goToTheSettingsPage(driver);

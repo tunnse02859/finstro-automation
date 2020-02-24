@@ -43,8 +43,9 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 	@DataProvider(name = "SettingBusinessDetail_01")
 	public Object[][] SettingBusinessDetail_01() {
-		return new Object[][] { { "Other Services", "erick@finstro.au", "+61433673183", "http://finctro.com", "http://facebook.com/myfacebook",
-				"http://twitter.com/mytwitter", "http://instagram.com/myinsta", "phong.trinh", "http://linkedin.com/abc", "just auto test" } };
+		return new Object[][] { { "Other Services", "erick@finstro.au", "+61433673183", "http://finctro.com",
+				"http://facebook.com/myfacebook", "http://twitter.com/mytwitter", "http://instagram.com/myinsta",
+				"phong.trinh", "http://linkedin.com/abc", "just auto test" } };
 
 	}
 
@@ -62,9 +63,9 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 				Common.getTestVariable("instagram", true), Common.getTestVariable("skype", true),
 				Common.getTestVariable("linkedin", true), Common.getTestVariable("other", true));
 		// Check Category of Business
-		//settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
+		settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
 		// Check Email
-		settingBusinessDetailsFirstPage.setEmail(email);
+		// settingBusinessDetailsFirstPage.setEmail(email);
 		// Check Phone number
 		settingBusinessDetailsFirstPage.setMobileNumber(mobile);
 		// Check Website address
@@ -92,7 +93,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 			assertEquals(popupAction, "SUCCESS", "Save failed " + popupAction, "Save business details success");
 		}
 		Thread.sleep(10000);
-		finstroAPI.recoveryData().then().verifyResponseCode(200).verifyJsonNodeEqual("businessDetails.email", email)
+		finstroAPI.recoveryData().then().verifyResponseCode(200)
 				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
 				.verifyJsonNodeEqual("businessDetails.website", website)
 				.verifyJsonNodeEqual("businessDetails.facebook", facebook)

@@ -42,6 +42,7 @@ public class SelectBankStatementPage {
 	
 	public void inputSearch(String text) throws Exception {
 		driver.inputTextWithClear(searchBox, text);
+		driver.wait(5);
 	}
 	
 	public BankStatementDetailPage selectBankDemo() throws Exception {

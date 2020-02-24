@@ -719,9 +719,9 @@ public class AppiumBaseDriver {
 			if (driver != null) {
 				File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 				String screenShotDirector = FilePaths.getScreenshotFolder();
-				FileUtils.copyFile(scrFile, new File(screenShotDirector + failureImageFileName));
-
-				return screenShotDirector + failureImageFileName;
+				FileUtils.copyFile(scrFile, new File(screenShotDirector + File.separator + failureImageFileName));
+				
+				return screenShotDirector + File.separator + failureImageFileName;
 			}
 		} catch (Exception e) {
 			throw e;
