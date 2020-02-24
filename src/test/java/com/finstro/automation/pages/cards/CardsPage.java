@@ -11,6 +11,17 @@ import org.openqa.selenium.support.PageFactory;
 public class CardsPage {
 
 	private AppiumBaseDriver driver;
+	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/cards_title")
+	private WebElement title;
+	
+	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/activate_card")
+	private WebElement inactiveCard;
+	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/finstro_card_front")
+	private WebElement activeCard;
+	
 
 
 	public CardsPage(AppiumBaseDriver driver) {
@@ -19,6 +30,14 @@ public class CardsPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return false;
+		return driver.isElementDisplayed(title);
+	}
+	
+	public void activeCard() throws Exception {
+		driver.click(inactiveCard);
+	}
+	
+	public boolean verifyCardActive() throws Exception {
+		return driver.isElementDisplayed(activeCard);
 	}
 }

@@ -27,6 +27,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 	private SettingProfile_DrivingLicensePage settingProfileDrivingLicencePage;
 	private SettingProfile_MedicarePage settingProfileMedicarePage;
 
+
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		finstroAPI = new FinstroAPI();
@@ -37,6 +38,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 	public void setupPage(Method method) throws Exception {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
+		
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 
@@ -46,6 +48,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 	}
 
 	@Test
+
 	public void SettingProfile_01_VerifyUserCanEditTheProfileInfomation() throws Exception {
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
 
@@ -58,11 +61,13 @@ public class SettingsProfileTest extends MobileTestSetup {
 
 		// Input data
 		settingProfilePage.inputProfileInfor("Phong", "Trinh");
-	}
 
+	}
+	
 	@Test
 	public void SettingProfile_02_VerifyUserCanEditTheDrivingLicenceInformation() throws Exception {
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
+
 
 		// Go to the second setting driving license page
 		settingProfileDrivingLicencePage = settingProfilePage.toSettingDrivingLicensePage();
@@ -72,6 +77,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 
 		// verify data displayed on screen with API
 		finstroAPI.getDrivingLicenceInfor();
+
 		settingProfileDrivingLicencePage.verifyDriverLicenseInfor(
 				Common.getTestVariable("gender", true).equalsIgnoreCase("M") ? "Male" : "Female",
 				Common.getTestVariable("firstName", true), Common.getTestVariable("surname", true),
@@ -104,6 +110,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 				.verifyJsonNodeEqual("drivingLicence.state", "ACT").flush();
 		// .verifyJsonNodeEqual("drivingLicence.dateOfBirth", "2021/01/01")
 		// .verifyJsonNodeEqual("drivingLicence.validTo", "08/2020").flush();
+
 	}
 
 	@Test
