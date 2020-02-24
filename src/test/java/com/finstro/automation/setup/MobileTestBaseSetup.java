@@ -77,6 +77,8 @@ public class MobileTestBaseSetup {
 
 	@AfterSuite(alwaysRun = true)
 	public void afterSuite() throws Exception {
+		HtmlReporter.setSystemInfo("Platform", driver.getDriver().getCapabilities().getPlatform().toString());
+		HtmlReporter.setSystemInfo("Platform Version", driver.getDriver().getCapabilities().getVersion());
 		HtmlReporter.flush();
 		driver.closeDriver();
 	}

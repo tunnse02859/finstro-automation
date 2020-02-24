@@ -71,6 +71,10 @@ public class HtmlReporter {
 
 		return report;
 	}
+	
+	public static void setSystemInfo(String key, String value) {
+		_report.setSystemInfo(key, value);
+	}
 
 	/**
 	 * Write report
