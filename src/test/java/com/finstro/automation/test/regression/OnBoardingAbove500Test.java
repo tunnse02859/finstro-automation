@@ -179,7 +179,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		// go to residential address screen
 		selectBusinessCardPage.clickOnCard("1000");
 		businessDetailPage.clickNext();
-		// Thread.sleep(10000);
 		assertTrue(residentialAddressPage.isActive(), "Residential address screen is not displayed",
 				"Residential address screen is displayed");
 		String savedResidentialAddress = finstroAPI.getResidentialAddress();
@@ -216,7 +215,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		selectBusinessCardPage.clickOnCard("1000");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
-		Thread.sleep(10000);
 		photoIDPage.clickNext();
 		assertTrue(drivingLisencePage.isActive(), "Driver License screen is not  displayed after click on next",
 				"Driver License screen is displayed after click on next");
@@ -255,7 +253,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		selectBusinessCardPage.clickOnCard("1000");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
-		Thread.sleep(10000);
 		photoIDPage.clickNext();
 		drivingLisencePage.clickMedicare();
 		assertTrue(medicarePage.isActive(), "Medicare screen is not  displayed ", "Medicare screen is displayed");
@@ -297,7 +294,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		selectBusinessCardPage.clickOnCard("1000");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
-		Thread.sleep(10000);
 		photoIDPage.clickNext();
 		drivingLisencePage.clickNext();
 
@@ -344,7 +340,6 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 		selectBusinessCardPage.clickOnCard("1000");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
-		Thread.sleep(10000);
 		photoIDPage.clickNext();
 		drivingLisencePage.clickNext();
 		postalAddressPage.clickNext();

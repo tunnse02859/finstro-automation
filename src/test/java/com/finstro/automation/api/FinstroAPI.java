@@ -198,7 +198,8 @@ public class FinstroAPI {
 				.extractJsonValue("dateOfBirth", "drivingLicence.dateOfBirth")
 				.extractJsonValue("licenceNumber", "drivingLicence.licenceNumber")
 				.extractJsonValue("state", "drivingLicence.state").extractJsonValue("validTo", "drivingLicence.validTo")
-				.flush();
+				.extractJsonValue("driverLicenseJson", "drivingLicence")
+			.flush();
 	}
 
 	public void getMedicareInfor() throws Exception {
@@ -211,6 +212,7 @@ public class FinstroAPI {
 				.extractJsonValue("identificationId", "medicareCard.identificationId")
 				.extractJsonValue("middleInitial", "medicareCard.middleInitial")
 				.extractJsonValue("surname", "medicareCard.surname").extractJsonValue("validTo", "medicareCard.validTo")
+				.extractJsonValue("medicareJson", "medicareCard")
 				.flush();
 	}
 

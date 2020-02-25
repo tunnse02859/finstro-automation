@@ -2,19 +2,14 @@ package com.finstro.automation.pages.settings.approval;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
-import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
-import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
-import com.finstro.automation.utility.Assertion;
 import static com.finstro.automation.utility.Assertion.*;
 
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 

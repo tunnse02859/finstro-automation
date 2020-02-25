@@ -3,7 +3,6 @@ package com.finstro.automation.pages.on_boarding;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;

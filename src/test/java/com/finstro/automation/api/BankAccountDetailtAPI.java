@@ -12,9 +12,7 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 	private String saveAccountEndpoint = "/api/CreditApplication/SaveBankDetails";
 
 	public JSONArray getBankDetailInfo() throws Exception {
-		recoveryData().then().verifyResponseCode(200)
-				.extractJsonValue("bankDetails", "bankDetails")
-				.flush();
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("bankDetails", "bankDetails").flush();
 		JSONArray bankDetails = new JSONArray(Common.getTestVariable("bankDetails", true));
 		return bankDetails;
 	}
@@ -63,14 +61,16 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 		Thread.sleep(5000);
 		if (account != null) {
 			new APIRequest().baseUrl(Constant.API_HOST).path(removeAccountEndpoint)
-					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post().flush();
+					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post()
+					.then().verifyResponseCode(200).flush();
 		}
 	}
 
 	public void saveCard(JSONObject card) throws Exception {
 		Thread.sleep(5000);
 		new APIRequest().baseUrl(Constant.API_HOST).path(saveAccountEndpoint)
-				.addHeader("Content-Type", "application/json").oauth2(accessToken).body(card.toString()).post();
+				.addHeader("Content-Type", "application/json").oauth2(accessToken).body(card.toString()).post().then()
+				.verifyResponseCode(200).flush();
 
 	}
 

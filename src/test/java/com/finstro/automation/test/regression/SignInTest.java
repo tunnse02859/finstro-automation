@@ -1,7 +1,5 @@
 package com.finstro.automation.test.regression;
 
-import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
-import com.finstro.automation.pages.login_process.LoginPINPage;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.setup.Constant;
