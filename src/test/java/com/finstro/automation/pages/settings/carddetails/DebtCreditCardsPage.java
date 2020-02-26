@@ -54,7 +54,7 @@ public class DebtCreditCardsPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.isElementDisplayed(textTitle);
+		return driver.isElementDisplayed(btnAddNewCard);
 	}
 
 

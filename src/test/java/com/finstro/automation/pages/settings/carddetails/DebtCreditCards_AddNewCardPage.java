@@ -48,10 +48,7 @@ public class DebtCreditCards_AddNewCardPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.isElementDisplayed(txtCardName) &&
-				driver.isElementDisplayed(txtCardNumber) &&
-				driver.isElementDisplayed(btnScanCard) &&
-				driver.isElementDisplayed(btnSaveSettings);
+		return driver.isElementDisplayed(btnScanCard);
 	}
 	
 	public void setCardName(String strNameOnCard) throws Exception {
@@ -72,7 +69,7 @@ public class DebtCreditCards_AddNewCardPage {
 	
 	public DebtCreditCardsPage saveChanges() throws Exception {
 		driver.click(btnSaveSettings);
-		driver.wait(15);
+		driver.wait(20);
 		return new DebtCreditCardsPage(driver);
 	}
 	

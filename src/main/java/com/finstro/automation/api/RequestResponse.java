@@ -37,7 +37,10 @@ public class RequestResponse {
 
 	private void convertResponseBodyToJsonObject() {
 		try {
-			if(responseBody.charAt(0) == '[' ) {
+			if(responseBody == null || responseBody.equals("")) {
+				responseBodyJson = null;
+			}
+			else if(responseBody.charAt(0) == '[' ) {
 				responseBodyJson = new JSONArray(responseBody);
 			}else {
 				responseBodyJson = new JSONObject(responseBody);

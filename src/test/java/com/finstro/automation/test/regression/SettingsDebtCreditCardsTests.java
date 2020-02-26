@@ -72,7 +72,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			checkToDelete = true;
 
 			// Verify new card on UI
-			debtCreditCardsPage.isActive();
+			assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after save",
+					"Debit/credit card is displayed after save");
 			assertTrue(debtCreditCardsPage.isCardExisting(name), "Add new card failed", "New card is added");
 
 			// Verify new card by API
@@ -80,9 +81,10 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 					"Checking new card by API: ADDED");
 		} finally {
 			// Remove card after testing
-			if(checkToDelete)
+			if (checkToDelete) {
 				Log.info("---- delete added card ----");
 				creditCardAPI.removeCardByName(name);
+			}
 		}
 	}
 
@@ -200,8 +202,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 					"Verify the deleted card by API: PASSED");
 		} finally {
 			// Remove card after testing
-			if(creditCardAPI.getCreditCardInfoByName(name) != null)
-				creditCardAPI.removeCardByName(name);
+			creditCardAPI.removeCardByName(name);
 		}
 
 	}

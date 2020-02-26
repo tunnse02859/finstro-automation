@@ -43,10 +43,10 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 
 	@BeforeMethod
 	public void beforeMethod(Method method) throws Exception {
+		super.beforeMethod(method);
 		Log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		Log.info("+++++++++ Start testing: " + method.getName() + " ++++++++++++++");
 		Log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		super.beforeMethod(method);
 		if(driver.isIOSDriver()) {
 			new RegisterPage(driver).dontAllowNotification();
 		}

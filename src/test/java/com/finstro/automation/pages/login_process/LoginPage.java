@@ -1,6 +1,7 @@
 package com.finstro.automation.pages.login_process;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.home.HomePage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -86,7 +87,15 @@ public class LoginPage {
 			}
 			driver.setDefaultImplicitWaitTime();
 		}
-		//return new SelectBusinessCardPage(driver);
+		if (driver.isAndroidDriver()) {
+			assertTrue(new SelectBusinessCardPage(driver).isActive(),
+					"Login unsuccessfully, Select card screen is not displayed",
+					"Login successfully, Select card screen is displayed");
+		} else {
+			assertTrue(new HomePage(driver).isActive(), "Login unsuccessfully, Home screen is not displayed",
+					"Login successfully, Home screen is displayed");
+		}
+		// return new SelectBusinessCardPage(driver);
 	}
 
 	public void verifyErrorMessage(String expectedMessage) throws Exception {
@@ -96,6 +105,7 @@ public class LoginPage {
 		} else {
 			actualMessage = driver.getText(errorMessage);
 		}
-		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly", "Error message is displayed correctly");
+		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly",
+				"Error message is displayed correctly");
 	}
 }

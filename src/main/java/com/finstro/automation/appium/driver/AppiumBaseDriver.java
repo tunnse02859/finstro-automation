@@ -87,7 +87,8 @@ public class AppiumBaseDriver {
 		else {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 	        HashMap<String, String> scrollObject = new HashMap<>();
-	        scrollObject.put("predicateString", "value == '" + text + "'");
+	        scrollObject.put("predicateString", "value CONTAINS '" + text + "'");
+	        scrollObject.put("direction", "down");
 	        js.executeScript("mobile: scroll", scrollObject);
 		}
 	}

@@ -42,7 +42,7 @@ public class MobileTestBaseSetup {
 		HtmlReporter.createNode(this.getClass().getSimpleName(), method.getName(), "");
 	}
 
-	@AfterMethod
+	@AfterMethod(alwaysRun = true)
 	public void afterMethod(ITestResult result) throws Exception {
 		String mess = "";
 		try {

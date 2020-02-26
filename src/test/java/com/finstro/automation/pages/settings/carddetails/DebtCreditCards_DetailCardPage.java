@@ -63,7 +63,7 @@ public class DebtCreditCards_DetailCardPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.isElementDisplayed(textTitle);
+		return driver.isElementDisplayed(btnDefault);
 	}
 	
 	public void changeCardName(String strNameOnCard) throws Exception {
@@ -84,14 +84,14 @@ public class DebtCreditCards_DetailCardPage {
 	
 	public DebtCreditCardsPage setDefaultCard() throws Exception {
 		driver.click(btnDefault);
-		driver.wait(15);
+		driver.wait(20);
 		return new DebtCreditCardsPage(driver);
 	}
 	
 	public DebtCreditCardsPage deleteCard() throws Exception {
 		driver.click(btnDelete);
 		driver.click(btnOk);
-		driver.wait(15);
+		driver.wait(20);
 		return new DebtCreditCardsPage(driver);
 	}
 	

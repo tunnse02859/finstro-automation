@@ -38,7 +38,7 @@ public class RegisterPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.waitForElementDisplayed(agreement, 15);
+		return driver.isElementDisplayed(agreement);
 	}
 
 	public void allowNotification() throws Exception {
