@@ -46,8 +46,11 @@ public class LoginPage {
 	@iOSXCUITFindBy(accessibility = "Maybe Later")
 	private WebElement touchID_DontSave;
 
-	@iOSXCUITFindBy(accessibility = "Not Now")
-	private WebElement savePass_NotNow;
+	@iOSXCUITFindBy(accessibility = "Yes")
+	private WebElement touchID_Yes;
+	
+	@iOSXCUITFindBy(accessibility = "Save Password")
+	private WebElement savePassword;
 
 	public LoginPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -70,6 +73,7 @@ public class LoginPage {
 		driver.inputTextWithClear(emailAddress, email);
 		driver.inputTextWithClear(accessCode, code);
 		driver.click(submit);
+		driver.dismissAlert();
 	}
 
 	public void doSuccessLogin(String email, String code) throws Exception {
@@ -78,14 +82,12 @@ public class LoginPage {
 				"Login screen showed after tap on login");
 		login(email, code);
 		if (driver.isIOSDriver()) {
-			driver.setImplicitWaitTime(10);
-			if (driver.isElementDisplayed(savePass_NotNow)) {
-				driver.click(savePass_NotNow);
-			}
+//			if (driver.isElementDisplayed(savePassword)) {
+//				driver.click(savePassword);
+//			}
 			if (driver.isElementDisplayed(touchID_DontSave)) {
 				driver.click(touchID_DontSave);
 			}
-			driver.setDefaultImplicitWaitTime();
 		}
 		if (driver.isAndroidDriver()) {
 			assertTrue(new SelectBusinessCardPage(driver).isActive(),

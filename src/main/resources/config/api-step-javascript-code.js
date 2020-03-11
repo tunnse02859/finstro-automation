@@ -22,5 +22,4 @@ function openBlock(evt, blockName) {
     block[i].style.display = "block";
 	block[i].className += " active";
   }
-
 }

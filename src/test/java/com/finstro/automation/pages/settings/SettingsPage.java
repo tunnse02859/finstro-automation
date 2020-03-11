@@ -22,47 +22,47 @@ public class SettingsPage {
 	private WebElement textTitle;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Business Details\")")
-	@iOSXCUITFindBy(accessibility = "settings_business")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Business Details'")
 	private WebElement nvgBusinessDetails;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Profile Details\")")
-	@iOSXCUITFindBy(accessibility = "settings_profile")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Profile Details'")
 	private WebElement nvgProfileDetails;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Approval/Bank Upload\")")
-	@iOSXCUITFindBy(accessibility = "settings_approved")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Approval/Bank Upload\\'")
 	private WebElement nvgApproveBankUpload;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Bank Account Details\")")
-	@iOSXCUITFindBy(accessibility = "settings_bank_account")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Bank Account Details'")
 	private WebElement nvgBankAccountDetails;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Credit/Debt Card Details\")")
-	@iOSXCUITFindBy(accessibility = "settings_credit_debit")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Debit Card Details'")
 	private WebElement nvgCardDetails;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Global Payment Date\")")
-	@iOSXCUITFindBy(accessibility = "settings_global_pay_date")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Global Payment Date'")
 	private WebElement nvgGlobalPaymentDate;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Contact Finstro\")")
-	@iOSXCUITFindBy(accessibility = "settings_contact")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Contact Finstro'")
 	private WebElement nvgContactFinstro;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Finstro Card - PIN\")")
-	@iOSXCUITFindBy(accessibility = "settings_finstro_pay_card")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Finstro Card - PIN'")
 	private WebElement nvgFinstroCardPin;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Touch ID\")")
-	@iOSXCUITFindBy(accessibility = "settings_touch_id")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Touch ID'")
 	private WebElement nvgTouchId;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Privacy Policy\")")
-	@iOSXCUITFindBy(accessibility = "settings_bank_upload")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Privacy Policy'")
 	private WebElement nvgPrivacyPolicy;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Terms & Conditions\")")
-	@iOSXCUITFindBy(accessibility = "setting_term_condition")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Terms & Conditions'")
 	private WebElement nvgTermCondition;
 	
 	

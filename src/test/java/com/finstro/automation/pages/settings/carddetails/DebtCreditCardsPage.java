@@ -35,11 +35,11 @@ public class DebtCreditCardsPage {
 	}
 
 	private By getCardNumberElement() {
-		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/number_edt") : null;
+		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/number_edt") : MobileBy.iOSNsPredicateString(("name = 'card number'"));
 	}
 
 	private By getBtnNextElement() {
-		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/btnNext") : null;
+		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/btnNext") : MobileBy.iOSNsPredicateString(("name = 'chevron_blue_large'"));
 	}
 
 	private By getGreenTickDefaultCardElement() {

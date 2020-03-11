@@ -63,7 +63,7 @@ public class DebtCreditCards_AddNewCardPage {
 		if(driver.isAndroidDriver()) {
 			driver.inputTextWithClear(txtExpiry, strExpiry);
 		}else {
-			driver.selectPickerWheel(txtExpiry, "February");
+			driver.selectPickerWheel(txtExpiry, "July");
 		}
 	}
 	
