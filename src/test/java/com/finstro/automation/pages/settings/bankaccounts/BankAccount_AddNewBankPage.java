@@ -6,6 +6,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -50,13 +52,6 @@ public class BankAccount_AddNewBankPage {
 		driver.inputTextWithClear(txtBSB, strCardNumber);
 	}
 	
-	public void setCardExpiry(String strExpiry) throws Exception {
-		if(driver.isAndroidDriver()) {
-			driver.inputTextWithClear(txtAccountNumber, strExpiry);
-		}else {
-			driver.selectPickerWheel(txtAccountNumber, "February");
-		}
-	}
 	
 	public BankAccountPage saveChanges() throws Exception {
 		driver.click(btnSaveSettings);

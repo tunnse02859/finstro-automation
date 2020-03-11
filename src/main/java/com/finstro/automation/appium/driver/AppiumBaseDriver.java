@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -360,26 +361,40 @@ public class AppiumBaseDriver {
 
 		}
 	}
+	
+	public void selectPickerWheels(String[] values) throws Exception {
+		List<WebElement> wheels = driver.findElements(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+		
+		if(wheels.size() != values.length) {
+			throw new Exception("The wheels doesn't enough size");
+		}
+		
+		for(int i = 0; i < values.length; i++) {
+			selectPickerWheel(wheels.get(i), values[i]);
+		}
+		
+	}
 
-	public void selectPickerWheel(WebElement element, String value) throws Exception {
+	public void selectPickerWheel(WebElement wheel, String value) throws Exception {
 		try {
-			element.click();
-			Thread.sleep(1000);
-			MobileElement wheels = (MobileElement) driver
-					.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+			
+			if(wheel == null)  {
+				 wheel = (MobileElement) driver
+							.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+			}
+
 			// Read the selected value
-			String strPickerWheelSelectedValue = wheels.getText();
-			if (strPickerWheelSelectedValue.equals(value)) {
-				Log.info(String.format("The element [%s] is selected with value = [%s]", element.toString(), value));
-				clickByPosition(wheels, "top right");
+			String strPickerWheelSelectedValue = wheel.getText();
+			if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
+				//clickByPosition(wheel, "top right");
 				return;
 			} else {
 				// get picker wheel location:
-				int leftX = wheels.getLocation().getX();
-				int rightX = leftX + wheels.getSize().getWidth();
+				int leftX = wheel.getLocation().getX();
+				int rightX = leftX + wheel.getSize().getWidth();
 				int middleX = (rightX + leftX) / 2;
-				int upperY = wheels.getLocation().getY();
-				int lowerY = upperY + wheels.getSize().getHeight();
+				int upperY = wheel.getLocation().getY();
+				int lowerY = upperY + wheel.getSize().getHeight();
 				int middleY = (upperY + lowerY) / 2;
 
 				// swipe down 3 time in picker wheel to get 1st item on list
@@ -395,27 +410,24 @@ public class AppiumBaseDriver {
 				Map<String, Object> params = new HashMap<>();
 				params.put("order", "next");
 				params.put("offset", 0.15);
-				params.put("element", ((RemoteWebElement) wheels));
+				params.put("element", ((RemoteWebElement) wheel));
 
 				js.executeScript("mobile: selectPickerWheelValue", params);
 
 				// go to next item in the list of picker wheel
 				for (int i = 0; i < 10; i++) {
 					// check value
-					strPickerWheelSelectedValue = wheels.getText();
-					if (strPickerWheelSelectedValue.equals(value)) {
-						Log.info(String.format("The element [%s] is selected with value = [%s]", element.toString(),
-								value));
-						clickByPosition(wheels, "top right");
+					strPickerWheelSelectedValue = wheel.getText();
+					if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
+						//clickByPosition(wheel, "top right");
 						return;
 					}
 					js.executeScript("mobile: selectPickerWheelValue", params);
 				}
 				throw new Exception(
-						String.format("The element [%s] cannot selected with value = [%s]", element.toString(), value));
+						String.format("Cannot selected with value = [%s]", value));
 			}
 		} catch (Exception e) {
-			Log.error(String.format("The element [%s] cannot selected with value = [%s]", element.toString(), value));
 			throw (e);
 		}
 

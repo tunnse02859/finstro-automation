@@ -123,7 +123,8 @@ public class SettingsBusinessDetailsFirstPage {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(ddlCategory, category);
 		}else {
-			driver.selectPickerWheel(ddlCategory, category);
+			driver.click(ddlCategory);
+			driver.selectPickerWheel(null, category);
 		}
 	}
 

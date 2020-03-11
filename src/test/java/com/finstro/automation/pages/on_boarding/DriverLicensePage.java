@@ -101,7 +101,8 @@ public class DriverLicensePage {
 					"selector gender = [" + genderName + "] is displayed for select");
 			driver.click(genderSelector);
 		} else {
-			driver.selectPickerWheel(gender, genderName);
+			driver.click(gender);
+			driver.selectPickerWheel(null, genderName);
 		}
 	}
 

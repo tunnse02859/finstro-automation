@@ -6,6 +6,8 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -63,7 +65,13 @@ public class DebtCreditCards_AddNewCardPage {
 		if(driver.isAndroidDriver()) {
 			driver.inputTextWithClear(txtExpiry, strExpiry);
 		}else {
-			driver.selectPickerWheel(txtExpiry, "July");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yyyy");
+			Date date = simpleDateFormat.parse(strExpiry);
+			String month = new SimpleDateFormat("MMMM").format(date);
+			String year = new SimpleDateFormat("YYYY").format(date);
+			String[] strdate = {month, year};
+			driver.click(txtExpiry);
+			driver.selectPickerWheels(strdate);
 		}
 	}
 	

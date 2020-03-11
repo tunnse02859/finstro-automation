@@ -89,123 +89,123 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		}
 	}
 
-//	@DataProvider(name = "SettingCardDetail_02")
-//	public Object[][] SettingCardDetail_02() {
-//		return new Object[][] { { "Default Card Test", "5203950336889332", "01/2021" } };
-//
-//	}
-//
-//	@Test(dataProvider = "SettingCardDetail_02")
-//	public void SettingCardDetail_02_SetDefaultCard(String name, String cardNumber, String expiry) throws Exception {
-//		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
-//		boolean checkToDelete = false;
-//		/********* Save the original default card *********************/
-//		JSONObject originalDefaultCard = creditCardAPI.getDefaultCreditCardInfo();
-//
-//		try {
-//
-//			/********* Add a new card as a precondition *********************/
-//			name = name + System.currentTimeMillis();
-//			addCardPage = debtCreditCardsPage.addNewCard();
-//			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
-//					"You are on the Add new card page");
-//
-//			// Add new card
-//			addCardPage.setCardName(name);
-//			addCardPage.setCardNumber(cardNumber);
-//			addCardPage.setCardExpiry(expiry);
-//			debtCreditCardsPage = addCardPage.saveChanges();
-//			checkToDelete = true;
-//			
-//			// Verify new card on UI
-//			debtCreditCardsPage.isActive();
-//			assertTrue(debtCreditCardsPage.isCardExisting(name), "Add new card failed", "New card is added");
-//
-//			// Verify new card by API
-//			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED",
-//					"Checking new card by API: ADDED");
-//
-//			/********* Set the card as default *********************/
-//			// Is on Detail Card page
-//			detailCardPage = debtCreditCardsPage.selectCardDetailsByName(name);
-//			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page",
-//					"You are on the Card Detail page");
-//
-//			// Set default card
-//			debtCreditCardsPage = detailCardPage.setDefaultCard();
-//
-//			// Verify default card on UI
-//			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
-//					"You're on the Debt/ Credit Cards Page");
-//			assertTrue(debtCreditCardsPage.isDefaultCard(name), "Set default card failed", "Set default card ok");
-//
-//			// Verify default card by API
-//			assertTrue(creditCardAPI.isDefaultCard(name), "Checking default card by API: FAILED",
-//					"Checking default card by API: PASSED");
-//		} finally {
-//			if(checkToDelete) {
-//				Log.info("---- delete added card ----");
-//				// Set the default card to original one
-//				creditCardAPI.saveCard(originalDefaultCard);
-//				Log.info(originalDefaultCard.toString());
-//				// Remove card after testing
-//				creditCardAPI.removeCardByName(name);
-//			}
-//		}
-//	}
-//
-//	@DataProvider(name = "SettingCardDetail_03")
-//	public Object[][] SettingCardDetail_03() {
-//		return new Object[][] { { "Delete Card Test", "5203950336889332", "01/2021" } };
-//
-//	}
-//
-//	@Test(dataProvider = "SettingCardDetail_03")
-//	public void SettingCardDetail_03_DeleteCard(String name, String cardNumber, String expiry) throws Exception {
-//		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
-//		try {
-//			/********* Add a new card as a precondition *********************/
-//			name = name + System.currentTimeMillis();
-//			addCardPage = debtCreditCardsPage.addNewCard();
-//			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
-//					"You are on the Add new card page");
-//
-//			// Add new card
-//			addCardPage.setCardName(name);
-//			addCardPage.setCardNumber(cardNumber);
-//			addCardPage.setCardExpiry(expiry);
-//			debtCreditCardsPage = addCardPage.saveChanges();
-//
-//			// Verify new card on UI
-//			debtCreditCardsPage.isActive();
-//			assertTrue(debtCreditCardsPage.isCardExisting(name), "Add new card failed", "New card is added");
-//
-//			// Verify new card by API
-//			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED",
-//					"Checking new card by API: ADDED");
-//
-//			/********* Set the card as default *********************/
-//			// Is on Detail Card page
-//			detailCardPage = debtCreditCardsPage.selectCardDetailsByName(name);
-//			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page",
-//					"You are on the Card Detail page");
-//
-//			// Set default card
-//			debtCreditCardsPage = detailCardPage.deleteCard();
-//
-//			// Verify deleted card on UI
-//			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
-//					"You're on the Debt/ Credit Cards Page");
-//			assertTrue(!debtCreditCardsPage.isCardExisting(name), "Card isn't deleted", "Card is deleted");
-//
-//			// Verify default card by API
-//			assertTrue(creditCardAPI.getCreditCardInfoByName(name) == null, "Verify the deleted card by API: FAILED",
-//					"Verify the deleted card by API: PASSED");
-//		} finally {
-//			// Remove card after testing
-//			creditCardAPI.removeCardByName(name);
-//		}
-//
-//	}
+	@DataProvider(name = "SettingCardDetail_02")
+	public Object[][] SettingCardDetail_02() {
+		return new Object[][] { { "Default Card Test", "5203950336889332", "01/2021" } };
+
+	}
+
+	@Test(dataProvider = "SettingCardDetail_02")
+	public void SettingCardDetail_02_SetDefaultCard(String name, String cardNumber, String expiry) throws Exception {
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		boolean checkToDelete = false;
+		/********* Save the original default card *********************/
+		JSONObject originalDefaultCard = creditCardAPI.getDefaultCreditCardInfo();
+
+		try {
+
+			/********* Add a new card as a precondition *********************/
+			name = name + System.currentTimeMillis();
+			addCardPage = debtCreditCardsPage.addNewCard();
+			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+					"You are on the Add new card page");
+
+			// Add new card
+			addCardPage.setCardName(name);
+			addCardPage.setCardNumber(cardNumber);
+			addCardPage.setCardExpiry(expiry);
+			debtCreditCardsPage = addCardPage.saveChanges();
+			checkToDelete = true;
+			
+			// Verify new card on UI
+			debtCreditCardsPage.isActive();
+			assertTrue(debtCreditCardsPage.isCardExisting(name), "Add new card failed", "New card is added");
+
+			// Verify new card by API
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED",
+					"Checking new card by API: ADDED");
+
+			/********* Set the card as default *********************/
+			// Is on Detail Card page
+			detailCardPage = debtCreditCardsPage.selectCardDetailsByName(name);
+			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page",
+					"You are on the Card Detail page");
+
+			// Set default card
+			debtCreditCardsPage = detailCardPage.setDefaultCard();
+
+			// Verify default card on UI
+			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
+					"You're on the Debt/ Credit Cards Page");
+			assertTrue(debtCreditCardsPage.isDefaultCard(name), "Set default card failed", "Set default card ok");
+
+			// Verify default card by API
+			assertTrue(creditCardAPI.isDefaultCard(name), "Checking default card by API: FAILED",
+					"Checking default card by API: PASSED");
+		} finally {
+			if(checkToDelete) {
+				Log.info("---- delete added card ----");
+				// Set the default card to original one
+				creditCardAPI.saveCard(originalDefaultCard);
+				Log.info(originalDefaultCard.toString());
+				// Remove card after testing
+				creditCardAPI.removeCardByName(name);
+			}
+		}
+	}
+
+	@DataProvider(name = "SettingCardDetail_03")
+	public Object[][] SettingCardDetail_03() {
+		return new Object[][] { { "Delete Card Test", "5203950336889332", "01/2021" } };
+
+	}
+
+	@Test(dataProvider = "SettingCardDetail_03")
+	public void SettingCardDetail_03_DeleteCard(String name, String cardNumber, String expiry) throws Exception {
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		try {
+			/********* Add a new card as a precondition *********************/
+			name = name + System.currentTimeMillis();
+			addCardPage = debtCreditCardsPage.addNewCard();
+			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+					"You are on the Add new card page");
+
+			// Add new card
+			addCardPage.setCardName(name);
+			addCardPage.setCardNumber(cardNumber);
+			addCardPage.setCardExpiry(expiry);
+			debtCreditCardsPage = addCardPage.saveChanges();
+
+			// Verify new card on UI
+			debtCreditCardsPage.isActive();
+			assertTrue(debtCreditCardsPage.isCardExisting(name), "Add new card failed", "New card is added");
+
+			// Verify new card by API
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED",
+					"Checking new card by API: ADDED");
+
+			/********* Set the card as default *********************/
+			// Is on Detail Card page
+			detailCardPage = debtCreditCardsPage.selectCardDetailsByName(name);
+			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page",
+					"You are on the Card Detail page");
+
+			// Set default card
+			debtCreditCardsPage = detailCardPage.deleteCard();
+
+			// Verify deleted card on UI
+			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
+					"You're on the Debt/ Credit Cards Page");
+			assertTrue(!debtCreditCardsPage.isCardExisting(name), "Card isn't deleted", "Card is deleted");
+
+			// Verify default card by API
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) == null, "Verify the deleted card by API: FAILED",
+					"Verify the deleted card by API: PASSED");
+		} finally {
+			// Remove card after testing
+			creditCardAPI.removeCardByName(name);
+		}
+
+	}
 
 }

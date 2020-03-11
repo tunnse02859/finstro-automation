@@ -78,7 +78,8 @@ public class SettingProfile_MedicarePage {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(gender, genderName);
 		} else {
-			driver.selectPickerWheel(gender, genderName);
+			driver.click(gender);
+			driver.selectPickerWheel(null, genderName);
 		}
 	}
 
@@ -98,7 +99,8 @@ public class SettingProfile_MedicarePage {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(cardColor, colorName);
 		} else {
-			driver.selectPickerWheel(cardColor, colorName);
+			driver.click(cardColor);
+			driver.selectPickerWheel(null, colorName);
 		}
 	}
 

@@ -121,7 +121,8 @@ public class SettingProfile_DrivingLicensePage {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(gender, genderValue);
 		} else {
-			driver.selectPickerWheel(gender, genderValue);
+			driver.click(gender);
+			driver.selectPickerWheel(null, genderValue);
 		}
 	}
 
@@ -163,7 +164,8 @@ public class SettingProfile_DrivingLicensePage {
 			}else if(stateValue.equalsIgnoreCase("ACT")) {
 				stateValue = "South Australia";
 			}
-			driver.selectPickerWheel(state, stateValue);
+			driver.click(state);
+			driver.selectPickerWheel(null, stateValue);
 		}
 	}
 
