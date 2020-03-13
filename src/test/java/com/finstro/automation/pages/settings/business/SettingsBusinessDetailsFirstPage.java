@@ -120,6 +120,7 @@ public class SettingsBusinessDetailsFirstPage {
 	}
 
 	public void setCategoryOfBusiness(String category) throws Exception {
+		driver.scrollUntillViewText("CATEGORY OF BUSINESS");
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(ddlCategory, category);
 		}else {
@@ -129,78 +130,97 @@ public class SettingsBusinessDetailsFirstPage {
 	}
 
 	public String getCategoryOfBusiness() throws Exception {
+		driver.scrollUntillViewText("CATEGORY OF BUSINESS");
 		return driver.getText(txtDisplayedCategory);
 	}
 
 	public void setEmail(String email) throws Exception {
+		driver.scrollUntillViewText("EMAIL");
 		driver.inputTextWithClear(txtEmail, email);
 	}
 
 	public String getEmail() throws Exception {
+		driver.scrollUntillViewText("EMAIL");
 		return driver.getText(txtEmail);
 	}
 
 	public void setMobileNumber(String mobile) throws Exception {
+		driver.scrollUntillViewText("MOBILE NO");
 		driver.inputTextWithClear(txtMobile, mobile);
 	}
 
 	public String getMobileNumber() throws Exception {
+		driver.scrollUntillViewText("MOBILE NO");
 		return driver.getText(txtMobile);
 	}
 
 	public void setWebsiteAddress(String website) throws Exception {
+		driver.scrollUntillViewText("WEBSITE ADDRESS");
 		driver.inputTextWithClear(txtWebsite, website);
 	}
 
 	public String getWebsiteAddress() throws Exception {
+		driver.scrollUntillViewText("WEBSITE ADDRESS");
 		return driver.getText(txtWebsite);
 	}
 
 	public void setFacebook(String facebook) throws Exception {
+		driver.scrollUntillViewText("FACEBOOK PAGE");
 		driver.inputTextWithClear(txtFaceBook, facebook);
 	}
 
 	public String getFacebook() throws Exception {
+		driver.scrollUntillViewText("FACEBOOK PAGE");
 		return driver.getText(txtFaceBook);
 	}
 
 	public void setTwitter(String twitter) throws Exception {
+		driver.scrollUntillViewText("TWITTER URL");
 		driver.inputTextWithClear(txtTwitter, twitter);
 	}
 
 	public String getTwitter() throws Exception {
+		driver.scrollUntillViewText("TWITTER URL");
 		return driver.getText(txtTwitter);
 	}
 
 	public void setInstagram(String instagram) throws Exception {
+		driver.scrollUntillViewText("INSTAGRAM URL");
 		driver.inputTextWithClear(txtInstagram, instagram);
 	}
 
 	public String getInstagram() throws Exception {
+		driver.scrollUntillViewText("INSTAGRAM URL");
 		return driver.getText(txtInstagram);
 	}
 
 	public void setSkype(String skype) throws Exception {
+		driver.scrollUntillViewText("SKYPE ADDRESS");
 		driver.inputTextWithClear(txtSkype, skype);
 	}
 
 	public String getSkype() throws Exception {
+		driver.scrollUntillViewText("SKYPE ADDRESS");
 		return driver.getText(txtSkype);
 	}
 
 	public void setLinkedin(String linkedin) throws Exception {
+		driver.scrollUntillViewText("LINKEDIN");
 		driver.inputTextWithClear(txtLinkedIn, linkedin);
 	}
 
 	public String getLinkedin() throws Exception {
+		driver.scrollUntillViewText("LINKEDIN");
 		return driver.getText(txtLinkedIn);
 	}
 
 	public void setOther(String other) throws Exception {
+		driver.scrollUntillViewText("OTHER");
 		driver.inputTextWithClear(txtOther, other);
 	}
 
 	public String getOther() throws Exception {
+		driver.scrollUntillViewText("OTHER");
 		return driver.getText(txtOther);
 	}
 

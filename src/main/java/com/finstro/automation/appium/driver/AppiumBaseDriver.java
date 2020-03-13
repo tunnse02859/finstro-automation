@@ -22,6 +22,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -54,7 +55,7 @@ public class AppiumBaseDriver {
 
 	protected AppiumDriver<WebElement> driver;
 
-	private final int DEFAULT_WAITTIME_SECONDS = 30;
+	private final int DEFAULT_WAITTIME_SECONDS = 20;
 
 	public AppiumDriver<WebElement> getDriver() {
 		return driver;
@@ -63,7 +64,7 @@ public class AppiumBaseDriver {
 	public void setDefaultImplicitWaitTime() {
 		driver.manage().timeouts().implicitlyWait(DEFAULT_WAITTIME_SECONDS, TimeUnit.SECONDS);
 	}
-	
+
 	public void setImplicitWaitTime(int time) {
 		driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
 	}
@@ -75,7 +76,7 @@ public class AppiumBaseDriver {
 	public boolean isAndroidDriver() {
 		return driver instanceof AndroidDriver<?> ? true : false;
 	}
-	
+
 	public void scrollUntillViewText(String text) {
 		if (isAndroidDriver()) {
 			String locator = String.format(
@@ -86,19 +87,18 @@ public class AppiumBaseDriver {
 		}
 		// For IOS
 		else {
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-	        HashMap<String, String> scrollObject = new HashMap<>();
-	        scrollObject.put("predicateString", "value CONTAINS '" + text + "'");
-	        scrollObject.put("direction", "down");
-	        js.executeScript("mobile: scroll", scrollObject);
+			HashMap<String, String> scrollObject = new HashMap<>();
+			scrollObject.put("predicateString", "value == '" + text + "'");
+			scrollObject.put("toVisible", "true");
+			((JavascriptExecutor)driver).executeScript("mobile: scroll", scrollObject);
 		}
 	}
 
 	public WebElement findElement(WebElement element) {
-
 		if (isElementDisplayed(element)) {
 			return element;
 		}
+
 		int attemps = 0;
 		swipe(DIRECTION.UP);
 		do {
@@ -151,8 +151,7 @@ public class AppiumBaseDriver {
 	 *            the url of website
 	 * @return None
 	 * @throws Exception
-	 *             The exception is thrown if the driver can't navigate to the
-	 *             url
+	 *             The exception is thrown if the driver can't navigate to the url
 	 */
 	public void openUrl(String url) throws Exception {
 		try {
@@ -256,8 +255,7 @@ public class AppiumBaseDriver {
 	}
 
 	/**
-	 * This method is used to execute a java script function for an object
-	 * argument.
+	 * This method is used to execute a java script function for an object argument.
 	 * 
 	 * @author tunn6
 	 * @param jsFunction
@@ -361,32 +359,31 @@ public class AppiumBaseDriver {
 
 		}
 	}
-	
+
 	public void selectPickerWheels(String[] values) throws Exception {
 		List<WebElement> wheels = driver.findElements(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
-		
-		if(wheels.size() != values.length) {
+
+		if (wheels.size() != values.length) {
 			throw new Exception("The wheels doesn't enough size");
 		}
-		
-		for(int i = 0; i < values.length; i++) {
+
+		for (int i = 0; i < values.length; i++) {
 			selectPickerWheel(wheels.get(i), values[i]);
 		}
-		
+
 	}
 
 	public void selectPickerWheel(WebElement wheel, String value) throws Exception {
 		try {
-			
-			if(wheel == null)  {
-				 wheel = (MobileElement) driver
-							.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+
+			if (wheel == null) {
+				wheel = (MobileElement) driver.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
 			}
 
 			// Read the selected value
 			String strPickerWheelSelectedValue = wheel.getText();
 			if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
-				//clickByPosition(wheel, "top right");
+				// clickByPosition(wheel, "top right");
 				return;
 			} else {
 				// get picker wheel location:
@@ -419,13 +416,12 @@ public class AppiumBaseDriver {
 					// check value
 					strPickerWheelSelectedValue = wheel.getText();
 					if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
-						//clickByPosition(wheel, "top right");
+						// clickByPosition(wheel, "top right");
 						return;
 					}
 					js.executeScript("mobile: selectPickerWheelValue", params);
 				}
-				throw new Exception(
-						String.format("Cannot selected with value = [%s]", value));
+				throw new Exception(String.format("Cannot selected with value = [%s]", value));
 			}
 		} catch (Exception e) {
 			throw (e);
@@ -571,7 +567,7 @@ public class AppiumBaseDriver {
 		} catch (NoSuchElementException e) {
 			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
 			return false;
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
 			return false;
 		}
@@ -614,6 +610,10 @@ public class AppiumBaseDriver {
 		}
 	}
 
+	public String getTextFromAlert() {
+		return driver.switchTo().alert().getText();
+	}
+
 	public void acceptAlert() {
 
 		if (isAlertPresent()) {
@@ -642,21 +642,21 @@ public class AppiumBaseDriver {
 			Log.info("Swipe LEFT sucessfully");
 			break;
 		case UP:
-			if(isIOSDriver()) {
-				if(((IOSDriver) driver).isKeyboardShown()) {
+			if (isIOSDriver()) {
+				if (((IOSDriver) driver).isKeyboardShown()) {
 					swipe(0.5, 0.5, 0.5, 0.1);
 				}
-			}else {
+			} else {
 				swipe(0.5, 0.8, 0.5, 0.2);
 			}
 			Log.info("Swipe UP sucessfully");
 			break;
 		case DOWN:
-			if(isIOSDriver()) {
-				if(((IOSDriver) driver).isKeyboardShown()) {
+			if (isIOSDriver()) {
+				if (((IOSDriver) driver).isKeyboardShown()) {
 					swipe(0.5, 0.1, 0.5, 0.5);
 				}
-			}else {
+			} else {
 				swipe(0.5, 0.2, 0.5, 0.8);
 			}
 			Log.info("Swipe DOWN sucessfully");
@@ -720,20 +720,19 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	/*
-	 * public void verifyToastMessage(String compareText) throws Exception { try
-	 * { String imageClientCode = "ClientCodeEmptyImage";
+	 * public void verifyToastMessage(String compareText) throws Exception { try {
+	 * String imageClientCode = "ClientCodeEmptyImage";
 	 * this.takeScreenshot(imageClientCode); String TessMessage =
 	 * readToastMessage(imageClientCode);
-	 * Assert.assertTrue(TessMessage.contains(compareText)); Log.info(
-	 * "String \"" + compareText + "\" is available in screen");
+	 * Assert.assertTrue(TessMessage.contains(compareText)); Log.info( "String \"" +
+	 * compareText + "\" is available in screen");
 	 * 
 	 * } catch (Exception e) { Log.error("String \"" + compareText +
 	 * "\" is not available in screen"); throw (e); } }
 	 */
 
 	/**
-	 * This method is used to capture a screenshot then write to the TestNG
-	 * Logger
+	 * This method is used to capture a screenshot then write to the TestNG Logger
 	 * 
 	 * @author tunn6
 	 * 
@@ -750,7 +749,7 @@ public class AppiumBaseDriver {
 				File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 				String screenShotDirector = FilePaths.getScreenshotFolder();
 				FileUtils.copyFile(scrFile, new File(screenShotDirector + File.separator + failureImageFileName));
-				
+
 				return screenShotDirector + File.separator + failureImageFileName;
 			}
 		} catch (Exception e) {

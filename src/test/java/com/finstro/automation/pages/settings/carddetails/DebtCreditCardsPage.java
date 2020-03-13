@@ -28,6 +28,15 @@ public class DebtCreditCardsPage {
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id='au.com.finstro.finstropay:id/bank_accounts_list']/android.widget.RelativeLayout")
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTable/XCUIElementTypeCell")
 	private List<WebElement> cardList;
+	
+	// Alert
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
+	@iOSXCUITFindBy(accessibility = "save")
+	private WebElement popupMessage;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
+	@iOSXCUITFindBy(accessibility = "email")
+	private WebElement popupType;
 
 	private By getCardNameElement() {
 		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/name_edt")
@@ -99,5 +108,13 @@ public class DebtCreditCardsPage {
 			return false;
 		}
 
+	}
+	
+	public String getPopupMessage() throws Exception {
+		return driver.getText(popupMessage);
+	}
+
+	public String getPopupActionType() throws Exception {
+		return driver.getText(popupType);
 	}
 }

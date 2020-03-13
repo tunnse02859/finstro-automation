@@ -82,9 +82,9 @@ public class LoginPage {
 				"Login screen showed after tap on login");
 		login(email, code);
 		if (driver.isIOSDriver()) {
-//			if (driver.isElementDisplayed(savePassword)) {
-//				driver.click(savePassword);
-//			}
+			if (driver.isElementDisplayed(savePassword)) {
+				driver.click(savePassword);
+			}
 			if (driver.isElementDisplayed(touchID_DontSave)) {
 				driver.click(touchID_DontSave);
 			}

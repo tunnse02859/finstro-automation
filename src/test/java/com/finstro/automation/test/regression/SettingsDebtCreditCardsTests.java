@@ -133,10 +133,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 			// Set default card
 			debtCreditCardsPage = detailCardPage.setDefaultCard();
-
 			// Verify default card on UI
-			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
-					"You're on the Debt/ Credit Cards Page");
 			assertTrue(debtCreditCardsPage.isDefaultCard(name), "Set default card failed", "Set default card ok");
 
 			// Verify default card by API
@@ -175,6 +172,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			debtCreditCardsPage = addCardPage.saveChanges();
+			
 
 			// Verify new card on UI
 			debtCreditCardsPage.isActive();
@@ -190,12 +188,9 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page",
 					"You are on the Card Detail page");
 
-			// Set default card
+			// Delete card
 			debtCreditCardsPage = detailCardPage.deleteCard();
-
 			// Verify deleted card on UI
-			assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
-					"You're on the Debt/ Credit Cards Page");
 			assertTrue(!debtCreditCardsPage.isCardExisting(name), "Card isn't deleted", "Card is deleted");
 
 			// Verify default card by API

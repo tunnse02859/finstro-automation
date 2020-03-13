@@ -28,7 +28,7 @@ public class RegisterPage {
 	@iOSXCUITFindBy(accessibility = "Allow")
 	private WebElement notify_allow;
 
-	public RegisterPage(AppiumBaseDriver driver) {
+	public RegisterPage(AppiumBaseDriver driver) throws Exception {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
 	}
@@ -42,14 +42,14 @@ public class RegisterPage {
 	}
 
 	public void allowNotification() throws Exception {
-		if (driver.isElementDisplayed(notify_allow)) {
+		if (driver.isElementDisplayed(notify_allow) && driver.isIOSDriver()) {
 			driver.click(notify_allow);
 			HtmlReporter.pass("Allow Notification on IOS successfully");
 		}
 	}
 
 	public void dontAllowNotification() throws Exception {
-		if (driver.isElementDisplayed(notify_dontallow)) {
+		if (driver.isElementDisplayed(notify_dontallow) && driver.isIOSDriver()) {
 			driver.click(notify_dontallow);
 			HtmlReporter.pass("Dont Allow Notification on IOS successfully");
 		}

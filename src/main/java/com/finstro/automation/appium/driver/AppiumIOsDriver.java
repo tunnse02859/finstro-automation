@@ -63,7 +63,7 @@ public class AppiumIOsDriver extends AppiumBaseDriver{
 		String xcodeSigningId = ios_configuration.getProperty("appium.ios.xcodeSigningId");
 		
 		capabilities.setCapability(MobileCapabilityType.APP, strMobileIOSApp);
-		capabilities.setCapability("autoDismissAlerts", true);
+		//capabilities.setCapability("autoDismissAlerts", true);
 		
 		if(!(agentPath == null || agentPath.equals(""))) {
 			capabilities.setCapability("agentPath", agentPath);
