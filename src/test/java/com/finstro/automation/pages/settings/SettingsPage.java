@@ -30,7 +30,7 @@ public class SettingsPage {
 	private WebElement nvgProfileDetails;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Approval/Bank Upload\")")
-	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Approval/Bank Upload\\'")
+	@iOSXCUITFindBy(iOSNsPredicate = "label == 'Approval/Bank Upload\'")
 	private WebElement nvgApproveBankUpload;
 	
 	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Bank Account Details\")")

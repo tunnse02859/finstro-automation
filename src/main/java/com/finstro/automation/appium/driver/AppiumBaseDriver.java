@@ -44,6 +44,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.ios.IOSElement;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
@@ -55,7 +56,7 @@ public class AppiumBaseDriver {
 
 	protected AppiumDriver<WebElement> driver;
 
-	private final int DEFAULT_WAITTIME_SECONDS = 20;
+	private final int DEFAULT_WAITTIME_SECONDS = 40;
 
 	public AppiumDriver<WebElement> getDriver() {
 		return driver;
@@ -87,29 +88,43 @@ public class AppiumBaseDriver {
 		}
 		// For IOS
 		else {
-			HashMap<String, String> scrollObject = new HashMap<>();
-			scrollObject.put("predicateString", "value == '" + text + "'");
-			scrollObject.put("toVisible", "true");
-			((JavascriptExecutor)driver).executeScript("mobile: scroll", scrollObject);
+			// HashMap<String, String> scrollObject = new HashMap<>();
+			// scrollObject.put("predicateString", "value == '" + text + "'");
+			// scrollObject.put("toVisible", "true");
+			// ((JavascriptExecutor)driver).executeScript("mobile: scroll", scrollObject);
+			MobileElement e = (MobileElement) ((IOSDriver) driver)
+					.findElementByIosNsPredicate("value = '" + text + "'");
+			findElement(e);
 		}
 	}
 
 	public WebElement findElement(WebElement element) {
+		setImplicitWaitTime(5);
 		if (isElementDisplayed(element)) {
 			return element;
 		}
 
+		if (isIOSDriver()) {
+			HashMap<String, String> scrollObject = new HashMap<>();
+			scrollObject.put("direction", "down");
+			((JavascriptExecutor) driver).executeScript("mobile: swipe", scrollObject);
+			wait(5);
+		} else {
+			swipe(DIRECTION.DOWN);
+			wait(3);
+			swipe(DIRECTION.DOWN);
+		}
+
 		int attemps = 0;
-		swipe(DIRECTION.UP);
 		do {
 			if (isElementDisplayed(element)) {
 				return element;
 			}
-			swipe(DIRECTION.DOWN);
+			swipe(DIRECTION.UP);
 
 			attemps++;
 		} while (attemps < 2);
-
+		setDefaultImplicitWaitTime();
 		throw new NoSuchElementException("Element not found");
 	}
 
@@ -521,7 +536,6 @@ public class AppiumBaseDriver {
 			WebDriverWait wait = new WebDriverWait(driver, time);
 			wait.until(ExpectedConditions.visibilityOf(element));
 		} catch (TimeoutException e) {
-			HtmlReporter.fail(String.format("Element [%s] is not displayed in expected time = %s", element, time));
 			return false;
 		}
 		return true;
@@ -556,7 +570,8 @@ public class AppiumBaseDriver {
 	public boolean isElementDisplayed(WebElement element) {
 		boolean result;
 		try {
-			// element = findElement(element);
+			//element = findElement(element);
+			waitForElementDisplayed(element, 20);
 			result = element.isDisplayed();
 			if (result) {
 				HtmlReporter.info(String.format("Element: [%s] is displayed", element.toString()));
@@ -643,9 +658,7 @@ public class AppiumBaseDriver {
 			break;
 		case UP:
 			if (isIOSDriver()) {
-				if (((IOSDriver) driver).isKeyboardShown()) {
-					swipe(0.5, 0.5, 0.5, 0.1);
-				}
+				swipe(0.5, 0.5, 0.5, 0.1);
 			} else {
 				swipe(0.5, 0.8, 0.5, 0.2);
 			}
@@ -653,9 +666,7 @@ public class AppiumBaseDriver {
 			break;
 		case DOWN:
 			if (isIOSDriver()) {
-				if (((IOSDriver) driver).isKeyboardShown()) {
-					swipe(0.5, 0.1, 0.5, 0.5);
-				}
+				swipe(0.5, 0.1, 0.5, 0.5);
 			} else {
 				swipe(0.5, 0.2, 0.5, 0.8);
 			}

@@ -65,7 +65,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		// Check Category of Business
 		settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
 		// Check Email
-		// settingBusinessDetailsFirstPage.setEmail(email);
+		settingBusinessDetailsFirstPage.setEmail(email);
 		// Check Phone number
 		settingBusinessDetailsFirstPage.setMobileNumber(mobile);
 		// Check Website address
@@ -94,6 +94,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		}
 		Thread.sleep(10000);
 		finstroAPI.recoveryData().then().verifyResponseCode(200)
+				.verifyJsonNodeEqual("businessDetails.phoneNumber", email)
 				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
 				.verifyJsonNodeEqual("businessDetails.website", website)
 				.verifyJsonNodeEqual("businessDetails.facebook", facebook)
@@ -105,44 +106,44 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 	}
 
-//	@Test
-//	public void SettingBusinessDetail_02() throws Exception {
-//		// Go to the Setting Business Details page
-//		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
-//
-//		// Go to the second setting business page
-//		SettingsBusinessDetailsSecondPage settingBusinessDetailsSecondPage = settingBusinessDetailsFirstPage
-//				.gotoSettingsBusinessDetailsSecondPage();
-//		assertTrue(settingBusinessDetailsSecondPage.isActive(), "You're not on the Setting Business Detail second page",
-//				"You're on the Setting Business Detail second page");
-//
-//		// Check the information displayed on the page that matches with api response
-//		String strBusinessType = settingBusinessDetailsSecondPage.getTypeOfBusiness();
-//		String strBusinessName = settingBusinessDetailsSecondPage.getTradingBusinessName();
-//		String strTradingName = settingBusinessDetailsSecondPage.getTradingLegalName();
-//		String strABN = settingBusinessDetailsSecondPage.getABN();
-//		String strACN = settingBusinessDetailsSecondPage.getACN();
-//		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
-//
-//		String expectedBusinessTradingAddress = finstroAPI.getBusinessDetailInfor();
-//		String resBusinessType = Common.getTestVariable("type", true);
-//		assertEquals(strBusinessType, resBusinessType, "BusinessType is different", "BusinessType matches");
-//
-//		String resBusinessName = Common.getTestVariable("businessName", true);
-//		assertEquals(strBusinessName, resBusinessName, "BusinessName is different", "BusinessName matches");
-//
-//		String resTradingName = Common.getTestVariable("entityName", true);
-//		assertEquals(strTradingName, resTradingName, "TradingName is different", "TradingName matches");
-//
-//		String resABN = Common.getTestVariable("abn", true);
-//		assertEquals(strABN.replace(" ", ""), resABN.replace(" ", ""), "ABN is different", "ABN matches");
-//
-//		String resACN = Common.getTestVariable("acn", true);
-//		assertEquals(strACN.replace(" ", ""), resACN.replace(" ", ""), "ACN is different", "ACN matches");
-//
-//		assertEquals(strBusinessAddr.replace(",", "").trim(), expectedBusinessTradingAddress.trim(),
-//				"Address is different", "Address matches");
-//
-//	}
+	@Test
+	public void SettingBusinessDetail_02() throws Exception {
+		// Go to the Setting Business Details page
+		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
+
+		// Go to the second setting business page
+		SettingsBusinessDetailsSecondPage settingBusinessDetailsSecondPage = settingBusinessDetailsFirstPage
+				.gotoSettingsBusinessDetailsSecondPage();
+		assertTrue(settingBusinessDetailsSecondPage.isActive(), "You're not on the Setting Business Detail second page",
+				"You're on the Setting Business Detail second page");
+
+		// Check the information displayed on the page that matches with api response
+		String strBusinessType = settingBusinessDetailsSecondPage.getTypeOfBusiness();
+		String strBusinessName = settingBusinessDetailsSecondPage.getTradingBusinessName();
+		String strTradingName = settingBusinessDetailsSecondPage.getTradingLegalName();
+		String strABN = settingBusinessDetailsSecondPage.getABN();
+		String strACN = settingBusinessDetailsSecondPage.getACN();
+		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
+
+		String expectedBusinessTradingAddress = finstroAPI.getBusinessDetailInfor();
+		String resBusinessType = Common.getTestVariable("type", true);
+		assertEquals(strBusinessType, resBusinessType, "BusinessType is different", "BusinessType matches");
+
+		String resBusinessName = Common.getTestVariable("businessName", true);
+		assertEquals(strBusinessName, resBusinessName, "BusinessName is different", "BusinessName matches");
+
+		String resTradingName = Common.getTestVariable("entityName", true);
+		assertEquals(strTradingName, resTradingName, "TradingName is different", "TradingName matches");
+
+		String resABN = Common.getTestVariable("abn", true);
+		assertEquals(strABN.replace(" ", ""), resABN.replace(" ", ""), "ABN is different", "ABN matches");
+
+		String resACN = Common.getTestVariable("acn", true);
+		assertEquals(strACN.replace(" ", ""), resACN.replace(" ", ""), "ACN is different", "ACN matches");
+
+		assertEquals(strBusinessAddr.replace(",", "").trim(), expectedBusinessTradingAddress.trim(),
+				"Address is different", "Address matches");
+
+	}
 
 }
