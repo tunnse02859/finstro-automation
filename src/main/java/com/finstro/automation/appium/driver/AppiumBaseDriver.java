@@ -24,6 +24,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
@@ -45,6 +46,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.IOSElement;
+import io.appium.java_client.remote.HideKeyboardStrategy;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
@@ -238,12 +240,11 @@ public class AppiumBaseDriver {
 	}
 
 	public void hideKeyboard() {
-		try {
-			if (isAndroidDriver()) {
-				driver.hideKeyboard();
-			}
-		} catch (WebDriverException e) {
+
+		if(isAndroidDriver()) {
+			driver.hideKeyboard();
 		}
+
 	}
 
 	/**
@@ -338,7 +339,7 @@ public class AppiumBaseDriver {
 	public void click(WebElement element) throws Exception {
 		try {
 			element = findElement(element);
-			//waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			// waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
 		} catch (Exception e) {
@@ -346,6 +347,11 @@ public class AppiumBaseDriver {
 			throw (e);
 
 		}
+	}
+	
+	
+	public void clickByCoordinate(int x, int y) {
+		new TouchAction<>(driver).tap(PointOption.point(x, y)).perform();
 	}
 
 	public void clickByPosition(WebElement element, String clickPosition) throws Exception {
@@ -540,7 +546,7 @@ public class AppiumBaseDriver {
 		}
 		return true;
 	}
-	
+
 	public void waitForElementPresent(WebElement element, int time) {
 
 		WebDriverWait wait = new WebDriverWait(driver, time);
@@ -576,7 +582,7 @@ public class AppiumBaseDriver {
 	public boolean isElementDisplayed(WebElement element) {
 		boolean result;
 		try {
-			//element = findElement(element);
+			// element = findElement(element);
 			waitForElementDisplayed(element, 20);
 			result = element.isDisplayed();
 			if (result) {
@@ -594,7 +600,6 @@ public class AppiumBaseDriver {
 		}
 
 	}
-	
 
 	public boolean isElementSelected(WebElement element) throws Exception {
 		boolean result = element.isSelected();
@@ -613,7 +618,7 @@ public class AppiumBaseDriver {
 			return false;
 		}
 	}
-	
+
 	public WebElement isElementPresented(By locator, int timeout) {
 		WebElement element = null;
 		try {
@@ -918,7 +923,7 @@ public class AppiumBaseDriver {
 			throw e;
 		}
 	}
-	
+
 	/**
 	 * This method is used to close application
 	 * 
@@ -929,9 +934,9 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	public void closeApp() throws Exception {
-			driver.closeApp();
+		driver.closeApp();
 	}
-	
+
 	/**
 	 * This method is used to launch application
 	 * 
@@ -942,7 +947,7 @@ public class AppiumBaseDriver {
 	 * @throws Exception
 	 */
 	public void launchApp() throws Exception {
-			driver.launchApp();
+		driver.launchApp();
 	}
 
 }

@@ -64,6 +64,7 @@ public class AppiumIOsDriver extends AppiumBaseDriver {
 
 		capabilities.setCapability(MobileCapabilityType.APP, strMobileIOSApp);
 		capabilities.setCapability(IOSMobileCapabilityType.WDA_STARTUP_RETRIES, 4);
+		capabilities.setCapability("unicodeKeyboard", true);
 
 		if (!(agentPath == null || agentPath.equals(""))) {
 			capabilities.setCapability("agentPath", agentPath);

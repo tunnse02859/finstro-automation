@@ -29,7 +29,7 @@ public class SettingsBusinessDetailsFirstPage {
 	@AndroidFindBy(id = "android:id/text1")
 	@iOSXCUITFindBy(accessibility = "category of business")
 	private WebElement txtDisplayedCategory;
-
+	
 	// Email
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/email_edt\"))")
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeScrollView[2]/**/XCUIElementTypeTextField[`name=\"email\"`]")
@@ -70,6 +70,11 @@ public class SettingsBusinessDetailsFirstPage {
 	@iOSXCUITFindBy(accessibility = "likedin")
 	private WebElement txtLinkedIn;
 
+	// Other label
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\"OTHER\"))")
+	@iOSXCUITFindBy(accessibility = "OTHER")
+	private WebElement lblOther;
+	
 	// Other
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/other_edt\"))")
 	@iOSXCUITFindBy(accessibility = "other")
@@ -225,6 +230,8 @@ public class SettingsBusinessDetailsFirstPage {
 	}
 
 	public void saveChanges() throws Exception {
+		driver.click(lblOther);
+		driver.wait(1);
 		driver.click(btnSubmit);
 	}
 
