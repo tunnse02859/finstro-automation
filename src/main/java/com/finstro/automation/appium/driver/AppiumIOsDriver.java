@@ -11,6 +11,7 @@ import com.finstro.automation.utility.FilePaths;
 import com.finstro.automation.utility.PropertiesLoader;
 
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class AppiumIOsDriver extends AppiumBaseDriver {
@@ -62,6 +63,7 @@ public class AppiumIOsDriver extends AppiumBaseDriver {
 		String xcodeSigningId = ios_configuration.getProperty("appium.ios.xcodeSigningId");
 
 		capabilities.setCapability(MobileCapabilityType.APP, strMobileIOSApp);
+		capabilities.setCapability(IOSMobileCapabilityType.WDA_STARTUP_RETRIES, 4);
 
 		if (!(agentPath == null || agentPath.equals(""))) {
 			capabilities.setCapability("agentPath", agentPath);

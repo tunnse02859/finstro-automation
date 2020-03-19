@@ -30,6 +30,7 @@ public class MobileTestBaseSetup {
 		FilePaths.initReportFolder();
 		HtmlReporter.setReporter(FilePaths.getReportFilePath());
 		driver = new AppiumHandler().startDriver();
+		
 	}
 
 	@BeforeClass
@@ -40,6 +41,8 @@ public class MobileTestBaseSetup {
 	@BeforeMethod
 	public void beforeMethod(Method method) throws Exception {
 		HtmlReporter.createNode(this.getClass().getSimpleName(), method.getName(), "");
+		driver.launchApp();
+
 	}
 
 	@AfterMethod(alwaysRun = true)
@@ -66,7 +69,7 @@ public class MobileTestBaseSetup {
 		} catch (Exception e) {
 		}
 		finally {
-			driver.resetApp();
+			driver.closeApp();
 		}
 		
 	}

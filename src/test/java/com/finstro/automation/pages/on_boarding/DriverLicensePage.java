@@ -23,6 +23,7 @@ public class DriverLicensePage {
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
 	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
 	private WebElement errorMessage;
+	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
 	private WebElement errorType;
 

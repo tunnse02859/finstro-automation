@@ -94,7 +94,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		}
 		Thread.sleep(10000);
 		finstroAPI.recoveryData().then().verifyResponseCode(200)
-				.verifyJsonNodeEqual("businessDetails.phoneNumber", email)
+				.verifyJsonNodeEqual("businessDetails.email", email)
 				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
 				.verifyJsonNodeEqual("businessDetails.website", website)
 				.verifyJsonNodeEqual("businessDetails.facebook", facebook)

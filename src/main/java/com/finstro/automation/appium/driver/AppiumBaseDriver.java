@@ -56,7 +56,7 @@ public class AppiumBaseDriver {
 
 	protected AppiumDriver<WebElement> driver;
 
-	private final int DEFAULT_WAITTIME_SECONDS = 40;
+	private final int DEFAULT_WAITTIME_SECONDS = 30;
 
 	public AppiumDriver<WebElement> getDriver() {
 		return driver;
@@ -100,7 +100,7 @@ public class AppiumBaseDriver {
 
 	public WebElement findElement(WebElement element) {
 		setImplicitWaitTime(5);
-		if (isElementDisplayed(element)) {
+		if (isElementPresented(element)) {
 			return element;
 		}
 
@@ -338,7 +338,7 @@ public class AppiumBaseDriver {
 	public void click(WebElement element) throws Exception {
 		try {
 			element = findElement(element);
-			waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			//waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
 		} catch (Exception e) {
@@ -540,6 +540,12 @@ public class AppiumBaseDriver {
 		}
 		return true;
 	}
+	
+	public void waitForElementPresent(WebElement element, int time) {
+
+		WebDriverWait wait = new WebDriverWait(driver, time);
+		wait.until((driver) -> element != null);
+	}
 
 	public void waitUntilElementDisappear(WebElement element, int time) {
 		FluentWait<WebDriver> wait = new WebDriverWait(driver, time).ignoring(NoSuchElementException.class);
@@ -588,6 +594,7 @@ public class AppiumBaseDriver {
 		}
 
 	}
+	
 
 	public boolean isElementSelected(WebElement element) throws Exception {
 		boolean result = element.isSelected();
@@ -599,15 +606,20 @@ public class AppiumBaseDriver {
 		return result;
 	}
 
-	public WebElement isElementPresented(By element, int time) {
-		WebElement e = null;
+	public boolean isElementPresented(WebElement element) {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, time);
-			e = wait.until(ExpectedConditions.presenceOfElementLocated(element));
-			HtmlReporter.info(String.format("Element: [%s] is presented", element.toString()));
-			return e;
-		} catch (TimeoutException ex) {
-			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
+			return element != null;
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+	
+	public WebElement isElementPresented(By locator, int timeout) {
+		WebElement element = null;
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, timeout);
+			return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		} catch (Exception ex) {
 			return null;
 		}
 	}
@@ -899,14 +911,38 @@ public class AppiumBaseDriver {
 	public void resetApp() throws Exception {
 		try {
 			driver.closeApp();
-			Thread.sleep(5000);
 			driver.launchApp();
-			Thread.sleep(3000);
 			HtmlReporter.pass("Reset app successfully");
 		} catch (Exception e) {
 			HtmlReporter.fail("Cannot reset app!", e, "");
 			throw e;
 		}
+	}
+	
+	/**
+	 * This method is used to close application
+	 * 
+	 * @author tunn6
+	 * @param None
+	 * @return None
+	 * @throws Exception
+	 * @throws Exception
+	 */
+	public void closeApp() throws Exception {
+			driver.closeApp();
+	}
+	
+	/**
+	 * This method is used to launch application
+	 * 
+	 * @author tunn6
+	 * @param None
+	 * @return None
+	 * @throws Exception
+	 * @throws Exception
+	 */
+	public void launchApp() throws Exception {
+			driver.launchApp();
 	}
 
 }

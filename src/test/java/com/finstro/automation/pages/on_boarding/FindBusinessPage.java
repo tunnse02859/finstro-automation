@@ -5,6 +5,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import static com.finstro.automation.utility.Assertion.*;
+
+import java.util.List;
+
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -30,12 +34,15 @@ public class FindBusinessPage {
 	
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_name")
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell/XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[1]")
 	private WebElement firstMatchBusiniessName;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_abn_acn")
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell/XCUIElementTypeStaticText[2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[1]/XCUIElementTypeStaticText[2]")
 	private WebElement firstMatchBusinessABNACN;
+	
+	@iOSXCUITFindBy(className = "XCUIElementTypeCell")
+	private List<MobileElement> searchedBusiness;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/search_no_result_title")
 	private WebElement noResulthMatch;
@@ -71,8 +78,12 @@ public class FindBusinessPage {
 	}
 
 	public void clickOnFirstMatched() throws Exception {
-		driver.click(firstMatchBusiniessName);
-		Thread.sleep(3000);
+		if(searchedBusiness.size() > 0) {
+			searchedBusiness.get(0).click();
+			return;
+		}
+		
+		throw new Exception("There is not results for the search criteria");
 	}
 
 }

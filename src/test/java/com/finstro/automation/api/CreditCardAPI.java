@@ -68,9 +68,12 @@ public class CreditCardAPI extends FinstroAPI {
 	}
 
 	public void saveCard(JSONObject card) throws Exception {
-		Thread.sleep(5000);
-		new APIRequest().baseUrl(Constant.API_HOST).path(saveCardEnpoint).addHeader("Content-Type", "application/json")
-				.oauth2(accessToken).body(card.toString()).post().then().verifyResponseCode(200).flush();
+		if (card != null) {
+
+			new APIRequest().baseUrl(Constant.API_HOST).path(saveCardEnpoint)
+					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(card.toString()).post()
+					.then().verifyResponseCode(200).flush();
+		}
 
 	}
 
