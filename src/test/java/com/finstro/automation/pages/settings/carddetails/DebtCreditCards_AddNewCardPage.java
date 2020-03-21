@@ -44,6 +44,10 @@ public class DebtCreditCards_AddNewCardPage {
 	@iOSXCUITFindBy(accessibility = "DEBIT/CREDIT CARDS")
 	private WebElement btnBack;
 	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error' || name contains 'Success'")
+	private WebElement statusAlert;
+	
 	public DebtCreditCards_AddNewCardPage(AppiumBaseDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
@@ -78,6 +82,11 @@ public class DebtCreditCards_AddNewCardPage {
 	public DebtCreditCardsPage saveChanges() throws Exception {
 		driver.click(btnSaveSettings);
 		return new DebtCreditCardsPage(driver);
+	}
+	
+	public String getSaveStatus() throws Exception {
+		driver.waitForElementDisplayed(statusAlert, 30);
+		return driver.getText(statusAlert);
 	}
 	
 }

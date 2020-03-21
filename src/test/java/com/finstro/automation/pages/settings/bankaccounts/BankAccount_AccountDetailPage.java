@@ -75,6 +75,7 @@ public class BankAccount_AccountDetailPage {
 	}
 	
 	public String getSaveStatus() throws Exception {
+		driver.waitForElementDisplayed(statusAlert, 30);
 		return driver.getText(statusAlert);
 	}
 	

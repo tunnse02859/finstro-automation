@@ -60,8 +60,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
-			assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
-					"You are on the Add new account page");
+			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
 
 			// Add new account
 			addBankAccountPage.setAccountName(name);
@@ -110,8 +109,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
-			assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
-					"You are on the Add new account page");
+			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
 
 			// Add new account
 			addBankAccountPage.setAccountName(name);
@@ -143,7 +141,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			status = detailAccountPage.getSaveStatus();
 			Assert.assertTrue(status.contains("Bank Account set as default"), status);
 
-			// Verify new bank account on UI
+			// Verify the default bank account on UI
 			Assert.assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after set default");
 			Assert.assertTrue(accountPage.isDefaultBankAccount(name), "The greentick doesn't appear!");
 
@@ -179,8 +177,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
-			assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
-					"You are on the Add new account page");
+			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
 
 			// Add new account
 			addBankAccountPage.setAccountName(name);
@@ -200,7 +197,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			Assert.assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
 					"Checking new card by API: ADD FAILED");
 
-			/********* Set the card as default *********************/
+			/********* Delete the bank account *********************/
 			// Is on Detail Bank Account page
 			detailAccountPage = accountPage.selectBankAccountDetailsByName(name);
 			Assert.assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page");

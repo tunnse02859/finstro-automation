@@ -70,6 +70,7 @@ public class BankAccount_AddNewBankPage {
 	}
 	
 	public String getSaveStatus() throws Exception {
+		driver.waitForElementDisplayed(statusAlert, 30);
 		return driver.getText(statusAlert);
 	}
 	

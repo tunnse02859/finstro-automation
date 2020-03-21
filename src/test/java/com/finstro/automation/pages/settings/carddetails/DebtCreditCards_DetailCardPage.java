@@ -94,6 +94,7 @@ public class DebtCreditCards_DetailCardPage {
 	
 	public DebtCreditCardsPage setDefaultCard() throws Exception {
 		driver.click(btnDefault);
+		driver.waitForElementPresent(statusAlert, 30);
 		return new DebtCreditCardsPage(driver);
 	}
 	
@@ -104,6 +105,7 @@ public class DebtCreditCards_DetailCardPage {
 	}
 	
 	public String getSaveStatus() throws Exception {
+		driver.waitForElementDisplayed(statusAlert, 30);
 		return driver.getText(statusAlert);
 	}
 	
