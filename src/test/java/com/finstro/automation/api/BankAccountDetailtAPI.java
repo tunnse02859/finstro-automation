@@ -17,7 +17,7 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 		return bankDetails;
 	}
 
-	public JSONObject getCreditCardInfoByName(String strNameOnAccount) throws Exception {
+	public JSONObject getBankAccountInfoByName(String strNameOnAccount) throws Exception {
 		JSONArray bankDetails = getBankDetailInfo();
 		if (bankDetails.isEmpty()) {
 			return null;
@@ -49,16 +49,15 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 		return null;
 	}
 
-	public boolean isDefaultCard(String strNameOnAccount) throws Exception {
+	public boolean isDefaultBankAccount(String strNameOnAccount) throws Exception {
 		JSONObject defaultAccount = getDefaultAccountInfo();
 
 		return defaultAccount.getString("name").equals(strNameOnAccount);
 	}
 
-	public void removeCardByName(String strNameOnAccount) throws Exception {
+	public void removeBankAccountByName(String strNameOnAccount) throws Exception {
 
-		JSONObject account = getCreditCardInfoByName(strNameOnAccount);
-		Thread.sleep(5000);
+		JSONObject account = getBankAccountInfoByName(strNameOnAccount);
 		if (account != null) {
 			new APIRequest().baseUrl(Constant.API_HOST).path(removeAccountEndpoint)
 					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post()
@@ -66,10 +65,9 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 		}
 	}
 
-	public void saveCard(JSONObject card) throws Exception {
-		Thread.sleep(5000);
+	public void saveBankAccount(JSONObject account) throws Exception {
 		new APIRequest().baseUrl(Constant.API_HOST).path(saveAccountEndpoint)
-				.addHeader("Content-Type", "application/json").oauth2(accessToken).body(card.toString()).post().then()
+				.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post().then()
 				.verifyResponseCode(200).flush();
 
 	}

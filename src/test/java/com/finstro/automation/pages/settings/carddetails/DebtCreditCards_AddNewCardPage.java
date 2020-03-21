@@ -77,7 +77,6 @@ public class DebtCreditCards_AddNewCardPage {
 	
 	public DebtCreditCardsPage saveChanges() throws Exception {
 		driver.click(btnSaveSettings);
-		driver.wait(20);
 		return new DebtCreditCardsPage(driver);
 	}
 	

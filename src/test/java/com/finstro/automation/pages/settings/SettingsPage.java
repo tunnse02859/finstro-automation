@@ -3,6 +3,7 @@ package com.finstro.automation.pages.settings;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
+import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 
@@ -95,4 +96,10 @@ public class SettingsPage {
     	driver.clickByPosition(nvgProfileDetails,"middle");
     	return new SettingProfile_ProfileDetailPage(driver);
     }
+    
+    public BankAccountPage goToBankAccountPage() throws Exception{
+    	driver.clickByPosition(nvgBankAccountDetails,"middle");
+    	return new BankAccountPage(driver);
+    }
+    
 }

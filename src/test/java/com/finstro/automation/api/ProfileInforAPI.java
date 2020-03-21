@@ -10,7 +10,6 @@ public class ProfileInforAPI extends FinstroAPI {
 
 	public void saveDrivingLicense(String drivingLicenseData) throws Exception {
 		if (drivingLicenseData != null && !drivingLicenseData.equals("")) {
-			Thread.sleep(5000);
 			new APIRequest().baseUrl(Constant.API_HOST).path(saveDrivingLicense)
 					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(drivingLicenseData).post()
 					.then().verifyResponseCode(200).flush();
@@ -20,7 +19,6 @@ public class ProfileInforAPI extends FinstroAPI {
 
 	public void saveMedicare(String medicareData) throws Exception {
 		if (medicareData != null && !medicareData.equals("")) {
-			Thread.sleep(5000);
 			new APIRequest().baseUrl(Constant.API_HOST).path(saveMedicare).addHeader("Content-Type", "application/json")
 					.oauth2(accessToken).body(medicareData).post().then().verifyResponseCode(200).flush();
 		}

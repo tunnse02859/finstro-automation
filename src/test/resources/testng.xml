@@ -4,8 +4,8 @@
   <test name="Test">
     <classes>
       <class name="com.finstro.automation.test.regression.SignInTest"/>
-      <class name="com.finstro.automation.test.regression.HomeTransactionBillTest"/>
-      <!-- <class name="com.finstro.automation.test.regression.SettingsProfileTest"/> -->
+      <!-- <class name="com.finstro.automation.test.regression.HomeTransactionBillTest"/> -->
+      <class name="com.finstro.automation.test.regression.SettingsProfileTest"/>
       <class name="com.finstro.automation.test.regression.SettingsApprovalBankUploadTests"/>
       <class name="com.finstro.automation.test.regression.SettingBusinessDetailsTests"/>
       <class name="com.finstro.automation.test.regression.SettingsDebtCreditCardsTests"/>

@@ -57,7 +57,8 @@ public class DebtCreditCards_DetailCardPage {
 	private WebElement popupMessage;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
-	private WebElement popupType;
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error' || name contains 'Success'")
+	private WebElement statusAlert;
 	
 	
 	public DebtCreditCards_DetailCardPage(AppiumBaseDriver driver) {
@@ -93,15 +94,17 @@ public class DebtCreditCards_DetailCardPage {
 	
 	public DebtCreditCardsPage setDefaultCard() throws Exception {
 		driver.click(btnDefault);
-		driver.wait(20);
 		return new DebtCreditCardsPage(driver);
 	}
 	
 	public DebtCreditCardsPage deleteCard() throws Exception {
 		driver.click(btnDelete);
 		driver.click(btnOk);
-		driver.wait(20);
 		return new DebtCreditCardsPage(driver);
+	}
+	
+	public String getSaveStatus() throws Exception {
+		return driver.getText(statusAlert);
 	}
 	
 }

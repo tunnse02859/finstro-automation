@@ -14,6 +14,7 @@ import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.pages.settings.SettingsPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
+import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
@@ -135,4 +136,15 @@ public class WorkFlows {
 		return debtCreditCardsPage;
 	}
 
+	public static BankAccountPage goToSettingBankAccountPage(AppiumBaseDriver driver) throws Exception {
+
+		SettingsPage settingsPage = goToTheSettingsPage(driver);
+
+		// goto BankAccountPage page
+		BankAccountPage bankAccountPage = settingsPage.goToBankAccountPage();
+		assertTrue(bankAccountPage.isActive(), "You're not on the BankAccountPage",
+				"You're on the BankAccountPage");
+
+		return bankAccountPage;
+	}
 }

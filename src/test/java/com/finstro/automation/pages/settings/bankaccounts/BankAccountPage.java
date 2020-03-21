@@ -21,23 +21,28 @@ public class BankAccountPage {
 	private WebElement textTitle;
 
 	@iOSXCUITFindBy(accessibility = "addBankAccount")
-	private WebElement btnAddNewCard;
+	private WebElement btnAddNewBankAccount;
 
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTable/XCUIElementTypeCell")
-	private List<WebElement> cardList;
+	private List<WebElement> bankAccountList;
 
-	private By getCardNameElement() {
+	private By getBankAccountNameElement() {
 		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/name_edt")
 				: MobileBy.iOSNsPredicateString(("name = 'name on account'"));
 	}
 
-	private By getCardNumberElement() {
+	private By getBankAccountNumberElement() {
 		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/number_edt") : null;
 	}
 
 	private By getBtnNextElement() {
 		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/btnNext") : null;
+	}
+	
+	private By getGreenTickDefaultBankAccountElement() {
+		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/green_tick")
+				: MobileBy.iOSNsPredicateString("name='check_mark_14x14'");
 	}
 
 
@@ -51,49 +56,45 @@ public class BankAccountPage {
 		return driver.isElementDisplayed(textTitle);
 	}
 
-	public void scrollUntillViewCard(String strNameOnCard) {
-		if (driver.isAndroidDriver()) {
-			String locator = String.format(
-					"new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/name_edt\").text(\"%s\"))",
-					strNameOnCard);
-			By cardName = MobileBy.AndroidUIAutomator(locator);
-			driver.getDriver().findElement(cardName);
-		}
-		// Need to implement for IOS
-		else {
+	public WebElement findBankAccount(String strNameOnBank) throws Exception {
 
-		}
-	}
-
-	public WebElement findCard(String strNameOnCard) throws Exception {
-
-		scrollUntillViewCard(strNameOnCard);
-		WebElement element = cardList.stream()
-				.filter(e -> e.findElement(getCardNameElement()).getText().contains(strNameOnCard)).findAny()
+		driver.scrollUntillViewText(strNameOnBank);
+		WebElement element = bankAccountList.stream()
+				.filter(e -> e.findElement(getBankAccountNameElement()).getText().contains(strNameOnBank)).findAny()
 				.orElse(null);
 		return element;
 	}
 
-	public BankAccount_AccountDetailPage selectCardDetailsByName(String strNameOnCard) throws Exception {
-		WebElement card = findCard(strNameOnCard);
-		driver.clickByPosition(card, "middle");
+	public BankAccount_AccountDetailPage selectBankAccountDetailsByName(String strNameOnBank) throws Exception {
+		WebElement account = findBankAccount(strNameOnBank);
+		driver.clickByPosition(account, "middle");
 		return new BankAccount_AccountDetailPage(driver);
 	}
 
-	public BankAccount_AddNewBankPage addNewCard() throws Exception {
-		driver.click(btnAddNewCard);
+	public BankAccount_AddNewBankPage addNewBankAccount() throws Exception {
+		driver.click(btnAddNewBankAccount);
 		return new BankAccount_AddNewBankPage(driver);
 	}
 
-	public boolean isCardExisting(String strNameOnCard) throws Exception {
+	public boolean isBankAccountExisting(String strNameOnBank) throws Exception {
 		try {
-			if (findCard(strNameOnCard) != null) {
+			if (findBankAccount(strNameOnBank) != null) {
 				return true;
 			}
 			return false;
 		} catch (Exception ex) {
 			return false;
 		}
+	}
+	
+	public boolean isDefaultBankAccount(String strNameOnBank) throws Exception {
+		try {
+			return findBankAccount(strNameOnBank).findElement(getGreenTickDefaultBankAccountElement()) != null;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+
 	}
 
 }

@@ -49,7 +49,8 @@ public class BankAccount_AccountDetailPage {
 	private WebElement popupMessage;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
-	private WebElement popupType;
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error' || name contains 'Success'")
+	private WebElement statusAlert;
 	
 	
 	public BankAccount_AccountDetailPage(AppiumBaseDriver driver) {
@@ -61,33 +62,20 @@ public class BankAccount_AccountDetailPage {
 		return driver.isElementDisplayed(textTitle);
 	}
 	
-	public void changeCardName(String strNameOnCard) throws Exception {
-		driver.inputTextWithClear(txtCardName, strNameOnCard);
-	}
 	
-	public void changeCardNumber(String strCardNumber) throws Exception {
-		driver.inputTextWithClear(txtBSB, strCardNumber);
-	}
-	
-	public void changeCardExpiry(String strExpiry) throws Exception {
-		if(driver.isAndroidDriver()) {
-			driver.inputTextWithClear(txtAccountNumber, strExpiry);
-		}else {
-			driver.selectPickerWheel(txtAccountNumber, "February");
-		}
-	}
-	
-	public BankAccountPage setDefaultCard() throws Exception {
+	public BankAccountPage setDefaultBankAccount() throws Exception {
 		driver.click(btnDefault);
-		driver.wait(10);
 		return new BankAccountPage(driver);
 	}
 	
-	public BankAccountPage deleteCard() throws Exception {
+	public BankAccountPage deleteBankAccount() throws Exception {
 		driver.click(btnDelete);
 		driver.click(btnOk);
-		driver.wait(10);
 		return new BankAccountPage(driver);
+	}
+	
+	public String getSaveStatus() throws Exception {
+		return driver.getText(statusAlert);
 	}
 	
 }
