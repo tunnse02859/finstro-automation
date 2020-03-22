@@ -1,6 +1,7 @@
 package com.finstro.automation.test.regression;
 
 import org.testng.annotations.Test;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import static com.finstro.automation.utility.Assertion.*;
 
@@ -34,7 +35,8 @@ public class SettingsProfileTest extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		profileAPI = new ProfileInforAPI();
-		profileAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		profileAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -46,37 +48,30 @@ public class SettingsProfileTest extends MobileTestSetup {
 				"Register page showed as default page");
 
 		// Login
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 
 	}
 
 	@Test
-	public void SettingProfile_01_VerifyUserCanEditTheProfileInfomation() throws Exception {
+	public void SettingProfile_01_VerifyProfileDetails() throws Exception {
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
 
 		// verify data on screen with API
-		profileAPI.getProfileDetailInfor();
-		settingProfilePage.verifyProfileInfor(Common.getTestVariable("contacts.firstGivenName", true),
-				Common.getTestVariable("contacts.familyName", true),
-				Common.getTestVariable("contacts.emailAddress", true),
-				Common.getTestVariable("contacts.mobilePhoneNumber", true));
+		profileAPI.recoveryData().then()
+				.verifyJsonNodeEqual("contacts.firstGivenName", settingProfilePage.getFirstName())
+				.verifyJsonNodeEqual("contacts.familyName", settingProfilePage.getLastName())
+				.verifyJsonNodeEqual("contacts.mobilePhoneNumber", settingProfilePage.getPhoneNumber())
+				.verifyJsonNodeEqual("contacts.emailAddress", settingProfilePage.getEmail());
 
-		// Input data
-		settingProfilePage.inputProfileInfor("Phong", "Trinh");
+		assertEquals(settingProfilePage.getResidential(), profileAPI.getResidentialAddress(),
+				"Residential address matches", "Residential address doesn't match");
+
 	}
 
-	@DataProvider(name = "SettingProfile02")
-	public Object[][] SettingProfile_02_DataProvider() {
-		return new Object[][] {
-				{ "Female", "Phong", "Trinh", "Van", "ACT", "01/01/2021", "0123456789", "20/07/2025" } };
-	}
+	@Test
+	public void SettingProfile_02_VerifyDrivingLicenceInformation() throws Exception {
 
-	@Test(dataProvider = "SettingProfile02")
-	public void SettingProfile_02_VerifyUserCanUpdateTheDrivingLicenceInformation(String genderName,
-			String firstNameString, String lastNameString, String middleNameString, String stateName, String dobString,
-			String licenseNumberString, String expireDateString) throws Exception {
-
-		boolean resetData = false;
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
 
 		// Go to the second setting driving license page
@@ -84,53 +79,23 @@ public class SettingsProfileTest extends MobileTestSetup {
 		assertTrue(settingProfileDrivingLicencePage.isActive(),
 				"Seting Profile - Driving License screen is not displayed",
 				"Seting Profile - Driving License screen is displayed");
-		try {
-			// verify data displayed on screen with API
-			profileAPI.getDrivingLicenceInfor();
 
-			settingProfileDrivingLicencePage.verifyDriverLicenseInfor(
-					Common.getTestVariable("gender", true).equalsIgnoreCase("M") ? "Male" : "Female",
-					Common.getTestVariable("firstName", true), Common.getTestVariable("surname", true),
-					Common.getTestVariable("middleName", true), Common.getTestVariable("state", true),
-					Common.getTestVariable("dateOfBirth", true), Common.getTestVariable("licenceNumber", true),
-					Common.getTestVariable("validTo", true));
+		// verify data on screen with API
+		profileAPI.recoveryData().then()
+				.verifyJsonNodeEqual("drivingLicence.gender", settingProfileDrivingLicencePage.getGender())
+				.verifyJsonNodeEqual("drivingLicence.firstName", settingProfileDrivingLicencePage.getFirstName())
+				.verifyJsonNodeEqual("drivingLicence.surname", settingProfileDrivingLicencePage.getLastName())
+				.verifyJsonNodeEqual("drivingLicence.middleName", settingProfileDrivingLicencePage.getMiddleName())
+				.verifyJsonNodeEqual("drivingLicence.state", settingProfileDrivingLicencePage.getState())
+				.verifyJsonNodeEqual("drivingLicence.dateOfBirth", settingProfileDrivingLicencePage.getDob())
+				.verifyJsonNodeEqual("drivingLicence.licenceNumber",
+						settingProfileDrivingLicencePage.getDriverLicenseNumber())
+				.verifyJsonNodeEqual("drivingLicence.validTo", settingProfileDrivingLicencePage.getExpireDate());
 
-			// input data
-			settingProfileDrivingLicencePage.inputDriverLicenseInfor(genderName, firstNameString, lastNameString,
-					middleNameString, stateName, dobString, licenseNumberString, expireDateString);
-
-			// click next and verify data saved
-			settingProfileDrivingLicencePage.clickSaveSetting();
-			Thread.sleep(10000);
-			resetData = true;
-			profileAPI.recoveryData().then().verifyResponseCode(200)
-					.verifyJsonNodeEqual("drivingLicence.firstName", firstNameString)
-					.verifyJsonNodeEqual("drivingLicence.surname", lastNameString)
-					.verifyJsonNodeEqual("drivingLicence.middleName", middleNameString)
-					.verifyJsonNodeEqual("drivingLicence.gender", genderName.equalsIgnoreCase("Female") ? "F" : "M")
-					.verifyJsonNodeEqual("drivingLicence.licenceNumber", licenseNumberString)
-					.verifyJsonNodeEqual("drivingLicence.state", stateName).flush();
-			// .verifyJsonNodeEqual("drivingLicence.dateOfBirth", "2021/01/01")
-			// .verifyJsonNodeEqual("drivingLicence.validTo", "08/2020").flush();
-			
-		} finally {
-			if (resetData) {
-				Log.info("---- reset driving license data ----");
-				profileAPI.saveDrivingLicense(Common.getTestVariable("driverLicenseJson", true));
-			}
-		}
 	}
 
-	@DataProvider(name = "SettingProfile_03")
-	public Object[][] SettingProfile_03_DataProvider() {
-		return new Object[][] {
-				{ "Phong", "Van", "Trinh", "Female", "27/02/1983", "Green", "2684483925", "1", "03/2020" } };
-	}
-
-	@Test(dataProvider = "SettingProfile_03")
-	public void SettingProfile_03_VerifyUserCanUpdateTheMedicareInformation(String firstNameString,
-			String middleNameString, String lastNameString, String genderName, String dobString, String cardColor,
-			String medicareNumberString, String referenceNumberString, String expireDateString) throws Exception {
+	@Test
+	public void SettingProfile_03_VerifyMedicareInformation() throws Exception {
 
 		boolean resetData = false;
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
@@ -141,40 +106,23 @@ public class SettingsProfileTest extends MobileTestSetup {
 		assertTrue(settingProfileMedicarePage.isActive(), "Seting Profile - Medicare screen is not displayed",
 				"Seting Profile - Medicare screen is displayed");
 
-		try {
-			// call API and verify data
-			profileAPI.getMedicareInfor();
-			settingProfileMedicarePage.verifyMedicareInfor(Common.getTestVariable("firstName", true),
-					Common.getTestVariable("middleInitial", true), Common.getTestVariable("surname", true),
-					Common.getTestVariable("gender", true).equalsIgnoreCase("M") ? "Male" : "Female",
-					Common.getTestVariable("dateOfBirth", true), Common.getTestVariable("cardColor", true),
-					Common.getTestVariable("cardNumber", true), Common.getTestVariable("cardNumberRef", true),
-					Common.getTestVariable("validTo", true));
+		// If user doesn't have medicare
+		if (profileAPI.recoveryData().then().getStringValueFromResponseJson("medicareCard").equals("")) {
 
-			// input data
-			settingProfileMedicarePage.inputMedicareInfor(firstNameString, middleNameString, lastNameString, genderName,
-					dobString, cardColor, medicareNumberString, referenceNumberString, expireDateString);
+			Assert.assertTrue(settingProfileMedicarePage.getFirstName().equals(""), "Firstname matches");
+			Assert.assertTrue(settingProfileMedicarePage.getMiddleName().equals(""), "Middle name matches");
+			Assert.assertTrue(settingProfileMedicarePage.getLastName().equals(""), "Last name matches");
+			Assert.assertTrue(settingProfileMedicarePage.getGender().equals(""), "Gender matches");
+			Assert.assertTrue(settingProfileMedicarePage.getDOB().equals(""), "D.O.B matches");
+			Assert.assertTrue(settingProfileMedicarePage.getCardColor().equals(""), "Card Color matches");
+			Assert.assertTrue(settingProfileMedicarePage.getMedicareNumber().equals(""), "Medicar number matches");
+			Assert.assertTrue(settingProfileMedicarePage.getReferenceNumber().equals(""), "Reference number matches");
+			Assert.assertTrue(settingProfileMedicarePage.getExpiryDate().equals(""), "Expiry date matches");
 
-			// click save and verify
-			settingProfileMedicarePage.clickSaveSetting();
-			resetData = true;
-			profileAPI.recoveryData().then().verifyResponseCode(200)
-					.verifyJsonNodeEqual("medicareCard.identificationId", "null")
-					.verifyJsonNodeEqual("medicareCard.cardNumber", medicareNumberString)
-					.verifyJsonNodeEqual("medicareCard.cardNumberRef", referenceNumberString)
-					.verifyJsonNodeEqual("medicareCard.firstName", firstNameString)
-					.verifyJsonNodeEqual("medicareCard.middleInitial", middleNameString)
-					.verifyJsonNodeEqual("medicareCard.surname", lastNameString)
-					// .verifyJsonNodeEqual("medicareCard.dateOfBirth", "1983-02-27")
-					.verifyJsonNodeEqual("medicareCard.gender", genderName.equalsIgnoreCase("Female") ? "F" : "M")
-					// .verifyJsonNodeEqual("medicareCard.validTo", "2020-03-01")
-					.flush();
-			
-		} finally {
-			if (resetData) {
-				Log.info("---- reset driving license data ----");
-				profileAPI.saveMedicare(Common.getTestVariable("medicareJson", true));
-			}
+		}
+		// If user has medicare
+		else {
+
 		}
 	}
 

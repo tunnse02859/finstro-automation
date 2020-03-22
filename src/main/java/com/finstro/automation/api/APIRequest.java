@@ -190,8 +190,8 @@ public class APIRequest {
 		HtmlReporter.getTest2().pass(MarkupHelper.createAPIRequestStep(request, response));
 	}
 	
-	public RequestResponse then() {
-		return new RequestResponse(request,response);
+	public APIResponse then() {
+		return new APIResponse(request,response);
 	}
 
 	public HttpResponse getResponse() {

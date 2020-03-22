@@ -22,7 +22,6 @@ public class ProfileInforAPI extends FinstroAPI {
 			new APIRequest().baseUrl(Constant.API_HOST).path(saveMedicare).addHeader("Content-Type", "application/json")
 					.oauth2(accessToken).body(medicareData).post().then().verifyResponseCode(200).flush();
 		}
-
 	}
 
 }

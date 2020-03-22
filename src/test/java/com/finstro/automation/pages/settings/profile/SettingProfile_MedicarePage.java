@@ -17,9 +17,6 @@ public class SettingProfile_MedicarePage {
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'MEDICARE'")
 	private WebElement title;
 
-	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/submit_text\"))")
-	@iOSXCUITFindBy(accessibility = "saveSettings")
-	private WebElement saveButton;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_icon")
 	private WebElement backButton;
@@ -69,104 +66,43 @@ public class SettingProfile_MedicarePage {
 		return driver.isElementDisplayed(title);
 	}
 
-	public void clickSaveSetting() throws Exception {
-		driver.click(saveButton);
-		Thread.sleep(10000);
+	public String getFirstName() throws Exception {
+		return driver.getText(firstName);
 	}
-
-	public void selectGender(String genderName) throws Exception {
-		if (driver.isAndroidDriver()) {
-			driver.selectItemFromSpinner(gender, genderName);
-		} else {
-			driver.click(gender);
-			driver.selectPickerWheel(null, genderName);
-		}
+	
+	public String getMiddleName() throws Exception {
+		return driver.getText(middleName);
 	}
-
-	public void inputFirstName(String firstNameString) throws Exception {
-		driver.inputTextWithClear(firstName, firstNameString);
+	
+	public String getLastName() throws Exception {
+		return driver.getText(lastName);
 	}
-
-	public void inputLastName(String lastNameString) throws Exception {
-		driver.inputTextWithClear(lastName, lastNameString);
+	
+	public String getGender() throws Exception {
+		String strGender = driver.getText(gender);
+		return strGender.equalsIgnoreCase("select")? "" : strGender;
 	}
-
-	public void inputMiddleName(String middleNameString) throws Exception {
-		driver.inputTextWithClear(middleName, middleNameString);
+	
+	public String getDOB() throws Exception {
+		return driver.getText(dob).replace("/", "-");
 	}
-
-	public void selectCardColor(String colorName) throws Exception {
-		if (driver.isAndroidDriver()) {
-			driver.selectItemFromSpinner(cardColor, colorName);
-		} else {
-			driver.click(cardColor);
-			driver.selectPickerWheel(null, colorName);
-		}
+	
+	public String getCardColor() throws Exception {
+		String strColor = driver.getText(cardColor);
+		return strColor.equalsIgnoreCase("select")? "" : strColor;
 	}
-
-	public void inputDoB(String dobString) throws Exception {
-		// data must be dd/MM/YYYY
-		driver.inputTextWithClear(dob, dobString);
+	
+	public String getMedicareNumber() throws Exception {
+		return driver.getText(medicareNumber);
 	}
-
-	public void inputMedicareNumber(String medicareNumberString) throws Exception {
-		driver.inputTextWithClear(medicareNumber, medicareNumberString);
+	
+	public String getReferenceNumber() throws Exception {
+		return driver.getText(referenceNumber);
 	}
-
-	public void inputReferenceNumber(String referenceNumberString) throws Exception {
-		driver.inputTextWithClear(referenceNumber, referenceNumberString);
+	
+	public String getExpiryDate() throws Exception {
+		return driver.getText(expireDate).replace("/", "-");
 	}
-
-	public void inputExpireDate(String expireDateString) throws Exception {
-		driver.inputTextWithClear(expireDate, expireDateString);
-	}
-
-	public void inputMedicareInfor(String firstNameString, String middleNameString, String lastNameString,
-			String genderName, String dobString, String cardColor, String medicareNumberString,
-			String referenceNumberString, String expireDateString) throws Exception {
-		inputFirstName(firstNameString);
-		inputMiddleName(middleNameString);
-		inputLastName(lastNameString);
-		selectCardColor(cardColor);
-		inputMedicareNumber(medicareNumberString);
-		inputReferenceNumber(referenceNumberString);
-		selectGender(genderName);
-		// inputDoB(dobString);
-		// inputExpireDate(expireDateString);
-	}
-
-	public void verifyMedicareInfor(String firstNameString, String middleNameString, String lastNameString,
-			String genderName, String dobString, String cardColorString, String medicareNumberString,
-			String referenceNumberString, String expireDateString) throws Exception {
-		assertEquals(driver.getText(firstName), firstNameString, "First Name is displayed incorrectly",
-				"First Name is displayed correctly");
-		assertEquals(driver.getText(middleName), middleNameString, "Middle Name is displayed incorrectly",
-				"Middle Name is displayed correctly");
-		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly",
-				"Last Name is displayed correctly");
-
-		assertEquals(driver.getText(medicareNumber).trim().replace(" ", ""), medicareNumberString,
-				"Medicare number is displayed incorrectly", "Medicare number is displayed correctly");
-		assertEquals(driver.getText(referenceNumber), referenceNumberString,
-				"Reference number is displayed incorrectly", "Reference number is displayed correctly");
-
-		if (cardColorString.equalsIgnoreCase("G")) {
-			cardColorString = "Green";
-		} else if (cardColorString.equalsIgnoreCase("B")) {
-			cardColorString = "Blue";
-		} else if (cardColorString.equalsIgnoreCase("Y")) {
-			cardColorString = "Yellow";
-		}
-		assertEquals(driver.getText(gender), genderName, "Gender is displayed incorrectly",
-				"Gender is displayed correctly");
-		assertEquals(driver.getText(cardColor), cardColorString, "Card color is displayed incorrectly",
-				"Card color is displayed correctly");
-		// assertEquals(driver.getText(expireDate), expireDateString, "expire date is
-		// displayed incorrectly",
-		// "expire date is displayed correctly");
-		// assertEquals(driver.getText(dob), dobString, "Date of birth is displayed
-		// incorrectly", "Date of birth is displayed correctly");
-
-	}
+	
 
 }

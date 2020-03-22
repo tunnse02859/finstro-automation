@@ -35,17 +35,12 @@ public class SettingProfile_ProfileDetailPage {
 	@iOSXCUITFindBy(accessibility = "saveSettings")
 	private WebElement saveButton;
 
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_icon")
-	private WebElement backButton;
-
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/email_edt")
 	@iOSXCUITFindBy(accessibility = "email address")
 	private WebElement emailAddress;
 
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/dob_edt")
-	private WebElement dob;
-
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_trading_address_spinner")
+	@iOSXCUITFindBy(accessibility = "residental address")
 	private WebElement residential;
 
 	public SettingProfile_ProfileDetailPage(AppiumBaseDriver driver) {
@@ -55,33 +50,6 @@ public class SettingProfile_ProfileDetailPage {
 
 	public boolean isActive() throws Exception {
 		return driver.isElementDisplayed(title);
-	}
-
-	public void clickSaveSetting() throws Exception {
-		driver.click(saveButton);
-	}
-
-	public void verifyProfileInfor(String firstNameString, String lastNameString, String emailAddressString,
-			String mobileNumberString) throws Exception {
-		assertEquals(driver.getText(firstName), firstNameString, "First Name is displayed incorrectly",
-				"First Name is displayed correctly");
-		assertEquals(driver.getText(lastName), lastNameString, "Last Name is displayed incorrectly",
-				"Last Name is displayed correctly");
-		assertEquals(driver.getText(emailAddress), emailAddressString, "Email address is displayed incorrectly",
-				"Email address is displayed correctly");
-		assertEquals(driver.getText(mobileNumber), mobileNumberString,
-				"Mobile number is displayed incorrectly", "Mobile number is displayed correctly");
-	}
-	
-	public void inputProfileInfor(String firstNameString, String lastNameString) throws Exception {
-		setFirstName(firstNameString);
-		setLastName(lastNameString);
-	}
-
-	public SettingProfile_DrivingLicensePage toSettingDrivingLicensePage() throws Exception {
-		driver.swipe(DIRECTION.LEFT);
-		driver.wait(2);
-		return new SettingProfile_DrivingLicensePage(driver);
 	}
 
 	public String getEmail() throws Exception {
@@ -100,42 +68,20 @@ public class SettingProfile_ProfileDetailPage {
 		return driver.getText(lastName);
 	}
 
-	public String getDOB() throws Exception {
-		return driver.getText(dob);
-	}
-
 	public String getResidential() throws Exception {
-		return driver.getText(residential);
-	}
-
-	public void setEmail(String email) throws Exception {
-		driver.inputTextWithClear(emailAddress, email);
-	}
-
-	public void setPhoneNumber(String phoneValue) throws Exception {
-		driver.inputTextWithClear(mobileNumber, phoneValue);
-	}
-
-	public void setFirstName(String firstname) throws Exception {
-		driver.inputTextWithClear(firstName, firstname);
-	}
-
-	public void setLastName(String lastname) throws Exception {
-		driver.inputTextWithClear(lastName, lastname);
-	}
-
-	public void setResidential(String residentialValue) throws Exception {
-		driver.selectItemFromSpinner(residential, residentialValue);
-	}
-
-	public void saveChanges() throws Exception {
-		driver.click(saveButton);
+		return driver.getText(residential).trim();
 	}
 
 	public SettingProfile_MedicarePage gotoSettingProfileMedicarePage() throws Exception {
 		driver.swipe(DIRECTION.LEFT);
 		driver.swipe(DIRECTION.LEFT);
 		return new SettingProfile_MedicarePage(driver);
+	}
+	
+	public SettingProfile_DrivingLicensePage toSettingDrivingLicensePage() throws Exception {
+		driver.swipe(DIRECTION.LEFT);
+		driver.wait(2);
+		return new SettingProfile_DrivingLicensePage(driver);
 	}
 
 }

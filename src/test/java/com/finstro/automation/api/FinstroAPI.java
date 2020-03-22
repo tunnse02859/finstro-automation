@@ -77,8 +77,8 @@ public class FinstroAPI {
 				.extractJsonValue("streetNumber", "businessDetails.businessTradingAddress.streetNumber")
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
 				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb")
-				
-				//other
+
+				// other
 				.extractJsonValue("email", "businessDetails.email")
 				.extractJsonValue("phoneNumber", "businessDetails.phoneNumber")
 				.extractJsonValue("website", "businessDetails.website")
@@ -91,8 +91,7 @@ public class FinstroAPI {
 				.extractJsonValue("incorporationDate", "businessDetails.incorporationDate")
 				.extractJsonValue("phoneNumber", "businessDetails.phoneNumber")
 				.extractJsonValue("gstDate", "businessDetails.gstDate")
-				.extractJsonValue("timeTrading", "businessDetails.timeTrading")
-			.flush();
+				.extractJsonValue("timeTrading", "businessDetails.timeTrading").flush();
 
 		String businessTradingAddress = String.format("%s %s %s %s %s %s", Common.getTestVariable("streetNumber", true),
 				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
@@ -167,10 +166,9 @@ public class FinstroAPI {
 				.extractJsonValue("streetNumber", "residentialAddress.streetNumber")
 				.extractJsonValue("streetType", "residentialAddress.streetType")
 				.extractJsonValue("suburb", "residentialAddress.suburb").flush();
-		String residentialAddress = String.format("%s %s %s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
-				Common.getTestVariable("suburb", true), Common.getTestVariable("state", true),
-				Common.getTestVariable("postCode", true));
+		String residentialAddress = String.format("%s %s %s %s %s", Common.getTestVariable("streetNumber", true),
+				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
+				Common.getTestVariable("state", true));
 		return residentialAddress;
 	}
 
@@ -198,8 +196,7 @@ public class FinstroAPI {
 				.extractJsonValue("dateOfBirth", "drivingLicence.dateOfBirth")
 				.extractJsonValue("licenceNumber", "drivingLicence.licenceNumber")
 				.extractJsonValue("state", "drivingLicence.state").extractJsonValue("validTo", "drivingLicence.validTo")
-				.extractJsonValue("driverLicenseJson", "drivingLicence")
-			.flush();
+				.extractJsonValue("driverLicenseJson", "drivingLicence").flush();
 	}
 
 	public void getMedicareInfor() throws Exception {
@@ -212,8 +209,7 @@ public class FinstroAPI {
 				.extractJsonValue("identificationId", "medicareCard.identificationId")
 				.extractJsonValue("middleInitial", "medicareCard.middleInitial")
 				.extractJsonValue("surname", "medicareCard.surname").extractJsonValue("validTo", "medicareCard.validTo")
-				.extractJsonValue("medicareJson", "medicareCard")
-				.flush();
+				.extractJsonValue("medicareJson", "medicareCard").flush();
 	}
 
 	public void getProfileDetailInfor() throws Exception {
@@ -222,35 +218,28 @@ public class FinstroAPI {
 				.extractJsonValue("contacts.familyName", "contacts[0].familyName")
 				.extractJsonValue("contacts.firstGivenName", "contacts[0].firstGivenName")
 				.extractJsonValue("contacts.mobilePhoneNumber", "contacts[0].mobilePhoneNumber")
-				.extractJsonValue("contacts.dob", "contacts[0].dob")
-				.flush();
+				.extractJsonValue("contacts.dob", "contacts[0].dob").flush();
 	}
-	
+
 	public void getHomePageValues() throws Exception {
-		recoveryData().then().verifyResponseCode(200)
-			.extractJsonValue("availableBalance", "availableBalance")
-			.extractJsonValue("balance", "balance")
-			.extractJsonValue("nextBillAmount", "nextBillAmount")
-			.extractJsonValue("limit", "selectedCreditAmount")
-		.flush();
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance")
+				.extractJsonValue("balance", "balance").extractJsonValue("nextBillAmount", "nextBillAmount")
+				.extractJsonValue("limit", "selectedCreditAmount").flush();
 	}
 
 	public void getApprovalStatus() throws Exception {
-		recoveryData().then().verifyResponseCode(200)
-			.extractJsonValue("idCheckStatus", "idCheckPassed")
-			.extractJsonValue("bankStatementStatus", "bankStatementDone")
-			.extractJsonValue("directDebitAuthorityStatus", "directDebitAuthority.done")
-			.extractJsonValue("creditAssessmentStatus", "creditAssessmentStatus")
-			.flush();
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("idCheckStatus", "idCheckPassed")
+				.extractJsonValue("bankStatementStatus", "bankStatementDone")
+				.extractJsonValue("directDebitAuthorityStatus", "directDebitAuthority.done")
+				.extractJsonValue("creditAssessmentStatus", "creditAssessmentStatus").flush();
 	}
-	
+
 	public JSONArray getBankAccountsInfo() throws Exception {
-		recoveryData().then().verifyResponseCode(200)
-				.extractJsonValue("bankAccounts","bankData.bankAccounts").flush();
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("bankAccounts", "bankData.bankAccounts").flush();
 		JSONArray bankAccounts = null;
 		try {
-			 bankAccounts = new JSONArray(Common.getTestVariable("bankAccounts", false));
-		}catch (Exception e) {
+			bankAccounts = new JSONArray(Common.getTestVariable("bankAccounts", false));
+		} catch (Exception e) {
 			Log.info("Bank accounts are not submitted");
 			return null;
 		}
