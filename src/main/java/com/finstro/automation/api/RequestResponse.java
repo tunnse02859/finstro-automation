@@ -269,7 +269,7 @@ public class RequestResponse {
 
 	public void flush() throws Exception {
 		if (exception != null || isAssertOrExtractFailed()) {
-			HtmlReporter.getTest().fail(MarkupHelper.createAPIRequestStep(request, response, responseBody,
+			HtmlReporter.getTest2().fail(MarkupHelper.createAPIRequestStep(request, response, responseBody,
 					assertionList, extractedVariable, exception));
 			if (exception != null) {
 				Log.error("Test failed due to API Request failed");
@@ -279,7 +279,7 @@ public class RequestResponse {
 				throw new Exception("Test failed due to API Request failed");
 			}
 		} else {
-			HtmlReporter.getTest().pass(MarkupHelper.createAPIRequestStep(request, response, responseBody,
+			HtmlReporter.getTest2().pass(MarkupHelper.createAPIRequestStep(request, response, responseBody,
 					assertionList, extractedVariable));
 		}
 	}

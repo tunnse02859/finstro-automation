@@ -86,3 +86,19 @@ span.put{
 	padding: 5px 10px;
 	line-height: 30px;
 }
+
+a.api-passed:hover{
+	text-decoration: underline !important;
+}
+
+a.api-failed:hover{
+	text-decoration: underline !important;
+}
+
+a.api-failed{
+	color: red;
+}
+
+.wrapper{
+background-color: #e6e6e6;
+}

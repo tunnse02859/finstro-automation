@@ -9,6 +9,7 @@ public class Common {
 	private static final String LOWER_ALPHA = "abcdefghijklmnopqrstuvwxyz";
 	private static final String UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private static final String NUMERIC = "0123456789";
+	public static String currentTest = "";
 	
 	public static String randomAlphaNumeric(int stringLength) {
 		String base = LOWER_ALPHA + UPPER_ALPHA + NUMERIC;

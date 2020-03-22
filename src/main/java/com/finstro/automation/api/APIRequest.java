@@ -181,13 +181,13 @@ public class APIRequest {
 			}
 			response = httpClient.execute(request);
 		} catch (Exception e) {
-			HtmlReporter.getTest().fail(MarkupHelper.createAPIRequestStep(request, e));
+			HtmlReporter.getTest2().fail(MarkupHelper.createAPIRequestStep(request, e));
 			throw e;
 		}
 	}
 	
 	public void flush() {
-		HtmlReporter.getTest().pass(MarkupHelper.createAPIRequestStep(request, response));
+		HtmlReporter.getTest2().pass(MarkupHelper.createAPIRequestStep(request, response));
 	}
 	
 	public RequestResponse then() {

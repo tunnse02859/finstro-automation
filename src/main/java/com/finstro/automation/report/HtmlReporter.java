@@ -18,6 +18,7 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.finstro.automation.utility.Common;
 import com.finstro.automation.utility.FilePaths;
 
 public class HtmlReporter {
@@ -168,6 +169,17 @@ public class HtmlReporter {
 		if (getNode() == null) {
 			return getParent();
 		} else {
+			return getNode();
+		}
+	}
+	
+	public static synchronized ExtentTest getTest2() {
+		if (getNode() == null) {
+			return getParent();
+		} else {
+			if (!getNode().getModel().getParent().getName().equalsIgnoreCase(Common.currentTest)) {
+				return getParent();
+			}
 			return getNode();
 		}
 	}
