@@ -5,6 +5,7 @@ import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
 import static com.finstro.automation.utility.Assertion.*;
 
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -18,6 +19,7 @@ public class SettingsApproval_BankAccountConnectedPage {
 	private AppiumBaseDriver driver;
 	
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'BANK ACCOUNTS'")
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"BANK ACCOUNTS\")")
 	private WebElement title;
 	
 	String accountNamePath = "**/XCUIElementTypeCell[%s]/XCUIElementTypeStaticText[1]";
@@ -25,6 +27,7 @@ public class SettingsApproval_BankAccountConnectedPage {
 	String currentBalancePath = "**/XCUIElementTypeCell[%s]/XCUIElementTypeStaticText[3]";
 	
 	@iOSXCUITFindBy(accessibility = "Submit Bank Accounts")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/submit_text")
 	private WebElement submitBankAccount;
 	
 	

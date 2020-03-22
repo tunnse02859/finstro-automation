@@ -27,7 +27,7 @@ public class SignInTest extends MobileTestSetup {
 
 	@Test
 	public void Verify_User_Login_Successfully() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 

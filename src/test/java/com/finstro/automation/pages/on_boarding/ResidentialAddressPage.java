@@ -46,8 +46,9 @@ public class ResidentialAddressPage {
 		return (driver.isElementDisplayed(title));
 	}
 	
-	public void clickSearchAddress() throws Exception {
+	public FindAddressPage clickSearchAddress() throws Exception {
 		driver.click(searchAddress);
+		return new FindAddressPage(driver);
 	}
 	
 	public void verifyResidentialAddress(String expectedAddress) throws Exception {

@@ -32,7 +32,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		creditCardAPI = new CreditCardAPI();
-		creditCardAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		creditCardAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -42,7 +42,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		// Login
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		// Go to the debtCreditCardsPage page
 
 	}

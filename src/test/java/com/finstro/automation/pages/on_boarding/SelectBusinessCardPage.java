@@ -87,6 +87,7 @@ public class SelectBusinessCardPage {
 			driver.clickByPosition(card500000, "middle");
 			break;
 		}
+		driver.wait(5);
 		return new BusinessDetailPage(driver);
 	}
 }

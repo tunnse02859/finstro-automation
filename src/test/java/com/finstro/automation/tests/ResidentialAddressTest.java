@@ -33,7 +33,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 	@BeforeClass
 	public void setupAPI() throws Exception {
 		finstroAPI = new FinstroAPI();
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -51,7 +51,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 	}
 
 	public void toResidentialAddresslPage() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		selectbusinessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");

@@ -32,7 +32,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		bankAccountDetailAPI = new BankAccountDetailtAPI();
-		bankAccountDetailAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		bankAccountDetailAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -42,7 +42,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		// Login
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		// Go to the debtCreditAccountsPage page
 
 	}

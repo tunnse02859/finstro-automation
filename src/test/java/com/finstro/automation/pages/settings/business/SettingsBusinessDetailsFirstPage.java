@@ -22,7 +22,7 @@ public class SettingsBusinessDetailsFirstPage {
 	private WebElement textTitle;
 
 	// Category of Business
-	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/business_category\"))")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_category")
 	@iOSXCUITFindBy(accessibility = "category of business")
 	private WebElement ddlCategory;
 

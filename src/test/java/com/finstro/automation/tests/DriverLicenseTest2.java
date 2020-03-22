@@ -45,11 +45,11 @@ public class DriverLicenseTest2 extends MobileTestSetup {
 				"Register page showed as default page");
 		
 		toDriverLicensePage();
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 	
 	public void toDriverLicensePage() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();

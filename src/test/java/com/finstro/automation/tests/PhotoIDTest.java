@@ -40,7 +40,7 @@ public class PhotoIDTest extends MobileTestSetup {
 	}
 	
 	public void toPhotoIDPage() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");

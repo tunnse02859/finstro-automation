@@ -231,7 +231,7 @@ public class FinstroAPI {
 			.extractJsonValue("availableBalance", "availableBalance")
 			.extractJsonValue("balance", "balance")
 			.extractJsonValue("nextBillAmount", "nextBillAmount")
-			.extractJsonValue("limit", "creditCardDetails[0].limit")
+			.extractJsonValue("limit", "selectedCreditAmount")
 		.flush();
 	}
 

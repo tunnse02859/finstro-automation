@@ -48,7 +48,7 @@ public class MedicareTest extends MobileTestSetup {
 	}
 
 	public void toMedicarePage() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
@@ -60,7 +60,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1371_Verify_User_RedirectTo_Medicare_Screen_Successfully() throws Exception {
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		finstroAPI.getMedicareInfor();
 		medicarePage.verifyMedicareInfor(Common.getTestVariable("firstName",true), Common.getTestVariable("middleInitial",true),
 				Common.getTestVariable("surname",true),
@@ -137,7 +137,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1387_Cancel_and_Verify_no_data_saved() throws Exception {
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		finstroAPI.getMedicareInfor();
 		medicarePage.inputFirstName("abc");
 		medicarePage.inputLastName("def");

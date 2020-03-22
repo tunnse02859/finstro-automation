@@ -18,6 +18,7 @@ public class BankAccount_AddNewBankPage {
 	
 	
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'BANK ACCOUNT'")
+	@AndroidFindBy(id = "Add Account")
 	private WebElement textTitle;
 	
 	@iOSXCUITFindBy(accessibility = "name on account")

@@ -1,6 +1,6 @@
 package com.finstro.automation.test.regression;
 
-import com.finstro.automation.api.FinstroAPI;
+import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.common.CommonFunction;
 import com.finstro.automation.excelhelper.ExcelHelper;
 import com.finstro.automation.pages.login_process.LoginPage;
@@ -22,6 +22,7 @@ import com.finstro.automation.utility.FilePaths;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.finstro.automation.utility.Assertion.*;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 
 public class OnBoarding500Test extends MobileTestSetup {
 
-	private FinstroAPI finstroAPI;
+	private OnboardingAPI onboardingAPI;
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private SelectBusinessCardPage selectBusinessCardPage;
@@ -47,49 +48,34 @@ public class OnBoarding500Test extends MobileTestSetup {
 
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
-		finstroAPI = new FinstroAPI();
-		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_EMAIL_ADDRESS, Constant.NON_ONBOARDING_ACCESS_CODE);
+		onboardingAPI = new OnboardingAPI();
+		onboardingAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS,
+				Constant.ONBOARDING_ACCESS_CODE);
+		onboardingAPI.setupBusinessDetail("500");
+		onboardingAPI.setupResidentialAddress();
+		onboardingAPI.setupDrivingLicense();
+		onboardingAPI.setupMedicare();
 	}
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
+
+		// check if register page is default page
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
-		selectBusinessCardPage = new SelectBusinessCardPage(driver);
-		businessDetailPage = new BusinessDetailPage(driver);
-		findBusinessPage = new FindBusinessPage(driver);
-		findAddressPage = new FindAddressPage(driver);
-		residentialAddressPage = new ResidentialAddressPage(driver);
-		photoIDPage = new PhotoIDPage(driver);
-		drivingLisencePage = new DriverLicensePage(driver);
-		medicarePage = new MedicarePage(driver);
-		postalAddressPage = new PostalAddressPage(driver);
-		completeAgreementPage = new CompleteAgreementPage(driver);
-		// check if register page is default page
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 
-		// Do login
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_EMAIL_ADDRESS, Constant.NON_ONBOARDING_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 	}
 
 	@Test
 	public void OnBoarding_01_Verify_select_business_card_amount_successfully() throws Exception {
-
 		// select 500$ and verify business detail page displayed
-		selectBusinessCardPage.clickOnCard("500");
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");
-
-		// call API to get business detailed information
-		String businessTradingAddress = finstroAPI.getBusinessDetailInfor();
-
-		// verify screen displayed correct value!
-		String abn_acn = Common.getTestVariable("abn", true).equalsIgnoreCase("") ? Common.getTestVariable("acn", true)
-				: Common.getTestVariable("abn", true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName", true),
-				Common.getTestVariable("businessName", true));
-		businessDetailPage.verifyBusinessTradingAddress(businessTradingAddress);
 	}
 
 	@Test
@@ -101,31 +87,15 @@ public class OnBoarding500Test extends MobileTestSetup {
 				FilePaths.getResourcePath("/dataprovider/business_detail/BusinessDetail.xlsx"), "Sheet1");
 
 		// select 500$ and verify business detail page displayed
-		selectBusinessCardPage.clickOnCard("500");
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");
 
-		// check current configured business data to select business for test
-		if (businessDetailPage.getCurrentABN().equals("44004584552")) {
-			businessDataForTest = CommonFunction.getBusinessDataByType("SoleTrader", businessDataSource);
-		} else {
-			businessDataForTest = CommonFunction.getBusinessDataByType("Company", businessDataSource);
-		}
-
-		// call API to get business detailed information
-		// String businessTradingAddress = finstroAPI.getBusinessDetailInfor();
-
-		// verify screen displayed correct value!
-		// String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ?
-		// Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		// businessDetailPage.verifyBusinessData(abn_acn,
-		// Common.getTestVariable("entityName",true),
-		// Common.getTestVariable("businessName",true));
-		// businessDetailPage.verifyBusinessTradingAddress(businessTradingAddress);
+		businessDataForTest = CommonFunction.getBusinessDataByType("Company", businessDataSource);
 
 		// ----- START find business and select -----
 		// go to search business and search, verify first matched is correct
-		businessDetailPage.clickFindBusiness();
+		findBusinessPage = businessDetailPage.clickFindBusiness();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
 				"Find Your Business Page is displayed");
 
@@ -139,13 +109,13 @@ public class OnBoarding500Test extends MobileTestSetup {
 		// ---- END find business -----
 
 		// ----- START find business trading address and select -----
-		String addressInforForSearch = "50 Margaret St, ASHFIELD";
-		String expectedFirstMatchTitle = "50 Margaret St";
-		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
-		String expectedBusinessTradingAddress = "50 Margaret St ASHFIELD WA 6054";
+		String addressInforForSearch = "60 Margaret St, SYDNEY";
+		String expectedFirstMatchTitle = "60 Margaret St";
+		String expectedFirstMatchInfor = "SYDNEY NSW 2000";
+		String expectedBusinessTradingAddress = "60 Margaret St SYDNEY NSW 2000";
 
 		// go to search address and
-		businessDetailPage.clickBusinessTradingAddress();
+		findAddressPage = businessDetailPage.clickBusinessTradingAddress();
 		assertTrue(findAddressPage.isActive(), "Find Address screen is not displayed",
 				"Find Address screen is displayed");
 		findAddressPage.inputSearchAddress(addressInforForSearch);
@@ -160,13 +130,13 @@ public class OnBoarding500Test extends MobileTestSetup {
 		// ----- END find business trading address and select -----
 
 		// click NEXT and verify saved data
-		businessDetailPage.clickNext();
+		residentialAddressPage = businessDetailPage.clickNext();
+		driver.wait(15);
 		assertTrue(residentialAddressPage.isActive(),
 				"Residential address screen is not displayed after save Business Detail",
 				"Residential address screen is displayed after save Business Detail");
 
-		String savedBusinessTradingAddress = finstroAPI.getBusinessDetailInfor();
-
+		String savedBusinessTradingAddress = onboardingAPI.getBusinessDetailInfor();
 		// verify saved value correctly!
 		assertEquals(Common.getTestVariable("abn", true), businessDataForTest.get("ABN"),
 				"ABN from API after save doesnt match with expectation",
@@ -184,24 +154,24 @@ public class OnBoarding500Test extends MobileTestSetup {
 
 	@Test
 	public void OnBoarding_05_Verify_update_residential_address_successfully() throws Exception {
-		String addressInfor = "60 Margaret St, SYDNEY";
-		String expectedFirstMatchTitle = "60 Margaret St";
-		String expectedFirstMatchInfor = "SYDNEY NSW 2000";
-		String expectedResidentialAddress = "60 Margaret St SYDNEY NSW 2000";
+		String addressInforForSearch = "50 Margaret St, ASHFIELD";
+		String expectedFirstMatchTitle = "50 Margaret St";
+		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
+		String expectedResidentialAddress = "50 Margaret St ASHFIELD WA 6054";
 
 		// go to residential address screen
-		selectBusinessCardPage.clickOnCard("500");
-		businessDetailPage.clickNext();
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
+		residentialAddressPage = businessDetailPage.clickNext();
 		assertTrue(residentialAddressPage.isActive(), "Residential address screen is not displayed",
 				"Residential address screen is displayed");
-		String savedResidentialAddress = finstroAPI.getResidentialAddress();
+		String savedResidentialAddress = onboardingAPI.getResidentialAddress();
 		residentialAddressPage.verifyResidentialAddress(savedResidentialAddress);
 
 		// go to search address and
-		residentialAddressPage.clickSearchAddress();
+		findAddressPage = residentialAddressPage.clickSearchAddress();
 		assertTrue(findAddressPage.isActive(), "Find Address screen is not displayed",
 				"Find Address screen is displayed");
-		findAddressPage.inputSearchAddress(addressInfor);
+		findAddressPage.inputSearchAddress(addressInforForSearch);
 		findAddressPage.verifyFirstMatch(expectedFirstMatchTitle, expectedFirstMatchInfor);
 
 		// select first matched result and verify field updated
@@ -212,132 +182,120 @@ public class OnBoarding500Test extends MobileTestSetup {
 		residentialAddressPage.verifyResidentialAddress(expectedResidentialAddress);
 
 		// click next and verify
-		residentialAddressPage.clickNext();
-		assertTrue(photoIDPage.isActive(), "PhotoID screen is not displayed",
-				"PhotoID screen is displayed");
-		savedResidentialAddress = finstroAPI.getResidentialAddress();
+		photoIDPage = residentialAddressPage.clickNext();
+		assertTrue(photoIDPage.isActive(), "PhotoID screen is not displayed", "PhotoID screen is displayed");
+		savedResidentialAddress = onboardingAPI.getResidentialAddress();
 		assertEquals(savedResidentialAddress, expectedResidentialAddress,
 				"Residential address from API after save doesnt match with expectation",
 				"Residential address from API after save matched with expectation");
 
 	}
 
-	@Test
-	public void OnBoarding_07_Verify_update_driving_license_successfully() throws Exception {
+	@DataProvider(name = "onboarding_DrivingLicense")
+	public Object[][] setupDrivingLicense() {
+		return new Object[][] { { "Male", "Phong", "Trinh", "Van", "ACT", "01/01/2021", "0123456789", "20/07/2025" } };
+	}
+
+	@Test(dataProvider = "onboarding_DrivingLicense")
+	public void OnBoarding_07_Verify_update_driving_license_successfully(String genderName, String firstNameString,
+			String lastNameString, String middleNameString, String stateName, String dobString,
+			String licenseNumberString, String expireDateString) throws Exception {
 		// go to driving license
-		selectBusinessCardPage.clickOnCard("500");
-		businessDetailPage.clickNext();
-		residentialAddressPage.clickNext();
-		photoIDPage.clickNext();
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
+		residentialAddressPage = businessDetailPage.clickNext();
+		photoIDPage = residentialAddressPage.clickNext();
+		drivingLisencePage = photoIDPage.clickNext();
 		assertTrue(drivingLisencePage.isActive(), "Driver License screen is not  displayed after click on next",
 				"Driver License screen is displayed after click on next");
 
-		// verify data displayed on screen with API
-		finstroAPI.getDrivingLicenceInfor();
-		drivingLisencePage.verifyDriverLicenseInfor(
-				Common.getTestVariable("gender", true).equalsIgnoreCase("M") ? "Male" : "Female",
-				Common.getTestVariable("firstName", true), Common.getTestVariable("surname", true),
-				Common.getTestVariable("middleName", true), Common.getTestVariable("state", true),
-				// Common.getTestVariable("dateOfBirth",true),
-				"01/01/2021", Common.getTestVariable("licenceNumber", true), Common.getTestVariable("validTo", true));
-
 		// input data
-		drivingLisencePage.inputDriverLicenseInfor("Male", "Phong", "Trinh", "Van", "ACT", "01/01/2021", "0123456789",
-				"23/08/2020");
+		drivingLisencePage.inputDriverLicenseInfor(genderName, firstNameString, lastNameString, middleNameString,
+				stateName, dobString, licenseNumberString, expireDateString);
 
 		// click next and verify data saved
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
+		driver.wait(10);
 		assertTrue(postalAddressPage.isActive(), "Postal address of card screen is not displayed",
 				"Postal address of card screen is displayed");
 
-		finstroAPI.recoveryData().then().verifyResponseCode(200).verifyJsonNodeEqual("drivingLicence.firstName", "Tu")
-				.verifyJsonNodeEqual("drivingLicence.surname", "Nguyen")
-				.verifyJsonNodeEqual("drivingLicence.middleName", "Ngoc")
-				.verifyJsonNodeEqual("drivingLicence.gender", "M")
-				//.verifyJsonNodeEqual("drivingLicence.dateOfBirth", "2021/01/01")
-				.verifyJsonNodeEqual("drivingLicence.licenceNumber", "0123456789")
-				.verifyJsonNodeEqual("drivingLicence.state", "ACE").flush();
-				//.verifyJsonNodeEqual("drivingLicence.validTo", "08/2020").flush();
+		onboardingAPI.recoveryData().then().verifyResponseCode(200)
+				.verifyJsonNodeEqual("drivingLicence.firstName", firstNameString)
+				.verifyJsonNodeEqual("drivingLicence.surname", lastNameString)
+				.verifyJsonNodeEqual("drivingLicence.middleName", middleNameString)
+				.verifyJsonNodeEqual("drivingLicence.gender", genderName.equalsIgnoreCase("Male") ? "M" : "F")
+				// .verifyJsonNodeEqual("drivingLicence.dateOfBirth", dobString)
+				.verifyJsonNodeEqual("drivingLicence.licenceNumber", licenseNumberString)
+				.verifyJsonNodeEqual("drivingLicence.state", stateName).flush();
+		// .verifyJsonNodeEqual("drivingLicence.validTo", expireDateString).flush();
 	}
 
-	@Test
-	public void OnBoarding_08_Verify_update_medicare_successfully() throws Exception {
+	@DataProvider(name = "onboarding_Medicare")
+	public Object[][] setupMedicare() {
+		return new Object[][] {
+				{ "Phong", "Van", "Trinh", "Female", "27/02/1983", "Green", "2684483925", "1", "03/2020" } };
+	}
+
+	@Test(dataProvider = "onboarding_Medicare")
+	public void OnBoarding_08_Verify_update_medicare_successfully(String firstNameString, String middleNameString,
+			String lastNameString, String genderName, String dobString, String cardColor, String medicareNumberString,
+			String referenceNumberString, String expireDateString) throws Exception {
 		// go to driving license
-		selectBusinessCardPage.clickOnCard("500");
-		businessDetailPage.clickNext();
-		residentialAddressPage.clickNext();
-		photoIDPage.clickNext();
-		drivingLisencePage.clickMedicare();
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
+		residentialAddressPage = businessDetailPage.clickNext();
+		photoIDPage = residentialAddressPage.clickNext();
+		drivingLisencePage = photoIDPage.clickNext();
+		medicarePage = drivingLisencePage.clickMedicare();
 		assertTrue(medicarePage.isActive(), "Medicare screen is not  displayed ", "Medicare screen is displayed");
 
-		// verify data displayed on screen with API
-		finstroAPI.getMedicareInfor();
-		medicarePage.verifyMedicareInfor(Common.getTestVariable("firstName",true), Common.getTestVariable("middleInitial",true),
-				Common.getTestVariable("surname",true),
-				Common.getTestVariable("gender",true).equalsIgnoreCase("M") ? "Male" : "Female",
-				Common.getTestVariable("dateOfBirth",true), Common.getTestVariable("cardColor",true),
-				Common.getTestVariable("cardNumber",true), Common.getTestVariable("cardNumberRef",true),
-				//Common.getTestVariable("validTo",true));
-				"03/2020");
-		
-		
-		//input data
-		medicarePage.inputMedicareInfor("Phong", "Van", "Trinh", "Male", "27/02/1983", "Green", "2684483925", "1", "03/2020");
-		
-		//click next and verify data saved
+		// input data
+		medicarePage.inputMedicareInfor(firstNameString, middleNameString, lastNameString, genderName, dobString,
+				cardColor, medicareNumberString, referenceNumberString, expireDateString);
+
+		// click next and verify data saved
 		medicarePage.clickNext();
+		driver.wait(10);
 		assertTrue(drivingLisencePage.isActive(), "Driver License screen is not  displayed after click on next",
 				"Driver License screen is displayed after click on next");
-		
-		finstroAPI.recoveryData().then().verifyResponseCode(200)
-			.verifyJsonNodeEqual("medicareCard.cardNumber", "2684483925")
-			.verifyJsonNodeEqual("medicareCard.cardNumberRef", "1")
-			.verifyJsonNodeEqual("medicareCard.dateOfBirth", "1983-02-27")
-			.verifyJsonNodeEqual("medicareCard.firstName", "Phong")
-			.verifyJsonNodeEqual("medicareCard.gender", "M")
-			.verifyJsonNodeEqual("medicareCard.identificationId", "null")
-			.verifyJsonNodeEqual("medicareCard.middleInitial", "Van")
-			.verifyJsonNodeEqual("medicareCard.surname", "Trinh")
-			.verifyJsonNodeEqual("medicareCard.validTo", "2020-03-01")
-		.flush();
+
+		onboardingAPI.recoveryData().then().verifyResponseCode(200)
+				.verifyJsonNodeEqual("medicareCard.cardNumber", medicareNumberString)
+				.verifyJsonNodeEqual("medicareCard.cardNumberRef", referenceNumberString)
+				.verifyJsonNodeEqual("medicareCard.firstName", firstNameString)
+				.verifyJsonNodeEqual("medicareCard.gender", genderName.equalsIgnoreCase("Male") ? "M" : "F")
+				.verifyJsonNodeEqual("medicareCard.identificationId", "null")
+				.verifyJsonNodeEqual("medicareCard.middleInitial", middleNameString)
+				.verifyJsonNodeEqual("medicareCard.surname", lastNameString)
+				// .verifyJsonNodeEqual("medicareCard.dateOfBirth", dobString)
+				// .verifyJsonNodeEqual("medicareCard.validTo", "2020-03-01")
+				.flush();
 	}
-	
+
 	@Test
 	public void OnBoarding_09_Verify_select_postal_address_successfully() throws Exception {
 		// go to postal address
-		selectBusinessCardPage.clickOnCard("500");
-		businessDetailPage.clickNext();
-		residentialAddressPage.clickNext();
-		photoIDPage.clickNext();
-		drivingLisencePage.clickNext();
-		
-		assertTrue(postalAddressPage.isActive(),
-				"Postal Address Of Card screen is not displayed",
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
+		residentialAddressPage = businessDetailPage.clickNext();
+		photoIDPage = residentialAddressPage.clickNext();
+		drivingLisencePage = photoIDPage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
+
+		assertTrue(postalAddressPage.isActive(), "Postal Address Of Card screen is not displayed",
 				"Postal Address Of Card screen is displayed");
-		finstroAPI.getPostalAddressInfor();
-		postalAddressPage.verifyData(Common.getTestVariable("businessTradingAddress", true),Common.getTestVariable("residentialAddress", true),Common.getTestVariable("postalAddress", true));
-		
-		//select address
-		int selectResidential = 0;
-		if(Common.getTestVariable("postalAddress", true).equals(Common.getTestVariable("businessTradingAddress", true))) {
-			postalAddressPage.selectResidentialAddress();
-			selectResidential = 1;
-		}else if(Common.getTestVariable("postalAddress", true).equals(Common.getTestVariable("residentialAddress", true))) {
-			postalAddressPage.selectBusinessTradingAddress();
-			selectResidential = 0;
-		}
-		
-		//click next verify
+
+		// select business trading address
+		postalAddressPage.selectBusinessTradingAddress();
+
+		// click next verify
 		postalAddressPage.clickNext();
-		assertTrue(completeAgreementPage.isActive(),
-				"Complete Agreement Screen is not displayed",
+		completeAgreementPage = new CompleteAgreementPage(driver);
+		assertTrue(completeAgreementPage.isActive(), "Complete Agreement Screen is not displayed",
 				"Complete Agreement Screen is displayed");
-		finstroAPI.getPostalAddressInfor();
 		
-		if(selectResidential == 1) {
-			assertEquals(Common.getTestVariable("postalAddress", true), Common.getTestVariable("residentialAddress", true), "Postal Address is not matched with Residential Address", "Postal Address is matched with Residential Address");
-		}else {
-			assertEquals(Common.getTestVariable("postalAddress", true), Common.getTestVariable("businessTradingAddress", true), "Postal Address is not matched with Busienss Trading Address", "Postal Address is matched with Business Trading Address");
-		}
+		onboardingAPI.getPostalAddressInfor();
+		assertEquals(Common.getTestVariable("postalAddress", true),
+				Common.getTestVariable("businessTradingAddress", true),
+				"Postal Address is not matched with Busienss Trading Address",
+				"Postal Address is matched with Business Trading Address");
+
 	}
 }

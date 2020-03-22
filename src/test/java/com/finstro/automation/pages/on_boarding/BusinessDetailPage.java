@@ -63,8 +63,9 @@ public class BusinessDetailPage {
 		return driver.getText(abn).replace(" ", "");
 	}
 	
-	public void clickBusinessTradingAddress() throws Exception {
+	public FindAddressPage clickBusinessTradingAddress() throws Exception {
 		driver.clickByPosition(businessTradingAddress,"middle");
+		return new FindAddressPage(driver);
 	}
 	
 	public void selectBusinessName(String name) throws Exception {
@@ -96,7 +97,8 @@ public class BusinessDetailPage {
 		
 	}
 
-	public void clickFindBusiness() throws Exception {
+	public FindBusinessPage clickFindBusiness() throws Exception {
 		driver.click(findYourBusinessButton);
+		return new FindBusinessPage(driver);
 	}
 }

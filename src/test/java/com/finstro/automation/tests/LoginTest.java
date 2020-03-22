@@ -35,17 +35,17 @@ public class LoginTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1290_VerifyUserLoginSuccessful() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		Assert.assertTrue(false);
 	}
 
 	@Test
 	public void FPC_1292_VerifyUserLoginUnsuccessfulIfHeInputInvalidEmailAddress() throws Exception {
-		String invalidEmail = Constant.LOGIN_EMAIL_ADDRESS + "extra";
+		String invalidEmail = Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS + "extra";
 		String expectedMessaged = "ERROR, Incorrect username or password.";
 		registerPage.toLoginPage();
 		
-		loginPage.login(invalidEmail, Constant.LOGIN_ACCESS_CODE);
+		loginPage.login(invalidEmail, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		loginPage.verifyErrorMessage(expectedMessaged);
 	}
 
@@ -53,7 +53,7 @@ public class LoginTest extends MobileTestSetup {
 	public void FPC_1293_VerifyUserLoginUnsuccessfulIfHeDoesNotInputEmailAddress() throws Exception {
 		String invalidEmail = "";
 		registerPage.toLoginPage();
-		loginPage.login(invalidEmail, Constant.LOGIN_ACCESS_CODE);
+		loginPage.login(invalidEmail, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		loginPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
@@ -61,7 +61,7 @@ public class LoginTest extends MobileTestSetup {
 	public void FPC_1294_VerifyUserLoginUnsuccessfulIfHeInputInvalidTheAccessCode() throws Exception {
 		registerPage.toLoginPage();
 		String invalidCode = "033999";
-		loginPage.login(Constant.LOGIN_EMAIL_ADDRESS, invalidCode);
+		loginPage.login(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, invalidCode);
 		loginPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
@@ -69,7 +69,7 @@ public class LoginTest extends MobileTestSetup {
 	public void FPC_1295_VerifyUserLoginUnsuccessfulIfHeDoesNotInputAccessCode() throws Exception {
 		registerPage.toLoginPage();
 		String invalidCode = "";
-		loginPage.login(Constant.LOGIN_EMAIL_ADDRESS, invalidCode);
+		loginPage.login(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, invalidCode);
 		loginPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
 	}
 
@@ -103,7 +103,7 @@ public class LoginTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1299_VerifyUserLoginUnsuccessfulIfHeInputInvalidTheAccessCodePin() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		driver.relaunchApp();
 		String invalidCode = "123456";
 		loginPINPage.login(invalidCode);
@@ -113,7 +113,7 @@ public class LoginTest extends MobileTestSetup {
 	@Test
 	public void FPC_1300_VerifyUserLoginUnsuccessfulIfHeDoesNotInputAccessCodePin() throws Exception {
 		if (driver.isAndroidDriver()) {
-			loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+			loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 			driver.relaunchApp();
 			loginPINPage.clickOnSubmit();
 			loginPINPage.verifyErrorMessage(LOGIN_FAILED_EXPECTED_MESSAGE);
@@ -122,7 +122,7 @@ public class LoginTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1301_VerifyUserGoToTheSignUpScreenSuccessfullyPin() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		driver.relaunchApp();
 		loginPINPage.toRegisterPage();
 		assertTrue(registerPage.isActive(), "Register Page didnt showed after click on Signup from PIN page",
@@ -131,7 +131,7 @@ public class LoginTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1302_VerifyTheCurrentUserIsLogoutWhenClickOnTheLinkNotYou() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		driver.relaunchApp();
 		loginPINPage.clickOnLoggedEmail();
 		assertTrue(loginPage.isActive(), "login screen didnot showed after on logged email in PIN screen",

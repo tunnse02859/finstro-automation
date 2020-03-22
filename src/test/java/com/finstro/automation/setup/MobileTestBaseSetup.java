@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeSuite;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.appium.driver.AppiumHandler;
 import com.finstro.automation.report.HtmlReporter;
+import com.finstro.automation.utility.Common;
 import com.finstro.automation.utility.FilePaths;
 
 public class MobileTestBaseSetup {
@@ -36,6 +37,7 @@ public class MobileTestBaseSetup {
 	@BeforeClass
 	public void beforeClass() throws Exception {
 		HtmlReporter.createTest(this.getClass().getSimpleName(), "");
+		Common.currentTest = this.getClass().getSimpleName();
 	}
 
 	@BeforeMethod

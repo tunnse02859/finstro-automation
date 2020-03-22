@@ -95,7 +95,7 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 		String invalidEmail = Common.randomAlphaNumeric(15) + "@" + Common.randomLowerAlpha(5) + ".com";
 		
 		// input valid Email and mismatch mobile number;
-		forgotAccessCodePage.inputEmailAdress(Constant.LOGIN_EMAIL_ADDRESS);
+		forgotAccessCodePage.inputEmailAdress(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS);
 		forgotAccessCodePage.inputMobileNumber(invalidMobileNumber);
 		forgotAccessCodePage.submit();
 		forgotAccessCodePage.verifyPopupMessage(expectedMessage);

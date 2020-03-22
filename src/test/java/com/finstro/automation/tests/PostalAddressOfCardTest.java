@@ -54,7 +54,7 @@ public class PostalAddressOfCardTest extends MobileTestSetup {
 
 
 	private void toPostalAddressOfCardPage() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		Thread.sleep(10000);
 		businessDetailPage.clickNext();

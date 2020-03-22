@@ -23,7 +23,7 @@ public class DriverLicensePage {
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
 	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
 	private WebElement errorMessage;
-	
+
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
 	private WebElement errorType;
 
@@ -88,8 +88,9 @@ public class DriverLicensePage {
 		return new PostalAddressPage(driver);
 	}
 
-	public void clickMedicare() throws Exception {
+	public MedicarePage clickMedicare() throws Exception {
 		driver.click(medicare);
+		return new MedicarePage(driver);
 	}
 
 	public void selectGender(String genderName) throws Exception {
@@ -120,7 +121,26 @@ public class DriverLicensePage {
 	}
 
 	public void inputState(String stateName) throws Exception {
-		driver.inputTextWithClear(state, stateName);
+		if (stateName.equalsIgnoreCase("ACT")) {
+			stateName = "Australian Capital Territory";
+		} else if (stateName.equalsIgnoreCase("NT")) {
+			stateName = "Northern Terriories";
+		} else if (stateName.equalsIgnoreCase("NSW")) {
+			stateName = "New South Wales";
+		} else if (stateName.equalsIgnoreCase("QLD")) {
+			stateName = "Queensland";
+		} else if (stateName.equalsIgnoreCase("SA")) {
+			stateName = "South Australia";
+		} else if (stateName.equalsIgnoreCase("TAS")) {
+			stateName = "Tasmania";
+		} else if (stateName.equalsIgnoreCase("VIC")) {
+			stateName = "Victoria";
+		} else if (stateName.equalsIgnoreCase("WA")) {
+			stateName = "Western Australia";
+		}
+		if (driver.isAndroidDriver()) {
+			driver.selectItemFromSpinner(state, stateName);
+		}
 	}
 
 	public void inputDoB(String dobString) throws Exception {

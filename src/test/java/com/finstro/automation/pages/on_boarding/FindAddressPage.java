@@ -73,6 +73,7 @@ public class FindAddressPage {
 
 	public void clickOnFirstMatched() throws Exception {
 		driver.click(firstMatchTitle);
+		driver.wait(5);
 	}
 
 }

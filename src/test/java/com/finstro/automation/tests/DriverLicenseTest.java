@@ -52,7 +52,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 	}
 	
 	public void toDriverLicensePage() throws Exception {
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		businessDetailPage.clickNext();
 		residentialAddressPage.clickNext();
@@ -65,7 +65,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1348_Verify_User_RedirectTo_DriverLicense_Screen_Successfully() throws Exception {
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		finstroAPI.getDrivingLicenceInfor();
 		drivingLisencePage.verifyDriverLicenseInfor(
 				Common.getTestVariable("gender",true).equalsIgnoreCase("M") ? "Male" : "Female",

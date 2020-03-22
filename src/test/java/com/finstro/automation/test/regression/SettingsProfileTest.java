@@ -34,7 +34,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		profileAPI = new ProfileInforAPI();
-		profileAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		profileAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -46,7 +46,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 				"Register page showed as default page");
 
 		// Login
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 
 	}
 

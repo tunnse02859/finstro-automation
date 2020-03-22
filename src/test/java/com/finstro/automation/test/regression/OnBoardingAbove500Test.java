@@ -52,7 +52,7 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		finstroAPI = new FinstroAPI();
-		finstroAPI.loginForAccessToken(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -76,7 +76,7 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 				"Register page showed as default page");
 
 		// Do login
-		loginPage.doSuccessLogin(Constant.LOGIN_EMAIL_ADDRESS, Constant.LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@Test

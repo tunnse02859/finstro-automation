@@ -23,9 +23,11 @@ public class BankStatementRetrieveAccountlPage {
 	private WebElement title;
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name=\"BankStatements - Send Your Bank Statements Now\"`]/*/XCUIElementTypeButton")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"exportSelected\")")
 	private WebElement submit;
 	
 	@iOSXCUITFindBy(accessibility = "All Done")
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"All Done\")")
 	private WebElement doneBankStatement;
 	
 	@iOSXCUITFindBy(iOSNsPredicate = "value = 'Bank Statements Connected'")

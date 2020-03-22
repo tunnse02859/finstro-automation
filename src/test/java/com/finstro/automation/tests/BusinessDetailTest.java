@@ -40,7 +40,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		businessDataSource = ExcelHelper.getTableToHashMap(
 				FilePaths.getResourcePath("/dataprovider/business_detail/BusinessDetail.xlsx"), "Sheet1");
 		finstroAPI = new FinstroAPI();
-		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_EMAIL_ADDRESS, Constant.NON_ONBOARDING_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -59,7 +59,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 	}
 
 	public void toBusinessDetailPage() throws Exception {
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_EMAIL_ADDRESS, Constant.NON_ONBOARDING_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 		businessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");

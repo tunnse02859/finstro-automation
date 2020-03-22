@@ -21,6 +21,7 @@ public class BankAccountPage {
 	private WebElement textTitle;
 
 	@iOSXCUITFindBy(accessibility = "addBankAccount")
+	@AndroidFindBy(id="au.com.finstro.finstropay:id/add_bank_account")
 	private WebElement btnAddNewBankAccount;
 
 	
@@ -53,7 +54,7 @@ public class BankAccountPage {
 	}
 
 	public boolean isActive() throws Exception {
-		return driver.isElementDisplayed(textTitle);
+		return driver.isElementDisplayed(btnAddNewBankAccount);
 	}
 
 	public WebElement findBankAccount(String strNameOnBank) throws Exception {

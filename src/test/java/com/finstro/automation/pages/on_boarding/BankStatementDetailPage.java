@@ -17,20 +17,24 @@ public class BankStatementDetailPage {
 	@iOSXCUITFindBy(accessibility = "back")
 	private WebElement back;
 
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/bankstatement_title")
+	@AndroidFindBy(uiAutomator = "new UiSelector().textContains(\"Please enter your Bank of Statements online banking details\")")
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Please enter your Bank of Statements online banking details'")
 	private WebElement title;
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name=\"BankStatements - Send Your Bank Statements Now\"`]/XCUIElementTypeOther[2]/*/XCUIElementTypeTextField")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"username\")")
 	private WebElement bankUsername;
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name=\"BankStatements - Send Your Bank Statements Now\"`]/XCUIElementTypeOther[3]/*/XCUIElementTypeSecureTextField")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"password\")")
 	private WebElement bankPassword;
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeSwitch")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"bankLoginWrapper\").childSelector(new UiSelector().className(\"android.widget.CheckBox\"))")
 	private WebElement acceptTerm;
 	
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeOther[`name=\"BankStatements - Send Your Bank Statements Now\"`]/*/XCUIElementTypeButton")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"bankLoginWrapper\").childSelector(new UiSelector().className(\"android.widget.Button\"))")
 	private WebElement submit;
 	
 	

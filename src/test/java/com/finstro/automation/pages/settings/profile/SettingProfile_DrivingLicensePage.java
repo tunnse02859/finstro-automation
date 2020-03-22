@@ -72,8 +72,9 @@ public class SettingProfile_DrivingLicensePage {
 	}
 
 	public SettingProfile_MedicarePage toSettingMedicarePage() throws Exception {
-		driver.swipe(DIRECTION.LEFT);
-		Thread.sleep(1000);
+		// driver.swipe(DIRECTION.LEFT);
+		driver.swipe(0.9, 0.5, 0.1, 0.5);
+		driver.wait(2);
 		return new SettingProfile_MedicarePage(driver);
 	}
 
@@ -156,16 +157,27 @@ public class SettingProfile_DrivingLicensePage {
 	}
 
 	public void setState(String stateValue) throws Exception {
+		if (stateValue.equalsIgnoreCase("ACT")) {
+			stateValue = "Australian Capital Territory";
+		} else if (stateValue.equalsIgnoreCase("NT")) {
+			stateValue = "Northern Terriories";
+		} else if (stateValue.equalsIgnoreCase("NSW")) {
+			stateValue = "New South Wales";
+		} else if (stateValue.equalsIgnoreCase("QLD")) {
+			stateValue = "Queensland";
+		} else if (stateValue.equalsIgnoreCase("SA")) {
+			stateValue = "South Australia";
+		} else if (stateValue.equalsIgnoreCase("TAS")) {
+			stateValue = "Tasmania";
+		} else if (stateValue.equalsIgnoreCase("VIC")) {
+			stateValue = "Victoria";
+		} else if (stateValue.equalsIgnoreCase("WA")) {
+			stateValue = "Western Australia";
+		}
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(state, stateValue);
-		}else {
-			if(stateValue.equalsIgnoreCase("ACT")) {
-				stateValue = "Australian Capital Territory";
-			}else if(stateValue.equalsIgnoreCase("ACT")) {
-				stateValue = "South Australia";
-			}
-			driver.click(state);
-			driver.selectPickerWheel(null, stateValue);
+		} else {
+			driver.selectPickerWheel(state, stateValue);
 		}
 	}
 
