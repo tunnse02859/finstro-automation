@@ -18,19 +18,24 @@ public class BankAccountPage {
 	private AppiumBaseDriver driver;
 
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'BANK ACCOUNTS'")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/add_bank_account")
 	private WebElement textTitle;
 
 	@iOSXCUITFindBy(accessibility = "addBankAccount")
-	@AndroidFindBy(id="au.com.finstro.finstropay:id/add_bank_account")
+	@AndroidFindBy(id="	au.com.finstro.finstropay:id/add_bank_account")
 	private WebElement btnAddNewBankAccount;
 
-	
+	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id='au.com.finstro.finstropay:id/bank_accounts_list']/android.widget.RelativeLayout")
 	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeTable/XCUIElementTypeCell")
 	private List<WebElement> bankAccountList;
 
 	private By getBankAccountNameElement() {
 		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/name_edt")
 				: MobileBy.iOSNsPredicateString(("name = 'name on account'"));
+	}
+	
+	private By getBankAccountBSBElement() {
+		return driver.isAndroidDriver() ? By.id("au.com.finstro.finstropay:id/au.com.finstro.finstropay:id/bsb_edt") : null;
 	}
 
 	private By getBankAccountNumberElement() {

@@ -32,7 +32,8 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		finstroAPI = new FinstroAPI();
-		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -42,7 +43,8 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		// Login
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@DataProvider(name = "SettingApprove_IdCheck_02")
@@ -50,67 +52,72 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		return new Object[][] { { "auto@finstro.au", "0123456789", "phong", "trinh", "04/03/1989", "vietnam" } };
 
 	}
-	
+
 	@Test()
-	public void SettingApprove_IDCheck01_DirectDebitAuthority01() throws Exception {
-		//go to bank account connected screen
+	public void SettingApproval_CheckStatus() throws Exception {
+		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
-		
-		//get API and verify status displayed on screen
+
+		// get API and verify status displayed on screen
 		finstroAPI.getApprovalStatus();
 		settingsApprovalBankUploadPage.verifyIDCheckStatusIsPass(Common.getTestVariable("idCheckStatus", true));
-		settingsApprovalBankUploadPage.verifyBankAccountStatusIsPass(Common.getTestVariable("bankStatementStatus", true));
-		settingsApprovalBankUploadPage.verifyDirectDebitStatusIsPass(Common.getTestVariable("directDebitAuthorityStatus", true));
-		settingsApprovalBankUploadPage.verifyCreditAssessmentStatusIsPass(Common.getTestVariable("creditAssessmentStatus", true));
+		settingsApprovalBankUploadPage
+				.verifyBankAccountStatusIsPass(Common.getTestVariable("bankStatementStatus", true));
+		settingsApprovalBankUploadPage
+				.verifyDirectDebitStatusIsPass(Common.getTestVariable("directDebitAuthorityStatus", true));
+		settingsApprovalBankUploadPage
+				.verifyCreditAssessmentStatusIsPass(Common.getTestVariable("creditAssessmentStatus", true));
 	}
-	
+
 	@Test()
-	public void SettingApprove_BankAccountConnected_01() throws Exception {
-		//go to bank account connected screen
+	public void SettingApproval_BankAccountConnected_01() throws Exception {
+		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
-		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage.gotoBankAccountPage();
+		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage
+				.gotoBankAccountPage();
 		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
 				"Bank Account Connected screen is displayed");
-		
-		//get bank account infor
+
+		// get bank account infor
 		JSONArray bankAccounts = finstroAPI.getBankAccountsInfo();
 		settingBankAccountConnectedPage.verifyBankAccountDisplayed(bankAccounts);
 	}
-		
-	
+
 	@Test()
-	public void SettingApprove_BankAccountConnected_02() throws Exception {
-		//go to bank account connected screen
+	public void SettingApproval_BankAccountConnected_02() throws Exception {
+		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
-		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage.gotoBankAccountPage();
+		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage
+				.gotoBankAccountPage();
 		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
 				"Bank Account Connected screen is displayed");
-		
-		//Go to bank statement
+
+		// Go to bank statement
 		SelectBankStatementPage selectBankStatementPage = settingBankAccountConnectedPage.clickSubmitBankAccount();
 		assertTrue(selectBankStatementPage.isActive(), "Bank Statement screen is not displayed",
 				"Bank Statement screen is displayed");
-		
-		//search for bank demo and select it 
+
+		// search for bank demo and select it
 		selectBankStatementPage.inputSearch("demo");
 		BankStatementDetailPage bankStatementDetailPage = selectBankStatementPage.selectBankDemo();
 		assertTrue(bankStatementDetailPage.isActive(), "Bank Statement login screen is not displayed",
 				"Bank Statement login screen is displayed");
-		
-		//login bank statement and submit
+
+		// login bank statement and submit
 		bankStatementDetailPage.inputUsername("12345678");
 		bankStatementDetailPage.inputPassword("TestMyMoney");
 		bankStatementDetailPage.acceptTern();
-		BankStatementRetrieveAccountlPage retrievePage =  bankStatementDetailPage.clickSubmit();
-		assertTrue(retrievePage.isActive(), "Retrieve screen is not displayed",
-				"Retrieve screen is displayed");
-		
-		//submit retrieve, verify all done screen displayed and popup displayed
+		BankStatementRetrieveAccountlPage retrievePage = bankStatementDetailPage.clickSubmit();
+		assertTrue(retrievePage.isActive(), "Retrieve screen is not displayed", "Retrieve screen is displayed");
+
+		// submit retrieve, verify all done screen displayed and popup displayed
 		retrievePage.clickSubmit();
 		assertTrue(retrievePage.isDone(), "Retrieve All Done screen is not displayed",
 				"Retrieve All Done screen is displayed");
-		Thread.sleep(5000);
-		retrievePage.verifyPopupBankStatementConnected();
+		driver.wait(5);
+		if (driver.isIOSDriver()) {
+			retrievePage.verifyPopupBankStatementConnected();
+		}
 		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
 				"Bank Account Connected screen is displayed");
 	}

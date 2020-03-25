@@ -22,15 +22,19 @@ public class BankAccount_AddNewBankPage {
 	private WebElement textTitle;
 	
 	@iOSXCUITFindBy(accessibility = "name on account")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/name_edt")
 	private WebElement txtAccountName;
 	
 	@iOSXCUITFindBy(accessibility = "bsb")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/bsb_edt")
 	private WebElement txtBSB;
 	
 	@iOSXCUITFindBy(accessibility = "account number")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/number_edt")
 	private WebElement txtAccountNumber;
 	
 	@iOSXCUITFindBy(accessibility = "saveSetting")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/submit_text")
 	private WebElement btnSaveSettings;
 	
 	@iOSXCUITFindBy(accessibility = "BANK ACCOUNTS")

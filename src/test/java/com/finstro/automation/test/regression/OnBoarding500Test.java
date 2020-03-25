@@ -104,6 +104,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
+		driver.wait(5);
 		businessDetailPage.verifyBusinessData(businessDataForTest.get("ABN"), businessDataForTest.get("Entity name"),
 				businessDataForTest.get("Business Name"));
 		// ---- END find business -----
@@ -164,8 +165,6 @@ public class OnBoarding500Test extends MobileTestSetup {
 		residentialAddressPage = businessDetailPage.clickNext();
 		assertTrue(residentialAddressPage.isActive(), "Residential address screen is not displayed",
 				"Residential address screen is displayed");
-		String savedResidentialAddress = onboardingAPI.getResidentialAddress();
-		residentialAddressPage.verifyResidentialAddress(savedResidentialAddress);
 
 		// go to search address and
 		findAddressPage = residentialAddressPage.clickSearchAddress();
@@ -176,6 +175,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 
 		// select first matched result and verify field updated
 		findAddressPage.clickOnFirstMatched();
+		driver.wait(5);
 		assertTrue(residentialAddressPage.isActive(),
 				"Residential Address screen is not  displayed after select matched resulf",
 				"Residential Address screen is displayed after select matched resulf");
@@ -184,7 +184,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 		// click next and verify
 		photoIDPage = residentialAddressPage.clickNext();
 		assertTrue(photoIDPage.isActive(), "PhotoID screen is not displayed", "PhotoID screen is displayed");
-		savedResidentialAddress = onboardingAPI.getResidentialAddress();
+		String savedResidentialAddress = onboardingAPI.getResidentialAddress();
 		assertEquals(savedResidentialAddress, expectedResidentialAddress,
 				"Residential address from API after save doesnt match with expectation",
 				"Residential address from API after save matched with expectation");
@@ -296,6 +296,5 @@ public class OnBoarding500Test extends MobileTestSetup {
 				Common.getTestVariable("businessTradingAddress", true),
 				"Postal Address is not matched with Busienss Trading Address",
 				"Postal Address is matched with Business Trading Address");
-
 	}
 }

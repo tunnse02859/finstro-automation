@@ -42,6 +42,7 @@ public class FindBusinessPage {
 	private WebElement firstMatchBusinessABNACN;
 	
 	@iOSXCUITFindBy(className = "XCUIElementTypeCell")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"au.com.finstro.finstropay:id/address_result_list\").childSelector(new UiSelector().className(\"android.widget.RelativeLayout\"))")
 	private List<MobileElement> searchedBusiness;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/search_no_result_title")
@@ -81,9 +82,8 @@ public class FindBusinessPage {
 		if(searchedBusiness.size() > 0) {
 			searchedBusiness.get(0).click();
 			return;
-		}
-		
-		throw new Exception("There is not results for the search criteria");
+		}		
+		throw new Exception("There is no results for the search criteria");
 	}
 
 }
