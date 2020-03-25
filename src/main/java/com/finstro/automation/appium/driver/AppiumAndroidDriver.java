@@ -11,6 +11,7 @@ import com.finstro.automation.utility.FilePaths;
 import com.finstro.automation.utility.PropertiesLoader;
 
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class AppiumAndroidDriver extends AppiumBaseDriver {
@@ -43,6 +44,7 @@ public class AppiumAndroidDriver extends AppiumBaseDriver {
 		capabilities.setCapability(MobileCapabilityType.NO_RESET, booleanMobileNoReset);
 		capabilities.setCapability(MobileCapabilityType.FULL_RESET, booleanMobileFullReset);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
+		capabilities.setCapability("adbExecTimeout", 120000);
 		
 		if (!(strAppiumVersion == null || strAppiumVersion.equals(""))) {
 			capabilities.setCapability(MobileCapabilityType.APPIUM_VERSION, strAppiumVersion);

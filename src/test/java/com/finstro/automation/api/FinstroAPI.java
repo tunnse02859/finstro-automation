@@ -223,7 +223,7 @@ public class FinstroAPI {
 	public void getHomePageValues() throws Exception {
 		recoveryData().then().verifyResponseCode(200).extractJsonValue("availableBalance", "availableBalance")
 				.extractJsonValue("balance", "balance").extractJsonValue("nextBillAmount", "nextBillAmount")
-				.extractJsonValue("limit", "selectedCreditAmount").flush();
+				.extractJsonValue("limit", "businessDetails.selectedCreditAmount").flush();
 	}
 
 	public void getApprovalStatus() throws Exception {

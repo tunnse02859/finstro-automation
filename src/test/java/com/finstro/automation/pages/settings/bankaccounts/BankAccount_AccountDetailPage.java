@@ -18,27 +18,35 @@ public class BankAccount_AccountDetailPage {
 	private AppiumBaseDriver driver;
 	
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'BANK ACCOUNT'")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/name_edt")
 	private WebElement textTitle;
 	
 	@iOSXCUITFindBy(accessibility = "name on account")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/name_edt")
 	private WebElement txtCardName;
 	
 	@iOSXCUITFindBy(accessibility = "bsb")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/bsb_edt")
 	private WebElement txtBSB;
 	
 	@iOSXCUITFindBy(accessibility = "account number")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/number_edt")
 	private WebElement txtAccountNumber;
 	
 	@iOSXCUITFindBy(accessibility = "default")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/default_text")
 	private WebElement btnDefault;
 	
 	@iOSXCUITFindBy(accessibility = "delete")
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/delete_text")
 	private WebElement btnDelete;
 	
 	@iOSXCUITFindBy(accessibility = "Yes")
+	@AndroidFindBy(id = "android:id/button1")
 	private WebElement btnOk;
 	
 	@iOSXCUITFindBy(accessibility = "No")
+	@AndroidFindBy(id = "android:id/button2")
 	private WebElement btnCancel;
 	
 	@iOSXCUITFindBy(accessibility = "BANK ACCOUNTS")

@@ -306,6 +306,7 @@ public class HtmlReporter {
 			getTest().fail(strDescription).fail(e).addScreenCaptureFromPath(strScreenshotPath);
 		}
 		Log.error(strDescription);
+		Log.error(e.getMessage());
 	}
 
 	/**

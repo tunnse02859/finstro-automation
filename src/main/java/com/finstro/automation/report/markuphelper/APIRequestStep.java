@@ -54,7 +54,7 @@ public class APIRequestStep implements Markup {
 		sb.append("<div class='wrapper'>");
 		sb.append("<div class='api-title' onclick='toggleDetail(this)'>");
 		sb.append("<span class='" + request.getMethod().toLowerCase() + "'>" + request.getMethod() + "</span> ");
-		sb.append("<a class='" + getAPIResult() + "'>\" + request.getURI() + \"</a>");
+		sb.append("<a class='" + getAPIResult() + "'>" + request.getURI() + "</a>");
 		sb.append("</div>");
 		sb.append("<div class='api-detail' style='display:none;'>");
 		sb.append("<div class='tab'>");

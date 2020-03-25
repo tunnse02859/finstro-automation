@@ -115,8 +115,9 @@ public class AppiumBaseDriver {
 	}
 
 	public WebElement findElement(WebElement element) {
-		setImplicitWaitTime(5);
-		if (isElementPresented(element)) {
+		setImplicitWaitTime(10);
+		if (isElementDisplayedWithoutLog(element)) {
+			setDefaultImplicitWaitTime();
 			return element;
 		}
 
@@ -124,24 +125,23 @@ public class AppiumBaseDriver {
 			HashMap<String, String> scrollObject = new HashMap<>();
 			scrollObject.put("direction", "down");
 			((JavascriptExecutor) driver).executeScript("mobile: swipe", scrollObject);
-			wait(5);
+			// wait(5);
 		} else {
 			swipe(DIRECTION.DOWN);
-			wait(3);
-			swipe(DIRECTION.DOWN);
+			wait(1);
 		}
 
 		int attemps = 0;
 		do {
 			if (isElementPresented(element)) {
+				setDefaultImplicitWaitTime();
 				return element;
 			}
 			swipe(DIRECTION.UP);
-
 			attemps++;
 		} while (attemps < 2);
 		setDefaultImplicitWaitTime();
-		throw new NoSuchElementException("Element not found");
+		throw new NoSuchElementException("Element not found - [" + element.toString() + "]");
 	}
 
 	public WebElement findElementIgnoreError(By by) {
@@ -225,6 +225,9 @@ public class AppiumBaseDriver {
 				hideKeyboard();
 			}
 			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
+		} catch (NoSuchElementException e) {
+			HtmlReporter.fail(String.format("Element is not found for clear and input text [%s]", element.toString()));
+			throw (e);
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Can't input text [%s] to element [%s]", text, element.toString()));
 			throw e;
@@ -247,6 +250,9 @@ public class AppiumBaseDriver {
 			element.sendKeys(text);
 			hideKeyboard();
 			HtmlReporter.pass(String.format("Input text [%s] to element [%s]", text, element.toString()));
+		} catch (NoSuchElementException e) {
+			HtmlReporter.fail(String.format("Element is not found for input text [%s]", element.toString()));
+			throw (e);
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Can't input text [%s] to element [%s]", text, element.toString()));
 			throw e;
@@ -314,6 +320,9 @@ public class AppiumBaseDriver {
 			String text = findElement(element).getText();
 			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			return text;
+		} catch (NoSuchElementException e) {
+			HtmlReporter.fail(String.format("Element is not found for get text [%s]", element.toString()));
+			throw (e);
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Cannot get text of the element [%s]", element.toString()), e, "");
 			throw e;
@@ -330,7 +339,10 @@ public class AppiumBaseDriver {
 			HtmlReporter.pass(String.format("The element [%s] contains text [%s]", element.toString(), text));
 			clickByPosition(wheels, "top right");
 			return text;
-		} catch (Exception e) {
+		} catch (NoSuchElementException e) {
+			HtmlReporter.fail(String.format("Element is not found for get text [%s]", element.toString()));
+			throw (e);
+		}catch (Exception e) {
 			HtmlReporter.fail(String.format("Cannot get text of the element [%s]", element.toString()), e, "");
 			throw e;
 		}
@@ -345,7 +357,6 @@ public class AppiumBaseDriver {
 		} catch (NoSuchElementException e) {
 			HtmlReporter.pass(String.format("Element [%s] has attribute [%s] is empty", element.toString(), attribute));
 			return "";
-
 		}
 
 	}
@@ -354,8 +365,12 @@ public class AppiumBaseDriver {
 		try {
 			element = findElement(element);
 			// waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
+			waitForElementClickable(element, 10);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
+		} catch (NoSuchElementException e) {
+			HtmlReporter.fail(String.format("Element is not found for click [%s]", element.toString()));
+			throw (e);
 		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Can't click on the element [%s]", element.toString()));
 			throw (e);
@@ -386,6 +401,9 @@ public class AppiumBaseDriver {
 				new TouchAction<>(driver).tap(PointOption.point(middleX, middleY)).perform();
 			}
 			HtmlReporter.pass(String.format("click on the " + clickPosition + " of element [%s]", element.toString()));
+		} catch (NoSuchElementException e) {
+			HtmlReporter.fail(String.format("Element is not found for click [%s]", element.toString()));
+			throw (e);
 		} catch (Exception e) {
 			HtmlReporter.fail(
 					String.format("Can't click on the " + clickPosition + " of element [%s]", element.toString()));
@@ -545,7 +563,6 @@ public class AppiumBaseDriver {
 	}
 
 	public void waitForElementClickable(WebElement element, int time) {
-
 		WebDriverWait wait = new WebDriverWait(driver, time);
 		wait.until(ExpectedConditions.elementToBeClickable(element));
 	}
@@ -592,6 +609,16 @@ public class AppiumBaseDriver {
 		return result;
 	}
 
+	public boolean isElementDisplayedWithoutLog(WebElement element) {
+		try {
+			return element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return false;
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
+
 	public boolean isElementDisplayed(WebElement element) {
 		boolean result;
 		try {
@@ -611,7 +638,6 @@ public class AppiumBaseDriver {
 			HtmlReporter.info(String.format("Element: [%s] is not presented", element.toString()));
 			return false;
 		}
-
 	}
 
 	public boolean isElementSelected(WebElement element) throws Exception {
@@ -626,8 +652,11 @@ public class AppiumBaseDriver {
 
 	public boolean isElementPresented(WebElement element) {
 		try {
+			Log.info("element not null? - " + (element != null));
 			return element != null;
 		} catch (Exception ex) {
+			Log.error(ex.getMessage());
+			ex.printStackTrace();
 			return false;
 		}
 	}
@@ -644,12 +673,9 @@ public class AppiumBaseDriver {
 
 	public boolean isAlertPresent() {
 		try {
-
 			driver.switchTo().alert();
 			return true;
-
 		} catch (Exception Ex) {
-
 			return false;
 
 		}
@@ -948,6 +974,8 @@ public class AppiumBaseDriver {
 	 */
 	public void closeApp() throws Exception {
 		driver.closeApp();
+		wait(5);
+		HtmlReporter.pass("Close app successfully");
 	}
 
 	/**
@@ -961,6 +989,8 @@ public class AppiumBaseDriver {
 	 */
 	public void launchApp() throws Exception {
 		driver.launchApp();
+		wait(5);
+		HtmlReporter.pass("Launch app successfully");
 	}
 
 }
