@@ -348,8 +348,8 @@ public class APIResponse {
 								// }
 								PropertiesLoader.getPropertiesLoader().test_variables.setProperty(outputVariable,
 										extractedValue);
-								extractedVariable.add("[SUCCESS] [" + outputVariable + "] = [" + extractedValue + "]");
-								Log.info("[Extract][SUCCESS] [" + outputVariable + "] = [" + extractedValue + "]");
+								extractedVariable.add("[SUCCESS] [" + regex + "] ==> [" + outputVariable + "] = [" + extractedValue + "]");
+								Log.info("[Extract][SUCCESS] [" + regex + "] ==> [" + outputVariable + "] = [" + extractedValue + "]");
 							} else if (!(extractedNode instanceof JSONObject)
 									&& !(extractedNode instanceof JSONArray)) {
 								extractedVariable.add("[FAILED] key [" + key + "] in [" + regex + "]does not contain ["
