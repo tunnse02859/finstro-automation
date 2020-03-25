@@ -93,10 +93,9 @@ public class FinstroAPI {
 				.extractJsonValue("gstDate", "businessDetails.gstDate")
 				.extractJsonValue("timeTrading", "businessDetails.timeTrading").flush();
 
-		String businessTradingAddress = String.format("%s %s %s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
-				Common.getTestVariable("suburb", true), Common.getTestVariable("state", true),
-				Common.getTestVariable("postCode", true));
+		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
+				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
+				Common.getTestVariable("state", true));
 		return businessTradingAddress;
 	}
 
@@ -166,7 +165,7 @@ public class FinstroAPI {
 				.extractJsonValue("streetNumber", "residentialAddress.streetNumber")
 				.extractJsonValue("streetType", "residentialAddress.streetType")
 				.extractJsonValue("suburb", "residentialAddress.suburb").flush();
-		String residentialAddress = String.format("%s %s %s %s %s", Common.getTestVariable("streetNumber", true),
+		String residentialAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
 				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
 				Common.getTestVariable("state", true));
 		return residentialAddress;

@@ -130,6 +130,7 @@ public class SettingsBusinessDetailsFirstPage {
 			driver.selectItemFromSpinner(ddlCategory, category);
 		}else {
 			driver.click(ddlCategory);
+			driver.clickByPosition(ddlCategory, "middle");
 			driver.selectPickerWheel(null, category);
 		}
 	}

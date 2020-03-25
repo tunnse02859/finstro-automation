@@ -90,13 +90,27 @@ public class AppiumBaseDriver {
 		}
 		// For IOS
 		else {
-			// HashMap<String, String> scrollObject = new HashMap<>();
-			// scrollObject.put("predicateString", "value == '" + text + "'");
-			// scrollObject.put("toVisible", "true");
-			// ((JavascriptExecutor)driver).executeScript("mobile: scroll", scrollObject);
-			MobileElement e = (MobileElement) ((IOSDriver) driver)
-					.findElementByIosNsPredicate("value = '" + text + "'");
-			findElement(e);
+			if(isElementDisplayed(((IOSDriver)driver).findElementByIosNsPredicate("value == '" + text + "'"))) {
+				return;
+			}
+			try {
+				
+				HashMap<String, String> scrollObject = new HashMap<>();
+				scrollObject.put("predicateString", "value == '" + text + "'");
+				scrollObject.put("toVisible", "true");
+				scrollObject.put("direction", "down");
+				((JavascriptExecutor) driver).executeScript("mobile: scroll", scrollObject);
+				
+			} catch (Exception ex) {
+				
+				HashMap<String, String> scrollObject = new HashMap<>();
+				scrollObject.put("predicateString", "value == '" + text + "'");
+				scrollObject.put("toVisible", "true");
+				scrollObject.put("direction", "up");
+				((JavascriptExecutor) driver).executeScript("mobile: scroll", scrollObject);
+				
+			}
+
 		}
 	}
 
@@ -119,7 +133,7 @@ public class AppiumBaseDriver {
 
 		int attemps = 0;
 		do {
-			if (isElementDisplayed(element)) {
+			if (isElementPresented(element)) {
 				return element;
 			}
 			swipe(DIRECTION.UP);
@@ -241,7 +255,7 @@ public class AppiumBaseDriver {
 
 	public void hideKeyboard() {
 
-		if(isAndroidDriver()) {
+		if (isAndroidDriver()) {
 			driver.hideKeyboard();
 		}
 
@@ -348,8 +362,7 @@ public class AppiumBaseDriver {
 
 		}
 	}
-	
-	
+
 	public void clickByCoordinate(int x, int y) {
 		new TouchAction<>(driver).tap(PointOption.point(x, y)).perform();
 	}

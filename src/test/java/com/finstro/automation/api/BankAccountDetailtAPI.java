@@ -59,6 +59,12 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 
 		JSONObject account = getBankAccountInfoByName(strNameOnAccount);
 		if (account != null) {
+			
+			if(account.get("isDefault").equals(true)) {
+				account.put("isDefault", false);
+				saveBankAccount(account);
+			}
+			
 			new APIRequest().baseUrl(Constant.API_HOST).path(removeAccountEndpoint)
 					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post()
 					.then().verifyResponseCode(200).flush();

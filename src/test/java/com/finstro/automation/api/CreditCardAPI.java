@@ -59,8 +59,13 @@ public class CreditCardAPI extends FinstroAPI {
 	public void removeCardByName(String strNameOncard) throws Exception {
 
 		JSONObject card = getCreditCardInfoByName(strNameOncard);
-		Thread.sleep(5000);
 		if (card != null) {
+			
+			if(card.get("mainAccount").equals(true)) {
+				card.put("mainAccount", false);
+				saveCard(card);
+			}
+			
 			new APIRequest().baseUrl(Constant.API_HOST).path(removeCardEnpoint)
 					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(card.toString()).post()
 					.then().verifyResponseCode(200).flush();
