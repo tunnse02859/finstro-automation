@@ -68,8 +68,8 @@ public class SettingProfile_ProfileDetailPage {
 		return driver.getText(lastName);
 	}
 
-	public String getResidential() throws Exception {
-		return driver.getText(residential).trim();
+	public String getResidentialAddress() throws Exception {
+		return driver.getText(residential).replace(",", "").replace("  ", " ").trim();
 	}
 
 	public SettingProfile_MedicarePage gotoSettingProfileMedicarePage() throws Exception {

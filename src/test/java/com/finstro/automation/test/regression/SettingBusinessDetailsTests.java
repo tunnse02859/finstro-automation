@@ -113,30 +113,31 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 		// Check the information displayed on the page that matches with api response
 		HtmlReporter.label("Verify data on screen with data from API");
-		String strBusinessType = settingBusinessDetailsSecondPage.getTypeOfBusiness();
-		String strBusinessName = settingBusinessDetailsSecondPage.getTradingBusinessName();
-		String strTradingName = settingBusinessDetailsSecondPage.getTradingLegalName();
-		String strABN = settingBusinessDetailsSecondPage.getABN();
-		String strACN = settingBusinessDetailsSecondPage.getACN();
-		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
-
+		
 		String expectedBusinessTradingAddress = finstroAPI.getBusinessDetailInfor();
+		
+		String strBusinessType = settingBusinessDetailsSecondPage.getTypeOfBusiness();
 		String resBusinessType = Common.getTestVariable("type", true);
 		assertEquals(strBusinessType, resBusinessType, "BusinessType is different", "BusinessType matches");
 
+		String strBusinessName = settingBusinessDetailsSecondPage.getTradingBusinessName();
 		String resBusinessName = Common.getTestVariable("businessName", true);
 		assertEquals(strBusinessName, resBusinessName, "BusinessName is different", "BusinessName matches");
 
+		String strTradingName = settingBusinessDetailsSecondPage.getTradingLegalName();
 		String resTradingName = Common.getTestVariable("entityName", true);
 		assertEquals(strTradingName, resTradingName, "TradingName is different", "TradingName matches");
 
+		String strABN = settingBusinessDetailsSecondPage.getABN();
 		String resABN = Common.getTestVariable("abn", true);
 		assertEquals(strABN.replace(" ", ""), resABN.replace(" ", ""), "ABN is different", "ABN matches");
 
+		String strACN = settingBusinessDetailsSecondPage.getACN();
 		String resACN = Common.getTestVariable("acn", true);
 		assertEquals(strACN.replace(" ", ""), resACN.replace(" ", ""), "ACN is different", "ACN matches");
 
-		assertEquals(strBusinessAddr.replace(",", "").trim(), expectedBusinessTradingAddress.trim(),
+		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
+		assertEquals(strBusinessAddr, expectedBusinessTradingAddress.trim(),
 				"Address is different", "Address matches");
 
 	}
