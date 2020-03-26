@@ -6,6 +6,7 @@ import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsSecondPage;
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
@@ -56,35 +57,28 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
 
 		// call API and verify displayed data
+		HtmlReporter.label("Verify data on screen with data from API");
 		finstroAPI.getBusinessDetailInfor();
 		settingBusinessDetailsFirstPage.verifyDisplayedData(Common.getTestVariable("email", true),
 				Common.getTestVariable("phoneNumber", true), Common.getTestVariable("website", true),
 				Common.getTestVariable("facebook", true), Common.getTestVariable("twitter", true),
 				Common.getTestVariable("instagram", true), Common.getTestVariable("skype", true),
 				Common.getTestVariable("linkedin", true), Common.getTestVariable("other", true));
-		// Check Category of Business
+		
+		HtmlReporter.label("Input data and save changes");
 		settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
-		// Check Email
 		settingBusinessDetailsFirstPage.setEmail(email);
-		// Check Phone number
 		settingBusinessDetailsFirstPage.setMobileNumber(mobile);
-		// Check Website address
 		settingBusinessDetailsFirstPage.setWebsiteAddress(website);
-		// Check Facebook page
 		settingBusinessDetailsFirstPage.setFacebook(facebook);
-		// Check Twitter
 		settingBusinessDetailsFirstPage.setTwitter(twitter);
-		// Check Instagram
 		settingBusinessDetailsFirstPage.setInstagram(instagram);
-		// Check Skype address
 		settingBusinessDetailsFirstPage.setSkype(skype);
-		// Check Linkedin
 		settingBusinessDetailsFirstPage.setLinkedin(linkedin);
-		// Check Other
 		settingBusinessDetailsFirstPage.setOther(other);
-
 		// Save Changes
 		settingBusinessDetailsFirstPage.saveChanges();
+		HtmlReporter.label("Verify data after click on save");
 		if (driver.isAndroidDriver()) {
 			String popupMessage = settingBusinessDetailsFirstPage.getPopupMessage();
 			String popupAction = settingBusinessDetailsFirstPage.getPopupActionType();
@@ -92,7 +86,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 					"Save business details success");
 			assertEquals(popupAction, "SUCCESS", "Save failed " + popupAction, "Save business details success");
 		}
-		Thread.sleep(10000);
+		driver.wait(10);
 		finstroAPI.recoveryData().then().verifyResponseCode(200)
 				.verifyJsonNodeEqual("businessDetails.email", email)
 				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
@@ -118,6 +112,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 				"You're on the Setting Business Detail second page");
 
 		// Check the information displayed on the page that matches with api response
+		HtmlReporter.label("Verify data on screen with data from API");
 		String strBusinessType = settingBusinessDetailsSecondPage.getTypeOfBusiness();
 		String strBusinessName = settingBusinessDetailsSecondPage.getTradingBusinessName();
 		String strTradingName = settingBusinessDetailsSecondPage.getTradingLegalName();

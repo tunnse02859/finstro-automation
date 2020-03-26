@@ -761,6 +761,7 @@ public class AppiumBaseDriver {
 		new TouchAction<>(driver).press(PointOption.point(startx, starty))
 				.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))).moveTo(PointOption.point(endx, endy))
 				.release().perform();
+		HtmlReporter.pass("Performed a swipe: " + fromx + " - " + fromy + " - " + tox + " - " + tox);
 	}
 
 	/**

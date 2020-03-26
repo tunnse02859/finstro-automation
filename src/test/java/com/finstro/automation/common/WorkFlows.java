@@ -18,10 +18,12 @@ import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
+import com.finstro.automation.report.HtmlReporter;
 
 public class WorkFlows {
 
 	public static MainNavigator goToTheMainPage(AppiumBaseDriver driver) throws Exception {
+		HtmlReporter.label("Go to Home screen");
 
 		// goto Business Details page
 		SelectBusinessCardPage selectBusinessCardPage = new SelectBusinessCardPage(driver);
@@ -87,7 +89,7 @@ public class WorkFlows {
 	}
 
 	public static SettingProfile_ProfileDetailPage goToTheSettingProfilePage(AppiumBaseDriver driver) throws Exception {
-
+		HtmlReporter.label("Go to Setting Profile screen");
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
 		// goto Settings Business Details page
@@ -100,7 +102,7 @@ public class WorkFlows {
 
 	public static SettingsBusinessDetailsFirstPage goToTheSettingBusinessDetailsPage(AppiumBaseDriver driver)
 			throws Exception {
-
+		HtmlReporter.label("Go to Setting Business Detail screen");
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
 		// goto Settings Business Details page
@@ -113,7 +115,7 @@ public class WorkFlows {
 	}
 
 	public static SettingsApprovalBankUploadPage goToApprovalBankUploadPage(AppiumBaseDriver driver) throws Exception {
-
+		HtmlReporter.label("Go to Setting Approval Bank Upload screen");
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
 		// goto ApprovalBankUpload page
@@ -125,7 +127,7 @@ public class WorkFlows {
 	}
 
 	public static DebtCreditCardsPage goToDebtCreditCardsPage(AppiumBaseDriver driver) throws Exception {
-
+		HtmlReporter.label("Go to Setting Debt/Credit Cards screen");
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
 		// goto DebtCreditCards page
@@ -137,7 +139,7 @@ public class WorkFlows {
 	}
 
 	public static BankAccountPage goToSettingBankAccountPage(AppiumBaseDriver driver) throws Exception {
-
+		HtmlReporter.label("Go to Setting Bank Account screen");
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
 
 		// goto BankAccountPage page
