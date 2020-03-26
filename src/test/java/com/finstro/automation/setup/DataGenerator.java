@@ -13,6 +13,8 @@ public class DataGenerator {
 	private String[] debitCardNumberList = { "5203950337464077", "5203950332746387", "5203950336889332",
 			"5203950333578953", "5203950338218035", "5203950332980226", "5203950332061159", "5203950334068764" };
 
+	private String[] contactUsReason = { "Finstro Card Problem", "Incorrect Transaction", "Login Problems" };
+
 	public int randomNumber(int min, int max) {
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
@@ -31,10 +33,21 @@ public class DataGenerator {
 	public String generateStringByDateTime(String prefix) {
 		return prefix + System.currentTimeMillis();
 	}
-	
+
 	public String generateDebitCardNumber() {
 		int index = randomNumber(0, debitCardNumberList.length - 1);
 		return debitCardNumberList[index];
+	}
+
+	public String generateRandomString(int length) {
+		String temp = "abcdefghijklmnopqrstuvxyz";
+		StringBuilder builder = new StringBuilder();
+		
+		for(int i = 0; i < length; i ++) {
+			builder.append(temp.charAt(randomNumber(0, temp.length() - 1)));
+		}
+		
+		return builder.toString();
 	}
 
 }

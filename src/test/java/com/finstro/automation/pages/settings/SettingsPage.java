@@ -2,6 +2,7 @@ package com.finstro.automation.pages.settings;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
+import com.finstro.automation.pages.contactus.ContactUsPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
 import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
@@ -102,4 +103,8 @@ public class SettingsPage {
     	return new BankAccountPage(driver);
     }
     
+    public ContactUsPage goToContactUsPage() throws Exception{
+    	driver.clickByPosition(nvgContactFinstro,"middle");
+    	return new ContactUsPage(driver);
+    }
 }

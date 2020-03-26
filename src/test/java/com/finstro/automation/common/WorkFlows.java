@@ -3,6 +3,7 @@ package com.finstro.automation.common;
 import static com.finstro.automation.utility.Assertion.assertTrue;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.contactus.ContactUsPage;
 import com.finstro.automation.pages.home.HomePage;
 import com.finstro.automation.pages.home.MainNavigator;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
@@ -84,6 +85,18 @@ public class WorkFlows {
 		SettingsPage settingsPage = navigator.gotoSettingsPage();
 		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
 		return settingsPage;
+	}
+	
+	public static ContactUsPage goToTheContactUsPage(AppiumBaseDriver driver) throws Exception {
+
+		SettingsPage settingsPage = goToTheSettingsPage(driver);
+
+		// goto Settings Business Details page
+		ContactUsPage contactUsPage = settingsPage.goToContactUsPage();
+		assertTrue(contactUsPage.isActive(), "You're not on the Contact Finstro Page",
+				"You're on the Contact Finstro Page");
+
+		return contactUsPage;
 	}
 
 	public static SettingProfile_ProfileDetailPage goToTheSettingProfilePage(AppiumBaseDriver driver) throws Exception {

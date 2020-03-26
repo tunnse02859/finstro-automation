@@ -365,7 +365,7 @@ public class AppiumBaseDriver {
 		try {
 			element = findElement(element);
 			// waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
-			waitForElementClickable(element, 10);
+			//waitForElementClickable(element, 10);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
 		} catch (NoSuchElementException e) {
