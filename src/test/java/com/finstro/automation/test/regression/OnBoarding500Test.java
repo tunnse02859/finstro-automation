@@ -113,7 +113,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 		String addressInforForSearch = "60 Margaret St, SYDNEY";
 		String expectedFirstMatchTitle = "60 Margaret St";
 		String expectedFirstMatchInfor = "SYDNEY NSW 2000";
-		String expectedBusinessTradingAddress = "60 Margaret St SYDNEY NSW 2000";
+		String expectedBusinessTradingAddress = "60 Margaret St SYDNEY";
 
 		// go to search address and
 		findAddressPage = businessDetailPage.clickBusinessTradingAddress();
@@ -158,7 +158,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 		String addressInforForSearch = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
-		String expectedResidentialAddress = "50 Margaret St ASHFIELD WA 6054";
+		String expectedResidentialAddress = "50 Margaret St ASHFIELD";
 
 		// go to residential address screen
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");

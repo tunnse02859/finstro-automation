@@ -19,10 +19,12 @@ import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
+import com.finstro.automation.report.HtmlReporter;
 
 public class WorkFlows {
 
 	public static MainNavigator goToTheMainPage(AppiumBaseDriver driver) throws Exception {
+		HtmlReporter.label("Go to Home screen");
 
 		// goto Business Details page
 		SelectBusinessCardPage selectBusinessCardPage = new SelectBusinessCardPage(driver);
@@ -82,6 +84,7 @@ public class WorkFlows {
 		} else {
 			navigator = new MainNavigator(driver);
 		}
+		HtmlReporter.label("Go to Setting screen");
 		SettingsPage settingsPage = navigator.gotoSettingsPage();
 		assertTrue(settingsPage.isActive(), "You're not on the Settings page", "You're on the Settings page");
 		return settingsPage;
@@ -100,9 +103,9 @@ public class WorkFlows {
 	}
 
 	public static SettingProfile_ProfileDetailPage goToTheSettingProfilePage(AppiumBaseDriver driver) throws Exception {
-
+		
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
-
+		HtmlReporter.label("Go to Setting Profile screen");
 		// goto Settings Business Details page
 		SettingProfile_ProfileDetailPage settingProfileDetail = settingsPage.goToProfileDetailsPage();
 		assertTrue(settingProfileDetail.isActive(), "You're not on the Settings Profile Details Page",
@@ -113,9 +116,9 @@ public class WorkFlows {
 
 	public static SettingsBusinessDetailsFirstPage goToTheSettingBusinessDetailsPage(AppiumBaseDriver driver)
 			throws Exception {
-
+		
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
-
+		HtmlReporter.label("Go to Setting Business Detail screen");
 		// goto Settings Business Details page
 		SettingsBusinessDetailsFirstPage settingBusinessDetailsFirstPage = settingsPage
 				.gotoSettingsBusinessDetailsPage();
@@ -126,9 +129,9 @@ public class WorkFlows {
 	}
 
 	public static SettingsApprovalBankUploadPage goToApprovalBankUploadPage(AppiumBaseDriver driver) throws Exception {
-
+		
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
-
+		HtmlReporter.label("Go to Setting Approval Bank Upload screen");
 		// goto ApprovalBankUpload page
 		SettingsApprovalBankUploadPage settingsApprovalBankUploadPage = settingsPage.gotoApprovalBankUploadPage();
 		assertTrue(settingsApprovalBankUploadPage.isActive(), "You're not on the Approval/Bank Upload Page",
@@ -138,9 +141,9 @@ public class WorkFlows {
 	}
 
 	public static DebtCreditCardsPage goToDebtCreditCardsPage(AppiumBaseDriver driver) throws Exception {
-
+		
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
-
+		HtmlReporter.label("Go to Setting Debt/Credit Cards screen");
 		// goto DebtCreditCards page
 		DebtCreditCardsPage debtCreditCardsPage = settingsPage.gotoDebtCreditCardsPage();
 		assertTrue(debtCreditCardsPage.isActive(), "You're not on the Debt/ Credit Cards Page",
@@ -150,9 +153,9 @@ public class WorkFlows {
 	}
 
 	public static BankAccountPage goToSettingBankAccountPage(AppiumBaseDriver driver) throws Exception {
-
+		
 		SettingsPage settingsPage = goToTheSettingsPage(driver);
-
+		HtmlReporter.label("Go to Setting Bank Account screen");
 		// goto BankAccountPage page
 		BankAccountPage bankAccountPage = settingsPage.goToBankAccountPage();
 		assertTrue(bankAccountPage.isActive(), "You're not on the BankAccountPage",

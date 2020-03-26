@@ -51,8 +51,12 @@ public class ResidentialAddressPage {
 		return new FindAddressPage(driver);
 	}
 	
+	public String getResidentialAddress() throws Exception {
+		return driver.getText(residentialAddress).replace(",", "").replace("  ", " ").trim();
+	}
+	
 	public void verifyResidentialAddress(String expectedAddress) throws Exception {
-		assertEquals(driver.getText(residentialAddress).replace(",", "").trim(), expectedAddress, "Residential Address field's value doesnt match with expectation", "Residential Address field's value matched with expectation");
+		assertContains(getResidentialAddress(), expectedAddress, "Residential Address field's value doesnt match with expectation", "Residential Address field's value matched with expectation");
 	}
 	
 	public PhotoIDPage clickNext() throws Exception {

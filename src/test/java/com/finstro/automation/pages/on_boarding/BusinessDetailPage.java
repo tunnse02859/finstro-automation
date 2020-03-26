@@ -82,8 +82,12 @@ public class BusinessDetailPage {
 		assertEquals(driver.getText(businessName), expectedName, "Business Name field's value doesnt match with expectation", "Business Name field's value matched with expectation");
 	}
 	
+	public String getBusinessTradingAddress() throws Exception {
+		return driver.getText(businessTradingAddress).replace(",", "").replace("  ", " ").trim();
+	}
+	
 	public void verifyBusinessTradingAddress(String expectedAddress) throws Exception {
-		assertEquals(driver.getText(businessTradingAddress).replace(",", ""), expectedAddress, "Business Trading Address field's value doesnt match with expectation", "Business Trading Address field's value matched with expectation");
+		assertContains(getBusinessTradingAddress(), expectedAddress, "Business Trading Address field's value doesnt match with expectation", "Business Trading Address field's value matched with expectation");
 	}
 	
 	public void verifyBusinessData(String expectedABN, String expectedEntityName, String expectedBusinessName) throws Exception {

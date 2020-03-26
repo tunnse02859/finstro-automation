@@ -3,6 +3,7 @@ package com.finstro.automation.pages.login_process;
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 import com.finstro.automation.pages.home.HomePage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
+import com.finstro.automation.report.HtmlReporter;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -77,6 +78,7 @@ public class LoginPage {
 	}
 
 	public void doSuccessLogin(String email, String code) throws Exception {
+		HtmlReporter.label("Login to the app");
 		new RegisterPage(driver).toLoginPage();
 		assertTrue(this.isActive(), "Login screen didnt showed after tap on login",
 				"Login screen showed after tap on login");

@@ -9,7 +9,7 @@ import com.finstro.automation.pages.on_boarding.BankStatementRetrieveAccountlPag
 import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
 import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUploadPage;
 import com.finstro.automation.pages.settings.approval.SettingsApproval_BankAccountConnectedPage;
-
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
@@ -59,6 +59,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
 
 		// get API and verify status displayed on screen
+		HtmlReporter.label("Verify Approval status on screen");
 		finstroAPI.getApprovalStatus();
 		settingsApprovalBankUploadPage.verifyIDCheckStatusIsPass(Common.getTestVariable("idCheckStatus", true));
 		settingsApprovalBankUploadPage
@@ -79,6 +80,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 				"Bank Account Connected screen is displayed");
 
 		// get bank account infor
+		HtmlReporter.label("Verify data on screen with data from API");
 		JSONArray bankAccounts = finstroAPI.getBankAccountsInfo();
 		settingBankAccountConnectedPage.verifyBankAccountDisplayed(bankAccounts);
 	}
@@ -93,11 +95,13 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 				"Bank Account Connected screen is displayed");
 
 		// Go to bank statement
+		HtmlReporter.label("Start re-submit bank statement");
 		SelectBankStatementPage selectBankStatementPage = settingBankAccountConnectedPage.clickSubmitBankAccount();
 		assertTrue(selectBankStatementPage.isActive(), "Bank Statement screen is not displayed",
 				"Bank Statement screen is displayed");
 
 		// search for bank demo and select it
+		HtmlReporter.label("Search for bank demo and login");
 		selectBankStatementPage.inputSearch("demo");
 		BankStatementDetailPage bankStatementDetailPage = selectBankStatementPage.selectBankDemo();
 		assertTrue(bankStatementDetailPage.isActive(), "Bank Statement login screen is not displayed",
@@ -108,6 +112,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		bankStatementDetailPage.inputPassword("TestMyMoney");
 		bankStatementDetailPage.acceptTern();
 		BankStatementRetrieveAccountlPage retrievePage = bankStatementDetailPage.clickSubmit();
+		HtmlReporter.label("Verify retrieve screen displayed after login and submit it!");
 		assertTrue(retrievePage.isActive(), "Retrieve screen is not displayed", "Retrieve screen is displayed");
 
 		// submit retrieve, verify all done screen displayed and popup displayed

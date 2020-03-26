@@ -68,19 +68,21 @@ public class SettingProfile_ProfileDetailPage {
 		return driver.getText(lastName);
 	}
 
-	public String getResidential() throws Exception {
-		return driver.getText(residential).trim();
+	public String getResidentialAddress() throws Exception {
+		return driver.getText(residential).replace(",", "").replace("  ", " ").trim();
 	}
 
 	public SettingProfile_MedicarePage gotoSettingProfileMedicarePage() throws Exception {
-		driver.swipe(DIRECTION.LEFT);
-		driver.swipe(DIRECTION.LEFT);
+		driver.swipe(0.9,0.5,0.1,0.5);
+		driver.wait(1);
+		driver.swipe(0.9,0.5,0.1,0.5);
+		driver.wait(1);
 		return new SettingProfile_MedicarePage(driver);
 	}
 	
 	public SettingProfile_DrivingLicensePage toSettingDrivingLicensePage() throws Exception {
-		driver.swipe(DIRECTION.LEFT);
-		driver.wait(2);
+		driver.swipe(0.9,0.5,0.1,0.5);
+		driver.wait(1);
 		return new SettingProfile_DrivingLicensePage(driver);
 	}
 

@@ -43,7 +43,7 @@ public class PhotoIDPage {
 	}
 
 	public DriverLicensePage clickNext() throws Exception {
-		driver.wait(20);
+		driver.wait(40);
 		driver.click(next);
 		return new DriverLicensePage(driver);
 	}
