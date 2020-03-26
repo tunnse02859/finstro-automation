@@ -7,7 +7,7 @@ import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.bankaccounts.BankAccount_AccountDetailPage;
 import com.finstro.automation.pages.settings.bankaccounts.BankAccount_AddNewBankPage;
-import com.finstro.automation.report.Log;
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.DataGenerator;
 import com.finstro.automation.setup.MobileTestSetup;
@@ -68,10 +68,12 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		try {
 
 			// Is on Add new account page
+			HtmlReporter.label("Go to add new bank account screen");
 			addBankAccountPage = accountPage.addNewBankAccount();
 			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
 
 			// Add new account
+			HtmlReporter.label("Do add new account and verify");
 			addBankAccountPage.setAccountName(name);
 			addBankAccountPage.setAccountNumber(accountNumber);
 			addBankAccountPage.setBsb(bsb);
@@ -109,6 +111,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 
 		/********* Save the original default bank account *********************/
+		HtmlReporter.label("Get original default account");
 		JSONObject originalDefaultAccount = bankAccountDetailAPI.getDefaultAccountInfo();
 
 		try {
@@ -117,6 +120,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			name = name + System.currentTimeMillis();
 
 			// Is on Add new account page
+			HtmlReporter.label("Do add new account (for set default)");
 			addBankAccountPage = accountPage.addNewBankAccount();
 			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
 
@@ -139,6 +143,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 					"Checking new card by API: ADD FAILED");
 
 			/********* Set the bank account as default *********************/
+			HtmlReporter.label("Set new account as default and verify");
 			// Is on Detail Bank Account page
 			detailAccountPage = accountPage.selectBankAccountDetailsByName(name);
 			Assert.assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page");
@@ -159,7 +164,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 					"Checking default bank account by API: FAILED");
 		} finally {
 			if (bankAccountDetailAPI.getBankAccountInfoByName(name) != null) {
-				Log.info("---- delete the added card ----");
+				HtmlReporter.label("Delete created account and reset origin default account");
 				// Set the default card to the original one
 				bankAccountDetailAPI.saveBankAccount(originalDefaultAccount);
 				// Remove card after testing
@@ -186,7 +191,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
 			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
-
+			HtmlReporter.label("Add new account for delete");
 			// Add new account
 			addBankAccountPage.setAccountName(name);
 			addBankAccountPage.setAccountNumber(accountNumber);
@@ -206,6 +211,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 					"Checking new card by API: ADD FAILED");
 
 			/********* Delete the bank account *********************/
+			HtmlReporter.label("Do Delete created account and verify");
 			// Is on Detail Bank Account page
 			detailAccountPage = accountPage.selectBankAccountDetailsByName(name);
 			Assert.assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page");
@@ -228,6 +234,7 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		} finally {
 			// Remove the bank account after testing
 			if (bankAccountDetailAPI.getBankAccountInfoByName(name) != null) {
+				HtmlReporter.label("Delete created account");
 				bankAccountDetailAPI.removeBankAccountByName(name);
 			}
 		}

@@ -7,16 +7,14 @@ import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCards_AddNewCardPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCards_DetailCardPage;
-import com.finstro.automation.report.Log;
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.DataGenerator;
 import com.finstro.automation.setup.MobileTestSetup;
 
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.finstro.automation.utility.Assertion.*;
@@ -62,29 +60,32 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		try {
 			name = name + System.currentTimeMillis();
 			// Is on Add new card page
+			HtmlReporter.label("Go to add new card screen");
 			addCardPage = debtCreditCardsPage.addNewCard();
-			Assert.assertTrue(addCardPage.isActive(), "You aren't on the Add new card page");
+			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page","You are on the Add new card page");
 
 			// Add new card
+			HtmlReporter.label("Add new card and save");
 			addCardPage.setCardName(name);
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			addCardPage.saveChanges();
 
 			// Get alert
+			HtmlReporter.label("Verify after save");
 			String status = addCardPage.getSaveStatus();
-			Assert.assertTrue(status.contains("New card successfully added."), status);
+			assertTrue(status.contains("New card successfully added."), status,status);
 
 			// Verify new card on UI
-			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after adding");
-			Assert.assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display");
+			assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after adding","Debit/credit card is displayed after adding");
+			assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display","New card displayed");
 
 			// Verify new card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null,
-					"Checking new card by API: ADD FAILED");
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED","Checking new card by API: ADD SUCCESSFULLY");
 		} finally {
 			// Remove card after testing
 			if (creditCardAPI.getCreditCardInfoByName(name) != null) {
+				HtmlReporter.label("Delete card after add sucess");
 				creditCardAPI.removeCardByName(name);
 			}
 		}
@@ -109,8 +110,9 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			/********* Add a new card as a precondition *********************/
 			name = name + System.currentTimeMillis();
 			// Is on Add new card page
+			HtmlReporter.label("Add new card for set default");
 			addCardPage = debtCreditCardsPage.addNewCard();
-			Assert.assertTrue(addCardPage.isActive(), "You aren't on the Add new card page");
+			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page","You are on the Add new card page");
 
 			// Add new card
 			addCardPage.setCardName(name);
@@ -120,36 +122,36 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 			// Get alert
 			String status = addCardPage.getSaveStatus();
-			Assert.assertTrue(status.contains("New card successfully added."), status);
+			assertTrue(status.contains("New card successfully added."), status,status);
 
 			// Verify new card on UI
-			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after adding");
-			Assert.assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display");
+			assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after adding","Debit/credit card is displayed after adding");
+			assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display", "New card displayed");
 
 			// Verify new card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null,
-					"Checking new card by API: ADD FAILED");
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED","Checking new card by API: ADD SUCCESSFULLY");
 
 			/********* Set the card as default *********************/
+			HtmlReporter.label("Set new card as default and verify");
 			// Is on Detail Card page
 			detailCardPage = debtCreditCardsPage.selectCardDetailsByName(name);
-			Assert.assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page");
+			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page","You are on the Card Detail page");
 
 			// Set default card
 			debtCreditCardsPage = detailCardPage.setDefaultCard();
 
 			// Get alert
 			status = detailCardPage.getSaveStatus();
-			Assert.assertTrue(status.contains("Card set as default"), status);
-
+			assertTrue(status.contains("Card set as default"), status,status);
 			// Verify default card on UI
-			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after set default");
-			Assert.assertTrue(debtCreditCardsPage.isDefaultCard(name), "The greentick doesn't appear!");
+			assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after set default","Debit/credit card is displayed after set default");
+			assertTrue(debtCreditCardsPage.isDefaultCard(name), "The greentick doesn't appear!","The greentick appeared!");
 
 			// Verify default card by API
-			Assert.assertTrue(creditCardAPI.isDefaultCard(name), "Checking default card by API: FAILED");
+			assertTrue(creditCardAPI.isDefaultCard(name), "Checking default card by API: FAILED","Checking default card by API: PASSED");
 		} finally {
 			if (creditCardAPI.getCreditCardInfoByName(name) != null) {
+				HtmlReporter.label("Delete created card and reset origin default card");
 				// Set the default card to original one
 				creditCardAPI.saveCard(originalDefaultCard);
 				// Remove card after testing
@@ -172,8 +174,9 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			/********* Add a new card as a precondition *********************/
 			name = name + System.currentTimeMillis();
 			// Is on Add new card page
+			HtmlReporter.label("Add new card for set delete");
 			addCardPage = debtCreditCardsPage.addNewCard();
-			Assert.assertTrue(addCardPage.isActive(), "You aren't on the Add new card page");
+			assertTrue(addCardPage.isActive(), "You aren't on the Add new card page","You are on the Add new card page");
 
 			// Add new card
 			addCardPage.setCardName(name);
@@ -183,38 +186,37 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 			// Get alert
 			String status = addCardPage.getSaveStatus();
-			Assert.assertTrue(status.contains("New card successfully added."), status);
+			assertTrue(status.contains("New card successfully added."), status,status);
 
 			// Verify new card on UI
-			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after adding");
-			Assert.assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display");
+			assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after adding","Debit/credit card is displayed after adding");
+			assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display", "New card displayed");
 
 			// Verify new card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null,
-					"Checking new card by API: ADD FAILED");
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED","Checking new card by API: ADD SUCCESSFULLY");
 
 			/********* Delete the card *********************/
+			HtmlReporter.label("Delete card and verify");
 			// Is on Detail Card page
 			detailCardPage = debtCreditCardsPage.selectCardDetailsByName(name);
-			Assert.assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page");
+			assertTrue(detailCardPage.isActive(), "You aren't on the Card Detail page","You are on the Card Detail page");
 
 			// Delete card
 			debtCreditCardsPage = detailCardPage.deleteCard();
 
 			// Get alert
 			status = detailCardPage.getSaveStatus();
-			Assert.assertTrue(status.contains("Card successfully deleted."), status);
-
+			assertTrue(status.contains("Card successfully deleted."), status,status);
 			// Verify deleted card on UI
-			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after delete card");
-			Assert.assertFalse(debtCreditCardsPage.isCardExisting(name), "The card still displays on UI");
+			assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after delete card","Debit/credit card is displayed after delete card");
+			assertFalse(debtCreditCardsPage.isCardExisting(name), "The card still displays on UI","The card is disappeared");
 
 			// Verify the deleted card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) == null,
-					"Verify the deleted card by API: FAILED");
+			assertTrue(creditCardAPI.getCreditCardInfoByName(name) == null, "Verify the deleted card by API: FAILED","Verify the deleted card by API: PASSED");
 		} finally {
 			// Remove card after testing
 			if (creditCardAPI.getCreditCardInfoByName(name) != null) {
+				HtmlReporter.label("Delete card failed, remove card by API");
 				creditCardAPI.removeCardByName(name);
 			}
 		}

@@ -3,8 +3,6 @@ package com.finstro.automation.report;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
@@ -368,6 +366,7 @@ public class HtmlReporter {
 	public static void label(String strDescription)  {
 
 			getTest().info(MarkupHelper.createLabel(strDescription, ExtentColor.BLUE));
+			Log.info(" --- " + strDescription + " ---");
 
 	}
 

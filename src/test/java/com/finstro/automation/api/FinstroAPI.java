@@ -180,10 +180,9 @@ public class FinstroAPI {
 				.extractJsonValue("streetNumber", "businessDetails.businessTradingAddress.streetNumber")
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
 				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb").flush();
-		String businessTradingAddress = String.format("%s %s %s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
-				Common.getTestVariable("suburb", true), Common.getTestVariable("state", true),
-				Common.getTestVariable("postCode", true));
+		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
+				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
+				Common.getTestVariable("state", true));
 		return businessTradingAddress;
 	}
 
