@@ -3,6 +3,7 @@ package com.finstro.automation.api;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.utility.Common;
 

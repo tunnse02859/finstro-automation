@@ -9,6 +9,7 @@ import com.finstro.automation.pages.settings.carddetails.DebtCreditCards_AddNewC
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCards_DetailCardPage;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
+import com.finstro.automation.setup.DataGenerator;
 import com.finstro.automation.setup.MobileTestSetup;
 
 import org.json.JSONObject;
@@ -32,7 +33,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		creditCardAPI = new CreditCardAPI();
-		creditCardAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		creditCardAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -42,18 +44,20 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		// Login
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		// Go to the debtCreditCardsPage page
 
 	}
 
-	@DataProvider(name = "SettingCardDetail_01")
-	public Object[][] SettingCardDetail_01() {
-		return new Object[][] { { "Add Card Test", "5203950336889332", "01/2021" } };
-	}
+	@Test
+	public void SettingCardDetail_01_AddNewCard() throws Exception {
+		// Generate test data
+		DataGenerator data = new DataGenerator();
+		String name = data.generateStringByDateTime("AddNewCard");
+		String cardNumber = data.generateDebitCardNumber();
+		String expiry = "01/2022";
 
-	@Test(dataProvider = "SettingCardDetail_01")
-	public void SettingCardDetail_01_AddNewCard(String name, String cardNumber, String expiry) throws Exception {
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		try {
 			name = name + System.currentTimeMillis();
@@ -66,7 +70,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			addCardPage.saveChanges();
-			
+
 			// Get alert
 			String status = addCardPage.getSaveStatus();
 			Assert.assertTrue(status.contains("New card successfully added."), status);
@@ -76,7 +80,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			Assert.assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display");
 
 			// Verify new card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED");
+			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null,
+					"Checking new card by API: ADD FAILED");
 		} finally {
 			// Remove card after testing
 			if (creditCardAPI.getCreditCardInfoByName(name) != null) {
@@ -85,14 +90,16 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		}
 	}
 
-	@DataProvider(name = "SettingCardDetail_02")
-	public Object[][] SettingCardDetail_02() {
-		return new Object[][] { { "Default Card Test", "5203950336889332", "01/2021" } };
 
-	}
-
-	@Test(dataProvider = "SettingCardDetail_02")
-	public void SettingCardDetail_02_SetDefaultCard(String name, String cardNumber, String expiry) throws Exception {
+	@Test
+	public void SettingCardDetail_02_SetDefaultCard() throws Exception {
+		
+		// Generate test data
+		DataGenerator data = new DataGenerator();
+		String name = data.generateStringByDateTime("DefaultCard");
+		String cardNumber = data.generateDebitCardNumber();
+		String expiry = "01/2022";
+		
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		/********* Save the original default card *********************/
 		JSONObject originalDefaultCard = creditCardAPI.getDefaultCreditCardInfo();
@@ -110,7 +117,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			addCardPage.saveChanges();
-			
+
 			// Get alert
 			String status = addCardPage.getSaveStatus();
 			Assert.assertTrue(status.contains("New card successfully added."), status);
@@ -120,7 +127,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			Assert.assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display");
 
 			// Verify new card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED");
+			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null,
+					"Checking new card by API: ADD FAILED");
 
 			/********* Set the card as default *********************/
 			// Is on Detail Card page
@@ -129,11 +137,11 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 			// Set default card
 			debtCreditCardsPage = detailCardPage.setDefaultCard();
-			
+
 			// Get alert
 			status = detailCardPage.getSaveStatus();
 			Assert.assertTrue(status.contains("Card set as default"), status);
-			
+
 			// Verify default card on UI
 			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after set default");
 			Assert.assertTrue(debtCreditCardsPage.isDefaultCard(name), "The greentick doesn't appear!");
@@ -150,14 +158,15 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		}
 	}
 
-	@DataProvider(name = "SettingCardDetail_03")
-	public Object[][] SettingCardDetail_03() {
-		return new Object[][] { { "Delete Card Test", "5203950336889332", "01/2021" } };
 
-	}
-
-	@Test(dataProvider = "SettingCardDetail_03")
-	public void SettingCardDetail_03_DeleteCard(String name, String cardNumber, String expiry) throws Exception {
+	@Test
+	public void SettingCardDetail_03_DeleteCard() throws Exception {
+		// Generate test data
+		DataGenerator data = new DataGenerator();
+		String name = data.generateStringByDateTime("DeleteCard");
+		String cardNumber = data.generateDebitCardNumber();
+		String expiry = "01/2022";
+		
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		try {
 			/********* Add a new card as a precondition *********************/
@@ -171,7 +180,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			addCardPage.setCardNumber(cardNumber);
 			addCardPage.setCardExpiry(expiry);
 			addCardPage.saveChanges();
-			
+
 			// Get alert
 			String status = addCardPage.getSaveStatus();
 			Assert.assertTrue(status.contains("New card successfully added."), status);
@@ -181,7 +190,8 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			Assert.assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display");
 
 			// Verify new card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null, "Checking new card by API: ADD FAILED");
+			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) != null,
+					"Checking new card by API: ADD FAILED");
 
 			/********* Delete the card *********************/
 			// Is on Detail Card page
@@ -190,17 +200,18 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 
 			// Delete card
 			debtCreditCardsPage = detailCardPage.deleteCard();
-			
+
 			// Get alert
 			status = detailCardPage.getSaveStatus();
 			Assert.assertTrue(status.contains("Card successfully deleted."), status);
-			
+
 			// Verify deleted card on UI
 			Assert.assertTrue(debtCreditCardsPage.isActive(), "Debit/credit card is not displayed after delete card");
 			Assert.assertFalse(debtCreditCardsPage.isCardExisting(name), "The card still displays on UI");
 
 			// Verify the deleted card by API
-			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) == null, "Verify the deleted card by API: FAILED");
+			Assert.assertTrue(creditCardAPI.getCreditCardInfoByName(name) == null,
+					"Verify the deleted card by API: FAILED");
 		} finally {
 			// Remove card after testing
 			if (creditCardAPI.getCreditCardInfoByName(name) != null) {

@@ -9,6 +9,7 @@ import com.finstro.automation.pages.settings.bankaccounts.BankAccount_AccountDet
 import com.finstro.automation.pages.settings.bankaccounts.BankAccount_AddNewBankPage;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
+import com.finstro.automation.setup.DataGenerator;
 import com.finstro.automation.setup.MobileTestSetup;
 
 import org.json.JSONObject;
@@ -32,7 +33,8 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		bankAccountDetailAPI = new BankAccountDetailtAPI();
-		bankAccountDetailAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		bankAccountDetailAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 	}
 
 	@BeforeMethod
@@ -42,7 +44,8 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		// Login
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS,
+				Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
 		// Go to the debtCreditAccountsPage page
 
 	}
@@ -52,11 +55,17 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		return new Object[][] { { "AddAccountTest ", "762734", "123456788" } };
 	}
 
-	@Test(dataProvider = "SettingAccountDetail_01")
-	public void SettingAccountDetail_01_AddNewAccount(String name, String bsb, String accountNumber) throws Exception {
+	@Test
+	public void SettingAccountDetail_01_AddNewAccount() throws Exception {
+
+		// Generate test data
+		DataGenerator data = new DataGenerator();
+		String name = data.generateStringByDateTime("AddAccountTest");
+		String bsb = data.generateBSBNumber();
+		String accountNumber = data.generateBankAccountNumber();
+
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 		try {
-			name = name + System.currentTimeMillis();
 
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
@@ -88,15 +97,15 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		}
 	}
 
-	@DataProvider(name = "SettingBankAccountDetail_02")
-	public Object[][] SettingBankAccountDetail_02() {
-		return new Object[][] { { "DefaultBankAccount", "762734", "123456789" } };
+	@Test
+	public void SettingBankAccountDetail_02_SetDefaultBankAccount() throws Exception {
 
-	}
+		// Generate test data
+		DataGenerator data = new DataGenerator();
+		String name = data.generateStringByDateTime("DefaultAccountTest");
+		String bsb = data.generateBSBNumber();
+		String accountNumber = data.generateBankAccountNumber();
 
-	@Test(dataProvider = "SettingBankAccountDetail_02")
-	public void SettingBankAccountDetail_02_SetDefaultBankAccount(String name, String bsb, String accountNumber)
-			throws Exception {
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 
 		/********* Save the original default bank account *********************/
@@ -159,15 +168,14 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 		}
 	}
 
-	@DataProvider(name = "SettingBankAccountDetail_03")
-	public Object[][] SettingBankAccountDetail_03() {
-		return new Object[][] { { "DeleteBankAccount", "762734", "123456787" } };
+	@Test
+	public void SettingBankAccountDetail_03_DeleteBankAccount() throws Exception {
 
-	}
-
-	@Test(dataProvider = "SettingBankAccountDetail_03")
-	public void SettingBankAccountDetail_02_DeleteBankAccount(String name, String bsb, String accountNumber)
-			throws Exception {
+		// Generate test data
+		DataGenerator data = new DataGenerator();
+		String name = data.generateStringByDateTime("DeleteAccountTest");
+		String bsb = data.generateBSBNumber();
+		String accountNumber = data.generateBankAccountNumber();
 
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 
