@@ -9,7 +9,7 @@ public class CommonFunction {
 		for (Object[] rowData : businessData) {
 			HashMap<String, String> hashMap = (HashMap<String, String>) rowData[0];
 			data = hashMap;
-			if (data.get("Business Type").equals(businessType)) {
+			if (data.get("Business Type").equalsIgnoreCase(businessType)) {
 				return data;
 			}
 		}

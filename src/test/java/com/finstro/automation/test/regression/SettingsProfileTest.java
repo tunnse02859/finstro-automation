@@ -62,7 +62,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 				.verifyJsonNodeEqual("contacts.mobilePhoneNumber", settingProfilePage.getPhoneNumber())
 				.verifyJsonNodeEqual("contacts.emailAddress", settingProfilePage.getEmail());
 
-		assertEquals(settingProfilePage.getResidentialAddress(), profileAPI.getResidentialAddress(),
+		assertContains(settingProfilePage.getResidentialAddress(), profileAPI.getResidentialAddress(),
 				"Residential address matched", "Residential address doesn't match");
 
 	}

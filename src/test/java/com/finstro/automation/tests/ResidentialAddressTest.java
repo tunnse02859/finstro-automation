@@ -24,7 +24,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private BusinessDetailPage businessDetailPage;
-	private SelectBusinessCardPage selectbusinessCardPage;
+	private SelectBusinessCardPage selectBusinessCardPage;
 	private ResidentialAddressPage residentialAddressPage;
 	private FindAddressPage findAddressPage;
 	private PhotoIDPage photoIDPage;
@@ -40,9 +40,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 	public void setupPage(Method method) throws Exception {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
-		selectbusinessCardPage = new SelectBusinessCardPage(driver);
-		businessDetailPage = new BusinessDetailPage(driver);
-		residentialAddressPage = new ResidentialAddressPage(driver);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		photoIDPage = new PhotoIDPage(driver);
 		findAddressPage = new FindAddressPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
@@ -52,10 +50,10 @@ public class ResidentialAddressTest extends MobileTestSetup {
 
 	public void toResidentialAddresslPage() throws Exception {
 		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
-		selectbusinessCardPage.clickOnCard("500");
+		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");
-		businessDetailPage.clickNext();
+		residentialAddressPage = businessDetailPage.clickNext();
 		assertTrue(residentialAddressPage.isActive(),
 				"Residential Address screen is not  displayed after click on next",
 				"Residential Address screen is displayed after click on next");	

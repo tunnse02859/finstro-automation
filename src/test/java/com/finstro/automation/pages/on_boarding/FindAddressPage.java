@@ -5,11 +5,14 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
 
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 import static com.finstro.automation.utility.Assertion.*;
+
+import java.util.List;
 
 public class FindAddressPage {
 
@@ -40,6 +43,10 @@ public class FindAddressPage {
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/search_no_result_title")
 	private WebElement noResulthMatch;
+	
+	@iOSXCUITFindBy(className = "XCUIElementTypeCell")
+	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"au.com.finstro.finstropay:id/address_result_list\").childSelector(new UiSelector().className(\"android.widget.RelativeLayout\"))")
+	private List<MobileElement> searchedAddress;
 
 	public FindAddressPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -67,13 +74,18 @@ public class FindAddressPage {
 	public boolean isNoResultMatched() throws Exception {
 		if (driver.isAndroidDriver()) {
 			return driver.isElementDisplayed(noResulthMatch);
+		}else {
+			return searchedAddress.size() == 0;
 		}
-		return true;
 	}
 
 	public void clickOnFirstMatched() throws Exception {
-		driver.click(firstMatchTitle);
-		driver.wait(5);
+		if(searchedAddress.size() > 0) {
+			searchedAddress.get(0).click();
+			driver.wait(5);
+			return;
+		}		
+		throw new Exception("There is no results for the search criteria");
 	}
 
 }

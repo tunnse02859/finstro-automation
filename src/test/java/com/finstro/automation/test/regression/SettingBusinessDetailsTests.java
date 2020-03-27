@@ -137,7 +137,7 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		assertEquals(strACN.replace(" ", ""), resACN.replace(" ", ""), "ACN is different", "ACN matches");
 
 		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
-		assertEquals(strBusinessAddr, expectedBusinessTradingAddress.trim(),
+		assertContains(strBusinessAddr, expectedBusinessTradingAddress.trim(),
 				"Address is different", "Address matches");
 
 	}

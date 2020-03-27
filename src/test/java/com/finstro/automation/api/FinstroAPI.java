@@ -94,8 +94,8 @@ public class FinstroAPI {
 				.extractJsonValue("timeTrading", "businessDetails.timeTrading").flush();
 
 		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
-				Common.getTestVariable("state", true));
+				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true));
 		return businessTradingAddress;
 	}
 
@@ -129,14 +129,14 @@ public class FinstroAPI {
 				.extractJsonValue("postalAddress.streetType", "finstroCards[0].postalAddress.streetType")
 				.extractJsonValue("postalAddress.suburb", "finstroCards[0].postalAddress.suburb").flush();
 		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
-				Common.getTestVariable("state", true));
+				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true));
 		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("businessTradingAddress",
 				businessTradingAddress);
 
 		String residentialAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
-				Common.getTestVariable("state", true));
+				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true));
 		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("residentialAddress", residentialAddress);
 
 		String postalAddress = String.format("%s %s %s %s",
@@ -156,8 +156,8 @@ public class FinstroAPI {
 				.extractJsonValue("streetType", "residentialAddress.streetType")
 				.extractJsonValue("suburb", "residentialAddress.suburb").flush();
 		String residentialAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
-				Common.getTestVariable("state", true));
+				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true));
 		return residentialAddress;
 	}
 
@@ -171,8 +171,8 @@ public class FinstroAPI {
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
 				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb").flush();
 		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("suburb", true),
-				Common.getTestVariable("state", true));
+				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true));
 		return businessTradingAddress;
 	}
 

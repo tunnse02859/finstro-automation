@@ -133,7 +133,7 @@ public class AppiumBaseDriver {
 
 		int attemps = 0;
 		do {
-			if (isElementPresented(element)) {
+			if (isElementDisplayedWithoutLog(element)) {
 				setDefaultImplicitWaitTime();
 				return element;
 			}
@@ -652,7 +652,6 @@ public class AppiumBaseDriver {
 
 	public boolean isElementPresented(WebElement element) {
 		try {
-			Log.info("element not null? - " + (element != null));
 			return element != null;
 		} catch (Exception ex) {
 			Log.error(ex.getMessage());

@@ -1,5 +1,6 @@
 package com.finstro.automation.api;
 
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 
 public class OnboardingAPI extends FinstroAPI{
@@ -31,7 +32,7 @@ public class OnboardingAPI extends FinstroAPI{
 				"	}," + 
 				"	'selectedCreditAmount': "+selectedAmount+"" + 
 				"}";
-		
+		HtmlReporter.label("Setup Business detail by API request");
 		new APIRequest().baseUrl(Constant.API_HOST).path(saveBusinessDetailAPI)
 				.addHeader("Content-Type", "application/json")
 				.oauth2(accessToken)

@@ -45,7 +45,7 @@ public class SettingsBusinessDetailsSecondPage {
 	private WebElement txtACN;
 	
 	// Business Address
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_address_edt")
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/business_address_edt\"))")
 	@iOSXCUITFindBy(accessibility = "business address")
 	private WebElement txtBusinessAddress;
 	

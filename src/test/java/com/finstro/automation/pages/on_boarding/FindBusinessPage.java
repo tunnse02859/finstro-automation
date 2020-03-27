@@ -74,13 +74,15 @@ public class FindBusinessPage {
 	public boolean isNoResultMatched() throws Exception {
 		if(driver.isAndroidDriver()){
 			return driver.isElementDisplayed(noResulthMatch);
+		}else {
+			return searchedBusiness.size() == 0;
 		}
-		return true;
 	}
 
 	public void clickOnFirstMatched() throws Exception {
 		if(searchedBusiness.size() > 0) {
 			searchedBusiness.get(0).click();
+			driver.wait(5);
 			return;
 		}		
 		throw new Exception("There is no results for the search criteria");

@@ -75,11 +75,13 @@ public class BusinessDetailPage {
 			WebElement genderSelector = driver.isElementPresented(genderSelectorBy, 5);
 			assertNotNull(genderSelector,"selector business name = [" + name + "] is not displayed for select","business name = [" + name + "] is displayed for select");
 			driver.click(genderSelector);
+		}else {
+			driver.selectPickerWheel(businessName, name);
 		}
 	}
 	
 	public void verifyBusinessName(String expectedName) throws Exception {
-		assertEquals(driver.getText(businessName), expectedName, "Business Name field's value doesnt match with expectation", "Business Name field's value matched with expectation");
+		assertEquals(driver.getText(businessName).toUpperCase().trim(), expectedName.toUpperCase().trim(), "Business Name field's value doesnt match with expectation", "Business Name field's value matched with expectation");
 	}
 	
 	public String getBusinessTradingAddress() throws Exception {
@@ -93,12 +95,9 @@ public class BusinessDetailPage {
 	public void verifyBusinessData(String expectedABN, String expectedEntityName, String expectedBusinessName) throws Exception {
 		assertEquals(driver.getText(abn).replace(" ", ""), expectedABN, "ABN/ACN is displayed incorrectly", "ABN/ACN is displayed correctly");
 		assertEquals(driver.getText(entityName).trim(), expectedEntityName, "Entity name is displayed incorrectly", "Entity name is displayed correctly");
-		if(driver.isAndroidDriver())
-			assertEquals(driver.getText(businessName).trim(), expectedBusinessName, "Business name is displayed incorrectly", "Business name is displayed correctly");
-		else{
-			assertEquals(driver.getTextSelected(businessName).trim(), expectedBusinessName, "Business name is displayed incorrectly", "Business name is displayed correctly");
-		}
-		
+		String business_name = driver.getText(businessName);
+		business_name = business_name.equalsIgnoreCase("N/A") ? "" : business_name;
+		assertEquals(business_name.toUpperCase().trim(), expectedBusinessName.toUpperCase().trim(), "Business name is displayed incorrectly", "Business name is displayed correctly");
 	}
 
 	public FindBusinessPage clickFindBusiness() throws Exception {

@@ -104,7 +104,6 @@ public class OnBoarding500Test extends MobileTestSetup {
 
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
-		driver.wait(5);
 		businessDetailPage.verifyBusinessData(businessDataForTest.get("ABN"), businessDataForTest.get("Entity name"),
 				businessDataForTest.get("Business Name"));
 		// ---- END find business -----
@@ -175,7 +174,6 @@ public class OnBoarding500Test extends MobileTestSetup {
 
 		// select first matched result and verify field updated
 		findAddressPage.clickOnFirstMatched();
-		driver.wait(5);
 		assertTrue(residentialAddressPage.isActive(),
 				"Residential Address screen is not  displayed after select matched resulf",
 				"Residential Address screen is displayed after select matched resulf");
