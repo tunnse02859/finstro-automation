@@ -13,7 +13,6 @@ public class DataGenerator {
 	private String[] debitCardNumberList = { "5203950337464077", "5203950332746387", "5203950336889332",
 			"5203950333578953", "5203950338218035", "5203950332980226", "5203950332061159", "5203950334068764" };
 
-	private String[] contactUsReason = { "Finstro Card Problem", "Incorrect Transaction", "Login Problems" };
 
 	public int randomNumber(int min, int max) {
 		Random r = new Random();
