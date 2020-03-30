@@ -140,6 +140,8 @@ public class DriverLicensePage {
 		}
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(state, stateName);
+		}else {
+			driver.selectPickerWheel(state, stateName);
 		}
 	}
 

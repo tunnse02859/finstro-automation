@@ -4,11 +4,13 @@ import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.finstro.automation.api.FinstroAPI;
+import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
@@ -17,6 +19,7 @@ import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
@@ -26,25 +29,25 @@ public class DriverLicenseTest extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private BusinessDetailPage businessDetailPage;
-	private SelectBusinessCardPage businessCardPage;
+	private SelectBusinessCardPage selectCardPage;
 	private ResidentialAddressPage residentialAddressPage;
 	private PhotoIDPage photoIDPage;
 	private DriverLicensePage drivingLisencePage;
 	private PostalAddressPage postalAddressPage;
-	private FinstroAPI finstroAPI;
+	private OnboardingAPI onboardingAPI;
+	
+	@BeforeClass
+	public void setupAPI() throws Exception {
+		onboardingAPI = new OnboardingAPI();
+		onboardingAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		onboardingAPI.setupDrivingLicense();
+	}
 	
 
 	@BeforeMethod
 	public void setupPage(Method method) throws Exception {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
-		businessCardPage = new SelectBusinessCardPage(driver);
-		businessDetailPage = new BusinessDetailPage(driver);
-		residentialAddressPage = new ResidentialAddressPage(driver);
-		photoIDPage = new PhotoIDPage(driver);
-		drivingLisencePage = new DriverLicensePage(driver);
-		postalAddressPage = new PostalAddressPage(driver);
-		finstroAPI = new FinstroAPI();
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page in first installation");
 		
@@ -52,150 +55,177 @@ public class DriverLicenseTest extends MobileTestSetup {
 	}
 	
 	public void toDriverLicensePage() throws Exception {
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
-		businessCardPage.clickOnCard("500");
-		businessDetailPage.clickNext();
-		residentialAddressPage.clickNext();
-		Thread.sleep(10000);
-		photoIDPage.clickNext();
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		
+		HtmlReporter.label("Go to driving license page");
+		selectCardPage = new SelectBusinessCardPage(driver);
+		businessDetailPage = selectCardPage.clickOnCard("500");
+		residentialAddressPage = businessDetailPage.clickNext();
+		photoIDPage = residentialAddressPage.clickNext();
+		drivingLisencePage = photoIDPage.clickNext();
 		assertTrue(drivingLisencePage.isActive(),
-				"Driver License screen is not  displayed after click on next",
-				"Driver License screen is displayed after click on next");
+				"Driver License screen is not  displayed",
+				"Driver License screen is displayedt");
 	}
 
-	@Test
-	public void FPC_1348_Verify_User_RedirectTo_DriverLicense_Screen_Successfully() throws Exception {
-		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
-		finstroAPI.getDrivingLicenceInfor();
-		drivingLisencePage.verifyDriverLicenseInfor(
-				Common.getTestVariable("gender",true).equalsIgnoreCase("M") ? "Male" : "Female",
-				Common.getTestVariable("firstName",true),
-				Common.getTestVariable("surname",true),
-				Common.getTestVariable("middleName",true),
-				Common.getTestVariable("state",true),
-				Common.getTestVariable("dateOfBirth",true),
-				Common.getTestVariable("licenceNumber",true),
-				Common.getTestVariable("validTo",true));
-	}
 	
 	@Test
 	public void FPC_1350_Verify_State_ACT_License_MustBe_NumericUpto10() throws Exception {
 		String validLicenseNumber = Common.randomNumeric(10);
+		
+		HtmlReporter.label("Input state = ACT and license number = " + validLicenseNumber);
 		drivingLisencePage.inputState("ACT");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1351_Verify_State_NT_License_MustBe_NumericUpto10() throws Exception {
-		String validLicenseNumber = Common.randomNumeric(11);
+		String validLicenseNumber = Common.randomNumeric(10);
+		
+		HtmlReporter.label("Input state = NT and license number = " + validLicenseNumber);
 		drivingLisencePage.inputState("NT");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1352_Verify_State_QLD_License_MustBe_Numeric8or9() throws Exception {
 		String validLicenseNumber7num = Common.randomNumeric(7);
+		
+		HtmlReporter.label("Input state = QLD and license number = " + validLicenseNumber7num);
 		drivingLisencePage.inputState("QLD");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber7num);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1353_Verify_State_NSW_License_MustBe_Alphanumeric6to8() throws Exception {
 		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
+		
+		HtmlReporter.label("Input state = NSW and license number = " + validLicenseNumber5num);
 		drivingLisencePage.inputState("NSW");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1354_Verify_State_SA_License_MustBe_Alphanumeric6() throws Exception {
 		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
+		
+		HtmlReporter.label("Input state = SA and license number = " + validLicenseNumber5num);
 		drivingLisencePage.inputState("SA");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1355_Verify_State_TAS_License_MustBe_Alphanumeric6to8() throws Exception {
 		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
+		
+		HtmlReporter.label("Input state = TAS and license number = " + validLicenseNumber5num);
 		drivingLisencePage.inputState("TAS");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1356_Verify_State_VIC_License_MustBe_NumericUpto10() throws Exception {
-		String validLicenseNumber = Common.randomNumeric(11);
+		String validLicenseNumber = Common.randomNumeric(10);
+		
+		HtmlReporter.label("Input state = VIC and license number = " + validLicenseNumber);
 		drivingLisencePage.inputState("VIC");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
-		drivingLisencePage.clickNext();
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1357_Verify_State_WA_License_MustBe_Numeric7() throws Exception {
-		String validLicenseNumber6num = Common.randomNumeric(6);
+		String validLicenseNumber7num = Common.randomNumeric(7);
+		
+		HtmlReporter.label("Input state = WA and license number = " + validLicenseNumber7num);
 		drivingLisencePage.inputState("WA");
-		drivingLisencePage.inputLicenseNumber(validLicenseNumber6num);
-		drivingLisencePage.clickNext();
+		drivingLisencePage.inputLicenseNumber(validLicenseNumber7num);
+		
+		HtmlReporter.label("Verify user can submit and directed to postal address screen");
+		postalAddressPage = drivingLisencePage.clickNext();
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
 	@Test
 	public void FPC_1359_FirstName_Cannot_Be_Blank() throws Exception {
+		HtmlReporter.label("Submit driving license with blank First Name and verify error");
 		drivingLisencePage.inputFirstName("");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
 	@Test
 	public void FPC_1360_LastName_Cannot_Be_Blank() throws Exception {
+		HtmlReporter.label("Submit driving license with blank Last Name and verify error");
 		drivingLisencePage.inputLastName("");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
 	@Test
 	public void FPC_1361_State_Cannot_Be_Blank() throws Exception {
+		HtmlReporter.label("Submit driving license with blank State and verify error");
 		drivingLisencePage.inputState("");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
 	@Test
 	public void FPC_1362_DateOfBirth_Cannot_Be_Blank() throws Exception {
+		HtmlReporter.label("Submit driving license with blank Date of birth and verify error");
 		drivingLisencePage.inputDoB("");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
 	@Test
 	public void FPC_1363_DrivingLicenseNumber_Cannot_Be_Blank() throws Exception {
+		HtmlReporter.label("Submit driving license with blank Driving License and verify error");
 		drivingLisencePage.inputLicenseNumber("");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
 	@Test
 	public void FPC_1364_ExpireDate_Cannot_Be_Blank() throws Exception {
+		HtmlReporter.label("Submit driving license with blank Expire date and verify error");
 		drivingLisencePage.inputExpireDate("");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
 	@Test
 	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+		HtmlReporter.label("Submit driving license with invalid format DoB and verify error");
 		drivingLisencePage.inputDoB("01/13/2020");
-		drivingLisencePage.clickNext();
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 	}
 	
@@ -208,10 +238,12 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test(dataProvider = "invalid_drivingLicense")
 	public void FPC_1370_DrivingLicense_Must_be_valid(String state, String invalidDrivingLicense) throws Exception {
+		HtmlReporter.label("Input state = " + state + " with invalid driving license = " + invalidDrivingLicense);
 		drivingLisencePage.inputState(state);
 		drivingLisencePage.inputLicenseNumber(invalidDrivingLicense);
-		drivingLisencePage.clickNext();
 		
+		HtmlReporter.label("Submit and veriry error");
+		postalAddressPage = drivingLisencePage.clickNext();
 		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
 		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
 	}
