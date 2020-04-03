@@ -21,7 +21,7 @@ public class DriverLicensePage {
 	private WebElement back;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error' || name contains 'Success'")
 	private WebElement errorMessage;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
@@ -104,7 +104,7 @@ public class DriverLicensePage {
 			driver.click(genderSelector);
 		} else {
 			driver.click(gender);
-			driver.selectPickerWheel(null, genderName);
+			driver.selectPickerWheel(null, genderName,true);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class DriverLicensePage {
 		if (stateName.equalsIgnoreCase("ACT")) {
 			stateName = "Australian Capital Territory";
 		} else if (stateName.equalsIgnoreCase("NT")) {
-			stateName = "Northern Terriories";
+			stateName = "Northern Territory";
 		} else if (stateName.equalsIgnoreCase("NSW")) {
 			stateName = "New South Wales";
 		} else if (stateName.equalsIgnoreCase("QLD")) {
@@ -141,7 +141,8 @@ public class DriverLicensePage {
 		if (driver.isAndroidDriver()) {
 			driver.selectItemFromSpinner(state, stateName);
 		}else {
-			driver.selectPickerWheel(state, stateName);
+			driver.click(state);
+			driver.selectPickerWheel(null, stateName,true);
 		}
 	}
 
@@ -202,15 +203,8 @@ public class DriverLicensePage {
 		// "expire date is displayed correctly");
 	}
 
-	public void verifyErrorMessage(String expectedMessage) throws Exception {
-		String actualMessage = "";
-		if (driver.isAndroidDriver()) {
-			actualMessage = driver.getText(errorType) + ", " + driver.getText(errorMessage);
-		} else {
-			actualMessage = driver.getText(errorMessage);
-		}
-		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly",
-				"Error message is displayed correctly");
+	public String getSubmitStatus() throws Exception {
+		return driver.getText(errorMessage);
 	}
 
 	public void verifyDrivingLicenseError(String expectedMessage) throws Exception {

@@ -25,6 +25,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
@@ -90,46 +91,46 @@ public class AppiumBaseDriver {
 		}
 		// For IOS
 		else {
-			if(isElementDisplayed(((IOSDriver)driver).findElementByIosNsPredicate("value == '" + text + "'"))) {
+			if (isElementDisplayed(((IOSDriver) driver).findElementByIosNsPredicate("value == '" + text + "'"))) {
 				return;
 			}
 			try {
-				
+
 				HashMap<String, String> scrollObject = new HashMap<>();
 				scrollObject.put("predicateString", "value == '" + text + "'");
 				scrollObject.put("toVisible", "true");
 				scrollObject.put("direction", "down");
 				((JavascriptExecutor) driver).executeScript("mobile: scroll", scrollObject);
-				
+
 			} catch (Exception ex) {
-				
+
 				HashMap<String, String> scrollObject = new HashMap<>();
 				scrollObject.put("predicateString", "value == '" + text + "'");
 				scrollObject.put("toVisible", "true");
 				scrollObject.put("direction", "up");
 				((JavascriptExecutor) driver).executeScript("mobile: scroll", scrollObject);
-				
+
 			}
 
 		}
 	}
 
 	public WebElement findElement(WebElement element) {
-		setImplicitWaitTime(10);
+		setImplicitWaitTime(15);
 		if (isElementDisplayedWithoutLog(element)) {
 			setDefaultImplicitWaitTime();
 			return element;
 		}
 
-		if (isIOSDriver()) {
-			HashMap<String, String> scrollObject = new HashMap<>();
-			scrollObject.put("direction", "down");
-			((JavascriptExecutor) driver).executeScript("mobile: swipe", scrollObject);
-			// wait(5);
-		} else {
-			swipe(DIRECTION.DOWN);
-			wait(1);
-		}
+		// if (isIOSDriver()) {
+		// HashMap<String, String> scrollObject = new HashMap<>();
+		// scrollObject.put("direction", "down");
+		// ((JavascriptExecutor) driver).executeScript("mobile: swipe", scrollObject);
+		// wait(5);
+		// } else {
+		swipe(DIRECTION.DOWN);
+		wait(1);
+		// }
 
 		int attemps = 0;
 		do {
@@ -139,7 +140,7 @@ public class AppiumBaseDriver {
 			}
 			swipe(DIRECTION.UP);
 			attemps++;
-		} while (attemps < 2);
+		} while (attemps < 3);
 		setDefaultImplicitWaitTime();
 		throw new NoSuchElementException("Element not found - [" + element.toString() + "]");
 	}
@@ -342,7 +343,7 @@ public class AppiumBaseDriver {
 		} catch (NoSuchElementException e) {
 			HtmlReporter.fail(String.format("Element is not found for get text [%s]", element.toString()));
 			throw (e);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			HtmlReporter.fail(String.format("Cannot get text of the element [%s]", element.toString()), e, "");
 			throw e;
 		}
@@ -365,7 +366,7 @@ public class AppiumBaseDriver {
 		try {
 			element = findElement(element);
 			// waitForElementClickable(element, DEFAULT_WAITTIME_SECONDS);
-			//waitForElementClickable(element, 10);
+			// waitForElementClickable(element, 10);
 			element.click();
 			HtmlReporter.pass(String.format("Click on the element [%s]", element.toString()));
 		} catch (NoSuchElementException e) {
@@ -420,65 +421,59 @@ public class AppiumBaseDriver {
 		}
 
 		for (int i = 0; i < values.length; i++) {
-			selectPickerWheel(wheels.get(i), values[i]);
+			selectPickerWheel(wheels.get(i), values[i], false);
 		}
-
 	}
 
-	public void selectPickerWheel(WebElement wheel, String value) throws Exception {
+	public void selectPickerWheel(WebElement wheel, String value, boolean closeAfterSelect) throws Exception {
 		try {
-
 			if (wheel == null) {
 				wheel = (MobileElement) driver.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
 			}
-
 			// Read the selected value
-			String strPickerWheelSelectedValue = wheel.getText();
-			if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
-				// clickByPosition(wheel, "top right");
-				return;
-			} else {
-				// get picker wheel location:
-				int leftX = wheel.getLocation().getX();
-				int rightX = leftX + wheel.getSize().getWidth();
-				int middleX = (rightX + leftX) / 2;
-				int upperY = wheel.getLocation().getY();
-				int lowerY = upperY + wheel.getSize().getHeight();
-				int middleY = (upperY + lowerY) / 2;
+			String strPickerWheelSelectedValue;
 
-				// swipe down 3 time in picker wheel to get 1st item on list
-				for (int i = 0; i < 3; i++) {
-					new TouchAction<>(driver).press(PointOption.point(middleX, upperY + 50))
-							.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500)))
-							.moveTo(PointOption.point(middleX, lowerY)).release().perform();
-					Thread.sleep(1000);
-				}
+			// get picker wheel location:
+			int leftX = wheel.getLocation().getX();
+			int rightX = leftX + wheel.getSize().getWidth();
+			int middleX = (rightX + leftX) / 2;
+			int upperY = wheel.getLocation().getY();
+			int lowerY = upperY + wheel.getSize().getHeight();
+			int middleY = (upperY + lowerY) / 2;
 
-				// set js script
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				Map<String, Object> params = new HashMap<>();
-				params.put("order", "next");
-				params.put("offset", 0.15);
-				params.put("element", ((RemoteWebElement) wheel));
-
-				js.executeScript("mobile: selectPickerWheelValue", params);
-
-				// go to next item in the list of picker wheel
-				for (int i = 0; i < 10; i++) {
-					// check value
-					strPickerWheelSelectedValue = wheel.getText();
-					if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
-						// clickByPosition(wheel, "top right");
-						return;
-					}
-					js.executeScript("mobile: selectPickerWheelValue", params);
-				}
-				throw new Exception(String.format("Cannot selected with value = [%s]", value));
+			// swipe down 3 time in picker wheel to get 1st item on list
+			for (int i = 0; i < 3; i++) {
+				new TouchAction<>(driver).press(PointOption.point(middleX, upperY + 50))
+						.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500)))
+						.moveTo(PointOption.point(middleX, lowerY)).release().perform();
+				Thread.sleep(1000);
 			}
+
+			// set js script
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			Map<String, Object> params = new HashMap<>();
+			params.put("order", "next");
+			params.put("offset", 0.15);
+			params.put("element", ((RemoteWebElement) wheel));
+
+			// go to next item in the list of picker wheel
+			for (int i = 0; i < 10; i++) {
+				// check value
+				strPickerWheelSelectedValue = wheel.getText();
+				if (strPickerWheelSelectedValue.equalsIgnoreCase(value)) {
+					HtmlReporter.pass("Selected value = " + value);
+					if (closeAfterSelect) {
+						clickByPosition(wheel, "top right");
+					}
+					return;
+				}
+				js.executeScript("mobile: selectPickerWheelValue", params);
+			}
+			throw new Exception(String.format("Cannot selected with value = [%s]", value));
+
 		} catch (Exception e) {
 			throw (e);
 		}
-
 	}
 
 	public void selectRadioButton(WebElement element) throws Exception {
@@ -593,10 +588,30 @@ public class AppiumBaseDriver {
 		wait.until(ExpectedConditions.textToBePresentInElement(element, text));
 	}
 
-	public void waitForTextElementPresent(WebElement element, int time) {
-
-		WebDriverWait wait = new WebDriverWait(driver, time);
-		wait.until((driver) -> element.getText() != "");
+	public String waitForTextElementPresent(WebElement element, int time) {
+		String text = "";
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, time);
+			//wait.until((driver) -> !element.getText().equals(""));
+			text = wait.until(new ExpectedCondition<String>() {
+				@Override
+				public String apply(WebDriver driver) {
+					String currenText = element.getText();
+					System.out.println("Current Text = [" + currenText + "]");
+					return currenText.equals("") ? null : currenText;
+				}
+				@Override
+				public String toString() {
+					return String.format("Current text: [%s]", element.getText());
+				}
+			});
+			
+			return text;
+		} catch (TimeoutException e) {
+			throw e;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public boolean isElementEnabled(WebElement element) {
@@ -622,8 +637,8 @@ public class AppiumBaseDriver {
 	public boolean isElementDisplayed(WebElement element) {
 		boolean result;
 		try {
-			// element = findElement(element);
-			waitForElementDisplayed(element, 20);
+			element = findElement(element);
+			// waitForElementDisplayed(element, 20);
 			result = element.isDisplayed();
 			if (result) {
 				HtmlReporter.info(String.format("Element: [%s] is displayed", element.toString()));
@@ -713,7 +728,11 @@ public class AppiumBaseDriver {
 			break;
 		case UP:
 			if (isIOSDriver()) {
-				swipe(0.5, 0.5, 0.5, 0.1);
+				if (((IOSDriver) driver).isKeyboardShown()) {
+					swipe(0.5, 0.5, 0.5, 0.1);
+				} else {
+					swipe(0.5, 0.8, 0.5, 0.2);
+				}
 			} else {
 				swipe(0.5, 0.8, 0.5, 0.2);
 			}
@@ -721,7 +740,12 @@ public class AppiumBaseDriver {
 			break;
 		case DOWN:
 			if (isIOSDriver()) {
-				swipe(0.5, 0.1, 0.5, 0.5);
+				if (((IOSDriver) driver).isKeyboardShown()) {
+					swipe(0.5, 0.1, 0.5, 0.5);
+				} else {
+					swipe(0.5, 0.2, 0.5, 0.8);
+				}
+
 			} else {
 				swipe(0.5, 0.2, 0.5, 0.8);
 			}
@@ -760,7 +784,7 @@ public class AppiumBaseDriver {
 		new TouchAction<>(driver).press(PointOption.point(startx, starty))
 				.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))).moveTo(PointOption.point(endx, endy))
 				.release().perform();
-		HtmlReporter.pass("Performed a swipe: " + fromx + " - " + fromy + " - " + tox + " - " + tox);
+		HtmlReporter.pass("Performed a swipe: " + fromx + " - " + fromy + " - " + tox + " - " + toy);
 	}
 
 	/**

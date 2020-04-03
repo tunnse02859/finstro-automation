@@ -17,14 +17,12 @@ public class MedicarePage {
 	private AppiumBaseDriver driver;
 
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/toolbar_left_text\"))")
-	@iOSXCUITFindBy(accessibility = "back")
-	private WebElement back;
+	@iOSXCUITFindBy(accessibility = "Cancel")
+	private WebElement cancel;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error' || name contains 'Success'")
 	private WebElement errorMessage;
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
-	private WebElement errorType;
 
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().resourceId(\"au.com.finstro.finstropay:id/verification_title\"))")
 	@iOSXCUITFindBy(iOSNsPredicate = "value = 'Medicare'")
@@ -83,8 +81,8 @@ public class MedicarePage {
 		driver.click(next);
 	}
 
-	public void clickBack() throws Exception {
-		driver.click(back);
+	public void clickCancel() throws Exception {
+		driver.click(cancel);
 	}
 
 	public void selectGender(String genderName) throws Exception {
@@ -99,7 +97,7 @@ public class MedicarePage {
 			driver.click(genderSelector);
 		} else {
 			driver.click(gender);
-			driver.selectPickerWheel(null, genderName);
+			driver.selectPickerWheel(null, genderName, true);
 		}
 	}
 
@@ -127,7 +125,7 @@ public class MedicarePage {
 			driver.click(cardColorSelector);
 		} else {
 			driver.click(cardColor);
-			driver.selectPickerWheel(null, colorName);
+			driver.selectPickerWheel(null, colorName, true);
 		}
 	}
 
@@ -202,14 +200,7 @@ public class MedicarePage {
 				"expire date is displayed correctly");
 	}
 
-	public void verifyErrorMessage(String expectedMessage) throws Exception {
-		String actualMessage = "";
-		if (driver.isAndroidDriver()) {
-			actualMessage = driver.getText(errorType) + ", " + driver.getText(errorMessage);
-		} else {
-			actualMessage = driver.getText(errorMessage);
-		}
-		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly",
-				"Error message is displayed correctly");
+	public String getSubmitStatus() throws Exception {
+		return driver.getText(errorMessage);
 	}
 }

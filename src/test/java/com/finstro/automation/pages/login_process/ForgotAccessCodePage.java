@@ -20,22 +20,24 @@ public class ForgotAccessCodePage {
 	private WebElement title;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
+	@iOSXCUITFindBy(accessibility = "Cancel")
 	private WebElement cancelButton;
 	
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/forgot_access_mobile_edt")
+	@iOSXCUITFindBy(accessibility = "mobile")
 	private WebElement mobileNumbers;
 	
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/forgot_access_email_edt")
-	private WebElement emailAdress;
+//	@AndroidFindBy(id = "au.com.finstro.finstropay:id/forgot_access_email_edt")
+//	private WebElement emailAdress;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/submit_text")
+	@iOSXCUITFindBy(iOSClassChain="**/XCUIElementTypeButton[`name==\"submit\"`][2]")
 	private WebElement submitButton;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-	private WebElement popupMessage;
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'ERROR'")
+	private WebElement errorMessage;
 	
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
-	private WebElement popupType;
 
 	public ForgotAccessCodePage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -47,10 +49,8 @@ public class ForgotAccessCodePage {
 	}
 
 	
-	public void verifyPopupMessage(String expectedMessage) throws Exception {
-		String actualMessage = driver.getText(popupType) + " - " + driver.getText(popupMessage);
-		assertEquals(actualMessage,expectedMessage,"Error message isnt correct",
-				"Error message displayed correctly");
+	public String getSubmitStatus() throws Exception {
+		return driver.getText(errorMessage);
 	}
 
 	public void clickCancel() throws Exception {
@@ -61,9 +61,9 @@ public class ForgotAccessCodePage {
 		driver.inputText(mobileNumbers, mobileNumber);
 	}
 	
-	public void inputEmailAdress(String emailAddress) throws Exception {
-		driver.inputText(emailAdress, emailAddress);
-	}
+//	public void inputEmailAdress(String emailAddress) throws Exception {
+//		driver.inputText(emailAdress, emailAddress);
+//	}
 
 	public void submit() throws Exception {
 		driver.click(submitButton);

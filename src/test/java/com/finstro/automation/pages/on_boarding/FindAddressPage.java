@@ -42,8 +42,9 @@ public class FindAddressPage {
 	private WebElement firstMatchInfo;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/search_no_result_title")
+	@iOSXCUITFindBy(iOSNsPredicate = "value = 'Address not found'")
 	private WebElement noResulthMatch;
-	
+
 	@iOSXCUITFindBy(className = "XCUIElementTypeCell")
 	@AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"au.com.finstro.finstropay:id/address_result_list\").childSelector(new UiSelector().className(\"android.widget.RelativeLayout\"))")
 	private List<MobileElement> searchedAddress;
@@ -72,19 +73,15 @@ public class FindAddressPage {
 	}
 
 	public boolean isNoResultMatched() throws Exception {
-		if (driver.isAndroidDriver()) {
-			return driver.isElementDisplayed(noResulthMatch);
-		}else {
-			return searchedAddress.size() == 0;
-		}
+		return driver.isElementDisplayed(noResulthMatch);
 	}
 
 	public void clickOnFirstMatched() throws Exception {
-		if(searchedAddress.size() > 0) {
+		if (searchedAddress.size() > 0) {
 			searchedAddress.get(0).click();
 			driver.wait(5);
 			return;
-		}		
+		}
 		throw new Exception("There is no results for the search criteria");
 	}
 

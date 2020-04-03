@@ -49,9 +49,9 @@ public class RegisterPage {
 	}
 
 	public void dontAllowNotification() throws Exception {
-		if (driver.isElementDisplayed(notify_dontallow) && driver.isIOSDriver()) {
+		try {
 			driver.click(notify_dontallow);
-			HtmlReporter.pass("Dont Allow Notification on IOS successfully");
+		}catch(Exception e) {		
 		}
 	}
 }

@@ -76,7 +76,8 @@ public class BusinessDetailPage {
 			assertNotNull(genderSelector,"selector business name = [" + name + "] is not displayed for select","business name = [" + name + "] is displayed for select");
 			driver.click(genderSelector);
 		}else {
-			driver.selectPickerWheel(businessName, name);
+			driver.click(businessName);
+			driver.selectPickerWheel(null, name,true);
 		}
 	}
 	
@@ -96,7 +97,6 @@ public class BusinessDetailPage {
 		assertEquals(driver.getText(abn).replace(" ", ""), expectedABN, "ABN/ACN is displayed incorrectly", "ABN/ACN is displayed correctly");
 		assertEquals(driver.getText(entityName).trim(), expectedEntityName, "Entity name is displayed incorrectly", "Entity name is displayed correctly");
 		String business_name = driver.getText(businessName);
-		business_name = business_name.equalsIgnoreCase("N/A") ? "" : business_name;
 		assertEquals(business_name.toUpperCase().trim(), expectedBusinessName.toUpperCase().trim(), "Business name is displayed incorrectly", "Business name is displayed correctly");
 	}
 

@@ -131,7 +131,7 @@ public class SettingsBusinessDetailsFirstPage {
 		}else {
 			driver.click(ddlCategory);
 			driver.clickByPosition(ddlCategory, "middle");
-			driver.selectPickerWheel(null, category);
+			driver.selectPickerWheel(null, category,true);
 		}
 	}
 

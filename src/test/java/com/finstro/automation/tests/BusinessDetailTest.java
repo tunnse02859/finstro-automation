@@ -92,9 +92,11 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"),
-				businessDataOnTest.get("Business Name"));
-
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		
+		HtmlReporter.label("Select business name");
+		businessDetailPage.selectBusinessName(businessDataOnTest.get("Second Business Name"));
+		
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
 		onboardingAPI.getBusinessDetailInfor();
@@ -105,7 +107,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Second Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -130,8 +132,10 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"),
-				businessDataOnTest.get("Business Name"));
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		
+		HtmlReporter.label("Select business name");
+		businessDetailPage.selectBusinessName(businessDataOnTest.get("Second Business Name"));
 
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
@@ -143,7 +147,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Second Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -153,7 +157,8 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1325_Verify_add_Business_Detail_Sucessfully_WithType_CorporateTrustee() throws Exception {
-		HashMap<String, String> businessDataOnTest = CommonFunction.getBusinessDataByType("CORPORATE_TRUSTEE", businessDataSource);
+		HashMap<String, String> businessDataOnTest = CommonFunction.getBusinessDataByType("CORPORATE_TRUSTEE",
+				businessDataSource);
 		// go to search business and search type = company, verify first matched is
 		// correct
 		HtmlReporter.label("Find an business with type = Corporate Trustee and select");
@@ -167,8 +172,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"),
-				businessDataOnTest.get("Business Name"));
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "N/A");
 
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
@@ -180,7 +184,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true), "",
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -205,9 +209,11 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"),
-				businessDataOnTest.get("Business Name"));
-
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		
+		HtmlReporter.label("Select business name");
+		businessDetailPage.selectBusinessName(businessDataOnTest.get("Business Name"));
+		
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
 		onboardingAPI.getBusinessDetailInfor();
@@ -253,7 +259,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		businessDetailPage.verifyBusinessData(businessDataForTest.get("ABN"), businessDataForTest.get("Entity name"),
-				businessDataForTest.get("Business Name"));
+				"");
 
 		HtmlReporter.label("Update business trading name and verify");
 		businessDetailPage.selectBusinessName(businessDataForTest.get("Second Business Name"));

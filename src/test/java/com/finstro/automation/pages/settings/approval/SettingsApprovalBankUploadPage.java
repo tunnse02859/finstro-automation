@@ -30,14 +30,16 @@ public class SettingsApprovalBankUploadPage {
 
 	public By getIdCheckError() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[1]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[1]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[1]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[1]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
 
 	public By getIdCheckPass() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[1]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[1]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[1]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[1]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
@@ -49,14 +51,16 @@ public class SettingsApprovalBankUploadPage {
 
 	public By getBankAccountCheckError() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
 
 	public By getBankAccountCheckPass() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
@@ -68,14 +72,16 @@ public class SettingsApprovalBankUploadPage {
 
 	public By getDirectDebitCheckError() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[3]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[3]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[3]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[3]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
 
 	public By getDirectDebitCheckPass() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[3]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[3]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[3]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[3]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
@@ -87,14 +93,16 @@ public class SettingsApprovalBankUploadPage {
 
 	public By getCreditAssessmentCheckError() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[4]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
 
 	public By getCreditAssessmentCheckPass() {
 		return driver.isIOSDriver()
-				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[2]")
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[4]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}

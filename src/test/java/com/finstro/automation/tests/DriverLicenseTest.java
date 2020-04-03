@@ -50,8 +50,6 @@ public class DriverLicenseTest extends MobileTestSetup {
 		loginPage = new LoginPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page in first installation");
-		
-		toDriverLicensePage();
 	}
 	
 	public void toDriverLicensePage() throws Exception {
@@ -59,20 +57,33 @@ public class DriverLicenseTest extends MobileTestSetup {
 		
 		HtmlReporter.label("Go to driving license page");
 		selectCardPage = new SelectBusinessCardPage(driver);
+		
 		businessDetailPage = selectCardPage.clickOnCard("500");
+		assertTrue(businessDetailPage.isActive(),
+				"Business Detail screen is not  displayed",
+				"Business Detail screen is displayed");
+		
 		residentialAddressPage = businessDetailPage.clickNext();
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential Address screen is not  displayed",
+				"Residential Address screen is displayed");
+		
 		photoIDPage = residentialAddressPage.clickNext();
+		assertTrue(photoIDPage.isActive(),
+				"PhotoID screen is not  displayed",
+				"PhotoID screen is displayed");
+		
 		drivingLisencePage = photoIDPage.clickNext();
 		assertTrue(drivingLisencePage.isActive(),
 				"Driver License screen is not  displayed",
-				"Driver License screen is displayedt");
+				"Driver License screen is displayed");
 	}
 
 	
 	@Test
 	public void FPC_1350_Verify_State_ACT_License_MustBe_NumericUpto10() throws Exception {
 		String validLicenseNumber = Common.randomNumeric(10);
-		
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = ACT and license number = " + validLicenseNumber);
 		drivingLisencePage.inputState("ACT");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
@@ -85,7 +96,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 	@Test
 	public void FPC_1351_Verify_State_NT_License_MustBe_NumericUpto10() throws Exception {
 		String validLicenseNumber = Common.randomNumeric(10);
-		
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = NT and license number = " + validLicenseNumber);
 		drivingLisencePage.inputState("NT");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
@@ -97,8 +108,8 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1352_Verify_State_QLD_License_MustBe_Numeric8or9() throws Exception {
-		String validLicenseNumber7num = Common.randomNumeric(7);
-		
+		String validLicenseNumber7num = Common.randomNumeric(8);
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = QLD and license number = " + validLicenseNumber7num);
 		drivingLisencePage.inputState("QLD");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber7num);
@@ -110,8 +121,8 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1353_Verify_State_NSW_License_MustBe_Alphanumeric6to8() throws Exception {
-		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
-		
+		String validLicenseNumber5num = Common.randomNumeric(6);
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = NSW and license number = " + validLicenseNumber5num);
 		drivingLisencePage.inputState("NSW");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
@@ -123,8 +134,8 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1354_Verify_State_SA_License_MustBe_Alphanumeric6() throws Exception {
-		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
-		
+		String validLicenseNumber5num = Common.randomNumeric(6);
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = SA and license number = " + validLicenseNumber5num);
 		drivingLisencePage.inputState("SA");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
@@ -136,8 +147,8 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1355_Verify_State_TAS_License_MustBe_Alphanumeric6to8() throws Exception {
-		String validLicenseNumber5num = Common.randomAlphaNumeric(5);
-		
+		String validLicenseNumber5num = Common.randomNumeric(6);
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = TAS and license number = " + validLicenseNumber5num);
 		drivingLisencePage.inputState("TAS");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber5num);
@@ -150,7 +161,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 	@Test
 	public void FPC_1356_Verify_State_VIC_License_MustBe_NumericUpto10() throws Exception {
 		String validLicenseNumber = Common.randomNumeric(10);
-		
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = VIC and license number = " + validLicenseNumber);
 		drivingLisencePage.inputState("VIC");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber);
@@ -163,7 +174,7 @@ public class DriverLicenseTest extends MobileTestSetup {
 	@Test
 	public void FPC_1357_Verify_State_WA_License_MustBe_Numeric7() throws Exception {
 		String validLicenseNumber7num = Common.randomNumeric(7);
-		
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = WA and license number = " + validLicenseNumber7num);
 		drivingLisencePage.inputState("WA");
 		drivingLisencePage.inputLicenseNumber(validLicenseNumber7num);
@@ -175,59 +186,73 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1359_FirstName_Cannot_Be_Blank() throws Exception {
+		toDriverLicensePage();
 		HtmlReporter.label("Submit driving license with blank First Name and verify error");
 		drivingLisencePage.inputFirstName("");
 		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+		String errorMess = drivingLisencePage.getSubmitStatus();
+		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 	
 	@Test
 	public void FPC_1360_LastName_Cannot_Be_Blank() throws Exception {
+		toDriverLicensePage();
 		HtmlReporter.label("Submit driving license with blank Last Name and verify error");
 		drivingLisencePage.inputLastName("");
 		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+		String errorMess = drivingLisencePage.getSubmitStatus();
+		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 	
-	@Test
-	public void FPC_1361_State_Cannot_Be_Blank() throws Exception {
-		HtmlReporter.label("Submit driving license with blank State and verify error");
-		drivingLisencePage.inputState("");
-		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-	}
+//	@Test
+//	public void FPC_1361_State_Cannot_Be_Blank() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with blank State and verify error");
+//		drivingLisencePage.inputState("");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
-	@Test
-	public void FPC_1362_DateOfBirth_Cannot_Be_Blank() throws Exception {
-		HtmlReporter.label("Submit driving license with blank Date of birth and verify error");
-		drivingLisencePage.inputDoB("");
-		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-	}
+//	@Test
+//	public void FPC_1362_DateOfBirth_Cannot_Be_Blank() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with blank Date of birth and verify error");
+//		drivingLisencePage.inputDoB("");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
 	@Test
 	public void FPC_1363_DrivingLicenseNumber_Cannot_Be_Blank() throws Exception {
+		toDriverLicensePage();
 		HtmlReporter.label("Submit driving license with blank Driving License and verify error");
 		drivingLisencePage.inputLicenseNumber("");
 		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+		String errorMess = drivingLisencePage.getSubmitStatus();
+		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 	
-	@Test
-	public void FPC_1364_ExpireDate_Cannot_Be_Blank() throws Exception {
-		HtmlReporter.label("Submit driving license with blank Expire date and verify error");
-		drivingLisencePage.inputExpireDate("");
-		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-	}
+//	@Test
+//	public void FPC_1364_ExpireDate_Cannot_Be_Blank() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with blank Expire date and verify error");
+//		drivingLisencePage.inputExpireDate("");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
-	@Test
-	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
-		HtmlReporter.label("Submit driving license with invalid format DoB and verify error");
-		drivingLisencePage.inputDoB("01/13/2020");
-		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
-	}
+//	@Test
+//	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with invalid format DoB and verify error");
+//		drivingLisencePage.inputDoB("01/13/2020");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
 	@DataProvider(name="invalid_drivingLicense")
 	public Object[][] getInvalidDrivingLicense() throws Exception{
@@ -238,13 +263,15 @@ public class DriverLicenseTest extends MobileTestSetup {
 	
 	@Test(dataProvider = "invalid_drivingLicense")
 	public void FPC_1370_DrivingLicense_Must_be_valid(String state, String invalidDrivingLicense) throws Exception {
+		toDriverLicensePage();
 		HtmlReporter.label("Input state = " + state + " with invalid driving license = " + invalidDrivingLicense);
 		drivingLisencePage.inputState(state);
 		drivingLisencePage.inputLicenseNumber(invalidDrivingLicense);
 		
 		HtmlReporter.label("Submit and veriry error");
 		postalAddressPage = drivingLisencePage.clickNext();
-		drivingLisencePage.verifyErrorMessage("ERROR, Please complete all fields or enter Medicare details");
+		String errorMess = drivingLisencePage.getSubmitStatus();
+		assertContains(errorMess, "Invalid Driving Licence number.", "Error message displayed incorrectly", "Error message displayed correctly");
 		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
 	}
 }

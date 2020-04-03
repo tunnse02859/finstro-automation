@@ -3,6 +3,7 @@ package com.finstro.automation.api;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.report.Log;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.utility.Common;
@@ -64,13 +65,12 @@ public class CreditCardAPI extends FinstroAPI {
 			
 			if(card.get("mainAccount").equals(true)) {
 				card.put("mainAccount", false);
-				
 				saveCard(card);
+				Thread.sleep(5000);
 			}
-			Log.info("+++" + card.toString());
 			new APIRequest().baseUrl(Constant.API_HOST).path(removeCardEnpoint)
 					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(card.toString()).post()
-					.then().verifyResponseCode(200).flush();
+					.then().flush();
 		}
 	}
 

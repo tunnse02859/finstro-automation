@@ -49,7 +49,9 @@ public class MobileTestSetup extends MobileTestBaseSetup {
 		Log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		driver.launchApp();
 		if(driver.isIOSDriver()) {
+			driver.setImplicitWaitTime(10);
 			new RegisterPage(driver).dontAllowNotification();
+			driver.setDefaultImplicitWaitTime();
 		}
 	}
 

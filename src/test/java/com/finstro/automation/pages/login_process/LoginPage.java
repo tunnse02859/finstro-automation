@@ -16,11 +16,9 @@ public class LoginPage {
 
 	public AppiumBaseDriver driver;
 
-	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_text")
-	@iOSXCUITFindBy(iOSClassChain = "name BEGINSWITH 'ERROR'")
-	private WebElement errorMessage;
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
-	private WebElement errorType;
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'ERROR'")
+	private WebElement errorMessage;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/login_email_edt")
 	@iOSXCUITFindBy(accessibility = "email")
@@ -47,9 +45,9 @@ public class LoginPage {
 
 	@iOSXCUITFindBy(accessibility = "Yes")
 	private WebElement touchID_Yes;
-	
-	@iOSXCUITFindBy(accessibility = "Save Password")
-	private WebElement savePassword;
+
+	@iOSXCUITFindBy(accessibility = "Not Now")
+	private WebElement savePass_NotNow;
 
 	public LoginPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -60,8 +58,9 @@ public class LoginPage {
 		return driver.waitForElementDisplayed(emailAddress, 10);
 	}
 
-	public void toForgotAccessCodePage() throws Exception {
+	public ForgotAccessCodePage toForgotAccessCodePage() throws Exception {
 		driver.clickByPosition(forgotAccessCodePageLink, "right");
+		return new ForgotAccessCodePage(driver);
 	}
 
 	public void toRegisterPage() throws Exception {
@@ -82,32 +81,28 @@ public class LoginPage {
 				"Login screen showed after tap on login");
 		login(email, code);
 		if (driver.isIOSDriver()) {
-//			if (driver.isElementDisplayed(savePassword)) {
-//				driver.click(savePassword);
-//			}
-			if (driver.isElementDisplayed(touchID_DontSave)) {
-				driver.click(touchID_DontSave);
-			}
+			driver.setImplicitWaitTime(10);
+			clickNotNowiOS();
+			clickMaybeLateriOS();
+			driver.setDefaultImplicitWaitTime();
 		}
-//		if (driver.isAndroidDriver()) {
-//			assertTrue(new SelectBusinessCardPage(driver).isActive(),
-//					"Login unsuccessfully, Select card screen is not displayed",
-//					"Login successfully, Select card screen is displayed");
-//		} else {
-//			assertTrue(new HomePage(driver).isActive(), "Login unsuccessfully, Home screen is not displayed",
-//					"Login successfully, Home screen is displayed");
-//		}
-		// return new SelectBusinessCardPage(driver);
+	}
+	
+	public void clickNotNowiOS() {
+		try {
+			driver.click(savePass_NotNow);
+		}catch(Exception e) {
+		}
+	}
+	
+	public void clickMaybeLateriOS() {
+		try {
+			driver.click(touchID_DontSave);
+		}catch(Exception e) {		
+		}
 	}
 
-	public void verifyErrorMessage(String expectedMessage) throws Exception {
-		String actualMessage = "";
-		if (driver.isAndroidDriver()) {
-			actualMessage = driver.getText(errorType) + ", " + driver.getText(errorMessage);
-		} else {
-			actualMessage = driver.getText(errorMessage);
-		}
-		assertEquals(actualMessage, expectedMessage, "Error message is displayed incorrectly",
-				"Error message is displayed correctly");
+	public String getErrorMessage() throws Exception {
+		return driver.waitForTextElementPresent(errorMessage, 30);
 	}
 }

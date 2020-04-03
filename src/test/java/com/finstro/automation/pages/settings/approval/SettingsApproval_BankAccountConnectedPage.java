@@ -28,22 +28,22 @@ public class SettingsApproval_BankAccountConnectedPage {
 	private WebElement title;
 
 	@AndroidFindBy(xpath = "//android.widget.LinearLayout[@resource-id='au.com.finstro.finstropay:id/bank_info_holder']/android.widget.RelativeLayout")
-	@iOSXCUITFindBy(xpath = "**/XCUIElementTypeCell")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell")
 	private List<WebElement> bankAccountList;
 	
 	private By getAccountNameElement() {
 		return driver.isAndroidDriver() ? By.xpath("//android.widget.TextView[1]")
-				: By.xpath("//XCUIElementTypeStaticText[1]");
+				: MobileBy.iOSClassChain("**/XCUIElementTypeStaticText[1]");
 	}
 	
 	private By getAccountDetailElement() {
 		return driver.isAndroidDriver() ? By.xpath("//android.widget.TextView[3]")
-				: By.xpath("//XCUIElementTypeStaticText[2]");
+				: MobileBy.iOSClassChain("**/XCUIElementTypeStaticText[2]");
 	}
 	
 	private By getAccountBalanceElemen() {
 		return driver.isAndroidDriver() ? By.xpath("//android.widget.TextView[2]")
-				: By.xpath("//XCUIElementTypeStaticText[3]");
+				: MobileBy.iOSClassChain("**/XCUIElementTypeStaticText[3]");
 	}
 
 	@iOSXCUITFindBy(accessibility = "Submit Bank Accounts")

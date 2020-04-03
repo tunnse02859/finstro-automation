@@ -53,8 +53,8 @@ public class Assertion {
 		} else {
 			HtmlReporter.fail(
 					errorMess + " - expected contains [" + expectedContain + "] but found [" + actualValue + "]",
-					new Exception(errorMess + " - expected contains [" + expectedContain + "] but found [" + actualValue + "]"),
-					"");
+					new Exception(errorMess + " - expected contains [" + expectedContain + "] but found [" + actualValue+ "]"),"");
+			throw new Exception(errorMess + " - expected contains [" + expectedContain + "] but found [" + actualValue+ "]");
 		}
 	}
 

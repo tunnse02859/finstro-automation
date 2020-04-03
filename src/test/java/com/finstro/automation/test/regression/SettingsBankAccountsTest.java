@@ -13,7 +13,6 @@ import com.finstro.automation.setup.DataGenerator;
 import com.finstro.automation.setup.MobileTestSetup;
 
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -70,7 +69,8 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			// Is on Add new account page
 			HtmlReporter.label("Go to add new bank account screen");
 			addBankAccountPage = accountPage.addNewBankAccount();
-			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
+			assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+					"You aren on the Add new account page");
 
 			// Add new account
 			HtmlReporter.label("Do add new account and verify");
@@ -81,19 +81,22 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Get alert
 			String status = addBankAccountPage.getSaveStatus();
-			Assert.assertTrue(status.contains("New bank account successfully added."), status);
+			assertContains(status, "New bank account successfully added.", status, status);
 
 			// Verify new bank account on UI
-			Assert.assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after save");
-			Assert.assertTrue(accountPage.isBankAccountExisting(name), "Bank account is not displayed!!");
+			assertTrue(accountPage.isActive(), "Bank Account Page is not displayed after save",
+					"BankAccountPage is displayed after save");
+			assertTrue(accountPage.isBankAccountExisting(name), "New Bank account is not displayed!!",
+					"New Bank account is displayed!!");
 
 			// Verify new bank account by API
-			Assert.assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
-					"Checking new card by API: ADD FAILED");
+			assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
+					"Checking new card by API: ADD FAILED", "Checking new card by API: ADD PASSED");
 
 		} finally {
 			// Remove the bank account after testing
 			if (bankAccountDetailAPI.getBankAccountInfoByName(name) != null) {
+				HtmlReporter.label("Remove added account");
 				bankAccountDetailAPI.removeBankAccountByName(name);
 			}
 		}
@@ -120,9 +123,10 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			name = name + System.currentTimeMillis();
 
 			// Is on Add new account page
-			HtmlReporter.label("Do add new account (for set default)");
+			HtmlReporter.label("Add new account (for set default)");
 			addBankAccountPage = accountPage.addNewBankAccount();
-			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
+			assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+					"You are on the Add new account page");
 
 			// Add new account
 			addBankAccountPage.setAccountName(name);
@@ -132,41 +136,48 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Get alert
 			String status = addBankAccountPage.getSaveStatus();
-			Assert.assertTrue(status.contains("New bank account successfully added."), status);
+			assertContains(status, "New bank account successfully added.", status, status);
 
 			// Verify new bank account on UI
-			Assert.assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after save");
-			Assert.assertTrue(accountPage.isBankAccountExisting(name), "Bank account is not displayed!!");
+			assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after save",
+					"BankAccountPage is displayed after save");
+			assertTrue(accountPage.isBankAccountExisting(name), "New Bank account is not displayed!!",
+					"New Bank account is displayed!!");
 
 			// Verify new bank account by API
-			Assert.assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
-					"Checking new card by API: ADD FAILED");
+			assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
+					"Checking new card by API: ADD FAILED", "Checking new card by API: ADD PASSED");
 
 			/********* Set the bank account as default *********************/
 			HtmlReporter.label("Set new account as default and verify");
 			// Is on Detail Bank Account page
 			detailAccountPage = accountPage.selectBankAccountDetailsByName(name);
-			Assert.assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page");
+			assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page",
+					"You are on the Bank Account Detail page");
 
 			// Set default Bank Account
 			detailAccountPage.setDefaultBankAccount();
 
 			// Get alert
 			status = detailAccountPage.getSaveStatus();
-			Assert.assertTrue(status.contains("Bank Account set as default"), status);
+			assertContains(status, "Bank Account set as default", status, status);
 
 			// Verify the default bank account on UI
-			Assert.assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after set default");
-			Assert.assertTrue(accountPage.isDefaultBankAccount(name), "The greentick doesn't appear!");
+			assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after set default",
+					"BankAccountPage is displayed after set default");
+			assertTrue(accountPage.isDefaultBankAccount(name), "The greentick doesn't appear!",
+					"The greentick appeared!");
 
 			// Verify default bank account by API
-			Assert.assertTrue(bankAccountDetailAPI.isDefaultBankAccount(name),
-					"Checking default bank account by API: FAILED");
+			assertTrue(bankAccountDetailAPI.isDefaultBankAccount(name), "Checking default bank account by API: FAILED",
+					"Checking default bank account by API: PASSED");
 		} finally {
 			if (bankAccountDetailAPI.getBankAccountInfoByName(name) != null) {
 				HtmlReporter.label("Delete created account and reset origin default account");
 				// Set the default card to the original one
-				bankAccountDetailAPI.saveBankAccount(originalDefaultAccount);
+				if (originalDefaultAccount != null) {
+					bankAccountDetailAPI.saveBankAccount(originalDefaultAccount);
+				}
 				// Remove card after testing
 				bankAccountDetailAPI.removeBankAccountByName(name);
 			}
@@ -190,7 +201,8 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
-			Assert.assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page");
+			assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+					"You are on the Add new account page");
 			HtmlReporter.label("Add new account for delete");
 			// Add new account
 			addBankAccountPage.setAccountName(name);
@@ -200,41 +212,46 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 
 			// Get alert
 			String status = addBankAccountPage.getSaveStatus();
-			Assert.assertTrue(status.contains("New bank account successfully added."), status);
+			assertContains(status, "New bank account successfully added.", status, status);
 
 			// Verify new bank account on UI
-			Assert.assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after save");
-			Assert.assertTrue(accountPage.isBankAccountExisting(name), "Bank account is not displayed!!");
+			assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after save",
+					"BankAccountPage is displayed after save");
+			assertTrue(accountPage.isBankAccountExisting(name), "Bank account is not displayed!!",
+					"Bank account is displayed!!");
 
 			// Verify new bank account by API
-			Assert.assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
-					"Checking new card by API: ADD FAILED");
+			assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) != null,
+					"Checking new card by API: ADD FAILED", "Checking new card by API: ADD PASSED");
 
 			/********* Delete the bank account *********************/
 			HtmlReporter.label("Do Delete created account and verify");
 			// Is on Detail Bank Account page
 			detailAccountPage = accountPage.selectBankAccountDetailsByName(name);
-			Assert.assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page");
+			assertTrue(detailAccountPage.isActive(), "You aren't on the Bank Account Detail page",
+					"You aren on the Bank Account Detail page");
 
 			// Set default Bank Account
 			detailAccountPage.deleteBankAccount();
 
 			// Get alert
 			status = detailAccountPage.getSaveStatus();
-			Assert.assertTrue(status.contains("Bank account successfully deleted."), status);
+			assertContains(status, "Bank account successfully deleted.", status, status);
 
 			// Verify new bank account on UI
-			Assert.assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after delete card");
-			Assert.assertFalse(accountPage.isBankAccountExisting(name), "The bank account still displays on UI");
+			assertTrue(accountPage.isActive(), "BankAccountPage is not displayed after delete card",
+					"BankAccountPage is displayed after delete card");
+			assertFalse(accountPage.isBankAccountExisting(name), "The bank account still displays on UI",
+					"The bank account is disappeared on screen");
 
 			// Verify the deleted bank account by API
-			Assert.assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) == null,
-					"Verify the deleted bank account by API: FAILED");
+			assertTrue(bankAccountDetailAPI.getBankAccountInfoByName(name) == null,
+					"Verify the deleted bank account by API: FAILED", "Verify the deleted bank account by API: PASSED");
 
 		} finally {
 			// Remove the bank account after testing
 			if (bankAccountDetailAPI.getBankAccountInfoByName(name) != null) {
-				HtmlReporter.label("Delete created account");
+				HtmlReporter.label("Delete Failed -> delete created account by API");
 				bankAccountDetailAPI.removeBankAccountByName(name);
 			}
 		}

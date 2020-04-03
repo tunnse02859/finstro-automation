@@ -46,7 +46,6 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 				return card;
 			}
 		}
-
 		return null;
 	}
 
@@ -68,7 +67,7 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 			
 			new APIRequest().baseUrl(Constant.API_HOST).path(removeAccountEndpoint)
 					.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post()
-					.then().verifyResponseCode(200).flush();
+					.then().flush();
 		}
 	}
 
@@ -76,6 +75,7 @@ public class BankAccountDetailtAPI extends FinstroAPI {
 		new APIRequest().baseUrl(Constant.API_HOST).path(saveAccountEndpoint)
 				.addHeader("Content-Type", "application/json").oauth2(accessToken).body(account.toString()).post().then()
 				.verifyResponseCode(200).flush();
+		Thread.sleep(5000);
 
 	}
 

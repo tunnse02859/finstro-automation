@@ -25,7 +25,6 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 	public void setupPage(Method method) throws Exception {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
-		forgotAccessCodePage = new ForgotAccessCodePage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 		
@@ -36,7 +35,7 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 		registerPage.toLoginPage();
 		assertTrue(loginPage.isActive(), "Login screen didnt showed after tap on login",
 				"Login screen showed after tap on login");
-		loginPage.toForgotAccessCodePage();
+		forgotAccessCodePage = loginPage.toForgotAccessCodePage();
 		assertTrue(forgotAccessCodePage.isActive(),
 				"Forgot access code screen didnt showed after tap on forget access code",
 				"Forgot access code screen showed after click on forget access code");
@@ -51,54 +50,54 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1311_Verify_Submit_Unsuccessul_If_Leave_Blank_All_Field() throws Exception {
-		String expectedMessage = "ERROR - User not found.";
-		
+		HtmlReporter.label("Submit without input mobile number");
 		forgotAccessCodePage.submit();
-		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
+		String errorMess = forgotAccessCodePage.getSubmitStatus();
+		assertContains(errorMess, "You must enter your Mobile Number", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 
-	@Test
-	public void FPC_1310_Verify_Submit_Unsuccessul_If_Email_Doesnot_Exist() throws Exception {
-		String invalidEmail = Common.randomAlphaNumeric(15) + "@gmail.com";
-		String expectedMessage = "ERROR - User not found.";
-		
-		forgotAccessCodePage.inputEmailAdress(invalidEmail);
-		forgotAccessCodePage.submit();
-		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
-	}
+//	@Test
+//	public void FPC_1310_Verify_Submit_Unsuccessul_If_Email_Doesnot_Exist() throws Exception {
+//		String invalidEmail = Common.randomAlphaNumeric(15) + "@gmail.com";
+//		String expectedMessage = "ERROR - User not found.";
+//		
+//		forgotAccessCodePage.inputEmailAdress(invalidEmail);
+//		forgotAccessCodePage.submit();
+//		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
+//	}
 
-	@Test
-	public void FPC_1309_Verify_Submit_Unsuccessul_If_Email_Invalid() throws Exception {
-		String invalidEmail = Common.randomAlphaNumeric(15);
-		String expectedMessage = "ERROR - User not found.";
-		
-		forgotAccessCodePage.inputEmailAdress(invalidEmail);
-		forgotAccessCodePage.submit();
-		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
-	}
+//	@Test
+//	public void FPC_1309_Verify_Submit_Unsuccessul_If_Email_Invalid() throws Exception {
+//		String invalidEmail = Common.randomAlphaNumeric(15);
+//		String expectedMessage = "ERROR - User not found.";
+//		
+//		forgotAccessCodePage.inputEmailAdress(invalidEmail);
+//		forgotAccessCodePage.submit();
+//		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
+//	}
 
 	@Test
 	public void FPC_1308_Verify_Submit_Unsuccessul_If_Mobile_Invalid() throws Exception {
-		String invalidMobileNumber = Common.randomNumeric(15);
-		String expectedMessage = "ERROR - Invalid phone number";
-		
+		String invalidMobileNumber = "+84388441945";
+		HtmlReporter.label("Submit invalid mobile number = " + invalidMobileNumber);
 		forgotAccessCodePage.inputMobileNumber(invalidMobileNumber);
 		forgotAccessCodePage.submit();
-		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
+		String errorMess = forgotAccessCodePage.getSubmitStatus();
+		assertContains(errorMess, "Error resending Access Code, please try again.", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 
-	@Test
-	public void FPC_1307_Verify_Submit_Unsuccessul_If_Email_and_MobileNumber_Are_Mismatched() throws Exception {
-		String expectedMessage = "ERROR - Invalid phone number";
-		
-		String invalidMobileNumber = Common.randomNumeric(15);
-		String invalidEmail = Common.randomAlphaNumeric(15) + "@" + Common.randomLowerAlpha(5) + ".com";
-		
-		// input valid Email and mismatch mobile number;
-		forgotAccessCodePage.inputEmailAdress(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS);
-		forgotAccessCodePage.inputMobileNumber(invalidMobileNumber);
-		forgotAccessCodePage.submit();
-		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
+//	@Test
+//	public void FPC_1307_Verify_Submit_Unsuccessul_If_Email_and_MobileNumber_Are_Mismatched() throws Exception {
+//		String expectedMessage = "ERROR - Invalid phone number";
+//		
+//		String invalidMobileNumber = Common.randomNumeric(15);
+//		String invalidEmail = Common.randomAlphaNumeric(15) + "@" + Common.randomLowerAlpha(5) + ".com";
+//		
+//		// input valid Email and mismatch mobile number;
+//		forgotAccessCodePage.inputEmailAdress(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS);
+//		forgotAccessCodePage.inputMobileNumber(invalidMobileNumber);
+//		forgotAccessCodePage.submit();
+//		forgotAccessCodePage.verifyPopupMessage(expectedMessage);
 		
 		// input valid mobileNumber and mismatch Email address;
 //		forgotAccessCodePage.inputEmailAdress(validEmail);
@@ -109,7 +108,7 @@ public class ForgotAccessCodeTest extends MobileTestSetup {
 //		assertEquals(EXPECTED_MESSAGE, actualMessage, "Error message isnt correct",
 //				"Error message displayed correctly");
 
-	}
+//	}
 	
 //	@Test
 //	public void FPC_1306_Verify_Submit_Sucessfully_With_Correct_Email() throws Exception {

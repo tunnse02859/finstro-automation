@@ -68,7 +68,7 @@ public class ContactUsPage {
 		}else {
 			driver.click(ddlContactReason);
 			driver.clickByPosition(ddlContactReason, "middle");
-			driver.selectPickerWheel(null, reason);
+			driver.selectPickerWheel(null, reason,true);
 		}
 	}
 	
@@ -93,8 +93,7 @@ public class ContactUsPage {
 	
 	
 	public String getSubmitStatus() throws Exception {
-		driver.waitForElementDisplayed(statusAlert, 30);
-		return driver.getText(statusAlert);
+		return driver.waitForTextElementPresent(statusAlert, 30);
 	}
 
 }

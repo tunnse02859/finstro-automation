@@ -28,7 +28,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 	@BeforeClass
 	public void setupAccessTosken() throws Exception {
 		finstroAPI = new FinstroAPI();
-		finstroAPI.loginForAccessToken(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		finstroAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 		finstroAPI.getBusinessDetailInfor();
 	}
 
@@ -41,7 +41,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page in first installation");
 		
-		loginPage.doSuccessLogin(Constant.NON_ONBOARDING_LOGIN_EMAIL_ADDRESS, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 		
 	}
 
