@@ -83,7 +83,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 		String addressInforForSearch = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
-		String expectedResidentialAddress = "50 Margaret St ASHFIELD";
+		String expectedResidentialAddress = "50 Margaret St, ASHFIELD, WA, 6054";
 
 		assertTrue(residentialAddressPage.isActive(), "Residential address screen is not displayed",
 				"Residential address screen is displayed");
@@ -109,7 +109,7 @@ public class ResidentialAddressTest extends MobileTestSetup {
 		photoIDPage = residentialAddressPage.clickNext();
 		assertTrue(photoIDPage.isActive(), "PhotoID screen is not displayed", "PhotoID screen is displayed");
 		String savedResidentialAddress = onboardingAPI.getResidentialAddress();
-		assertEquals(savedResidentialAddress, expectedResidentialAddress,
+		assertContains(savedResidentialAddress, expectedResidentialAddress,
 				"Residential address from API after save doesnt match with expectation",
 				"Residential address from API after save matched with expectation");
 	}

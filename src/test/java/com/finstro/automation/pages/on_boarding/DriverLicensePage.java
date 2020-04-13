@@ -204,7 +204,7 @@ public class DriverLicensePage {
 	}
 
 	public String getSubmitStatus() throws Exception {
-		return driver.getText(errorMessage);
+		return driver.waitForTextElementPresent(errorMessage, 30);
 	}
 
 	public void verifyDrivingLicenseError(String expectedMessage) throws Exception {
@@ -212,5 +212,13 @@ public class DriverLicensePage {
 			assertEquals(driver.getText(driverLicenseError), expectedMessage,
 					"License Number error message is displayed incorrectly",
 					"License Number error message is displayed correctly");
+	}
+	
+	public String getDoB() throws Exception {
+		return driver.getText(dob);
+	}
+	
+	public String getExpireDate() throws Exception {
+		return driver.getText(expireDate);
 	}
 }

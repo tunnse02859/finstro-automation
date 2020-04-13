@@ -5,6 +5,7 @@ import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -15,6 +16,10 @@ public class PhotoIDPage {
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/toolbar_left_text")
 	@iOSXCUITFindBy(accessibility = "Back")
 	private WebElement back;
+
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error'")
+	private WebElement errorMessage;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/photo_upload_title")
 	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Photo ID'")
@@ -43,8 +48,15 @@ public class PhotoIDPage {
 	}
 
 	public DriverLicensePage clickNext() throws Exception {
-		driver.wait(40);
-		driver.click(next);
-		return new DriverLicensePage(driver);
+		int count = 0;
+		do {
+			driver.click(next);
+			if (!driver.waitForElementDisplayed(errorMessage, 3)) {
+				return new DriverLicensePage(driver);
+			}
+			driver.wait(5);
+			count++;
+		} while (count < 7);
+		throw new Exception("Cannot bypass through PhotoID screen after try for several times");
 	}
 }

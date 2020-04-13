@@ -51,14 +51,13 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	@Test
 	public void SettingCardDetail_01_AddNewCard() throws Exception {
 		// Generate test data
-		DataGenerator data = new DataGenerator();
-		String name = data.generateStringByDateTime("AddNewCard");
-		String cardNumber = data.generateDebitCardNumber();
+		
+		String name = DataGenerator.generateStringByDateTime("AddNewCard");
+		String cardNumber = DataGenerator.generateDebitCardNumber();
 		String expiry = "01/2022";
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		try {
-			name = name + System.currentTimeMillis();
 			// Is on Add new card page
 			HtmlReporter.label("Go to add new card screen");
 			addCardPage = debtCreditCardsPage.addNewCard();
@@ -95,9 +94,9 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	public void SettingCardDetail_02_SetDefaultCard() throws Exception {
 
 		// Generate test data
-		DataGenerator data = new DataGenerator();
-		String name = data.generateStringByDateTime("DefaultCard");
-		String cardNumber = data.generateDebitCardNumber();
+		
+		String name = DataGenerator.generateStringByDateTime("DefaultCard");
+		String cardNumber = DataGenerator.generateDebitCardNumber();
 		String expiry = "01/2022";
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
@@ -107,7 +106,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		try {
 
 			/********* Add a new card as a precondition *********************/
-			name = name + System.currentTimeMillis();
+
 			// Is on Add new card page
 			HtmlReporter.label("Add new card for set default");
 			addCardPage = debtCreditCardsPage.addNewCard();
@@ -170,15 +169,13 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	@Test
 	public void SettingCardDetail_03_DeleteCard() throws Exception {
 		// Generate test data
-		DataGenerator data = new DataGenerator();
-		String name = data.generateStringByDateTime("DeleteCard");
-		String cardNumber = data.generateDebitCardNumber();
+		String name = DataGenerator.generateStringByDateTime("DeleteCard");
+		String cardNumber = DataGenerator.generateDebitCardNumber();
 		String expiry = "01/2022";
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		try {
 			/********* Add a new card as a precondition *********************/
-			name = name + System.currentTimeMillis();
 			// Is on Add new card page
 			HtmlReporter.label("Add new card for set delete");
 			addCardPage = debtCreditCardsPage.addNewCard();
@@ -232,6 +229,113 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 			creditCardAPI.removeCardByName(name);
 		}
 
+	}
+	
+	@Test
+	public void SettingCardDetail_AddCard_All_Field_BLank() throws Exception {
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		HtmlReporter.label("Go to add new card screen and save without input data");
+		addCardPage = debtCreditCardsPage.addNewCard();
+		assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+				"You are on the Add new card page");
+		
+		addCardPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addCardPage.getSaveStatus();
+		assertContains(status, "Please enter all details on your card", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingCardDetail_AddCard_Name_Blank() throws Exception {
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		HtmlReporter.label("Go to add new card screen and save without input Name");
+		addCardPage = debtCreditCardsPage.addNewCard();
+		assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+				"You are on the Add new card page");
+		
+		String cardNumber = DataGenerator.generateDebitCardNumber();
+		String expiry = "01/2022";
+		
+		addCardPage.setCardNumber(cardNumber);
+		addCardPage.setCardExpiry(expiry);
+		addCardPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addCardPage.getSaveStatus();
+		assertContains(status, "Please enter all details on your card", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingCardDetail_AddCard_CardNumber_Blank() throws Exception {
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		HtmlReporter.label("Go to add new card screen and save without input Card Number");
+		addCardPage = debtCreditCardsPage.addNewCard();
+		assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+				"You are on the Add new card page");
+		
+		String nameOnCard = DataGenerator.generateStringByDateTime("CardNumberBlank");
+		String expiry = "01/2022";
+		
+		addCardPage.setCardName(nameOnCard);
+		addCardPage.setCardExpiry(expiry);
+		addCardPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addCardPage.getSaveStatus();
+		assertContains(status, "Please enter all details on your card", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingCardDetail_AddCard_ExpireDate_Blank() throws Exception {
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		HtmlReporter.label("Go to add new card screen and save without input Expire Date");
+		addCardPage = debtCreditCardsPage.addNewCard();
+		assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+				"You are on the Add new card page");
+		
+		String nameOnCard = DataGenerator.generateStringByDateTime("ExpireDateBlank");
+		String cardNumber = DataGenerator.generateDebitCardNumber();
+		
+		addCardPage.setCardName(nameOnCard);
+		addCardPage.setCardNumber(cardNumber);
+		addCardPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addCardPage.getSaveStatus();
+		assertContains(status, "Please enter all details on your card", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingCardDetail_AddCard_CardNumber_Invalid() throws Exception {
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		HtmlReporter.label("Go to add new card screen and save with invalid Card Number");
+		addCardPage = debtCreditCardsPage.addNewCard();
+		assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+				"You are on the Add new card page");
+		
+		String nameOnCard = DataGenerator.generateStringByDateTime("InvalidCardNumber");
+		String cardNumber = "123456";
+		String expireDate = "01/2022";
+		
+		addCardPage.setCardName(nameOnCard);
+		addCardPage.setCardNumber(cardNumber);
+		addCardPage.setCardExpiry(expireDate);
+		addCardPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addCardPage.getSaveStatus();
+		assertContains(status, "Invalid Card Number", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 
 }

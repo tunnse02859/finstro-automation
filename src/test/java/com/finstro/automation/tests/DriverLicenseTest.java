@@ -3,6 +3,8 @@ package com.finstro.automation.tests;
 import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -244,15 +246,21 @@ public class DriverLicenseTest extends MobileTestSetup {
 //		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
 //	}
 	
-//	@Test
-//	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
-//		toDriverLicensePage();
-//		HtmlReporter.label("Submit driving license with invalid format DoB and verify error");
-//		drivingLisencePage.inputDoB("01/13/2020");
-//		postalAddressPage = drivingLisencePage.clickNext();
-//		String errorMess = drivingLisencePage.getSubmitStatus();
-//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
-//	}
+	@Test
+	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+		toDriverLicensePage();
+		HtmlReporter.label("Verify format of Date of Birth");
+		String dob = drivingLisencePage.getDoB();
+		assertDateTimeFormat(dob,"YYYY/MM/DD","Date of birth value is not in correct format","Date of birth value is in correct format");
+	}
+	
+	@Test
+	public void Verify_ExpireDate_Must_be_in_YYYY_MM() throws Exception {
+		toDriverLicensePage();
+		HtmlReporter.label("Verify format of Expire Date");
+		String expireDate = drivingLisencePage.getExpireDate();
+		assertDateTimeFormat(expireDate,"YYYY/MM","Expire Date value is not in correct format","Expire date value is in correct format");
+	}
 	
 	@DataProvider(name="invalid_drivingLicense")
 	public Object[][] getInvalidDrivingLicense() throws Exception{

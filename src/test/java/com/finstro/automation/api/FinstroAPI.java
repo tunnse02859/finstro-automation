@@ -77,6 +77,7 @@ public class FinstroAPI {
 				.extractJsonValue("streetNumber", "businessDetails.businessTradingAddress.streetNumber")
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
 				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb")
+				.extractJsonValue("unitOrLevel", "businessDetails.businessTradingAddress.unitOrLevel")
 
 				// other
 				.extractJsonValue("email", "businessDetails.email")
@@ -93,10 +94,15 @@ public class FinstroAPI {
 				.extractJsonValue("gstDate", "businessDetails.gstDate")
 				.extractJsonValue("timeTrading", "businessDetails.timeTrading").flush();
 
-		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
-				Common.getTestVariable("suburb", true));
-		return businessTradingAddress;
+		String businessTradingAddress = String.format("%s %s %s %s, %s, %s, %s", 
+				Common.getTestVariable("unitOrLevel", true),
+				Common.getTestVariable("streetNumber", true),
+				Common.getTestVariable("streetName", true), 
+				Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true),
+				Common.getTestVariable("state", true),
+				Common.getTestVariable("postCode", true));
+		return businessTradingAddress.trim();
 	}
 
 	public void getPostalAddressInfor() throws Exception {
@@ -112,6 +118,7 @@ public class FinstroAPI {
 				.extractJsonValue("businessTradingAddress.streetType",
 						"businessDetails.businessTradingAddress.streetType")
 				.extractJsonValue("businessTradingAddress.suburb", "businessDetails.businessTradingAddress.suburb")
+				.extractJsonValue("businessTradingAddress.unitOrLevel", "businessDetails.businessTradingAddress.unitOrLevel")
 				// residential address
 				.extractJsonValue("residentialAddress.country", "residentialAddress.country")
 				.extractJsonValue("residentialAddress.postCode", "residentialAddress.postCode")
@@ -120,6 +127,7 @@ public class FinstroAPI {
 				.extractJsonValue("residentialAddress.streetNumber", "residentialAddress.streetNumber")
 				.extractJsonValue("residentialAddress.streetType", "residentialAddress.streetType")
 				.extractJsonValue("residentialAddress.suburb", "residentialAddress.suburb")
+				.extractJsonValue("residentialAddress.unitOrLevel", "residentialAddress.unitOrLevel")
 				// selected address for postal address
 				.extractJsonValue("postalAddress.country", "finstroCards[0].postalAddress.country")
 				.extractJsonValue("postalAddress.postCode", "finstroCards[0].postalAddress.postCode")
@@ -127,38 +135,61 @@ public class FinstroAPI {
 				.extractJsonValue("postalAddress.streetName", "finstroCards[0].postalAddress.streetName")
 				.extractJsonValue("postalAddress.streetNumber", "finstroCards[0].postalAddress.streetNumber")
 				.extractJsonValue("postalAddress.streetType", "finstroCards[0].postalAddress.streetType")
-				.extractJsonValue("postalAddress.suburb", "finstroCards[0].postalAddress.suburb").flush();
-		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("businessTradingAddress.streetNumber", true),
-				Common.getTestVariable("businessTradingAddress.streetName", true), Common.getTestVariable("businessTradingAddress.streetType", true),
-				Common.getTestVariable("businessTradingAddress.suburb", true));
+				.extractJsonValue("postalAddress.suburb", "finstroCards[0].postalAddress.suburb")
+				.extractJsonValue("postalAddress.unitOrLevel", "finstroCards[0].postalAddress.unitOrLevel")
+				.flush();
+		String businessTradingAddress = String.format("%s %s %s %s, %s, %s, %s", 
+				Common.getTestVariable("businessTradingAddress.unitOrLevel", true),
+				Common.getTestVariable("businessTradingAddress.streetNumber", true),
+				Common.getTestVariable("businessTradingAddress.streetName", true), 
+				Common.getTestVariable("businessTradingAddress.streetType", true),
+				Common.getTestVariable("businessTradingAddress.suburb", true),
+				Common.getTestVariable("businessTradingAddress.state", true),
+				Common.getTestVariable("businessTradingAddress.postCode", true));
 		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("businessTradingAddress",
-				businessTradingAddress);
+				businessTradingAddress.trim());
 
-		String residentialAddress = String.format("%s %s %s %s", Common.getTestVariable("postalAddress.streetNumber", true),
-				Common.getTestVariable("postalAddress.streetName", true), Common.getTestVariable("postalAddress.streetType", true),
-				Common.getTestVariable("postalAddress.suburb", true));
-		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("residentialAddress", residentialAddress);
+		String residentialAddress = String.format("%s %s %s %s, %s, %s, %s", 
+				Common.getTestVariable("postalAddress.unitOrLevel", true),
+				Common.getTestVariable("postalAddress.streetNumber", true),
+				Common.getTestVariable("postalAddress.streetName", true), 
+				Common.getTestVariable("postalAddress.streetType", true),
+				Common.getTestVariable("postalAddress.suburb", true),
+				Common.getTestVariable("postalAddress.state", true),
+				Common.getTestVariable("postalAddress.postCode", true));
+		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("residentialAddress", residentialAddress.trim());
 
-		String postalAddress = String.format("%s %s %s %s",
+		String postalAddress = String.format("%s %s %s %s, %s, %s, %s",
+				Common.getTestVariable("postalAddress.unitOrLevel", true),
 				Common.getTestVariable("postalAddress.streetNumber", true),
 				Common.getTestVariable("postalAddress.streetName", true),
 				Common.getTestVariable("postalAddress.streetType", true),
-				Common.getTestVariable("postalAddress.suburb", true));
-		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("postalAddress", postalAddress);
+				Common.getTestVariable("postalAddress.suburb", true),
+				Common.getTestVariable("postalAddress.state", true),
+				Common.getTestVariable("postalAddress.postCode", true));
+		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("postalAddress", postalAddress.trim());
 	}
 
 	public String getResidentialAddress() throws Exception {
-		recoveryData().then().verifyResponseCode(200).extractJsonValue("country", "residentialAddress.country")
+		recoveryData().then().verifyResponseCode(200)
+				.extractJsonValue("country", "residentialAddress.country")
 				.extractJsonValue("postCode", "residentialAddress.postCode")
 				.extractJsonValue("state", "residentialAddress.state")
 				.extractJsonValue("streetName", "residentialAddress.streetName")
 				.extractJsonValue("streetNumber", "residentialAddress.streetNumber")
 				.extractJsonValue("streetType", "residentialAddress.streetType")
-				.extractJsonValue("suburb", "residentialAddress.suburb").flush();
-		String residentialAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
-				Common.getTestVariable("suburb", true));
-		return residentialAddress;
+				.extractJsonValue("suburb", "residentialAddress.suburb")
+				.extractJsonValue("unitOrLevel", "residentialAddress.unitOrLevel")
+			.flush();
+		String residentialAddress = String.format("%s %s %s %s, %s, %s, %s", 
+				Common.getTestVariable("unitOrLevel", true),
+				Common.getTestVariable("streetNumber", true),
+				Common.getTestVariable("streetName", true), 
+				Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true),
+				Common.getTestVariable("state", true),
+				Common.getTestVariable("postCode", true));
+		return residentialAddress.trim();
 	}
 
 	public String getBusinessTradingAddress() throws Exception {
@@ -169,11 +200,18 @@ public class FinstroAPI {
 				.extractJsonValue("streetName", "businessDetails.businessTradingAddress.streetName")
 				.extractJsonValue("streetNumber", "businessDetails.businessTradingAddress.streetNumber")
 				.extractJsonValue("streetType", "businessDetails.businessTradingAddress.streetType")
-				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb").flush();
-		String businessTradingAddress = String.format("%s %s %s %s", Common.getTestVariable("streetNumber", true),
-				Common.getTestVariable("streetName", true), Common.getTestVariable("streetType", true),
-				Common.getTestVariable("suburb", true));
-		return businessTradingAddress;
+				.extractJsonValue("suburb", "businessDetails.businessTradingAddress.suburb")
+				.extractJsonValue("unitOrLevel", "businessDetails.businessTradingAddress.unitOrLevel")
+				.flush();
+		String businessTradingAddress = String.format("%s %s %s %s, %s, %s, %s", 
+				Common.getTestVariable("unitOrLevel", true),
+				Common.getTestVariable("streetNumber", true),
+				Common.getTestVariable("streetName", true), 
+				Common.getTestVariable("streetType", true),
+				Common.getTestVariable("suburb", true),
+				Common.getTestVariable("state", true),
+				Common.getTestVariable("postCode", true));
+		return businessTradingAddress.trim();
 	}
 
 	public void getDrivingLicenceInfor() throws Exception {

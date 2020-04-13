@@ -8,7 +8,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
@@ -49,7 +48,6 @@ public class MedicareTest extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page in first installation");
 
-		toMedicarePage();
 	}
 
 	public void toMedicarePage() throws Exception {
@@ -80,6 +78,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1374_LastName_Cannot_Be_Blank() throws Exception {
+		toMedicarePage();
 		medicarePage.inputLastName("");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
@@ -96,6 +95,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1378_MedicareNumber_Cannot_Be_Blank() throws Exception {
+		toMedicarePage();
 		medicarePage.inputMedicareNumber("");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
@@ -104,6 +104,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1379_ReferenceNumber_Cannot_Be_Blank() throws Exception {
+		toMedicarePage();
 		medicarePage.inputReferenceNumber("");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
@@ -119,21 +120,32 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1383_MiddleInitial_Must_be_valid() throws Exception {
+		toMedicarePage();
 		medicarePage.inputMiddleName("AB");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
 		assertContains(errorMess, "Please complete all fields", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 
-//	@Test
-//	public void FPC_1384_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
-//		medicarePage.inputDoB("01/13/2020");
-//		medicarePage.clickNext();
-//		medicarePage.verifyErrorMessage("ERROR, Please complete all fields");
-//	}
+	@Test
+	public void FPC_1384_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+		toMedicarePage();
+		HtmlReporter.label("Verify format of Date of Birth");
+		String dob = medicarePage.getDob();
+		assertDateTimeFormat(dob,"YYYY/MM/DD","Date of birth value is not in correct format","Date of birth value is in correct format");
+	}
+	
+	@Test
+	public void Verify_ExpireDate_Must_be_in_YYYY_MM() throws Exception {
+		toMedicarePage();
+		HtmlReporter.label("Verify format of Date of Birth");
+		String expireDate = medicarePage.getExpireDate();
+		assertDateTimeFormat(expireDate,"YYYY/MM","Expire Date value is not in correct format","Expire Date value is in correct format");
+	}
 
 	@Test
 	public void FPC_1385_MedicareNumber_Must_be_valid() throws Exception {
+		toMedicarePage();
 		String imvalidMedicareNumber = Common.randomNumeric(12);
 		medicarePage.inputMedicareNumber(imvalidMedicareNumber);
 		medicarePage.clickNext();
@@ -143,6 +155,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1386_Number_Must_be_valid() throws Exception {
+		toMedicarePage();
 		String invalidReferenceNumber = Common.randomNumeric(2);
 		medicarePage.inputReferenceNumber(invalidReferenceNumber);
 		medicarePage.clickNext();
@@ -152,6 +165,7 @@ public class MedicareTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1387_Cancel_and_Verify_no_data_saved() throws Exception {
+		toMedicarePage();
 		onboardingAPI.getMedicareInfor();
 		medicarePage.inputFirstName("abc");
 		medicarePage.inputLastName("def");

@@ -92,13 +92,14 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
 		
-		HtmlReporter.label("Select business name");
-		businessDetailPage.selectBusinessName(businessDataOnTest.get("Second Business Name"));
 		
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential address screen is not displayed after save Business Detail",
+				"Residential address screen is displayed after save Business Detail");
 		onboardingAPI.getBusinessDetailInfor();
 		// verify saved value correctly!
 		assertEquals(Common.getTestVariable("abn", true), businessDataOnTest.get("ABN"),
@@ -107,7 +108,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Second Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name").equalsIgnoreCase("N/A") ? "" : businessDataOnTest.get("Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -132,13 +133,16 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
 		
 		HtmlReporter.label("Select business name");
 		businessDetailPage.selectBusinessName(businessDataOnTest.get("Second Business Name"));
 
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential address screen is not displayed after save Business Detail",
+				"Residential address screen is displayed after save Business Detail");
 		onboardingAPI.getBusinessDetailInfor();
 		// verify saved value correctly!
 		assertEquals(Common.getTestVariable("abn", true), businessDataOnTest.get("ABN"),
@@ -147,7 +151,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Second Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name").equalsIgnoreCase("N/A") ? "" : businessDataOnTest.get("Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -172,10 +176,13 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "N/A");
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
 
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential address screen is not displayed after save Business Detail",
+				"Residential address screen is displayed after save Business Detail");
 		onboardingAPI.getBusinessDetailInfor();
 		// verify saved value correctly!
 		assertEquals(Common.getTestVariable("abn", true), businessDataOnTest.get("ABN"),
@@ -184,7 +191,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), "",
+		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name").equalsIgnoreCase("N/A") ? "" : businessDataOnTest.get("Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -209,13 +216,16 @@ public class BusinessDetailTest extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
 		
-		HtmlReporter.label("Select business name");
-		businessDetailPage.selectBusinessName(businessDataOnTest.get("Business Name"));
+//		HtmlReporter.label("Select business name");
+//		businessDetailPage.selectBusinessName(businessDataOnTest.get("Business Name"));
 		
 		HtmlReporter.label("Click next and check data with API");
 		businessDetailPage.clickNext();
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential address screen is not displayed after save Business Detail",
+				"Residential address screen is displayed after save Business Detail");
 		onboardingAPI.getBusinessDetailInfor();
 		// verify saved value correctly!
 		assertEquals(Common.getTestVariable("abn", true), businessDataOnTest.get("ABN"),
@@ -224,7 +234,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name").equalsIgnoreCase("N/A") ? "" : businessDataOnTest.get("Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -267,7 +277,10 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 		HtmlReporter.label("Click next and verify data with API");
 		businessDetailPage.clickNext();
-
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential address screen is not displayed after save Business Detail",
+				"Residential address screen is displayed after save Business Detail");
+		
 		onboardingAPI.recoveryData().then().verifyResponseCode(200)
 				.extractJsonValue("businessName", "businessDetails.asicBusiness.companyName").flush();
 		assertEquals(Common.getTestVariable("businessName", true).toUpperCase().trim(),
@@ -280,7 +293,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		String addressInfor = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
-		String expectedBusinessTradingAddress = "50 Margaret St ASHFIELD";
+		String expectedBusinessTradingAddress = "50 Margaret St, ASHFIELD, WA, 6054";
 
 		// go to search address and
 		HtmlReporter.label("Go to search address and search for selecting");

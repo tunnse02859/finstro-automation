@@ -203,4 +203,12 @@ public class MedicarePage {
 	public String getSubmitStatus() throws Exception {
 		return driver.getText(errorMessage);
 	}
+	
+	public String getDob() throws Exception {
+		return driver.getText(dob);
+	}
+	
+	public String getExpireDate() throws Exception {
+		return driver.getText(expireDate);
+	}
 }

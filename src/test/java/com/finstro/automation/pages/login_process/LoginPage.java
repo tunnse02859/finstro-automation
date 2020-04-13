@@ -81,10 +81,12 @@ public class LoginPage {
 				"Login screen showed after tap on login");
 		login(email, code);
 		if (driver.isIOSDriver()) {
-			driver.setImplicitWaitTime(10);
-			clickNotNowiOS();
-			clickMaybeLateriOS();
-			driver.setDefaultImplicitWaitTime();
+			if(driver.waitForElementDisplayed(savePass_NotNow, 15)) {
+				clickNotNowiOS();
+			}
+			if(driver.waitForElementDisplayed(touchID_DontSave, 15)) {
+				clickMaybeLateriOS();
+			}
 		}
 	}
 	

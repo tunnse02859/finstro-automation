@@ -52,7 +52,7 @@ public class ResidentialAddressPage {
 	}
 	
 	public String getResidentialAddress() throws Exception {
-		return driver.getText(residentialAddress).replace(",", "").replace("  ", " ").trim();
+		return driver.getText(residentialAddress).trim();
 	}
 	
 	public void verifyResidentialAddress(String expectedAddress) throws Exception {

@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
-import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
 import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
 import com.finstro.automation.pages.on_boarding.DriverLicensePage;

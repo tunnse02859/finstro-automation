@@ -59,12 +59,11 @@ public class PostalAddressPage {
 	}
 
 	public boolean isActive() throws Exception {
-//		try {
-//			driver.setImplicitWaitTime(10);
-//			driver.click(address_dontallow);
-//			driver.setDefaultImplicitWaitTime();
-//		} catch (Exception e) {
-//		}
+		if (driver.isIOSDriver()) {
+			if (driver.waitForElementDisplayed(address_dontallow, 15)) {
+				driver.click(address_dontallow);
+			}
+		}
 		return driver.isElementDisplayed(title);
 	}
 

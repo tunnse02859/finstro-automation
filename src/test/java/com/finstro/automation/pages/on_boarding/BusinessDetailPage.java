@@ -86,7 +86,7 @@ public class BusinessDetailPage {
 	}
 	
 	public String getBusinessTradingAddress() throws Exception {
-		return driver.getText(businessTradingAddress).replace(",", "").replace("  ", " ").trim();
+		return driver.getText(businessTradingAddress).trim();
 	}
 	
 	public void verifyBusinessTradingAddress(String expectedAddress) throws Exception {

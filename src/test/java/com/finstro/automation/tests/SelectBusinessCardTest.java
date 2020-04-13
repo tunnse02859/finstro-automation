@@ -44,14 +44,20 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 		
 	}
+	
+	private void verifyBusinessData() throws Exception {
+		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
+		String businessName = Common.getTestVariable("businessName",true);
+		businessName = businessName.equalsIgnoreCase("") ? "N/A" : businessName;
+		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), businessName);
+	}
 
 	@Test
 	public void FPC_1314_Verify_Business_Detail_Screen_Displayed_After_Click_On_Card_500() throws Exception {
 		businessDetailPage = selectCardPage.clickOnCard("500");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500",
 				"Business Details is displayed after click on card 500");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 	@Test
@@ -59,8 +65,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		businessDetailPage = selectCardPage.clickOnCard("1000");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 1000",
 				"Business Details is displayed after click on card 1000");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 	@Test
@@ -68,8 +73,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		businessDetailPage = selectCardPage.clickOnCard("5000");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 5000",
 				"Business Details is displayed after click on card 5000");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 	@Test
@@ -77,8 +81,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		businessDetailPage = selectCardPage.clickOnCard("10000");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 10000",
 				"Business Details is displayed after click on card 10000");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 	@Test
@@ -86,8 +89,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		businessDetailPage = selectCardPage.clickOnCard("25000");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 25000",
 				"Business Details is displayed after click on card 25000");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 	@Test
@@ -95,8 +97,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		businessDetailPage = selectCardPage.clickOnCard("50000");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 50000",
 				"Business Details is displayed after click on card 50000");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 	@Test
@@ -105,8 +106,7 @@ public class SelectBusinessCardTest extends MobileTestSetup {
 		businessDetailPage = selectCardPage.clickOnCard("500000");
 		assertTrue(businessDetailPage.isActive(), "Business Details is not  displayed after click on card 500000+",
 				"Business Details is displayed after click on card 500000+");
-		String abn_acn = Common.getTestVariable("abn",true).equalsIgnoreCase("") ? Common.getTestVariable("acn",true) : Common.getTestVariable("abn",true);
-		businessDetailPage.verifyBusinessData(abn_acn, Common.getTestVariable("entityName",true), Common.getTestVariable("businessName",true));
+		verifyBusinessData();
 	}
 
 }

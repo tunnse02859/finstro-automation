@@ -103,7 +103,7 @@ public class SettingsBusinessDetailsSecondPage {
 	}
 
 	public String getBusinessAddress() throws Exception {
-		return driver.getText(txtBusinessAddress).replace(",", "").replace("  ", " ").trim();
+		return driver.getText(txtBusinessAddress).trim();
 	}
 
 	public String getOtherName() throws Exception {

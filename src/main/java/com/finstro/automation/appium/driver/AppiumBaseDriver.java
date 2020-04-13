@@ -568,6 +568,8 @@ public class AppiumBaseDriver {
 			wait.until(ExpectedConditions.visibilityOf(element));
 		} catch (TimeoutException e) {
 			return false;
+		} catch (Exception e) {
+			return false;
 		}
 		return true;
 	}
@@ -597,7 +599,6 @@ public class AppiumBaseDriver {
 				@Override
 				public String apply(WebDriver driver) {
 					String currenText = element.getText();
-					System.out.println("Current Text = [" + currenText + "]");
 					return currenText.equals("") ? null : currenText;
 				}
 				@Override

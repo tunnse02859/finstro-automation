@@ -68,10 +68,10 @@ public class OnboardingAPI extends FinstroAPI{
 		String data = "{" + 
 				"	'licenceNumber': '012345'," + 
 				"	'gender': 'F'," + 
-				"	'surname': 'Nguyen'," + 
+				"	'surname': 'ABC'," + 
 				"	'dateOfBirth': '1993-07-20'," + 
-				"	'firstName': 'Tu'," + 
-				"	'middleName': 'Ngoc'," + 
+				"	'firstName': 'DEF'," + 
+				"	'middleName': 'GHI'," + 
 				"	'state': 'SA'," + 
 				"	'validTo': '2025-12-31'" + 
 				"}";
@@ -88,11 +88,11 @@ public class OnboardingAPI extends FinstroAPI{
 	public void setupMedicare() throws Exception {
 		String data = "{" + 
 				"	'gender': 'F'," + 
-				"	'middleInitial': 'Ngoc'," + 
+				"	'middleInitial': 'ABC'," + 
 				"	'validTo': '2025-12-01'," + 
 				"	'cardColor': 'G'," + 
-				"	'firstName': 'Tu'," + 
-				"	'surname': 'Nguyen'," + 
+				"	'firstName': 'DEF'," + 
+				"	'surname': 'GHI'," + 
 				"	'cardNumber': '3501803151'," + 
 				"	'dateOfBirth': '1993-07-20'," + 
 				"	'cardNumberRef': 6" + 

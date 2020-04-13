@@ -2,10 +2,9 @@ package com.finstro.automation.pages.settings.profile;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import static com.finstro.automation.utility.Assertion.*;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
-import com.finstro.automation.appium.driver.AppiumBaseDriver.DIRECTION;
+
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -69,7 +68,7 @@ public class SettingProfile_ProfileDetailPage {
 	}
 
 	public String getResidentialAddress() throws Exception {
-		return driver.getText(residential).replace(",", "").replace("  ", " ").trim();
+		return driver.getText(residential).trim();
 	}
 
 	public SettingProfile_MedicarePage gotoSettingProfileMedicarePage() throws Exception {
