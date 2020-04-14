@@ -41,13 +41,13 @@ public class PostalAddressPage {
 	private WebElement businessAddressContent;
 
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/business_check")
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeImage[`name=\"business address checkbox\"`][3]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeImage[`name=\"business address checkbox\"`][1]")
 	private WebElement businessAddressSelector;
 
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeImage[`name=\"business address checkbox\"`][1]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeImage[`name=\"business address checkbox\"`][2]")
 	private WebElement acceptTerm1;
 
-	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeImage[`name=\"business address checkbox\"`][2]")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeImage[`name=\"business address checkbox\"`][3]")
 	private WebElement acceptTerm2;
 
 	@iOSXCUITFindBy(accessibility = "Don’t Allow")
