@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import com.finstro.automation.api.BankAccountDetailtAPI;
 import com.finstro.automation.common.WorkFlows;
@@ -22,7 +22,7 @@ import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
 
-public class SettingsBankAccountsTest extends MobileTestSetup {
+public class SettingsBankAccountsTests extends MobileTestSetup {
 
 	private BankAccountDetailtAPI bankAccountDetailAPI;
 	private BankAccountPage accountPage;

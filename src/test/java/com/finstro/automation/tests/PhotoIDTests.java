@@ -16,7 +16,7 @@ import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
-public class PhotoIDTest extends MobileTestSetup {
+public class PhotoIDTests extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private BusinessDetailPage businessDetailPage;

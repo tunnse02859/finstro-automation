@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;

@@ -27,7 +27,7 @@ import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 import com.finstro.automation.utility.FilePaths;
 
-public class DriverLicenseTest extends MobileTestSetup {
+public class DriverLicenseTests extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private BusinessDetailPage businessDetailPage;

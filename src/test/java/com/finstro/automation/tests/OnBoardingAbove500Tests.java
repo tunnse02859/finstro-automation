@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.common.CommonFunction;
@@ -35,7 +35,7 @@ import static com.finstro.automation.utility.Assertion.*;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-public class OnBoardingAbove500Test extends MobileTestSetup {
+public class OnBoardingAbove500Tests extends MobileTestSetup {
 
 	private OnboardingAPI onboardingAPI;
 	private LoginPage loginPage;
@@ -358,7 +358,7 @@ public class OnBoardingAbove500Test extends MobileTestSetup {
 //	}
 
 	@Test
-	public void OnBoarding_Verify_submit_bank_statement_successfully() throws Exception {
+	public void FPC_2827_OnBoarding_Above500$_Verify_submit_bank_statement_successfully() throws Exception {
 		// go to postal address
 		HtmlReporter.label("Go to Bank Statement screen");
 		

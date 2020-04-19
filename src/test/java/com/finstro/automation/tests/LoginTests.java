@@ -14,7 +14,7 @@ import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
 
-public class LoginTest extends MobileTestSetup {
+public class LoginTests extends MobileTestSetup {
 	private ForgotAccessCodePage forgotAccessCodePage;
 	private LoginPINPage loginPINPage;
 	private LoginPage loginPage;

@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 
 import static com.finstro.automation.utility.Assertion.*;
 
-public class SelectBusinessCardTest extends MobileTestSetup {
+public class SelectBusinessCardTests extends MobileTestSetup {
 	
 	private BusinessDetailPage businessDetailPage;
 	private RegisterPage registerPage;

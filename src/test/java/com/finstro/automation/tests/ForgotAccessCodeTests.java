@@ -15,7 +15,7 @@ import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 
-public class ForgotAccessCodeTest extends MobileTestSetup {
+public class ForgotAccessCodeTests extends MobileTestSetup {
 	private ForgotAccessCodePage forgotAccessCodePage;
 	private LoginPage loginPage;
 	private RegisterPage registerPage;

@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import static com.finstro.automation.utility.Assertion.assertTrue;
 
@@ -24,7 +24,7 @@ import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
-public class FinstroCardTest extends MobileTestSetup {
+public class FinstroCardTests extends MobileTestSetup {
 	private FinstroAPI finstroAPI;
 	private LoginPage loginPage;
 	private RegisterPage registerPage;

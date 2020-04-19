@@ -36,7 +36,7 @@ import static com.finstro.automation.utility.Assertion.*;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-public class RepaymentTest extends MobileTestSetup {
+public class RepaymentTests extends MobileTestSetup {
 
 	private OnboardingAPI onboardingAPI;
 	private LoginPage loginPage;
@@ -131,7 +131,7 @@ public class RepaymentTest extends MobileTestSetup {
 	}
 
 	@Test
-	public void OnBoarding_Repayment_Submit_All_Field_Blank() throws Exception {
+	public void FPC_2817_OnBoarding_Repayment_Submit_All_Field_Blank() throws Exception {
 		gotoRepaymentScreen();
 		HtmlReporter.label("Submit without input any data");
 		repaymentPage.saveChanges();
@@ -144,7 +144,7 @@ public class RepaymentTest extends MobileTestSetup {
 	}
 	
 	@Test
-	public void OnBoarding_Repayment_Submit_Card_Name_Blank() throws Exception {
+	public void FPC_2818_OnBoarding_Repayment_Submit_Card_Name_Blank() throws Exception {
 		gotoRepaymentScreen();
 		HtmlReporter.label("Submit with blank name on card data");
 		
@@ -163,7 +163,7 @@ public class RepaymentTest extends MobileTestSetup {
 	}
 	
 	@Test
-	public void OnBoarding_Repayment_Submit_Card_Number_Blank() throws Exception {
+	public void FPC_2819_OnBoarding_Repayment_Submit_Card_Number_Blank() throws Exception {
 		gotoRepaymentScreen();
 		HtmlReporter.label("Submit with blank card number data");
 
@@ -181,7 +181,7 @@ public class RepaymentTest extends MobileTestSetup {
 	}
 	
 	@Test
-	public void OnBoarding_Repayment_Submit_ExpireDate_Blank() throws Exception {
+	public void FPC_2820_OnBoarding_Repayment_Submit_ExpireDate_Blank() throws Exception {
 		gotoRepaymentScreen();
 		HtmlReporter.label("Submit with blank expire date");
 		

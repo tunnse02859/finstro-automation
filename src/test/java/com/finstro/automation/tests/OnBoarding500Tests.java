@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.common.CommonFunction;
@@ -31,7 +31,7 @@ import static com.finstro.automation.utility.Assertion.*;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-public class OnBoarding500Test extends MobileTestSetup {
+public class OnBoarding500Tests extends MobileTestSetup {
 
 	private OnboardingAPI onboardingAPI;
 	private LoginPage loginPage;
@@ -72,7 +72,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 	}
 
 	@Test
-	public void OnBoarding_01_Verify_select_business_card_amount_successfully() throws Exception {
+	public void FPC_2821_OnBoarding_500$_Verify_select_business_card_amount_successfully() throws Exception {
 		// select 500$ and verify business detail page displayed
 		HtmlReporter.label("Select card $500 and verify Business Detail screen displayed");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
@@ -81,7 +81,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 	}
 
 	@Test
-	public void OnBoarding_02_03_04_Verify_update_business_detail_successfully() throws Exception {
+	public void FPC_2822_OnBoarding_500$_Verify_update_business_detail_successfully() throws Exception {
 
 		// get business data from excel
 		HashMap<String, String> businessDataForTest;
@@ -163,7 +163,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 	}
 
 	@Test
-	public void OnBoarding_05_Verify_update_residential_address_successfully() throws Exception {
+	public void FPC_2823_OnBoarding_500$_Verify_update_residential_address_successfully() throws Exception {
 		String addressInforForSearch = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
@@ -209,7 +209,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 	}
 
 	@Test(dataProvider = "onboarding_DrivingLicense")
-	public void OnBoarding_07_Verify_update_driving_license_successfully(String genderName, String firstNameString,
+	public void FPC_2824_OnBoarding_500$_Verify_update_driving_license_successfully(String genderName, String firstNameString,
 			String lastNameString, String middleNameString, String stateName, String dobString,
 			String licenseNumberString, String expireDateString) throws Exception {
 		// go to driving license
@@ -260,7 +260,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 	}
 
 	@Test(dataProvider = "onboarding_Medicare")
-	public void OnBoarding_08_Verify_update_medicare_successfully(String firstNameString, String middleNameString,
+	public void FPC_2825_OnBoarding_500$_Verify_update_medicare_successfully(String firstNameString, String middleNameString,
 			String lastNameString, String genderName, String dobString, String cardColor, String medicareNumberString,
 			String referenceNumberString, String expireDateString) throws Exception {
 		// go to Medicare screen
@@ -310,7 +310,7 @@ public class OnBoarding500Test extends MobileTestSetup {
 	}
 
 	@Test
-	public void OnBoarding_09_Verify_select_postal_address_successfully() throws Exception {
+	public void FPC_2826_OnBoarding_500$_Verify_select_postal_address_successfully() throws Exception {
 		// go to postal address
 		HtmlReporter.label("Go to Postal Address screen");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");

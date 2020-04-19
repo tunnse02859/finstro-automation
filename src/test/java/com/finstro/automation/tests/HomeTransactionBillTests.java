@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import static com.finstro.automation.utility.Assertion.*;
 
@@ -29,7 +29,7 @@ import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 
-public class HomeTransactionBillTest extends MobileTestSetup {
+public class HomeTransactionBillTests extends MobileTestSetup {
 	private FinstroAPI finstroAPI;
 	private LoginPage loginPage;
 	private RegisterPage registerPage;

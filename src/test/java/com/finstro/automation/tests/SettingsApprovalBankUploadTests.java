@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.common.WorkFlows;
@@ -54,7 +54,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 	}
 
 	@Test(priority = 0)
-	public void SettingApproval_CheckStatus() throws Exception {
+	public void FPC_2814_SettingApproval_IDCheckStatus() throws Exception {
 		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
 
@@ -71,7 +71,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 	}
 
 	@Test(priority = 2)
-	public void SettingApproval_BankAccountConnected_01() throws Exception {
+	public void FPC_2815_SettingApproval_BankAccountConnected_CheckUserAccount() throws Exception {
 		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
 		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage
@@ -86,7 +86,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 	}
 
 	@Test(priority = 1)
-	public void SettingApproval_BankAccountConnected_02() throws Exception {
+	public void FPC_2816_SettingApproval_BankAccountConnected_UserUpdateAccount() throws Exception {
 		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
 		SettingsApproval_BankAccountConnectedPage settingBankAccountConnectedPage = settingsApprovalBankUploadPage

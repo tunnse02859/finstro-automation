@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.common.WorkFlows;

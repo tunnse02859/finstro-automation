@@ -1,4 +1,4 @@
-package com.finstro.automation.test.regression;
+package com.finstro.automation.tests;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
@@ -20,7 +20,7 @@ import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 
-public class SettingsProfileTest extends MobileTestSetup {
+public class SettingsProfileTests extends MobileTestSetup {
 
 	private ProfileInforAPI profileAPI;
 	private LoginPage loginPage;

@@ -25,7 +25,7 @@ import com.finstro.automation.utility.Common;
 import com.finstro.automation.common.CommonFunction;
 import com.finstro.automation.utility.FilePaths;
 
-public class BusinessDetailTest extends MobileTestSetup {
+public class BusinessDetailTests extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private BusinessDetailPage businessDetailPage;

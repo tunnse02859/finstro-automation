@@ -25,7 +25,7 @@ import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 
-public class PostalAddressOfCardTest extends MobileTestSetup {
+public class PostalAddressOfCardTests extends MobileTestSetup {
 
 	private LoginPage loginPage;
 	private RegisterPage registerPage;

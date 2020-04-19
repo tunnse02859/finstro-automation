@@ -22,7 +22,7 @@ import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 
-public class MedicareTest extends MobileTestSetup {
+public class MedicareTests extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 	private BusinessDetailPage businessDetailPage;
