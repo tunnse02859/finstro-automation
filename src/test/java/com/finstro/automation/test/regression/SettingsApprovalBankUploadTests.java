@@ -53,7 +53,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 
 	}
 
-	@Test()
+	@Test(priority = 0)
 	public void SettingApproval_CheckStatus() throws Exception {
 		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
@@ -70,7 +70,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 				.verifyCreditAssessmentStatusIsPass(Common.getTestVariable("creditAssessmentStatus", true));
 	}
 
-	@Test()
+	@Test(priority = 2)
 	public void SettingApproval_BankAccountConnected_01() throws Exception {
 		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
@@ -85,7 +85,7 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		settingBankAccountConnectedPage.verifyBankAccountDisplayed(bankAccounts);
 	}
 
-	@Test()
+	@Test(priority = 1)
 	public void SettingApproval_BankAccountConnected_02() throws Exception {
 		// go to bank account connected screen
 		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);

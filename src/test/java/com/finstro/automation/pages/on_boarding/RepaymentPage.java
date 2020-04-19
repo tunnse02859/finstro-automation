@@ -1,9 +1,14 @@
 package com.finstro.automation.pages.on_boarding;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
+
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -35,6 +40,11 @@ public class RepaymentPage {
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/repayment_expiry")
 	@iOSXCUITFindBy(accessibility = "expiry")
 	private WebElement txtExpiry;
+	
+	
+	@AndroidFindBy(id = "au.com.finstro.finstropay:id/snackbar_action")
+	@iOSXCUITFindBy(iOSNsPredicate = "name contains 'Error' || name contains 'Success'")
+	private WebElement statusAlert;
 
 	public RepaymentPage(AppiumBaseDriver driver) {
 		this.driver = driver;
@@ -44,6 +54,37 @@ public class RepaymentPage {
 	public boolean isActive() throws Exception {
 		return driver.isElementDisplayed(title);
 	}
+	
+	public void setCardName(String strNameOnCard) throws Exception {
+		driver.inputTextWithClear(txtCardName, strNameOnCard);
+	}
+	
+	public void setCardNumber(String strCardNumber) throws Exception {
+		driver.inputTextWithClear(txtCardNumber, strCardNumber);
+	}
+	
+	public void setCardExpiry(String strExpiry) throws Exception {
+		if(driver.isAndroidDriver()) {
+			driver.inputTextWithClear(txtExpiry, strExpiry);
+		}else {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/yyyy");
+			Date date = simpleDateFormat.parse(strExpiry);
+			String month = new SimpleDateFormat("MMMM").format(date);
+			String year = new SimpleDateFormat("YYYY").format(date);
+			String[] strdate = {month, year};
+			driver.click(txtExpiry);
+			driver.selectPickerWheels(strdate);
+		}
+	}
+	
+	public void saveChanges() throws Exception {
+		driver.click(next);
+	}
+	
+	public String getSaveStatus() throws Exception {
+		return driver.waitForTextElementPresent(statusAlert, 30);
+	}
+
 
 	
 }

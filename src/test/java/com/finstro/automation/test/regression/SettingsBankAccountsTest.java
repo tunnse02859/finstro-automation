@@ -55,13 +55,12 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 	}
 
 	@Test
-	public void SettingAccountDetail_01_AddNewAccount() throws Exception {
+	public void SettingBankAccountDetail_01_AddNewAccount() throws Exception {
 
 		// Generate test data
-		DataGenerator data = new DataGenerator();
-		String name = data.generateStringByDateTime("AddAccountTest");
-		String bsb = data.generateBSBNumber();
-		String accountNumber = data.generateBankAccountNumber();
+		String name = DataGenerator.generateStringByDateTime("AddAccountTest");
+		String bsb = DataGenerator.generateBSBNumber();
+		String accountNumber = DataGenerator.generateBankAccountNumber();
 
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 		try {
@@ -106,10 +105,9 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 	public void SettingBankAccountDetail_02_SetDefaultBankAccount() throws Exception {
 
 		// Generate test data
-		DataGenerator data = new DataGenerator();
-		String name = data.generateStringByDateTime("DefaultAccountTest");
-		String bsb = data.generateBSBNumber();
-		String accountNumber = data.generateBankAccountNumber();
+		String name = DataGenerator.generateStringByDateTime("DefaultAccountTest");
+		String bsb = DataGenerator.generateBSBNumber();
+		String accountNumber = DataGenerator.generateBankAccountNumber();
 
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 
@@ -188,10 +186,9 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 	public void SettingBankAccountDetail_03_DeleteBankAccount() throws Exception {
 
 		// Generate test data
-		DataGenerator data = new DataGenerator();
-		String name = data.generateStringByDateTime("DeleteAccountTest");
-		String bsb = data.generateBSBNumber();
-		String accountNumber = data.generateBankAccountNumber();
+		String name = DataGenerator.generateStringByDateTime("DeleteAccountTest");
+		String bsb = DataGenerator.generateBSBNumber();
+		String accountNumber = DataGenerator.generateBankAccountNumber();
 
 		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
 
@@ -256,6 +253,107 @@ public class SettingsBankAccountsTest extends MobileTestSetup {
 			}
 		}
 
+	}
+	
+	@Test
+	public void SettingBankAccountDetail_AddBank_All_Field_BLank() throws Exception {
+		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
+		HtmlReporter.label("Go to add new bank account screen and save without input data");
+		addBankAccountPage = accountPage.addNewBankAccount();
+		assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+				"You are on the Add new account page");
+		
+		addBankAccountPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addBankAccountPage.getSaveStatus();
+		assertContains(status, "Please enter all Bank Account details.", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingBankAccountDetail_AddBank_AccountName_Blank() throws Exception {
+
+		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
+		HtmlReporter.label("Go to add new bank screen and save with blank account name");
+		addBankAccountPage = accountPage.addNewBankAccount();
+		assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+				"You are on the Add new account page");
+		
+		String bsb = DataGenerator.generateBSBNumber();
+		String accountNumber = DataGenerator.generateBankAccountNumber();
+		addBankAccountPage.setAccountNumber(accountNumber);
+		addBankAccountPage.setBsb(bsb);
+		addBankAccountPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addBankAccountPage.getSaveStatus();
+		assertContains(status, "Please enter all Bank Account details.", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingBankAccountDetail_AddBank_BSB_Blank() throws Exception {
+
+		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
+		HtmlReporter.label("Go to add new bank screen and save with blank account name");
+		addBankAccountPage = accountPage.addNewBankAccount();
+		assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+				"You are on the Add new account page");
+		
+		String name = DataGenerator.generateStringByDateTime("BlankBSB");
+		String accountNumber = DataGenerator.generateBankAccountNumber();
+		addBankAccountPage.setAccountName(name);
+		addBankAccountPage.setAccountNumber(accountNumber);
+		addBankAccountPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addBankAccountPage.getSaveStatus();
+		assertContains(status, "Please enter all Bank Account details.", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingBankAccountDetail_AddBank_AccountNumber_Blank() throws Exception {
+
+		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
+		HtmlReporter.label("Go to add new bank screen and save with blank account name");
+		addBankAccountPage = accountPage.addNewBankAccount();
+		assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+				"You are on the Add new account page");
+		
+		String name = DataGenerator.generateStringByDateTime("BlankAccountNumber");
+		String bsb = DataGenerator.generateBSBNumber();
+		addBankAccountPage.setAccountName(name);
+		addBankAccountPage.setBsb(bsb);
+		addBankAccountPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addBankAccountPage.getSaveStatus();
+		assertContains(status, "Please enter all Bank Account details.", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void SettingBankAccountDetail_AddBank_BSB_Invalid() throws Exception {
+
+		accountPage = WorkFlows.goToSettingBankAccountPage(driver);
+		HtmlReporter.label("Go to add new bank screen and save with blank account name");
+		addBankAccountPage = accountPage.addNewBankAccount();
+		assertTrue(addBankAccountPage.isActive(), "You aren't on the Add new account page",
+				"You are on the Add new account page");
+		
+		String name = DataGenerator.generateStringByDateTime("InvalidBSB");
+		String accountNumber = DataGenerator.generateBankAccountNumber();
+		addBankAccountPage.setAccountName(name);
+		addBankAccountPage.setAccountNumber(accountNumber);
+		addBankAccountPage.setBsb("123456");
+		addBankAccountPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addBankAccountPage.getSaveStatus();
+		assertContains(status, "Invalid BSB Number.", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 
 }

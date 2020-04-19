@@ -83,7 +83,7 @@ public class SettingsProfileTest extends MobileTestSetup {
 				.verifyJsonNodeEqual("drivingLicence.gender", settingProfileDrivingLicencePage.getGender())
 				.verifyJsonNodeEqual("drivingLicence.firstName", settingProfileDrivingLicencePage.getFirstName())
 				.verifyJsonNodeEqual("drivingLicence.surname", settingProfileDrivingLicencePage.getLastName())
-				.verifyJsonNodeEqual("drivingLicence.middleName", settingProfileDrivingLicencePage.getMiddleName())
+				//.verifyJsonNodeEqual("drivingLicence.middleName", settingProfileDrivingLicencePage.getMiddleName())
 				.verifyJsonNodeEqual("drivingLicence.state", settingProfileDrivingLicencePage.getState())
 				// .verifyJsonNodeEqual("drivingLicence.dateOfBirth",
 				// settingProfileDrivingLicencePage.getDob())

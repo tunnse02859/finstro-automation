@@ -57,7 +57,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page in first installation");
 
-		toBusinessDetailPage();
+		
 	}
 
 	public void toBusinessDetailPage() throws Exception {
@@ -69,6 +69,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1321_Verify_Redirect_to_FindBusiness_Successfully() throws Exception {
+		toBusinessDetailPage();
 		HtmlReporter.label("Click find business and verify");
 		businessDetailPage.clickFindBusiness();
 		assertTrue(findBusinessPage.isActive(), "Find Your Business Page is not displayed",
@@ -77,6 +78,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1322_Verify_add_Business_Detail_Sucessfully_WithType_Company() throws Exception {
+		toBusinessDetailPage();
 		HashMap<String, String> businessDataOnTest = CommonFunction.getBusinessDataByType("Company",
 				businessDataSource);
 		// go to search business and search type = company, verify first matched is
@@ -118,6 +120,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1323_Verify_add_Business_Detail_Sucessfully_WithType_SoleTrader() throws Exception {
+		toBusinessDetailPage();
 		HashMap<String, String> businessDataOnTest = CommonFunction.getBusinessDataByType("Sole_Trader",
 				businessDataSource);
 		// go to search business and search type = company, verify first matched is
@@ -161,6 +164,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1325_Verify_add_Business_Detail_Sucessfully_WithType_CorporateTrustee() throws Exception {
+		toBusinessDetailPage();
 		HashMap<String, String> businessDataOnTest = CommonFunction.getBusinessDataByType("CORPORATE_TRUSTEE",
 				businessDataSource);
 		// go to search business and search type = company, verify first matched is
@@ -201,6 +205,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1326_Verify_add_Business_Detail_Sucessfully_WithType_Partnership() throws Exception {
+		toBusinessDetailPage();
 		HashMap<String, String> businessDataOnTest = CommonFunction.getBusinessDataByType("Partnership",
 				businessDataSource);
 		// go to search business and search type = company, verify first matched is
@@ -244,6 +249,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1328_Verify_Find_Business_No_Result_Matched() throws Exception {
+		toBusinessDetailPage();
 		String invalidBusinessInfor = Common.randomAlphaNumeric(15);
 
 		businessDetailPage.clickFindBusiness();
@@ -256,6 +262,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1329_Verify_User_Update_Business_Trading_Names_Successful() throws Exception {
+		toBusinessDetailPage();
 		HashMap<String, String> businessDataForTest = CommonFunction.getBusinessDataByType("Company",
 				businessDataSource);
 		HtmlReporter.label("Find an business with type = Company and select");
@@ -290,6 +297,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1332_1334_Verify_add_Business_Trading_Address_Successfully() throws Exception {
+		toBusinessDetailPage();
 		String addressInfor = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
@@ -326,6 +334,7 @@ public class BusinessDetailTest extends MobileTestSetup {
 
 	@Test
 	public void FPC_1333_Verify_Find_Address_with_No_Result_Matched() throws Exception {
+		toBusinessDetailPage();
 		String addressInfor = Common.randomAlphaNumeric(10);
 
 		businessDetailPage.clickBusinessTradingAddress();

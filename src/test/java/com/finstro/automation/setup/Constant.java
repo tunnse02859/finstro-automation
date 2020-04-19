@@ -4,7 +4,7 @@ public class Constant {
 	//public static final String LOGIN_EMAIL_ADDRESS = "erick@finstro.com.au";
 	//public static final String LOGIN_ACCESS_CODE = "360728";
 	public static final String NON_ONBOARDING_LOGIN_EMAIL_ADDRESS = "phong.trinh@adaptis.io";
-	public static final String NON_ONBOARDING_LOGIN_ACCESS_CODE = "077401";
+	public static final String NON_ONBOARDING_LOGIN_ACCESS_CODE = "391096";
 	//public static final String NON_ONBOARDING_LOGIN_EMAIL_ADDRESS = "huong.dang@adaptis.io";
 	//public static final String NON_ONBOARDING_LOGIN_ACCESS_CODE = "421077";
 	

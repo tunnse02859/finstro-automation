@@ -42,8 +42,9 @@ public class LoginTest extends MobileTestSetup {
 		String invalidEmail = Constant.ONBOARDING_EMAIL_ADDRESS + "extra";
 		registerPage.toLoginPage();
 		loginPage.login(invalidEmail, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
-		String status = loginPage.getErrorMessage();
-		assertContains(status, "Incorrect username or password", "Error message displayed incorrectly",
+		String status = loginPage.getErrorMessage(); 
+
+		assertContains(status, "Invalid username or password.", "Error message displayed incorrectly",
 				"Error message displayed correctly");
 
 	}

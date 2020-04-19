@@ -71,7 +71,7 @@ public class LoginPage {
 		driver.inputTextWithClear(emailAddress, email);
 		driver.inputTextWithClear(accessCode, code);
 		driver.click(submit);
-		driver.dismissAlert();
+		//driver.dismissAlert();
 	}
 
 	public void doSuccessLogin(String email, String code) throws Exception {
@@ -81,10 +81,10 @@ public class LoginPage {
 				"Login screen showed after tap on login");
 		login(email, code);
 		if (driver.isIOSDriver()) {
-			if(driver.waitForElementDisplayed(savePass_NotNow, 15)) {
+			if(driver.waitForElementDisplayed(savePass_NotNow, 30)) {
 				clickNotNowiOS();
 			}
-			if(driver.waitForElementDisplayed(touchID_DontSave, 15)) {
+			if(driver.waitForElementDisplayed(touchID_DontSave, 5)) {
 				clickMaybeLateriOS();
 			}
 		}
