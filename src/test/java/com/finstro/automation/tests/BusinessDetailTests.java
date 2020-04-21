@@ -57,7 +57,6 @@ public class BusinessDetailTests extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page in first installation");
 
-		
 	}
 
 	public void toBusinessDetailPage() throws Exception {
@@ -118,6 +117,12 @@ public class BusinessDetailTests extends MobileTestSetup {
 				"businessName type is saved correctly");
 	}
 
+	/**
+	 * 
+	 * The test result was fail because the FPC-2735 issue IOS - Business Detail
+	 * Screen - Business Trading Name is not auto-selected the first suggested
+	 * option as defined in the requirement
+	 */
 	@Test
 	public void FPC_1323_Verify_add_Business_Detail_Sucessfully_WithType_SoleTrader() throws Exception {
 		toBusinessDetailPage();
@@ -136,8 +141,9 @@ public class BusinessDetailTests extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
-		
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"),
+				businessDataOnTest.get("Business Name"));
+
 		HtmlReporter.label("Select business name");
 		businessDetailPage.selectBusinessName(businessDataOnTest.get("Second Business Name"));
 
@@ -154,7 +160,9 @@ public class BusinessDetailTests extends MobileTestSetup {
 		assertEquals(Common.getTestVariable("entityName", true), businessDataOnTest.get("Entity name"),
 				"entityName from API after save doesnt match with expectation",
 				"entityName from API after save matched with expectation");
-		assertEquals(Common.getTestVariable("businessName", true), businessDataOnTest.get("Business Name").equalsIgnoreCase("N/A") ? "" : businessDataOnTest.get("Business Name"),
+		assertEquals(Common.getTestVariable("businessName", true),
+				businessDataOnTest.get("Business Name").equalsIgnoreCase("N/A") ? ""
+						: businessDataOnTest.get("Business Name"),
 				"businessName from API after save doesnt match with expectation",
 				"businessName from API after save matched with expectation");
 		assertEquals(Common.getTestVariable("type", true).toUpperCase().trim(),
@@ -276,7 +284,7 @@ public class BusinessDetailTests extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		businessDetailPage.verifyBusinessData(businessDataForTest.get("ABN"), businessDataForTest.get("Entity name"),
-				"");
+				businessDataForTest.get("Business Name"));
 
 		HtmlReporter.label("Update business trading name and verify");
 		businessDetailPage.selectBusinessName(businessDataForTest.get("Second Business Name"));
@@ -295,6 +303,10 @@ public class BusinessDetailTests extends MobileTestSetup {
 				"Business Name is saved incorrectly", "Business Name is saved correctly");
 	}
 
+	/**
+	 * FPC-2829: IOS - Business Details screen - Business Trading Address is not in correct format
+	 * Android: Missing "," before the post code [Ex. expected contains [50 Margaret St, ASHFIELD, WA, 6054] but found [50 Margaret St, ASHFIELD, WA 6054]]
+	 */
 	@Test
 	public void FPC_1332_1334_Verify_add_Business_Trading_Address_Successfully() throws Exception {
 		toBusinessDetailPage();
@@ -343,5 +355,15 @@ public class BusinessDetailTests extends MobileTestSetup {
 		findAddressPage.inputSearchAddress(addressInfor);
 		assertTrue(findAddressPage.isNoResultMatched(), "Address not found should be displayed",
 				"Address not found displayed");
+	}
+	
+	@Test
+	public void FPC_1335_Verify_User_Navigate_To_The_Residential_Address_Successful() throws Exception {
+		toBusinessDetailPage();
+		residentialAddressPage = businessDetailPage.clickNext();
+		assertTrue(residentialAddressPage.isActive(),
+				"Residential Address screen is not displayed",
+				"Residential Address screen is displayed");	
+		
 	}
 }
