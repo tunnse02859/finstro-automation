@@ -56,6 +56,7 @@ public class BusinessDetailPage {
 
 	public ResidentialAddressPage clickNext() throws Exception {
 		driver.click(next);
+		driver.waitForElementClickable(next, 3);
 		return new ResidentialAddressPage(driver);
 	}
 	
