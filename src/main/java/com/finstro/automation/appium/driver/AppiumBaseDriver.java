@@ -17,6 +17,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -580,9 +581,51 @@ public class AppiumBaseDriver {
 		wait.until((driver) -> element != null);
 	}
 
-	public void waitUntilElementDisappear(WebElement element, int time) {
-		FluentWait<WebDriver> wait = new WebDriverWait(driver, time).ignoring(NoSuchElementException.class);
-		wait.until(ExpectedConditions.invisibilityOfAllElements(element));
+	public boolean waitUntilElementDisappear(WebElement element, int time) {
+		try {
+			FluentWait<WebDriver> wait = new WebDriverWait(driver, time).ignoring(NoSuchElementException.class);
+			wait.until(ExpectedConditions.invisibilityOfAllElements(element));
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean isElementPresent(WebElement element) {
+		try {
+			return !element.isDisplayed();
+		} catch (StaleElementReferenceException ignored) {
+			// We can assume a stale element isn't displayed.
+			return true;
+		} catch (NoSuchElementException ignored) {
+			return true;
+		} catch (NullPointerException ignored) {
+			return true;
+		}
+	}
+
+	public boolean waitUntilElementNotPresent(WebElement element, int time) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, time);
+			// wait.until((driver) -> !element.getText().equals(""));
+			wait.until(new ExpectedCondition<Boolean>() {
+				@Override
+				public Boolean apply(WebDriver driver) {
+					return !isElementPresent(element);
+				}
+
+				@Override
+				public String toString() {
+					return String.format("Element [%s] to be disappear",element);
+				}
+			});
+			return true;
+		} catch (TimeoutException e) {
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public void waitForTextValueElementPresent(WebElement element, int time, String text) {
@@ -594,19 +637,20 @@ public class AppiumBaseDriver {
 		String text = "";
 		try {
 			WebDriverWait wait = new WebDriverWait(driver, time);
-			//wait.until((driver) -> !element.getText().equals(""));
+			// wait.until((driver) -> !element.getText().equals(""));
 			text = wait.until(new ExpectedCondition<String>() {
 				@Override
 				public String apply(WebDriver driver) {
 					String currenText = element.getText();
 					return currenText.equals("") ? null : currenText;
 				}
+
 				@Override
 				public String toString() {
 					return String.format("Current text: [%s]", element.getText());
 				}
 			});
-			
+
 			return text;
 		} catch (TimeoutException e) {
 			throw e;
@@ -664,16 +708,6 @@ public class AppiumBaseDriver {
 			HtmlReporter.info(String.format("Element: [%s] is not selected", element.toString()));
 		}
 		return result;
-	}
-
-	public boolean isElementPresented(WebElement element) {
-		try {
-			return element != null;
-		} catch (Exception ex) {
-			Log.error(ex.getMessage());
-			ex.printStackTrace();
-			return false;
-		}
 	}
 
 	public WebElement isElementPresented(By locator, int timeout) {

@@ -39,9 +39,9 @@ public class LoginTests extends MobileTestSetup {
 
 	@Test
 	public void FPC_1292_Login_with_Invalid_Email() throws Exception {
-		String invalidEmail = Constant.ONBOARDING_EMAIL_ADDRESS + "extra";
+		String invalidEmail = "l0vehd93x@gmail";
 		registerPage.toLoginPage();
-		loginPage.login(invalidEmail, Constant.NON_ONBOARDING_LOGIN_ACCESS_CODE);
+		loginPage.login(invalidEmail, Constant.ONBOARDING_ACCESS_CODE);
 		String status = loginPage.getErrorMessage(); 
 
 		assertContains(status, "Invalid username or password.", "Error message displayed incorrectly",

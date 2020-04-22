@@ -335,7 +335,7 @@ public class BusinessDetailTests extends MobileTestSetup {
 	@Test
 	public void FPC_1333_Verify_Find_Address_with_No_Result_Matched() throws Exception {
 		toBusinessDetailPage();
-		String addressInfor = Common.randomAlphaNumeric(10);
+		String addressInfor = "ahhsd";
 
 		businessDetailPage.clickBusinessTradingAddress();
 		assertTrue(findAddressPage.isActive(), "Find Address screen is not displayed",

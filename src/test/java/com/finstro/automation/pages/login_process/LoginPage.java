@@ -80,8 +80,10 @@ public class LoginPage {
 		assertTrue(this.isActive(), "Login screen didnt showed after tap on login",
 				"Login screen showed after tap on login");
 		login(email, code);
+		boolean isLoginPageDisappear = driver.waitUntilElementNotPresent(emailAddress, 50);
+		assertTrue(isLoginPageDisappear,"Login unsuccessfully, login page still displayed","Login successfully, Login page disappeared");
 		if (driver.isIOSDriver()) {
-			if(driver.waitForElementDisplayed(savePass_NotNow, 30)) {
+			if(driver.waitForElementDisplayed(savePass_NotNow, 5)) {
 				clickNotNowiOS();
 			}
 			if(driver.waitForElementDisplayed(touchID_DontSave, 5)) {

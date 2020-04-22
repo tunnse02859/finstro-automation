@@ -66,7 +66,7 @@ public class ResidentialAddressTests extends MobileTestSetup {
 	
 	@Test
 	public void FPC_1336_Verify_Find_Address_with_No_Result_Matched() throws Exception {
-		String addressInfor = Common.randomAlphaNumeric(10);
+		String addressInfor = "ahhsd";
 		
 		HtmlReporter.label("Go go Search address screen and input invalid address");
 		residentialAddressPage.clickSearchAddress();
