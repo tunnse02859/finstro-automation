@@ -17,6 +17,7 @@ import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
 import com.finstro.automation.pages.on_boarding.DriverLicensePage;
+import com.finstro.automation.pages.on_boarding.MedicarePage;
 import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
@@ -246,21 +247,21 @@ public class DriverLicenseTests extends MobileTestSetup {
 //		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
 //	}
 	
-	@Test
-	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
-		toDriverLicensePage();
-		HtmlReporter.label("Verify format of Date of Birth");
-		String dob = drivingLisencePage.getDoB();
-		assertDateTimeFormat(dob,"YYYY/MM/DD","Date of birth value is not in correct format","Date of birth value is in correct format");
-	}
+//	@Test
+//	public void FPC_1369_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Verify format of Date of Birth");
+//		String dob = drivingLisencePage.getDoB();
+//		assertDateTimeFormat(dob,"YYYY/MM/DD","Date of birth value is not in correct format","Date of birth value is in correct format");
+//	}
 	
-	@Test
-	public void Verify_ExpireDate_Must_be_in_YYYY_MM() throws Exception {
-		toDriverLicensePage();
-		HtmlReporter.label("Verify format of Expire Date");
-		String expireDate = drivingLisencePage.getExpireDate();
-		assertDateTimeFormat(expireDate,"YYYY/MM","Expire Date value is not in correct format","Expire date value is in correct format");
-	}
+//	@Test
+//	public void Verify_ExpireDate_Must_be_in_YYYY_MM() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Verify format of Expire Date");
+//		String expireDate = drivingLisencePage.getExpireDate();
+//		assertDateTimeFormat(expireDate,"YYYY/MM","Expire Date value is not in correct format","Expire date value is in correct format");
+//	}
 	
 	@DataProvider(name="invalid_drivingLicense")
 	public Object[][] getInvalidDrivingLicense() throws Exception{
@@ -270,7 +271,7 @@ public class DriverLicenseTests extends MobileTestSetup {
 	
 	
 	@Test(dataProvider = "invalid_drivingLicense")
-	public void FPC_1370_DrivingLicense_Must_be_valid(String state, String invalidDrivingLicense) throws Exception {
+	public void FPC_1370_Verify_User_Add_The_Driving_Licence_Unsuccessful_Due_To_INCORRECT_DRIVING_LICENCE_NUMBER(String state, String invalidDrivingLicense) throws Exception {
 		toDriverLicensePage();
 		HtmlReporter.label("Input state = " + state + " with invalid driving license = " + invalidDrivingLicense);
 		drivingLisencePage.inputState(state);
@@ -281,5 +282,13 @@ public class DriverLicenseTests extends MobileTestSetup {
 		String errorMess = drivingLisencePage.getSubmitStatus();
 		assertContains(errorMess, "Invalid Driving Licence number.", "Error message displayed incorrectly", "Error message displayed correctly");
 		drivingLisencePage.verifyDrivingLicenseError("Invalid Driving Licence Number");	
+	}
+	
+	@Test
+	public void FPC_1371_Verify_User_Navigate_To_The_Medicare_Screen() throws Exception {
+		toDriverLicensePage();
+		HtmlReporter.label("Navigate to medicare screen");
+		MedicarePage medicarePage = drivingLisencePage.clickMedicare();
+		assertTrue(medicarePage.isActive(), "Medicare screen is not  displayed ", "Medicare screen is displayed");
 	}
 }

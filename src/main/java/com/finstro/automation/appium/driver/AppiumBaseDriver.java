@@ -16,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
@@ -442,13 +443,11 @@ public class AppiumBaseDriver {
 			int lowerY = upperY + wheel.getSize().getHeight();
 			int middleY = (upperY + lowerY) / 2;
 
-			// swipe down 3 time in picker wheel to get 1st item on list
-			for (int i = 0; i < 3; i++) {
-				new TouchAction<>(driver).press(PointOption.point(middleX, upperY + 50))
-						.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500)))
-						.moveTo(PointOption.point(middleX, lowerY)).release().perform();
-				Thread.sleep(1000);
-			}
+			// swipe down 1 time in picker wheel to get 1st item on list
+			new TouchAction<>(driver).press(PointOption.point(middleX, upperY + 50))
+					.waitAction(WaitOptions.waitOptions(Duration.ofMillis(500)))
+					.moveTo(PointOption.point(middleX, lowerY)).release().perform();
+			Thread.sleep(1000);
 
 			// set js script
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -475,6 +474,18 @@ public class AppiumBaseDriver {
 		} catch (Exception e) {
 			throw (e);
 		}
+	}
+
+	public boolean isDropDownDisplayed() {
+		if (isIOSDriver()) {
+			WebElement wheel = null;
+			try {
+				wheel = (MobileElement) driver.findElement(MobileBy.iOSClassChain("**/XCUIElementTypePickerWheel"));
+			} catch (NotFoundException e) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void selectRadioButton(WebElement element) throws Exception {
@@ -617,7 +628,7 @@ public class AppiumBaseDriver {
 
 				@Override
 				public String toString() {
-					return String.format("Element [%s] to be disappear",element);
+					return String.format("Element [%s] to be disappear", element);
 				}
 			});
 			return true;

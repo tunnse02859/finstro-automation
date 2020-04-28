@@ -256,7 +256,7 @@ public class OnBoarding500Tests extends MobileTestSetup {
 	@DataProvider(name = "onboarding_Medicare")
 	public Object[][] setupMedicare() {
 		return new Object[][] {
-				{ "Phong", "Van", "Trinh", "Female", "27/02/1983", "Green", "2684483925", "1", "03/2020" } };
+				{ "Phong", "V", "Trinh", "Female", "27/02/1983", "Green", "2684483925", "1", "03/2020" } };
 	}
 
 	@Test(dataProvider = "onboarding_Medicare")

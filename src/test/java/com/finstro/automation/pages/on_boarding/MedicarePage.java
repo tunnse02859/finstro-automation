@@ -81,8 +81,9 @@ public class MedicarePage {
 		driver.click(next);
 	}
 
-	public void clickCancel() throws Exception {
+	public DriverLicensePage clickCancel() throws Exception {
 		driver.click(cancel);
+		return new DriverLicensePage(driver);
 	}
 
 	public void selectGender(String genderName) throws Exception {
@@ -100,6 +101,10 @@ public class MedicarePage {
 			driver.selectPickerWheel(null, genderName, true);
 		}
 	}
+	
+	public void selectGender() throws Exception {
+		driver.click(gender);
+	}
 
 	public void inputFirstName(String firstNameString) throws Exception {
 		driver.inputTextWithClear(firstName, firstNameString);
@@ -111,6 +116,10 @@ public class MedicarePage {
 
 	public void inputMiddleName(String middleNameString) throws Exception {
 		driver.inputTextWithClear(middleName, middleNameString);
+	}
+	
+	public String getMiddleName() throws Exception {
+		return driver.getText(middleName);
 	}
 
 	public void selectCardColor(String colorName) throws Exception {

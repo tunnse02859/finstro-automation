@@ -4,6 +4,8 @@ import static com.finstro.automation.utility.Assertion.*;
 
 import java.lang.reflect.Method;
 
+import org.openqa.selenium.NotFoundException;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -22,6 +24,9 @@ import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.MobileTestSetup;
 import com.finstro.automation.utility.Common;
 
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
+
 public class MedicareTests extends MobileTestSetup {
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
@@ -32,7 +37,7 @@ public class MedicareTests extends MobileTestSetup {
 	private DriverLicensePage drivingLisencePage;
 	private MedicarePage medicarePage;
 	private OnboardingAPI onboardingAPI;
-	
+
 	@BeforeClass
 	public void setupAPI() throws Exception {
 		onboardingAPI = new OnboardingAPI();
@@ -51,8 +56,7 @@ public class MedicareTests extends MobileTestSetup {
 	}
 
 	public void toMedicarePage() throws Exception {
-		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS,
-				Constant.ONBOARDING_ACCESS_CODE);
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 
 		HtmlReporter.label("Go to Medicare page");
 		selectCardPage = new SelectBusinessCardPage(driver);
@@ -71,10 +75,25 @@ public class MedicareTests extends MobileTestSetup {
 		drivingLisencePage = photoIDPage.clickNext();
 		assertTrue(drivingLisencePage.isActive(), "Driver License screen is not  displayed",
 				"Driver License screen is displayed");
-		
+
 		medicarePage = drivingLisencePage.clickMedicare();
 		assertTrue(medicarePage.isActive(), "Medicare screen is not  displayed ", "Medicare screen is displayed");
 	}
+
+//	@Test
+//	public void FPC_Pending_Gender_is_correct_DropDownList() throws Exception {
+//		toMedicarePage();
+//		medicarePage.selectGender("Male");
+//		medicarePage.selectGender("Female");
+//	}
+//	
+//	@Test
+//	public void FPC_Pending_ColorOfCard_is_correct_DropDownList() throws Exception {
+//		toMedicarePage();
+//		medicarePage.selectCardColor("Green");
+//		medicarePage.selectCardColor("Blue");
+//		medicarePage.selectCardColor("Yellow");
+//	}
 
 	@Test
 	public void FPC_1374_LastName_Cannot_Be_Blank() throws Exception {
@@ -82,16 +101,9 @@ public class MedicareTests extends MobileTestSetup {
 		medicarePage.inputLastName("");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
-		assertContains(errorMess, "Surname is mandatory!", "Error message displayed incorrectly", "Error message displayed correctly");
+		assertContains(errorMess, "Surname is mandatory!", "Error message displayed incorrectly",
+				"Error message displayed correctly");
 	}
-
-//	@Test
-//	public void FPC_1376_DateOfBirth_Cannot_Be_Blank() throws Exception {
-//		medicarePage.inputDoB("");
-//		medicarePage.clickNext();
-//		String errorMess = medicarePage.getSubmitStatus();
-//		assertContains(errorMess, "Please complete all fields", "Error message displayed incorrectly", "Error message displayed correctly");
-//	}
 
 	@Test
 	public void FPC_1378_MedicareNumber_Cannot_Be_Blank() throws Exception {
@@ -99,7 +111,8 @@ public class MedicareTests extends MobileTestSetup {
 		medicarePage.inputMedicareNumber("");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
-		assertContains(errorMess, "Medicare number is mandatory!", "Error message displayed incorrectly", "Error message displayed correctly");
+		assertContains(errorMess, "Medicare number is mandatory!", "Error message displayed incorrectly",
+				"Error message displayed correctly");
 	}
 
 	@Test
@@ -108,59 +121,65 @@ public class MedicareTests extends MobileTestSetup {
 		medicarePage.inputReferenceNumber("");
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
-		assertContains(errorMess, "Reference number is mandatory!", "Error message displayed incorrectly", "Error message displayed correctly");
+		assertContains(errorMess, "Reference number is mandatory!", "Error message displayed incorrectly",
+				"Error message displayed correctly");
 	}
 
-//	@Test
-//	public void FPC_1380_ExpireDate_Cannot_Be_Blank() throws Exception {
-//		medicarePage.inputExpireDate("");
-//		medicarePage.clickNext();
-//		medicarePage.verifyErrorMessage("ERROR, Please complete all fields");
-//	}
+
+	// @Test
+	// public void FPC_1380_ExpireDate_Cannot_Be_Blank() throws Exception {
+	// medicarePage.inputExpireDate("");
+	// medicarePage.clickNext();
+	// medicarePage.verifyErrorMessage("ERROR, Please complete all fields");
+	// }
 
 	@Test
-	public void FPC_1383_MiddleInitial_Must_be_valid() throws Exception {
+	public void FPC_1383_Verify_MiddleInitial_MaxLength_is_1() throws Exception {
 		toMedicarePage();
 		medicarePage.inputMiddleName("AB");
-		medicarePage.clickNext();
-		String errorMess = medicarePage.getSubmitStatus();
-		assertContains(errorMess, "Please complete all fields", "Error message displayed incorrectly", "Error message displayed correctly");
+		String inputedMiddleName = medicarePage.getMiddleName();
+		assertEquals(inputedMiddleName, "A", "Value of Middle Initial is incorrectly", "Value of Middle Initial is correctly");
 	}
 
-	@Test
-	public void FPC_1384_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
-		toMedicarePage();
-		HtmlReporter.label("Verify format of Date of Birth");
-		String dob = medicarePage.getDob();
-		assertDateTimeFormat(dob,"YYYY/MM/DD","Date of birth value is not in correct format","Date of birth value is in correct format");
-	}
-	
-	@Test
-	public void Verify_ExpireDate_Must_be_in_YYYY_MM() throws Exception {
-		toMedicarePage();
-		HtmlReporter.label("Verify format of Date of Birth");
-		String expireDate = medicarePage.getExpireDate();
-		assertDateTimeFormat(expireDate,"YYYY/MM","Expire Date value is not in correct format","Expire Date value is in correct format");
-	}
+	// @Test
+	// public void FPC_1384_DateOfBirth_Must_be_in_YYYY_MM_DD() throws Exception {
+	// toMedicarePage();
+	// HtmlReporter.label("Verify format of Date of Birth");
+	// String dob = medicarePage.getDob();
+	// assertDateTimeFormat(dob,"YYYY/MM/DD","Date of birth value is not in correct
+	// format","Date of birth value is in correct format");
+	// }
+
+	// @Test
+	// public void FPC_2840_Verify_ExpireDate_Must_be_in_YYYY_MM() throws Exception
+	// {
+	// toMedicarePage();
+	// HtmlReporter.label("Verify format of Date of Birth");
+	// String expireDate = medicarePage.getExpireDate();
+	// assertDateTimeFormat(expireDate,"YYYY/MM","Expire Date value is not in
+	// correct format","Expire Date value is in correct format");
+	// }
 
 	@Test
-	public void FPC_1385_MedicareNumber_Must_be_valid() throws Exception {
+	public void FPC_1385_Verify_ErrorMessage_With_Invalid_MedicareNumber() throws Exception {
 		toMedicarePage();
 		String imvalidMedicareNumber = Common.randomNumeric(12);
 		medicarePage.inputMedicareNumber(imvalidMedicareNumber);
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
-		assertContains(errorMess, "Invalid Medicare Number.", "Error message displayed incorrectly", "Error message displayed correctly");
+		assertContains(errorMess, "Invalid Medicare Number.", "Error message displayed incorrectly",
+				"Error message displayed correctly");
 	}
 
 	@Test
-	public void FPC_1386_Number_Must_be_valid() throws Exception {
+	public void FPC_1386_Verify_ErrorMessage_With_Invalid_ReferenceNumber() throws Exception {
 		toMedicarePage();
 		String invalidReferenceNumber = Common.randomNumeric(2);
 		medicarePage.inputReferenceNumber(invalidReferenceNumber);
 		medicarePage.clickNext();
 		String errorMess = medicarePage.getSubmitStatus();
-		assertContains(errorMess, "Invalid Medicare Reference.", "Error message displayed incorrectly", "Error message displayed correctly");
+		assertContains(errorMess, "Invalid Medicare Reference.", "Error message displayed incorrectly",
+				"Error message displayed correctly");
 	}
 
 	@Test
@@ -171,17 +190,8 @@ public class MedicareTests extends MobileTestSetup {
 		medicarePage.inputLastName("def");
 		medicarePage.inputMiddleName("ghj");
 
-		medicarePage.clickCancel();
-		onboardingAPI.recoveryData().then().verifyResponseCode(200)
-				.verifyJsonNodeEqual("medicareCard.cardNumber", Common.getTestVariable("cardNumber", false))
-				.verifyJsonNodeEqual("medicareCard.cardNumberRef", Common.getTestVariable("cardNumberRef", false))
-				.verifyJsonNodeEqual("medicareCard.dateOfBirth", Common.getTestVariable("dateOfBirth", false))
-				.verifyJsonNodeEqual("medicareCard.firstName", Common.getTestVariable("firstName", false))
-				.verifyJsonNodeEqual("medicareCard.gender", Common.getTestVariable("gender", false))
-				.verifyJsonNodeEqual("medicareCard.identificationId", Common.getTestVariable("identificationId", false))
-				.verifyJsonNodeEqual("medicareCard.middleInitial", Common.getTestVariable("middleInitial", false))
-				.verifyJsonNodeEqual("medicareCard.surname", Common.getTestVariable("surname", false))
-				.verifyJsonNodeEqual("medicareCard.validTo", Common.getTestVariable("validTo", false))
-			.flush();
+		drivingLisencePage = medicarePage.clickCancel();
+		assertTrue(drivingLisencePage.isActive(), "Driver License screen is not displayed after back from Medicare",
+				"Driver License screen is displayed after back from medicare");
 	}
 }

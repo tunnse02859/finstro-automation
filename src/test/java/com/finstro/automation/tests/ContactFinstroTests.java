@@ -69,7 +69,7 @@ public class ContactFinstroTests extends MobileTestSetup {
 		// Send
 		contactUsPage.submit();
 		String status = contactUsPage.getSubmitStatus();
-		assertTrue(status.contains("Message successfully sent."), "Send message failed!", "Send message successfully!");
+		assertContains(status,"Message successfully sent.","Send message failed!", "Send message successfully!");
 		Log.info(status);
 
 	}
