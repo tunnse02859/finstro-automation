@@ -50,11 +50,11 @@ public class PhotoIDPage {
 	public DriverLicensePage clickNext() throws Exception {
 		int count = 0;
 		do {
+			driver.wait(5);
 			driver.click(next);
-			if (!driver.waitForElementDisplayed(errorMessage, 3)) {
+			if (!driver.waitForElementDisplayed(errorMessage, 5)) {
 				return new DriverLicensePage(driver);
 			}
-			driver.wait(5);
 			count++;
 		} while (count < 7);
 		throw new Exception("Cannot bypass through PhotoID screen after try for several times");

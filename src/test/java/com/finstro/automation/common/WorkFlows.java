@@ -36,8 +36,8 @@ public class WorkFlows {
 		// goto Residential Address page
 		businessDetailPage.clickNext();
 		ResidentialAddressPage residentialAddressPage = new ResidentialAddressPage(driver);
-		assertTrue(residentialAddressPage.isActive(), "You're not on the Business Details page",
-				"You're on the Business Details page");
+		assertTrue(residentialAddressPage.isActive(), "You're not on the Residential page",
+				"You're on the Residential Details page");
 
 		// goto Photo ID page
 		residentialAddressPage.clickNext();

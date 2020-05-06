@@ -22,7 +22,7 @@ public class BankAccountPage {
 	private WebElement textTitle;
 
 	@iOSXCUITFindBy(accessibility = "addBankAccount")
-	@AndroidFindBy(id="	au.com.finstro.finstropay:id/add_bank_account")
+	@AndroidFindBy(id="au.com.finstro.finstropay:id/add_bank_account")
 	private WebElement btnAddNewBankAccount;
 
 	@AndroidFindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id='au.com.finstro.finstropay:id/bank_accounts_list']/android.widget.RelativeLayout")
