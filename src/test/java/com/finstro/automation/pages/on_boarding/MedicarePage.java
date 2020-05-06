@@ -210,7 +210,7 @@ public class MedicarePage {
 	}
 
 	public String getSubmitStatus() throws Exception {
-		return driver.getText(errorMessage);
+		return driver.waitForTextElementPresent(errorMessage,30);
 	}
 	
 	public String getDob() throws Exception {

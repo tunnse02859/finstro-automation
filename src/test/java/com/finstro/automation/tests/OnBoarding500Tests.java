@@ -110,7 +110,7 @@ public class OnBoarding500Tests extends MobileTestSetup {
 		HtmlReporter.label("Select first match result and verify screen change");
 		findBusinessPage.clickOnFirstMatched();
 		businessDetailPage.verifyBusinessData(businessDataForTest.get("ABN"), businessDataForTest.get("Entity name"),
-				"");
+				businessDataForTest.get("Business Name"));
 		HtmlReporter.label("Select business name");
 		businessDetailPage.selectBusinessName(businessDataForTest.get("Second Business Name"));
 		// ---- END find business -----
@@ -120,7 +120,7 @@ public class OnBoarding500Tests extends MobileTestSetup {
 		String addressInforForSearch = "60 Margaret St, SYDNEY";
 		String expectedFirstMatchTitle = "60 Margaret St";
 		String expectedFirstMatchInfor = "SYDNEY NSW 2000";
-		String expectedBusinessTradingAddress = "60 Margaret St, SYDNEY, NSW, 2000";
+		String expectedBusinessTradingAddress = "60 Margaret St, SYDNEY NSW 2000";
 
 		// go to search address and
 		findAddressPage = businessDetailPage.clickBusinessTradingAddress();
@@ -167,7 +167,7 @@ public class OnBoarding500Tests extends MobileTestSetup {
 		String addressInforForSearch = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
-		String expectedResidentialAddress = "50 Margaret St, ASHFIELD, WA, 6054";
+		String expectedResidentialAddress = "50 Margaret St, ASHFIELD WA 6054";
 
 		// go to residential address screen
 		HtmlReporter.label("Go to Residential Address screen");

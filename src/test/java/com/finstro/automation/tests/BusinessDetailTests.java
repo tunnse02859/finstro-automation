@@ -93,7 +93,7 @@ public class BusinessDetailTests extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
 		HtmlReporter.label("Select business name");
 		businessDetailPage.selectBusinessName(businessDataOnTest.get("Business Name"));
 
@@ -144,7 +144,7 @@ public class BusinessDetailTests extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		HtmlReporter.label("Verify value on screen changed");
-		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), "");
+		businessDetailPage.verifyBusinessData(businessDataOnTest.get("ABN"), businessDataOnTest.get("Entity name"), businessDataOnTest.get("Business Name"));
 
 		HtmlReporter.label("Select business name");
 		businessDetailPage.selectBusinessName(businessDataOnTest.get("Business Name"));
@@ -293,7 +293,7 @@ public class BusinessDetailTests extends MobileTestSetup {
 		// select first match and verify filled data
 		findBusinessPage.clickOnFirstMatched();
 		businessDetailPage.verifyBusinessData(businessDataForTest.get("ABN"), businessDataForTest.get("Entity name"),
-				"");
+				businessDataForTest.get("Business Name"));
 
 		HtmlReporter.label("Update business trading name and verify");
 		businessDetailPage.selectBusinessName(businessDataForTest.get("Second Business Name"));
@@ -324,7 +324,7 @@ public class BusinessDetailTests extends MobileTestSetup {
 		String addressInfor = "50 Margaret St, ASHFIELD";
 		String expectedFirstMatchTitle = "50 Margaret St";
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
-		String expectedBusinessTradingAddress = "50 Margaret St, ASHFIELD, WA, 6054";
+		String expectedBusinessTradingAddress = "50 Margaret St, ASHFIELD WA 6054";
 
 		// go to search address and
 		HtmlReporter.label("Go to search address and search for selecting");

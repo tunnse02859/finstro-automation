@@ -190,7 +190,15 @@ public class APIResponse {
 
 	public APIResponse extractJsonValue(String key) throws Exception {
 		if (responseBodyJson != null) {
-			JSONObject bodyInJson = (JSONObject) responseBodyJson;
+			JSONObject bodyInJson = null;
+			try {
+				bodyInJson = (JSONObject) responseBodyJson;
+			}catch (ClassCastException e) {
+				extractedVariable.add("[FAILED] Cannot extract key [" + key + "]");
+				Log.error("[Extract][FAILED] Cannot extract key [" + key + "]");
+				exception = e;
+				return this;
+			}
 			if (bodyInJson.has(key)) {
 				String extractedValue = bodyInJson.get(key).toString();
 				PropertiesLoader.getPropertiesLoader().test_variables.setProperty(key, extractedValue);
@@ -390,7 +398,7 @@ public class APIResponse {
 					assertionList, extractedVariable, exception));
 			if (exception != null) {
 				Log.error("Test failed due to API Request failed");
-				throw exception;
+				throw new Exception("Test failed due to API Request failed - " + exception.getMessage());
 			} else {
 				Log.error("Test failed due to API Request failed");
 				throw new Exception("Test failed due to API Request failed");

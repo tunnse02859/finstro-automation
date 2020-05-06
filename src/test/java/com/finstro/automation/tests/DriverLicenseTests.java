@@ -187,25 +187,25 @@ public class DriverLicenseTests extends MobileTestSetup {
 		assertTrue(postalAddressPage.isActive(),"Postal address of card screen is not displayed","Postal address of card screen is displayed");
 	}
 	
-	@Test
-	public void FPC_1359_FirstName_Cannot_Be_Blank() throws Exception {
-		toDriverLicensePage();
-		HtmlReporter.label("Submit driving license with blank First Name and verify error");
-		drivingLisencePage.inputFirstName("");
-		postalAddressPage = drivingLisencePage.clickNext();
-		String errorMess = drivingLisencePage.getSubmitStatus();
-		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
-	}
+//	@Test
+//	public void FPC_1359_FirstName_Cannot_Be_Blank() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with blank First Name and verify error");
+//		drivingLisencePage.inputFirstName("");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
-	@Test
-	public void FPC_1360_LastName_Cannot_Be_Blank() throws Exception {
-		toDriverLicensePage();
-		HtmlReporter.label("Submit driving license with blank Last Name and verify error");
-		drivingLisencePage.inputLastName("");
-		postalAddressPage = drivingLisencePage.clickNext();
-		String errorMess = drivingLisencePage.getSubmitStatus();
-		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
-	}
+//	@Test
+//	public void FPC_1360_LastName_Cannot_Be_Blank() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with blank Last Name and verify error");
+//		drivingLisencePage.inputLastName("");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
 //	@Test
 //	public void FPC_1361_State_Cannot_Be_Blank() throws Exception {
@@ -227,15 +227,15 @@ public class DriverLicenseTests extends MobileTestSetup {
 //		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
 //	}
 	
-	@Test
-	public void FPC_1363_DrivingLicenseNumber_Cannot_Be_Blank() throws Exception {
-		toDriverLicensePage();
-		HtmlReporter.label("Submit driving license with blank Driving License and verify error");
-		drivingLisencePage.inputLicenseNumber("");
-		postalAddressPage = drivingLisencePage.clickNext();
-		String errorMess = drivingLisencePage.getSubmitStatus();
-		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
-	}
+//	@Test
+//	public void FPC_1363_DrivingLicenseNumber_Cannot_Be_Blank() throws Exception {
+//		toDriverLicensePage();
+//		HtmlReporter.label("Submit driving license with blank Driving License and verify error");
+//		drivingLisencePage.inputLicenseNumber("");
+//		postalAddressPage = drivingLisencePage.clickNext();
+//		String errorMess = drivingLisencePage.getSubmitStatus();
+//		assertContains(errorMess, "Please complete all fields or enter Medicare details", "Error message displayed incorrectly", "Error message displayed correctly");
+//	}
 	
 //	@Test
 //	public void FPC_1364_ExpireDate_Cannot_Be_Blank() throws Exception {
