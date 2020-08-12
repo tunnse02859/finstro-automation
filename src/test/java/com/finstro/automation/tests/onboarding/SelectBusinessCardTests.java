@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.onboarding;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.pages.login_process.LoginPage;

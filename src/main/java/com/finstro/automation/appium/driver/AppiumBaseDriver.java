@@ -157,6 +157,38 @@ public class AppiumBaseDriver {
 		}
 	}
 
+	public WebElement findElement(By by) {
+		WebElement element = null;
+		int attemps = 0;
+		setImplicitWaitTime(15);
+		do {
+			try {
+				element = driver.findElement(by);
+				return element;
+			} catch (NoSuchElementException e) {
+				if (attemps % 2 == 0) {
+					swipe(DIRECTION.UP);
+				} else {
+					swipe(DIRECTION.DOWN);
+				}
+				attemps++;
+			}
+		} while (attemps < 3);
+		throw new NoSuchElementException("Element not found - [" + by.toString() + "]");
+	}
+
+	public WebElement findChildElement(WebElement parentElement, By childBy) {
+		WebElement childElement = null;
+		try {
+			childElement = parentElement.findElement(childBy);
+			return childElement;
+		} catch (NoSuchElementException e) {
+			Log.error(String.format("Cannot find child element [%s] of [%s]",childBy.toString(),parentElement.toString()));
+			HtmlReporter.fail(String.format("Cannot find child element [%s] of [%s]",childBy.toString(),parentElement.toString()));
+			throw e;
+		}
+	}
+
 	/**
 	 * This method is used to close a webdriver
 	 * 
@@ -268,6 +300,20 @@ public class AppiumBaseDriver {
 			driver.hideKeyboard();
 		}
 
+	}
+
+	public boolean isKeyBoardShow() {
+		try {
+			setImplicitWaitTime(0);
+			if (isIOSDriver()) {
+				return ((IOSDriver) driver).isKeyboardShown();
+			} else if (isAndroidDriver()) {
+				return ((AndroidDriver) driver).isKeyboardShown();
+			}
+		} finally {
+			setDefaultImplicitWaitTime();
+		}
+		return false;
 	}
 
 	/**
@@ -576,12 +622,15 @@ public class AppiumBaseDriver {
 
 	public boolean waitForElementDisplayed(WebElement element, int time) {
 		try {
+			setImplicitWaitTime(0);
 			WebDriverWait wait = new WebDriverWait(driver, time);
 			wait.until(ExpectedConditions.visibilityOf(element));
 		} catch (TimeoutException e) {
 			return false;
 		} catch (Exception e) {
 			return false;
+		} finally {
+			setDefaultImplicitWaitTime();
 		}
 		return true;
 	}
@@ -605,19 +654,21 @@ public class AppiumBaseDriver {
 
 	public boolean isElementPresent(WebElement element) {
 		try {
-			return !element.isDisplayed();
+			element.isDisplayed();
+			return true;
 		} catch (StaleElementReferenceException ignored) {
 			// We can assume a stale element isn't displayed.
-			return true;
+			return false;
 		} catch (NoSuchElementException ignored) {
-			return true;
+			return false;
 		} catch (NullPointerException ignored) {
-			return true;
+			return false;
 		}
 	}
 
 	public boolean waitUntilElementNotPresent(WebElement element, int time) {
 		try {
+			setImplicitWaitTime(0);
 			WebDriverWait wait = new WebDriverWait(driver, time);
 			// wait.until((driver) -> !element.getText().equals(""));
 			wait.until(new ExpectedCondition<Boolean>() {
@@ -636,6 +687,8 @@ public class AppiumBaseDriver {
 			return false;
 		} catch (Exception e) {
 			return false;
+		} finally {
+			setDefaultImplicitWaitTime();
 		}
 	}
 

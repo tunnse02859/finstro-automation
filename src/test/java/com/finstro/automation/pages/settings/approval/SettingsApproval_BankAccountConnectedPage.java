@@ -46,7 +46,7 @@ public class SettingsApproval_BankAccountConnectedPage {
 				: MobileBy.iOSClassChain("**/XCUIElementTypeStaticText[3]");
 	}
 
-	@iOSXCUITFindBy(accessibility = "Submit Bank Accounts")
+	@iOSXCUITFindBy(iOSNsPredicate = "name = 'Re-Submit Bank Accounts'")
 	@AndroidFindBy(id = "au.com.finstro.finstropay:id/submit_text")
 	private WebElement submitBankAccount;
 

@@ -121,6 +121,30 @@ public class SettingsBusinessDetailsSecondPage {
 	public String getTimeTrading() throws Exception {
 		return driver.getText(txtTimeTrading);
 	}
+	
+	public void clickBusinessType() throws Exception {
+		driver.click(txtBusinessType);
+	}
+	
+	public void clickBusinessName() throws Exception {
+		driver.click(txtBusinessName);
+	}
+	
+	public void clickBusinessAddress() throws Exception {
+		driver.click(txtBusinessAddress);
+	}
+	
+	public void clickBusinessTradingName() throws Exception {
+		driver.click(txtTradingName);
+	}
+	
+	public void clickABN() throws Exception {
+		driver.click(txtABN);
+	}
+	
+	public void clickACN() throws Exception {
+		driver.click(txtABN);
+	}
 
 	public SettingsBusinessDetailsFirstPage gotoSettingsBusinessDetailsFirstPage() throws Exception {
 		driver.swipe(DIRECTION.RIGHT);

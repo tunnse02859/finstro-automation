@@ -66,13 +66,13 @@ public class OnboardingAPI extends FinstroAPI{
 	
 	public void setupDrivingLicense() throws Exception {
 		String data = "{" + 
-				"	'licenceNumber': '012345'," + 
+				"	'licenceNumber': '1131884'," + 
 				"	'gender': 'F'," + 
 				"	'surname': 'ABC'," + 
 				"	'dateOfBirth': '1993-07-20'," + 
 				"	'firstName': 'DEF'," + 
 				"	'middleName': 'GHI'," + 
-				"	'state': 'SA'," + 
+				"	'state': 'NT'," + 
 				"	'validTo': '2025-12-31'" + 
 				"}";
 		
@@ -89,11 +89,11 @@ public class OnboardingAPI extends FinstroAPI{
 		String data = "{" + 
 				"	'gender': 'F'," + 
 				"	'middleInitial': 'ABC'," + 
-				"	'validTo': '2025-12-01'," + 
+				"	'validTo': '2021-05-01'," + 
 				"	'cardColor': 'G'," + 
 				"	'firstName': 'DEF'," + 
 				"	'surname': 'GHI'," + 
-				"	'cardNumber': '3501803151'," + 
+				"	'cardNumber': '2951776762'," + 
 				"	'dateOfBirth': '1993-07-20'," + 
 				"	'cardNumberRef': 6" + 
 				"}";

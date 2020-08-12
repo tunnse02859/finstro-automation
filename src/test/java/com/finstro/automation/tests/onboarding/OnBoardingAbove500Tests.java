@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.onboarding;
 
 import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.common.CommonFunction;
@@ -55,7 +55,7 @@ public class OnBoardingAbove500Tests extends MobileTestSetup {
 	public void setupAccessTosken() throws Exception {
 		onboardingAPI = new OnboardingAPI();
 		onboardingAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
-		onboardingAPI.setupBusinessDetail("500");
+		onboardingAPI.setupBusinessDetail("1000");
 		onboardingAPI.setupResidentialAddress();
 		onboardingAPI.setupDrivingLicense();
 		onboardingAPI.setupMedicare();
@@ -70,8 +70,6 @@ public class OnBoardingAbove500Tests extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 
-		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
-		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 	}
 
 //	@Test
@@ -359,6 +357,8 @@ public class OnBoardingAbove500Tests extends MobileTestSetup {
 
 	@Test
 	public void FPC_2827_OnBoarding_Above500$_Verify_submit_bank_statement_successfully() throws Exception {
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// go to postal address
 		HtmlReporter.label("Go to Bank Statement screen");
 		

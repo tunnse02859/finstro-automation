@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.onboarding;
 
 import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.common.CommonFunction;
@@ -67,12 +67,12 @@ public class OnBoarding500Tests extends MobileTestSetup {
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 
-		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
-		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 	}
 
 	@Test
 	public void FPC_2821_OnBoarding_500$_Verify_select_business_card_amount_successfully() throws Exception {
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// select 500$ and verify business detail page displayed
 		HtmlReporter.label("Select card $500 and verify Business Detail screen displayed");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
@@ -82,7 +82,8 @@ public class OnBoarding500Tests extends MobileTestSetup {
 
 	@Test
 	public void FPC_2822_OnBoarding_500$_Verify_update_business_detail_successfully() throws Exception {
-
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// get business data from excel
 		HashMap<String, String> businessDataForTest;
 		Object[][] businessDataSource = ExcelHelper.getTableToHashMap(
@@ -169,6 +170,8 @@ public class OnBoarding500Tests extends MobileTestSetup {
 		String expectedFirstMatchInfor = "ASHFIELD WA 6054";
 		String expectedResidentialAddress = "50 Margaret St, ASHFIELD WA 6054";
 
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// go to residential address screen
 		HtmlReporter.label("Go to Residential Address screen");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
@@ -212,6 +215,8 @@ public class OnBoarding500Tests extends MobileTestSetup {
 	public void FPC_2824_OnBoarding_500$_Verify_update_driving_license_successfully(String genderName, String firstNameString,
 			String lastNameString, String middleNameString, String stateName, String dobString,
 			String licenseNumberString, String expireDateString) throws Exception {
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// go to driving license
 		HtmlReporter.label("Go to Driving License screen");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
@@ -263,6 +268,8 @@ public class OnBoarding500Tests extends MobileTestSetup {
 	public void FPC_2825_OnBoarding_500$_Verify_update_medicare_successfully(String firstNameString, String middleNameString,
 			String lastNameString, String genderName, String dobString, String cardColor, String medicareNumberString,
 			String referenceNumberString, String expireDateString) throws Exception {
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// go to Medicare screen
 		HtmlReporter.label("Go to Medicare screen");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");
@@ -309,8 +316,10 @@ public class OnBoarding500Tests extends MobileTestSetup {
 				.flush();
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void FPC_2826_OnBoarding_500$_Verify_select_postal_address_successfully() throws Exception {
+		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		selectBusinessCardPage = new SelectBusinessCardPage(driver);
 		// go to postal address
 		HtmlReporter.label("Go to Postal Address screen");
 		businessDetailPage = selectBusinessCardPage.clickOnCard("500");

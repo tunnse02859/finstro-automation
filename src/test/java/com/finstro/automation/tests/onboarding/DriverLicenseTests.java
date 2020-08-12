@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.onboarding;
 
 import static com.finstro.automation.utility.Assertion.*;
 
@@ -43,6 +43,8 @@ public class DriverLicenseTests extends MobileTestSetup {
 	public void setupAPI() throws Exception {
 		onboardingAPI = new OnboardingAPI();
 		onboardingAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		onboardingAPI.setupBusinessDetail("500");
+		onboardingAPI.setupResidentialAddress();
 		onboardingAPI.setupDrivingLicense();
 	}
 	

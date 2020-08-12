@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.setting;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeClass;
@@ -51,7 +51,7 @@ public class SettingsProfileTests extends MobileTestSetup {
 	}
 
 	@Test
-	public void SettingProfile_01_VerifyProfileDetails() throws Exception {
+	public void FPC_3156_01_Setting_ProfileDetail__VerifyProfileDetails() throws Exception {
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
 
 		// verify data on screen with API
@@ -62,12 +62,12 @@ public class SettingsProfileTests extends MobileTestSetup {
 				.verifyJsonNodeEqual("contacts.mobilePhoneNumber", settingProfilePage.getPhoneNumber())
 				.verifyJsonNodeEqual("contacts.emailAddress", settingProfilePage.getEmail());
 
-		assertContains(settingProfilePage.getResidentialAddress(), profileAPI.getResidentialAddress(),
-				"Residential address matched", "Residential address doesn't match");
+		assertContains(profileAPI.getResidentialAddress(),settingProfilePage.getResidentialAddress(),
+				"Residential address does not matched", "Residential address matched");
 	}
 
 	@Test
-	public void SettingProfile_02_VerifyDrivingLicenceInformation() throws Exception {
+	public void FPC_3156_02_Setting_ProfileDetail_VerifyDrivingLicenceInformation() throws Exception {
 
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);
 
@@ -96,7 +96,7 @@ public class SettingsProfileTests extends MobileTestSetup {
 	}
 
 	@Test
-	public void SettingProfile_03_VerifyMedicareInformation() throws Exception {
+	public void FPC_3156_03_SettingProfile_VerifyMedicareInformation() throws Exception {
 
 		boolean resetData = false;
 		settingProfilePage = WorkFlows.goToTheSettingProfilePage(driver);

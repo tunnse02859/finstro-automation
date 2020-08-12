@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.setting;
 
 import static com.finstro.automation.utility.Assertion.*;
 

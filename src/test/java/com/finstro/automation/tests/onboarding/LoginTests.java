@@ -1,7 +1,6 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.onboarding;
 
 import com.finstro.automation.pages.login_process.ForgotAccessCodePage;
-import com.finstro.automation.pages.login_process.LoginPINPage;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.setup.Constant;
@@ -16,7 +15,6 @@ import java.lang.reflect.Method;
 
 public class LoginTests extends MobileTestSetup {
 	private ForgotAccessCodePage forgotAccessCodePage;
-	private LoginPINPage loginPINPage;
 	private LoginPage loginPage;
 	private RegisterPage registerPage;
 
@@ -27,7 +25,6 @@ public class LoginTests extends MobileTestSetup {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
 		forgotAccessCodePage = new ForgotAccessCodePage(driver);
-		loginPINPage = new LoginPINPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation",
 				"Register page showed as default page");
 	}
@@ -115,27 +112,25 @@ public class LoginTests extends MobileTestSetup {
 	}
 
 	@Test
-	public void FPC_1299_LoginPIN_Relogin_with_invalid_Access_Code() throws Exception {
+	public void FPC_1299_Relogin_with_invalid_Access_Code() throws Exception {
 		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 		driver.wait(5);
 		driver.relaunchApp();
-		loginPINPage.login("123456");
-		String status = loginPINPage.getErrorMessage();
+		loginPage.login("123456");
+		String status = loginPage.getErrorMessage();
 		assertContains(status, "Incorrect username or password", "Error message displayed incorrectly",
 				"Error message displayed correctly");
 	}
 
 	@Test
-	public void FPC_1300_LoginPIN_Relogin_with_blank_Access_Code() throws Exception {
-		if (driver.isAndroidDriver()) {
-			loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, "");
+	public void FPC_1300_Relogin_with_blank_Access_Code() throws Exception {
+			loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
 			driver.wait(5);
 			driver.relaunchApp();
-			loginPINPage.clickOnSubmit();
-			String status = loginPINPage.getErrorMessage();
-			assertContains(status, "Incorrect username or password", "Error message displayed incorrectly",
+			loginPage.clickSubmit();
+			String status = loginPage.getErrorMessage();
+			assertContains(status, "Please enter all digits of your Access Code", "Error message displayed incorrectly",
 					"Error message displayed correctly");
-		}
 	}
 
 	@Test
@@ -143,17 +138,17 @@ public class LoginTests extends MobileTestSetup {
 		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS,
 				Constant.ONBOARDING_ACCESS_CODE);
 		driver.relaunchApp();
-		loginPINPage.toRegisterPage();
+		loginPage.toRegisterPage();
 		assertTrue(registerPage.isActive(), "Register Page didnt showed after click on Signup from PIN page",
 				"Register Page showed after click on Signup from PIN page");
 	}
 
 	@Test
-	public void FPC_1302_LoginPIN_User_can_login_with_another_account_when_click_on_not_you() throws Exception {
+	public void FPC_1302_User_can_login_with_another_account_when_click_on_not_you() throws Exception {
 		loginPage.doSuccessLogin(Constant.ONBOARDING_EMAIL_ADDRESS,
 				Constant.ONBOARDING_ACCESS_CODE);
 		driver.relaunchApp();
-		loginPINPage.clickOnLoggedEmail();
+		loginPage.clickOnLoggedEmail();
 		assertTrue(loginPage.isActive(), "login screen didnot showed after on logged email in PIN screen",
 				"login screen showed after on logged email in PIN screen");
 	}

@@ -64,6 +64,28 @@ public class SettingsApprovalBankUploadPage {
 				: MobileBy.xpath(
 						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[1]");
 	}
+	
+	
+	// Mulitple Directors
+	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"Bank Accounts Connected\"))")
+	@iOSXCUITFindBy(iOSClassChain = "**/XCUIElementTypeCell[4]")
+	private WebElement nvgMultipleDirector;
+
+	public By getMulpleDirectorCheckError() {
+		return driver.isIOSDriver()
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[`name=\"badge_failed\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[2]")
+				: MobileBy.xpath(
+						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[1]");
+	}
+
+	public By getMulpleDirectorCheckPass() {
+		return driver.isIOSDriver()
+				//? MobileBy.iOSClassChain("**/XCUIElementTypeCell[2]/XCUIElementTypeImage[`name=\"badge_checkbox\"`]")
+				? MobileBy.iOSClassChain("**/XCUIElementTypeCell[4]/XCUIElementTypeImage[2]")
+				: MobileBy.xpath(
+						"//*[@resource-id='au.com.finstro.finstropay:id/check_result_lv']/android.widget.LinearLayout[2]/android.widget.RelativeLayout/android.widget.ImageView[1]");
+	}	
 
 	// DIRECT DEBIT AUTHORITY
 	@AndroidFindBy(uiAutomator = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains(\"Direct Debt Authority\"))")
@@ -131,6 +153,11 @@ public class SettingsApprovalBankUploadPage {
 
 	public void gotoDirectDebitPage() throws Exception {
 		driver.clickByPosition(nvgDirectDebtAuthority, "middle");
+	}
+	
+	public SettingsApproval_MultipleDirectorsPage gotoMultipleDirectorsPage() throws Exception {
+		driver.clickByPosition(nvgMultipleDirector, "middle");
+		return new SettingsApproval_MultipleDirectorsPage(driver);
 	}
 
 	public void verifyIDCheckStatusIsPass(String expectedStatusPass) throws Exception {

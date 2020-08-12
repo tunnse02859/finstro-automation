@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.setting;
 
 import com.finstro.automation.api.CreditCardAPI;
 import com.finstro.automation.common.WorkFlows;
@@ -12,6 +12,7 @@ import com.finstro.automation.setup.Constant;
 import com.finstro.automation.setup.DataGenerator;
 import com.finstro.automation.setup.MobileTestSetup;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -47,9 +48,22 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		// Go to the debtCreditCardsPage page
 
 	}
+	
+	@Test
+	public void FPC_3395_01_Setting_CardDetail_Verify_all_saved_card_displayed_correctly() throws Exception {
+		// Generate test data
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		JSONArray creditCardsDetails = creditCardAPI.getCreditCardsInfo();
+		for(int i = 0; i < creditCardsDetails.length(); i++) {
+			String cardName = creditCardsDetails.getJSONObject(i).getString("name");
+			assertTrue(debtCreditCardsPage.isCardExisting(cardName), "Card ["+ cardName +"] is not displayed", "Card ["+ cardName +"] is displayed correctly");
+		}
+		//assertTrue(debtCreditCardsPage.isCardExisting(name), "New card doesn't display", "New card displayed");
+	}
 
 	@Test
-	public void SettingCardDetail_01_AddNewCard() throws Exception {
+	public void FPC_3395_02_Setting_CardDetail_Verify_User_can_add_new_card() throws Exception {
 		// Generate test data
 		
 		String name = DataGenerator.generateStringByDateTime("AddNewCard");
@@ -91,7 +105,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 
 	@Test
-	public void SettingCardDetail_02_SetDefaultCard() throws Exception {
+	public void FPC_3396_01_Setting_CardDetail_Verify_user_can_set_default_card() throws Exception {
 
 		// Generate test data
 		
@@ -167,7 +181,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 
 	@Test
-	public void SettingCardDetail_03_DeleteCard() throws Exception {
+	public void FPC_3396_01_Setting_CardDetail_Verify_user_can_delete_card() throws Exception {
 		// Generate test data
 		String name = DataGenerator.generateStringByDateTime("DeleteCard");
 		String cardNumber = DataGenerator.generateDebitCardNumber();
@@ -232,7 +246,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 	
 	@Test
-	public void SettingCardDetail_AddCard_All_Field_BLank() throws Exception {
+	public void FPC_2763_Setting_CardDetail_AddCard_All_Field_BLank() throws Exception {
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		HtmlReporter.label("Go to add new card screen and save without input data");
@@ -249,7 +263,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 	
 	@Test
-	public void SettingCardDetail_AddCard_Name_Blank() throws Exception {
+	public void FPC_2764_Setting_CardDetail_AddCard_Name_Blank() throws Exception {
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		HtmlReporter.label("Go to add new card screen and save without input Name");
@@ -271,7 +285,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 	
 	@Test
-	public void SettingCardDetail_AddCard_CardNumber_Blank() throws Exception {
+	public void FPC_2765_Setting_CardDetail_AddCard_CardNumber_Blank() throws Exception {
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		HtmlReporter.label("Go to add new card screen and save without input Card Number");
@@ -293,7 +307,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 	
 	@Test
-	public void SettingCardDetail_AddCard_ExpireDate_Blank() throws Exception {
+	public void FPC_2766_Setting_CardDetail_AddCard_ExpireDate_Blank() throws Exception {
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		HtmlReporter.label("Go to add new card screen and save without input Expire Date");
@@ -315,7 +329,7 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 	}
 	
 	@Test
-	public void SettingCardDetail_AddCard_CardNumber_Invalid() throws Exception {
+	public void FPC_2767_Setting_CardDetail_AddCard_CardNumber_Invalid() throws Exception {
 
 		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
 		HtmlReporter.label("Go to add new card screen and save with invalid Card Number");
@@ -336,6 +350,30 @@ public class SettingsDebtCreditCardsTests extends MobileTestSetup {
 		HtmlReporter.label("Verify error message");
 		String status = addCardPage.getSaveStatus();
 		assertContains(status, "Invalid Card Number", "Error message displayed incorrectly", "Error message displayed correctly");
+	}
+	
+	@Test
+	public void FPC_3399_Setting_CardDetail_AddCard_unsuccessfully_for_pre_paid_card() throws Exception {
+
+		debtCreditCardsPage = WorkFlows.goToDebtCreditCardsPage(driver);
+		HtmlReporter.label("Go to add new card screen and save with invalid Card Number");
+		addCardPage = debtCreditCardsPage.addNewCard();
+		assertTrue(addCardPage.isActive(), "You aren't on the Add new card page",
+				"You are on the Add new card page");
+		
+		String nameOnCard = DataGenerator.generateStringByDateTime("InvalidCardNumber");
+		String cardNumber = "4262370314214521";
+		String expireDate = "01/2022";
+		
+		addCardPage.setCardName(nameOnCard);
+		addCardPage.setCardNumber(cardNumber);
+		addCardPage.setCardExpiry(expireDate);
+		addCardPage.saveChanges();
+
+		// Get alert
+		HtmlReporter.label("Verify error message");
+		String status = addCardPage.getSaveStatus();
+		assertContains(status, "Pre-paid cards not accepted", "Error message displayed incorrectly", "Error message displayed correctly");
 	}
 
 }

@@ -62,7 +62,7 @@ public class HtmlReporter {
 		htmlReporter.config().setCSS(cssCode);
 		//end
 		
-		htmlReporter.setAppendExisting(false);
+		htmlReporter.setAppendExisting(true);
 
 		ExtentReports report = new ExtentReports();
 		report.attachReporter(htmlReporter);

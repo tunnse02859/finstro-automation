@@ -102,6 +102,9 @@ public class FinstroAPI {
 				Common.getTestVariable("suburb", true),
 				Common.getTestVariable("state", true),
 				Common.getTestVariable("postCode", true));
+		if(businessTradingAddress.charAt(0) == ',') {
+			businessTradingAddress = businessTradingAddress.substring(1);
+		}
 		return businessTradingAddress.trim();
 	}
 
@@ -146,6 +149,9 @@ public class FinstroAPI {
 				Common.getTestVariable("businessTradingAddress.suburb", true),
 				Common.getTestVariable("businessTradingAddress.state", true),
 				Common.getTestVariable("businessTradingAddress.postCode", true));
+		if(businessTradingAddress.charAt(0) == ',') {
+			businessTradingAddress = businessTradingAddress.substring(1);
+		}
 		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("businessTradingAddress",
 				businessTradingAddress.trim());
 
@@ -157,6 +163,9 @@ public class FinstroAPI {
 				Common.getTestVariable("postalAddress.suburb", true),
 				Common.getTestVariable("postalAddress.state", true),
 				Common.getTestVariable("postalAddress.postCode", true));
+		if(residentialAddress.charAt(0) == ',') {
+			residentialAddress = residentialAddress.substring(1);
+		}
 		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("residentialAddress", residentialAddress.trim());
 
 		String postalAddress = String.format("%s, %s %s %s, %s %s %s",
@@ -167,6 +176,9 @@ public class FinstroAPI {
 				Common.getTestVariable("postalAddress.suburb", true),
 				Common.getTestVariable("postalAddress.state", true),
 				Common.getTestVariable("postalAddress.postCode", true));
+		if(postalAddress.charAt(0) == ',') {
+			postalAddress = postalAddress.substring(1);
+		}
 		PropertiesLoader.getPropertiesLoader().test_variables.setProperty("postalAddress", postalAddress.trim());
 	}
 
@@ -189,6 +201,9 @@ public class FinstroAPI {
 				Common.getTestVariable("suburb", true),
 				Common.getTestVariable("state", true),
 				Common.getTestVariable("postCode", true));
+		if(residentialAddress.charAt(0) == ',') {
+			residentialAddress = residentialAddress.substring(1);
+		}
 		return residentialAddress.trim();
 	}
 
@@ -211,6 +226,9 @@ public class FinstroAPI {
 				Common.getTestVariable("suburb", true),
 				Common.getTestVariable("state", true),
 				Common.getTestVariable("postCode", true));
+		if(businessTradingAddress.charAt(0) == ',') {
+			businessTradingAddress = businessTradingAddress.substring(1);
+		}
 		return businessTradingAddress.trim();
 	}
 
@@ -266,7 +284,19 @@ public class FinstroAPI {
 		try {
 			bankAccounts = new JSONArray(Common.getTestVariable("bankAccounts", false));
 		} catch (Exception e) {
-			Log.info("Bank accounts are not submitted");
+			Log.error("Bank accounts are not submitted");
+			return null;
+		}
+		return bankAccounts;
+	}
+	
+	public JSONArray getDirectors() throws Exception {
+		recoveryData().then().verifyResponseCode(200).extractJsonValue("directors", "directors").flush();
+		JSONArray bankAccounts = null;
+		try {
+			bankAccounts = new JSONArray(Common.getTestVariable("directors", false));
+		} catch (Exception e) {
+			Log.error("Cannot found any directors");
 			return null;
 		}
 		return bankAccounts;

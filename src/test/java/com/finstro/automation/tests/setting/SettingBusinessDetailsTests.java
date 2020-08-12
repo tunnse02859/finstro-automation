@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.setting;
 
 import com.finstro.automation.api.FinstroAPI;
 import com.finstro.automation.common.WorkFlows;
@@ -50,9 +50,10 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 
 	}
 
-	@Test(dataProvider = "SettingBusinessDetail_01")
-	public void SettingBusinessDetail_01(String category, String email, String mobile, String website, String facebook,
-			String twitter, String instagram, String skype, String linkedin, String other) throws Exception {
+	
+	
+	@Test
+	public void FPC_3158_01_Setting_BusinessDetail_VerifyBusinessDetail_1stTab() throws Exception {
 		// Go to the Setting Business Details page
 		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
 
@@ -64,44 +65,10 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 				Common.getTestVariable("facebook", true), Common.getTestVariable("twitter", true),
 				Common.getTestVariable("instagram", true), Common.getTestVariable("skype", true),
 				Common.getTestVariable("linkedin", true), Common.getTestVariable("other", true));
-		
-		HtmlReporter.label("Input data and save changes");
-		settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
-		settingBusinessDetailsFirstPage.setEmail(email);
-		settingBusinessDetailsFirstPage.setMobileNumber(mobile);
-		settingBusinessDetailsFirstPage.setWebsiteAddress(website);
-		settingBusinessDetailsFirstPage.setFacebook(facebook);
-		settingBusinessDetailsFirstPage.setTwitter(twitter);
-		settingBusinessDetailsFirstPage.setInstagram(instagram);
-		settingBusinessDetailsFirstPage.setSkype(skype);
-		settingBusinessDetailsFirstPage.setLinkedin(linkedin);
-		settingBusinessDetailsFirstPage.setOther(other);
-		// Save Changes
-		settingBusinessDetailsFirstPage.saveChanges();
-		HtmlReporter.label("Verify data after click on save");
-		if (driver.isAndroidDriver()) {
-			String popupMessage = settingBusinessDetailsFirstPage.getPopupMessage();
-			String popupAction = settingBusinessDetailsFirstPage.getPopupActionType();
-			assertEquals(popupMessage, "Successfully save new business detail.", "Save failed " + popupMessage,
-					"Save business details success");
-			assertEquals(popupAction, "SUCCESS", "Save failed " + popupAction, "Save business details success");
-		}
-		driver.wait(10);
-		finstroAPI.recoveryData().then().verifyResponseCode(200)
-				.verifyJsonNodeEqual("businessDetails.email", email)
-				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
-				.verifyJsonNodeEqual("businessDetails.website", website)
-				.verifyJsonNodeEqual("businessDetails.facebook", facebook)
-				.verifyJsonNodeEqual("businessDetails.twitter", twitter)
-				.verifyJsonNodeEqual("businessDetails.instagram", instagram)
-				.verifyJsonNodeEqual("businessDetails.skype", skype)
-				.verifyJsonNodeEqual("businessDetails.linkedin", linkedin)
-				.verifyJsonNodeEqual("businessDetails.other", other).flush();
-
 	}
 
 	@Test
-	public void SettingBusinessDetail_02() throws Exception {
+	public void FPC_3158_02_Setting_BusinessDetail_VerifyBusinessDetail_2ndTab() throws Exception {
 		// Go to the Setting Business Details page
 		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
 
@@ -139,7 +106,78 @@ public class SettingBusinessDetailsTests extends MobileTestSetup {
 		String strBusinessAddr = settingBusinessDetailsSecondPage.getBusinessAddress();
 		assertContains(strBusinessAddr, expectedBusinessTradingAddress.trim(),
 				"Address is different", "Address matches");
+	}
+	
+	@Test(dataProvider = "SettingBusinessDetail_01")
+	public void FPC_3159_Setting_BusinessDetail_Verify_Update_1stTab_Successfully(String category, String email, String mobile, String website, String facebook,
+			String twitter, String instagram, String skype, String linkedin, String other) throws Exception {
+		// Go to the Setting Business Details page
+		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
+		
+		HtmlReporter.label("Input data and save changes");
+		settingBusinessDetailsFirstPage.setCategoryOfBusiness(category);
+		settingBusinessDetailsFirstPage.setEmail(email);
+		settingBusinessDetailsFirstPage.setMobileNumber(mobile);
+		settingBusinessDetailsFirstPage.setWebsiteAddress(website);
+		settingBusinessDetailsFirstPage.setFacebook(facebook);
+		settingBusinessDetailsFirstPage.setTwitter(twitter);
+		settingBusinessDetailsFirstPage.setInstagram(instagram);
+		settingBusinessDetailsFirstPage.setSkype(skype);
+		settingBusinessDetailsFirstPage.setLinkedin(linkedin);
+		settingBusinessDetailsFirstPage.setOther(other);
+		// Save Changes
+		settingBusinessDetailsFirstPage.saveChanges();
+		HtmlReporter.label("Verify data after click on save");
+		if (driver.isAndroidDriver()) {
+			String popupMessage = settingBusinessDetailsFirstPage.getPopupMessage();
+			String popupAction = settingBusinessDetailsFirstPage.getPopupActionType();
+			assertEquals(popupMessage, "Successfully save new business detail.", "Save failed " + popupMessage,
+					"Save business details success");
+			assertEquals(popupAction, "SUCCESS", "Save failed " + popupAction, "Save business details success");
+		}
+		driver.wait(10);
+		finstroAPI.recoveryData().then().verifyResponseCode(200)
+				.verifyJsonNodeEqual("businessDetails.email", email)
+				.verifyJsonNodeEqual("businessDetails.phoneNumber", mobile)
+				.verifyJsonNodeEqual("businessDetails.website", website)
+				.verifyJsonNodeEqual("businessDetails.facebook", facebook)
+				.verifyJsonNodeEqual("businessDetails.twitter", twitter)
+				.verifyJsonNodeEqual("businessDetails.instagram", instagram)
+				.verifyJsonNodeEqual("businessDetails.skype", skype)
+				.verifyJsonNodeEqual("businessDetails.linkedin", linkedin)
+				.verifyJsonNodeEqual("businessDetails.other", other).flush();
 
+	}
+	
+	@Test
+	public void FPC_3160_Setting_BusinessDetail_Verify_Cannot_Update_2ndTab() throws Exception {
+		// Go to the Setting Business Details page
+		settingBusinessDetailsFirstPage = WorkFlows.goToTheSettingBusinessDetailsPage(driver);
+
+		// Go to the second setting business page
+		SettingsBusinessDetailsSecondPage settingBusinessDetailsSecondPage = settingBusinessDetailsFirstPage
+				.gotoSettingsBusinessDetailsSecondPage();
+		assertTrue(settingBusinessDetailsSecondPage.isActive(), "You're not on the Setting Business Detail second page",
+				"You're on the Setting Business Detail second page");
+		
+		settingBusinessDetailsSecondPage.clickABN();
+		assertTrue(!driver.isKeyBoardShow(),"Keyboard is displayed, ABN field is able to edit","Keyboard is not displayed, ABN field is not able to edit");
+		
+		settingBusinessDetailsSecondPage.clickACN();
+		assertTrue(!driver.isKeyBoardShow(),"Keyboard is displayed, ACN field is able to edit","Keyboard is not displayed, ACN field is not able to edit");
+		
+		settingBusinessDetailsSecondPage.clickBusinessType();
+		assertTrue(!driver.isKeyBoardShow(),"Keyboard is displayed, BusinessType field is able to edit","Keyboard is not displayed, BusinessType field is not able to edit");
+		
+		settingBusinessDetailsSecondPage.clickBusinessName();
+		assertTrue(!driver.isKeyBoardShow(),"Keyboard is displayed, BusinessName field is able to edit","Keyboard is not displayed, BusinessName field is not able to edit");
+		
+		settingBusinessDetailsSecondPage.clickBusinessTradingName();
+		assertTrue(!driver.isKeyBoardShow(),"Keyboard is displayed, BusinessTradingName field is able to edit","Keyboard is not displayed, BusinessTradingName field is not able to edit");
+		
+		settingBusinessDetailsSecondPage.clickBusinessAddress();
+		assertTrue(!driver.isKeyBoardShow(),"Keyboard is displayed, BusinessAddress field is able to edit","Keyboard is not displayed, BusinessAddress field is not able to edit");
+		
 	}
 
 }

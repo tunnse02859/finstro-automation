@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.onboarding;
 
 import static com.finstro.automation.utility.Assertion.assertEquals;
 import static com.finstro.automation.utility.Assertion.assertTrue;
@@ -14,11 +14,11 @@ import com.finstro.automation.api.OnboardingAPI;
 import com.finstro.automation.pages.login_process.LoginPage;
 import com.finstro.automation.pages.login_process.RegisterPage;
 import com.finstro.automation.pages.on_boarding.BusinessDetailPage;
-import com.finstro.automation.pages.on_boarding.CompleteAgreementPage;
 import com.finstro.automation.pages.on_boarding.DriverLicensePage;
 import com.finstro.automation.pages.on_boarding.PhotoIDPage;
 import com.finstro.automation.pages.on_boarding.PostalAddressPage;
 import com.finstro.automation.pages.on_boarding.ResidentialAddressPage;
+import com.finstro.automation.pages.on_boarding.SelectBankStatementPage;
 import com.finstro.automation.pages.on_boarding.SelectBusinessCardPage;
 import com.finstro.automation.report.HtmlReporter;
 import com.finstro.automation.setup.Constant;
@@ -35,13 +35,16 @@ public class PostalAddressOfCardTests extends MobileTestSetup {
 	private PhotoIDPage photoIDPage;
 	private DriverLicensePage drivingLisencePage;
 	private PostalAddressPage postalAddressPage;
-	private CompleteAgreementPage completeAgreementPage;
 	private OnboardingAPI onboardingAPI;
 
 	@BeforeClass
 	public void setupAPI() throws Exception {
 		onboardingAPI = new OnboardingAPI();
 		onboardingAPI.loginForAccessToken(Constant.ONBOARDING_EMAIL_ADDRESS, Constant.ONBOARDING_ACCESS_CODE);
+		onboardingAPI.setupBusinessDetail("500");
+		onboardingAPI.setupResidentialAddress();
+		onboardingAPI.setupDrivingLicense();
+		onboardingAPI.setupMedicare();
 	}
 
 	@BeforeMethod
@@ -49,10 +52,9 @@ public class PostalAddressOfCardTests extends MobileTestSetup {
 		registerPage = new RegisterPage(driver);
 		loginPage = new LoginPage(driver);
 		selectCardPage = new SelectBusinessCardPage(driver);
-		completeAgreementPage = new CompleteAgreementPage(driver);
 		assertTrue(registerPage.isActive(), "Register page didnt showed as default page in first installation");
 
-		toPostalAddressOfCardPage();
+		
 	}
 
 	private void toPostalAddressOfCardPage() throws Exception {
@@ -61,7 +63,7 @@ public class PostalAddressOfCardTests extends MobileTestSetup {
 		HtmlReporter.label("Go to Postal Address page");
 		selectCardPage = new SelectBusinessCardPage(driver);
 
-		businessDetailPage = selectCardPage.clickOnCard("500");
+		businessDetailPage = selectCardPage.clickOnCard("1000");
 		assertTrue(businessDetailPage.isActive(), "Business Detail screen is not  displayed",
 				"Business Detail screen is displayed");
 
@@ -84,6 +86,7 @@ public class PostalAddressOfCardTests extends MobileTestSetup {
 
 	@Test
 	public void FPC_1388_Verify_Submit_Postal_address_successfully() throws Exception {
+		toPostalAddressOfCardPage();
 		// select business trading address
 		HtmlReporter.label("Select Business Trading Address");
 		postalAddressPage.selectBusinessTradingAddress();
@@ -91,9 +94,9 @@ public class PostalAddressOfCardTests extends MobileTestSetup {
 		// click next verify
 		HtmlReporter.label("Click Next and verify screen change and data with API");
 		postalAddressPage.clickNext();
-		completeAgreementPage = new CompleteAgreementPage(driver);
-		assertTrue(completeAgreementPage.isActive(), "Complete Agreement Screen is not displayed",
-				"Complete Agreement Screen is displayed");
+		SelectBankStatementPage selectBankStatementPage = new SelectBankStatementPage(driver);
+		assertTrue(selectBankStatementPage.isActive(), "Bank Statement screen is not displayed",
+				"Bank Statement screen is displayed");
 
 		onboardingAPI.getPostalAddressInfor();
 		assertEquals(Common.getTestVariable("postalAddress", true),

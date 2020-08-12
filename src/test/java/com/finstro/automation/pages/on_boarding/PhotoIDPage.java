@@ -1,6 +1,8 @@
 package com.finstro.automation.pages.on_boarding;
 
 import com.finstro.automation.appium.driver.AppiumBaseDriver;
+import com.finstro.automation.report.HtmlReporter;
+
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -56,7 +58,7 @@ public class PhotoIDPage {
 				return new DriverLicensePage(driver);
 			}
 			count++;
-		} while (count < 7);
+		} while (count < 12);
 		throw new Exception("Cannot bypass through PhotoID screen after try for several times");
 	}
 }

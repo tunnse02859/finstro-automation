@@ -1,4 +1,4 @@
-package com.finstro.automation.tests;
+package com.finstro.automation.tests.setting;
 
 import com.finstro.automation.api.BankAccountDetailtAPI;
 import com.finstro.automation.common.WorkFlows;
@@ -118,7 +118,6 @@ public class SettingsBankAccountsTests extends MobileTestSetup {
 		try {
 
 			/********* Add a new bank account as a precondition *********************/
-			name = name + System.currentTimeMillis();
 
 			// Is on Add new account page
 			HtmlReporter.label("Add new account (for set default)");
@@ -194,7 +193,6 @@ public class SettingsBankAccountsTests extends MobileTestSetup {
 
 		try {
 			/********* Add a new bank account as a precondition *********************/
-			name = name + System.currentTimeMillis();
 
 			// Is on Add new account page
 			addBankAccountPage = accountPage.addNewBankAccount();
