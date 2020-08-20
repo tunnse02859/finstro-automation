@@ -18,6 +18,7 @@ import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUpload
 import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
+import com.finstro.automation.pages.settings.globalpayment.SettingGlobalPaymentDatePage;
 import com.finstro.automation.pages.settings.profile.SettingProfile_ProfileDetailPage;
 import com.finstro.automation.report.HtmlReporter;
 
@@ -162,5 +163,16 @@ public class WorkFlows {
 				"You're on the BankAccountPage");
 
 		return bankAccountPage;
+	}
+	
+	public static SettingGlobalPaymentDatePage goToGlobalPaymentDatePage(AppiumBaseDriver driver) throws Exception {
+		
+		SettingsPage settingsPage = goToTheSettingsPage(driver);
+		HtmlReporter.label("Go to Setting Bank Account screen");
+		// goto BankAccountPage page
+		SettingGlobalPaymentDatePage globalPaymentPage = settingsPage.goToGlobalPaymentDatePage();
+		assertTrue(globalPaymentPage.isActive(), "You're not on the Global Payment Date screen",
+				"You're on the Global Payment Date screen");
+		return globalPaymentPage;
 	}
 }

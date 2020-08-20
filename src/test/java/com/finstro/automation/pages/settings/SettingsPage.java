@@ -7,6 +7,7 @@ import com.finstro.automation.pages.settings.approval.SettingsApprovalBankUpload
 import com.finstro.automation.pages.settings.bankaccounts.BankAccountPage;
 import com.finstro.automation.pages.settings.business.SettingsBusinessDetailsFirstPage;
 import com.finstro.automation.pages.settings.carddetails.DebtCreditCardsPage;
+import com.finstro.automation.pages.settings.globalpayment.SettingGlobalPaymentDatePage;
 
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -68,7 +69,6 @@ public class SettingsPage {
 	private WebElement nvgTermCondition;
 	
 	
-	
 	public SettingsPage(AppiumBaseDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver.getDriver()), this);
@@ -106,5 +106,10 @@ public class SettingsPage {
     public ContactUsPage goToContactUsPage() throws Exception{
     	driver.clickByPosition(nvgContactFinstro,"middle");
     	return new ContactUsPage(driver);
+    }
+    
+    public SettingGlobalPaymentDatePage goToGlobalPaymentDatePage() throws Exception{
+    	driver.clickByPosition(nvgGlobalPaymentDate,"middle");
+    	return new SettingGlobalPaymentDatePage(driver);
     }
 }

@@ -146,6 +146,25 @@ public class SettingsApprovalBankUploadTests extends MobileTestSetup {
 		assertTrue(settingBankAccountConnectedPage.isActive(), "Bank Account Connected screen is not displayed",
 				"Bank Account Connected screen is displayed");
 	}
+	
+	@Test
+	public void FPC_3163_SettingApproval_MultipleDirector_Verify_Directors() throws Exception {
+		// go to bank account connected screen
+		settingsApprovalBankUploadPage = WorkFlows.goToApprovalBankUploadPage(driver);
+		SettingsApproval_MultipleDirectorsPage settingMultipleDirectorPage = settingsApprovalBankUploadPage
+				.gotoMultipleDirectorsPage();
+		JSONArray directorData = finstroAPI.getDirectors();
+		for (int i = 0; i < directorData.length(); i++) {
+			JSONObject director = directorData.getJSONObject(i);
+			String directFirstName = director.get("firstName").toString().equals("null") ? "" : director.get("firstName").toString(); 
+			String directLastName = director.get("lastName").toString().equals("null") ? "" : director.get("lastName").toString(); 
+			String directMiddleName = director.get("middleName").toString().equals("null") ? "" : director.get("middleName").toString();
+			String directorName = directFirstName + " " + directMiddleName + " " + directLastName;
+			assertTrue(settingMultipleDirectorPage.isDirectorDisplayed(String.valueOf(i+1), directorName),
+					String.format("Director [%s] is not dislpayed", directorName),
+					String.format("Director [%s] is dislpayed", directorName));
+		}
+	}
 
 	@Test
 	public void FPC_3164_SettingApproval_MultipleDirectors_Update_Email_and_Phone() throws Exception {
