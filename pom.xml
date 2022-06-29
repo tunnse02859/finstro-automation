@@ -19,7 +19,7 @@
 		<!-- Dependencies version -->
 		<log4j-version>2.8.2</log4j-version>
 		<extent-report-version>3.0.6</extent-report-version>
-		<poi-version>3.13</poi-version>
+		<poi-version>4.1.1</poi-version>
 		<testng-version>6.11</testng-version>
 		<ru.yandex.qatools.ashot>1.5.3</ru.yandex.qatools.ashot>
 	</properties>
